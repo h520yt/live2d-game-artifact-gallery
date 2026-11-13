@@ -251,7 +251,10 @@ function startSceneComposite(modelToken){
       context.drawImage(image,(width-w)/2,(height-h)/2,w,h);
     }
     // spine-player 4.2 不保证暴露 player.canvas；使用真实 DOM WebGL 画布。
-    const foreground=$('spine-container').querySelector('canvas');
+    // spine-player 4.2 会创建加载动画 canvas 与真正的模型 WebGL canvas。
+    // 优先其公共 player.canvas，若不存在则取最后一个可见模型 canvas。
+    const canvases=[...$('spine-container').querySelectorAll('canvas')];
+    const foreground=spinePlayer?.canvas || canvases[canvases.length-1];
     if(foreground && foreground.width>0 && foreground.height>0){
       context.save();
       context.translate(width/2+sceneX,height/2+sceneY);

@@ -29,6 +29,15 @@ async function main(){
       const motions=document.querySelectorAll('#motions button');
       return overlay.hidden && motions.length>0;
     },null,{timeout:45000});
+    const canvasInfo=await page.evaluate(()=>({
+      playerCanvas:!!spinePlayer?.canvas,
+      canvasList:[...document.querySelectorAll('#spine-container canvas')].map(x=>({
+        width:x.width,height:x.height,className:x.className,
+        parent:x.parentElement?.className,hidden:x.hidden,
+        opacity:getComputedStyle(x).opacity
+      }))
+    }));
+    console.log('SPINE_CANVAS_INFO',JSON.stringify(canvasInfo));
     const result=await page.evaluate(()=>({
       backgroundWidth:document.querySelector('#showcase-background').naturalWidth,
       canvasWidth:document.querySelector('#spine-container canvas').width,
