@@ -52,13 +52,13 @@ async function main(){
     assert.ok(result.motions.length>0);
     assert.deepEqual(errors,[]);
     // 核对人物真实出现在最终合成图中，而不是被一张不透明 PNG 覆盖。
-    await page.waitForFunction(()=>document.querySelector('#scene-composite')?.width>0,null,{timeout:10000});
+    await page.waitForTimeout(900); // 给 Spine WebGL 动画和背景图留出真实绘制帧
     const { PNG } = require('pngjs');
     const fullImage = await page.screenshot({path:path.join(dir,'308603-showcase.png'),fullPage:true});
-    await page.evaluate(()=>{sceneScale=0;});
-    await page.waitForTimeout(220);
+    await page.evaluate(()=>{sceneScale=0;updateSceneControls();});
+    await page.waitForTimeout(550);
     const backgroundOnly = await page.screenshot({path:path.join(dir,'308603-background-only.png'),fullPage:true});
-    await page.evaluate(()=>{sceneScale=1.8;});
+    await page.evaluate(()=>{sceneScale=1.8;updateSceneControls();});
     await page.waitForTimeout(220);
     const foreground = PNG.sync.read(fullImage);
     const background = PNG.sync.read(backgroundOnly);
