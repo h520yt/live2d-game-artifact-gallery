@@ -18,6 +18,7 @@ import urllib.request
 from pathlib import Path
 
 import spine
+import showcase
 
 SOURCE = "myssal/Reverse-1999-CN-Asset"
 SOURCE_ROOT = "live2d/roles"
@@ -208,6 +209,7 @@ def generate_manifest(mapping):
                     "path": f"../data/models/{folder.name}/{config.name}",
                 })
     models.extend(spine.collect_spine_models(mapping))
+    models.extend(showcase.collect_showcases(mapping))
     models.sort(key=lambda x: (str(x["name"]), str(x["skin"]), str(x["folder"]), str(x.get("type", ""))))
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
     output = {"source": SOURCE, "models": models}
@@ -217,17 +219,17 @@ def generate_manifest(mapping):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="重返未来：1999 动态角色资源按需下载与预览")
-    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime"],
-                        help="查看目录、下载资源、更新本地索引、审计全部皮肤、安装 Spine 播放器")
-    parser.add_argument("target", nargs="?", help="download 指定皮肤 ID，例如 315901")
+    parser.add_argument("action", choices=["list", "download", "showcase", "manifest", "audit", "setup-runtime"],
+                        help="查看目录、下载人物、下载完整展示场景、更新索引、审计皮肤、安装播放器")
+    parser.add_argument("target", nargs="?", help="download/showcase 指定皮肤 ID，例如 308603")
     parser.add_argument("--search", default="", help="list 按角色名、皮肤名或 ID 搜索")
     parser.add_argument("--kind", choices=["auto", "cubism", "spine", "both"], default="auto",
                         help="download 优先选择的模型类型，默认有 Cubism 优先，没有则 Spine")
     parser.add_argument("--refresh", action="store_true", help="刷新 GitHub 角色映射和资源目录缓存")
     parser.add_argument("--missing", action="store_true", help="audit 时打印没有对应 Cubism / Spine 的条目")
     args = parser.parse_args(argv)
-    if args.action == "download" and not args.target:
-        parser.error("download 必须指定皮肤 ID")
+    if args.action in ("download", "showcase") and not args.target:
+        parser.error(f"{args.action} 必须指定皮肤 ID")
     try:
         if args.action == "setup-runtime":
             spine.setup_runtime()
@@ -239,6 +241,9 @@ def main(argv=None):
             generate_manifest(mapping)
         elif args.action == "audit":
             spine.audit(mapping, args.refresh, args.missing)
+        elif args.action == "showcase":
+            showcase.download_showcase(mapping, args.target)
+            generate_manifest(mapping)
         else:
             spine.download_selected(mapping, args.target, args.kind, args.refresh)
             generate_manifest(mapping)

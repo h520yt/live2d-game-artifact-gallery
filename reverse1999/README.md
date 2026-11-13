@@ -58,3 +58,17 @@
 已检查佩施塔及部分老角色的骨骼文件头为 Spine 4.2.36。安装官方 @esotericsoftware/spine-player@4.2.87（同主版本）进行播放；对其他版本会提示不兼容。与 Unity 游戏场景有关的特效可能不能完整还原。
 
 Python 3.9+，无需安装第三方 Python 库。GITHUB_TOKEN 环境变量可以提高 GitHub API 请求额度，请勿写入仓库配置。游戏美术资源版权属于原权利方，工具仅供个人本地欣赏、研究，不提交或分发原始游戏资源。
+
+
+## 商城完整皮肤展示（首套样板）
+
+已增加「背景 + 商城 Spine 动画」分层展示模式，首套选定 **露西「生如行棋」308603**。
+
+    python reverse1999/scripts/sync.py showcase 308603
+    python -m http.server 8000
+
+浏览器访问 http://localhost:8000/reverse1999/viewer/ ，搜索“露西”或“308603”，点击“完整皮肤展示”。
+
+支持角色商城动画、人物位置/缩放、背景显示及铺满切换。素材为 singlebg/skin2dbg/308603.png 与 roles_bust/v2a8_308603_lxxx_skinstore/，下载在 reverse1999/data/showcase/308603/，不上传 Git。
+
+这是首套 **真实素材分层展示样板**，不是游戏中 Unity 特效、场景镜头、脚本和音效的 100% 复刻。更多皮肤需要逐套核实来源及关联后才可新增。详见 docs/2026-11-13-完整皮肤展示.md。

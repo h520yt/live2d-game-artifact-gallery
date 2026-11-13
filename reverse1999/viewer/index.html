@@ -19,7 +19,17 @@ button.item:hover,button.item.active{border-color:var(--accent);background:#2737
 section.stage{position:relative;min-height:580px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
 #stage-area{width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{display:block;width:100%;height:100%}
 #stage-area[hidden],#spine-stage[hidden]{display:none!important}
-#spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px}
+#spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px;overflow:hidden}
+#showcase-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;z-index:0}
+#showcase-background[hidden]{display:none!important}
+#spine-stage.showcase{background:#0b1017}
+#spine-stage.showcase #spine-container{position:relative;z-index:1;background:transparent!important;transform-origin:center center}
+#spine-stage.showcase #spine-container canvas{background:transparent!important}
+#scene-controls[hidden]{display:none!important}
+#scene-controls .scene-buttons{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+#scene-controls button{border:1px solid #45596c;border-radius:6px;padding:.38rem .55rem;background:#223041;color:inherit;font-size:.78rem;cursor:pointer}
+#scene-controls button:hover{border-color:var(--accent)}
+#scene-controls .scene-hint{font-size:.76rem;color:var(--muted);line-height:1.6}
 #spine-container{width:100%;height:100%;min-height:580px}
 #spine-container canvas{display:block}
 @media(max-width:660px){#spine-stage,#spine-container{min-height:450px}}
@@ -40,15 +50,37 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
     <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
     <div class="count" id="count">读取资源清单中…</div>
     <div id="models"></div>
-    <p class="note">只显示已下载到本地的模型。可运行 <code>python reverse1999/scripts/sync.py list --search 槲寄生</code> 查看可用模型，再下载对应 ID。</p>
+    <p class="note">只显示本地已下载的资源。完整皮肤展示样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
   </aside>
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><canvas id="canvas"></canvas></div>
-    <div id="spine-stage" hidden><div id="spine-container"></div></div>
+    <div id="spine-stage" hidden>
+      <img id="showcase-background" alt="衣着专属背景" hidden>
+      <div id="spine-container"></div>
+    </div>
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
-  <aside class="right"><div class="controls"><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
+  <aside class="right"><div class="controls">
+    <div id="scene-controls" hidden>
+      <h3>完整皮肤展示</h3>
+      <div class="scene-buttons">
+        <button id="scene-bg-toggle" type="button">隐藏背景</button>
+        <button id="scene-fit" type="button">背景：铺满</button>
+      </div>
+      <div class="scene-buttons">
+        <button id="scene-left" type="button" title="向左移动人物">←</button>
+        <button id="scene-up" type="button" title="向上移动人物">↑</button>
+        <button id="scene-down" type="button" title="向下移动人物">↓</button>
+        <button id="scene-right" type="button" title="向右移动人物">→</button>
+      </div>
+      <div class="scene-buttons">
+        <button id="scene-zoom-out" type="button">缩小人物</button>
+        <button id="scene-reset" type="button">重置位置</button>
+        <button id="scene-zoom-in" type="button">放大人物</button>
+      </div>
+      <p class="scene-hint">由同衣着 ID 的背景图与商城动画组合。场景比例和游戏内特效尚未逐帧校准。</p>
+    </div><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
 </main>
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
@@ -58,6 +90,7 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
 let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
+let sceneScale = 1, sceneX = 0, sceneY = 0, sceneFit = 'cover', sceneBgVisible = true;
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
 function message(value){$('status').hidden = false; $('status').textContent = value;}
@@ -70,7 +103,7 @@ function renderList(){
   visible.forEach(m => {
     const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
     const line=document.createElement('div');line.textContent=`${m.name} · ${m.skin}`;
-    const second=document.createElement('small');second.textContent=`${m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
+    const second=document.createElement('small');second.textContent=`${m.type==='showcase'?'完整皮肤展示':m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
     btn.append(line,second);btn.onclick=()=>selectModel(m);
     $('models').appendChild(btn);
   });
@@ -182,6 +215,36 @@ async function loadSpinePose(m, poseName, modelToken){
   }
 }
 
+function updateSceneControls(){
+  const container=$('spine-container');
+  container.style.transform=`translate(${sceneX}px,${sceneY}px) scale(${sceneScale})`;
+  $('showcase-background').style.objectFit=sceneFit;
+  $('showcase-background').hidden=!sceneBgVisible;
+  $('scene-bg-toggle').textContent=sceneBgVisible?'隐藏背景':'显示背景';
+  $('scene-fit').textContent=sceneFit==='cover'?'背景：铺满':'背景：完整';
+}
+
+function resetSceneControls(model){
+  sceneScale=Number(model.display?.scale)||1;sceneX=0;sceneY=0;
+  sceneFit=model.display?.fit==='contain'?'contain':'cover';sceneBgVisible=true;
+  updateSceneControls();
+}
+
+function setupSceneControls(){
+  $('scene-bg-toggle').onclick=()=>{sceneBgVisible=!sceneBgVisible;updateSceneControls();};
+  $('scene-fit').onclick=()=>{sceneFit=sceneFit==='cover'?'contain':'cover';updateSceneControls();};
+  $('scene-left').onclick=()=>{sceneX-=24;updateSceneControls();};
+  $('scene-right').onclick=()=>{sceneX+=24;updateSceneControls();};
+  $('scene-up').onclick=()=>{sceneY-=24;updateSceneControls();};
+  $('scene-down').onclick=()=>{sceneY+=24;updateSceneControls();};
+  $('scene-zoom-in').onclick=()=>{sceneScale=Math.min(3,sceneScale*1.12);updateSceneControls();};
+  $('scene-zoom-out').onclick=()=>{sceneScale=Math.max(.3,sceneScale/1.12);updateSceneControls();};
+  $('scene-reset').onclick=()=>{if(selected?.type==='showcase')resetSceneControls(selected);};
+  $('showcase-background').onerror=()=>{
+    if(selected?.type==='showcase')message('商城背景 PNG 加载失败，请重新运行 showcase 下载命令。');
+  };
+}
+
 async function selectModel(m){
   selected=m;renderList();const token=++requestId;
   ++poseToken;
@@ -190,9 +253,21 @@ async function selectModel(m){
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
-  if(m.type==='spine'){
+  if(m.type==='spine'||m.type==='showcase'){
+    const full=m.type==='showcase';
     $('stage-area').hidden=true;
     $('spine-stage').hidden=false;
+    $('spine-stage').classList.toggle('showcase',full);
+    $('scene-controls').hidden=!full;
+    $('showcase-background').hidden=!full;
+    if(full){
+      $('showcase-background').src=m.background;
+      resetSceneControls(m);
+      $('model-skin').textContent=m.skin+' · 商城完整皮肤展示（分层预览）';
+    }else{
+      $('showcase-background').removeAttribute('src');
+      $('spine-container').style.transform='';
+    }
     const poses=Object.keys(m.poses||{});
     const preferred=poses.includes('ui')?'ui':(poses.includes('room')?'room':poses[0]);
     buttons($('poses'),poses,name=>loadSpinePose(m,name,token));
@@ -201,6 +276,11 @@ async function selectModel(m){
     return;
   }
   $('spine-stage').hidden=true;
+  $('spine-stage').classList.remove('showcase');
+  $('scene-controls').hidden=true;
+  $('showcase-background').hidden=true;
+  $('showcase-background').removeAttribute('src');
+  $('spine-container').style.transform='';
   $('stage-area').hidden=false;
   buttons($('poses'),[],()=>{});
   message('正在加载 Live2D 模型和贴图…');
@@ -235,8 +315,8 @@ async function start(){
     if(!response.ok)throw new Error(`资源清单 HTTP ${response.status}`);
     const payload=await response.json();models=payload.models||[];
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
-    initInteraction();renderList();$('search').addEventListener('input',renderList);
-    if(!models.length)message('目前还没有下载任何模型。\n先运行：python reverse1999/scripts/sync.py download 315901');
+    initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
+    if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
   }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
 }
 start();
