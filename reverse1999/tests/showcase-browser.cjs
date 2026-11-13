@@ -23,12 +23,12 @@ async function main(){
       const canvas=document.querySelector('#spine-container canvas');
       return background && background.complete && background.naturalWidth>0
         && canvas && canvas.width>0 && canvas.height>0;
-    },{timeout:45000});
+    },null,{timeout:45000});
     await page.waitForFunction(()=>{
       const overlay=document.querySelector('#status');
       const motions=document.querySelectorAll('#motions button');
       return overlay.hidden && motions.length>0;
-    },{timeout:45000});
+    },null,{timeout:45000});
     const result=await page.evaluate(()=>({
       backgroundWidth:document.querySelector('#showcase-background').naturalWidth,
       canvasWidth:document.querySelector('#spine-container canvas').width,
