@@ -1,4 +1,32 @@
 {
   "source": "myssal/Reverse-1999-CN-Asset",
-  "models": []
+  "models": [
+    {
+      "type": "spine",
+      "id": 315901,
+      "name": "佩施塔",
+      "en": "Perchta",
+      "skin": "初始皮肤",
+      "skin_en": "",
+      "folder": "v4a1_315901_pst",
+      "dir": "../data/spine/v4a1_315901_pst",
+      "poses": {
+        "fight": {
+          "skel": "315901_pst_fight.skel",
+          "atlas": "315901_pst.atlas",
+          "version": "4.2.36"
+        },
+        "room": {
+          "skel": "315901_pst_room.skel",
+          "atlas": "315901_pst.atlas",
+          "version": "4.2.36"
+        },
+        "ui": {
+          "skel": "315901_pst_ui.skel",
+          "atlas": "315901_pst.atlas",
+          "version": "4.2.36"
+        }
+      }
+    }
+  ]
 }
