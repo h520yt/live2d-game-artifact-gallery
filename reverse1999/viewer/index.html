@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>重返未来：1999 · Live2D 本地预览</title>
+<style>
+:root{color-scheme:dark;--bg:#0d121b;--panel:#141e2a;--line:#304151;--muted:#9fb2c3;--accent:#d9b674}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,"Microsoft YaHei",sans-serif;background:var(--bg);color:#f1eee7}
+a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}button,input{font:inherit}
+header{display:flex;align-items:center;gap:1rem;padding:1rem 1.4rem;border-bottom:1px solid var(--line)}header strong{font-size:1.18rem}header small{display:block;color:var(--muted);margin-top:.25rem}
+main{display:grid;grid-template-columns:290px minmax(320px,1fr) 260px;min-height:calc(100vh - 76px)}
+aside{background:var(--panel);min-width:0;padding:1rem;overflow-y:auto}aside.left{border-right:1px solid var(--line)}aside.right{border-left:1px solid var(--line)}
+input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.7rem;background:#0f1721;color:inherit;outline:none}input:focus{border-color:var(--accent)}
+.note{font-size:.78rem;color:var(--muted);line-height:1.6}.count{font-size:.8rem;color:var(--muted);margin:.7rem 0}
+#models{display:flex;flex-direction:column;gap:.45rem}button.item{width:100%;text-align:left;cursor:pointer;border-radius:8px;border:1px solid transparent;background:#1b2838;color:inherit;padding:.65rem .75rem}
+button.item:hover,button.item.active{border-color:var(--accent);background:#273747}button.item small{color:var(--muted);display:block;margin-top:.15rem;font-size:.75rem}
+section.stage{position:relative;min-height:580px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
+#stage-area{width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{display:block;width:100%;height:100%}
+.overlay{pointer-events:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90%;white-space:pre-wrap;color:#e8ddc8;background:#101923d8;padding:1rem 1.3rem;border-radius:10px;line-height:1.6}
+.stage-toolbar{position:absolute;left:1rem;top:1rem;z-index:2;background:#0e1724c2;border:1px solid #465568;border-radius:9px;padding:.6rem .8rem;max-width:80%;pointer-events:none}
+.stage-toolbar .title{font-weight:650}.stage-toolbar .subtitle{font-size:.78rem;color:var(--muted);margin-top:.2rem}
+.controls h3{font-size:.95rem;margin:0 0 .7rem}.controls .list{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
+.controls button{border:1px solid #45596c;border-radius:6px;padding:.38rem .58rem;background:#223041;color:inherit;font-size:.77rem;cursor:pointer;max-width:100%;overflow-wrap:anywhere}
+.controls button:hover{border-color:var(--accent)}.empty{color:var(--muted);font-size:.82rem;line-height:1.6}
+@media(max-width:1080px){main{grid-template-columns:240px 1fr}.right{grid-column:1 / -1;border-top:1px solid var(--line);border-left:0!important}.right .controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem}}
+@media(max-width:660px){main{display:flex;flex-direction:column}.left{max-height:230px;border-right:0!important;border-bottom:1px solid var(--line)}.stage{min-height:450px!important}#stage-area{height:450px;min-height:450px}.right .controls{display:block}header{padding:.8rem}}
+</style>
+</head>
+<body>
+<header><a href="../../index.html">← 返回游戏列表</a><div><strong>重返未来：1999</strong><small>Live2D · 本地资源预览器</small></div></header>
+<main>
+  <aside class="left">
+    <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
+    <div class="count" id="count">读取资源清单中…</div>
+    <div id="models"></div>
+    <p class="note">只显示已下载到本地的模型。可运行 <code>python reverse1999/scripts/sync.py list --search 槲寄生</code> 查看可用模型，再下载对应 ID。</p>
+  </aside>
+  <section class="stage">
+    <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
+    <div id="stage-area"><canvas id="canvas"></canvas></div>
+    <div class="overlay" id="status">请从左侧选择模型</div>
+  </section>
+  <aside class="right"><div class="controls"><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
+</main>
+<script src="../../shared/vendor/live2dcubismcore.min.js"></script>
+<script src="../../shared/vendor/pixi.min.js"></script>
+<script src="../../shared/vendor/live2d.min.js"></script>
+<script>
+'use strict';
+const $ = id => document.getElementById(id);
+let app, active = null, selected = null, requestId = 0, models = [];
+const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
+
+function message(value){$('status').hidden = false; $('status').textContent = value;}
+function hideMessage(){ $('status').hidden = true; }
+function renderList(){
+  const q = $('search').value.trim().toLocaleLowerCase();
+  const visible = models.filter(m => [m.id,m.name,m.en,m.skin,m.skin_en,m.folder].some(v => String(v||'').toLocaleLowerCase().includes(q)));
+  $('count').textContent = `本地 ${visible.length} / ${models.length} 套模型`;
+  $('models').replaceChildren();
+  visible.forEach(m => {
+    const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
+    const line=document.createElement('div');line.textContent=`${m.name} · ${m.skin}`;
+    const second=document.createElement('small');second.textContent=`${m.id} · ${m.folder}`;
+    btn.append(line,second);btn.onclick=()=>selectModel(m);
+    $('models').appendChild(btn);
+  });
+}
+function buttons(container, names, onClick){
+  container.replaceChildren();
+  if(!names.length){container.textContent='暂无可用数据';container.classList.add('empty');return;}
+  container.classList.remove('empty');
+  names.forEach(name=>{
+    const b=document.createElement('button');b.textContent=name;b.onclick=()=>onClick(name);container.appendChild(b);
+  });
+}
+function setupControls(model){
+  const settings=model.internalModel && model.internalModel.settings;
+  const motionDefs = settings?.motions || {};
+  const names = Object.keys(motionDefs).sort((a,b)=>a.localeCompare(b,'zh-CN',{numeric:true}));
+  buttons($('motions'), names, name=>{
+    try{model.motion(name,0,FORCE)}catch(err){message('动作播放失败：'+err.message)}
+  });
+  // Cubism model3.json 常使用 Expressions 数组，直接调用 expression(name) 切换。
+  const expressions = settings?.expressions || [];
+  const expressionNames = Array.isArray(expressions)?expressions.map(x=>x.Name||x.name).filter(Boolean):Object.keys(expressions);
+  buttons($('expressions'), [...new Set(expressionNames)], name=>{
+    try{model.expression(name)}catch(err){message('表情切换失败：'+err.message)}
+  });
+}
+function fit(model){
+  const w=$('stage-area').clientWidth,h=$('stage-area').clientHeight;
+  if(w<=0||h<=0)return;
+  app.renderer.resize(w,h);
+  model.scale.set(1);
+  const width=model.width||1,height=model.height||1;
+  model.scale.set(Math.min(w*.82/width,h*.85/height,4));
+  model.position.set(w/2,h/2);
+}
+async function selectModel(m){
+  selected=m;renderList();const token=++requestId;
+  if(active){app.stage.removeChild(active);active.destroy();active=null;}
+  $('model-info').hidden=false;$('model-title').textContent=m.name;
+  $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
+  buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
+  message('正在加载模型和贴图…');
+  try{
+    const model=await PIXI.live2d.Live2DModel.from(m.path,{autoInteract:false});
+    if(token!==requestId){model.destroy();return;}
+    active=model;
+    model.anchor.set(.5,.5);
+    app.stage.addChild(model);
+    fit(model);
+    setupControls(model);
+    hideMessage();
+  }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
+}
+function initInteraction(){
+  const area=$('stage-area');let drag=false,px=0,py=0;
+  area.addEventListener('pointerdown',e=>{if(!active)return;drag=true;px=e.clientX;py=e.clientY;area.setPointerCapture(e.pointerId);});
+  area.addEventListener('pointerup',()=>drag=false);
+  area.addEventListener('pointercancel',()=>drag=false);
+  area.addEventListener('pointermove',e=>{
+    if(!active)return;
+    if(drag){active.x+=e.clientX-px;active.y+=e.clientY-py;px=e.clientX;py=e.clientY;}
+    const rect=area.getBoundingClientRect();
+    try{active.focus(e.clientX-rect.left,e.clientY-rect.top)}catch(error){/* 不是每个模型都带视线参数 */}
+  });
+  area.addEventListener('wheel',e=>{if(!active)return;e.preventDefault();const factor=e.deltaY<0?1.07:.93;active.scale.set(Math.max(.01,Math.min(50,active.scale.x*factor)));},{passive:false});
+  window.addEventListener('resize',()=>{if(active)fit(active);});
+}
+async function start(){
+  try{
+    const response=await fetch('manifest.json',{cache:'no-store'});
+    if(!response.ok)throw new Error(`资源清单 HTTP ${response.status}`);
+    const payload=await response.json();models=payload.models||[];
+    app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
+    initInteraction();renderList();$('search').addEventListener('input',renderList);
+    if(!models.length)message('目前还没有下载任何模型。\n先运行：python reverse1999/scripts/sync.py download 300301');
+  }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
+}
+start();
+</script>
+</body>
+</html>
