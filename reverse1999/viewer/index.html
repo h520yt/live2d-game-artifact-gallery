@@ -23,7 +23,9 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 #showcase-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;z-index:0}
 #showcase-background[hidden]{display:none!important}
 #spine-stage.showcase{background:#0b1017}
-#spine-stage.showcase #spine-container{position:relative;z-index:1;background:transparent!important;transform-origin:center center}
+#spine-stage.showcase #spine-container{position:relative;z-index:1;opacity:.001;pointer-events:none;background:transparent!important}
+#scene-composite{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+#scene-composite[hidden]{display:none!important}
 #spine-stage.showcase #spine-container canvas{background:transparent!important}
 #scene-controls[hidden]{display:none!important}
 #scene-controls .scene-buttons{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
@@ -58,6 +60,7 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
     <div id="spine-stage" hidden>
       <img id="showcase-background" alt="衣着专属背景" hidden>
       <div id="spine-container"></div>
+      <canvas id="scene-composite" hidden></canvas>
     </div>
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
@@ -91,6 +94,7 @@ const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
 let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
 let sceneScale = 1, sceneX = 0, sceneY = 0, sceneFit = 'cover', sceneBgVisible = true;
+let sceneFrame = 0;
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
 function message(value){$('status').hidden = false; $('status').textContent = value;}
@@ -215,18 +219,54 @@ async function loadSpinePose(m, poseName, modelToken){
   }
 }
 
+// Spine 的透明 WebGL 画布与 CSS 背景在部分环境下组合异常，
+// 因此统一交给同一个 2D Canvas 分层合成；支持原图尺寸比例、背景切换、人物缩放。
+function stopSceneComposite(){
+  if(sceneFrame)cancelAnimationFrame(sceneFrame);
+  sceneFrame=0;
+  $('scene-composite').hidden=true;
+}
+
+function startSceneComposite(modelToken){
+  const output=$('scene-composite'), context=output.getContext('2d',{alpha:true});
+  output.hidden=false;
+  const draw=()=>{
+    if(modelToken!==requestId||selected?.type!=='showcase')return;
+    const stage=$('spine-stage');
+    const width=stage.clientWidth,height=stage.clientHeight;
+    if(width<=0||height<=0){sceneFrame=requestAnimationFrame(draw);return;}
+    const ratio=Math.min(window.devicePixelRatio||1,2);
+    const pixelW=Math.round(width*ratio),pixelH=Math.round(height*ratio);
+    if(output.width!==pixelW||output.height!==pixelH){
+      output.width=pixelW;output.height=pixelH;
+    }
+    context.setTransform(ratio,0,0,ratio,0,0);
+    context.clearRect(0,0,width,height);
+    const image=$('showcase-background');
+    if(sceneBgVisible && image.complete && image.naturalWidth>0){
+      const scale=(sceneFit==='cover'
+        ?Math.max(width/image.naturalWidth,height/image.naturalHeight)
+        :Math.min(width/image.naturalWidth,height/image.naturalHeight));
+      const w=image.naturalWidth*scale,h=image.naturalHeight*scale;
+      context.drawImage(image,(width-w)/2,(height-h)/2,w,h);
+    }
+    const foreground=spinePlayer?.canvas;
+    if(foreground && foreground.width>0 && foreground.height>0){
+      context.save();
+      context.translate(width/2+sceneX,height/2+sceneY);
+      context.scale(sceneScale,sceneScale);
+      context.drawImage(foreground,-width/2,-height/2,width,height);
+      context.restore();
+    }
+    sceneFrame=requestAnimationFrame(draw);
+  };
+  sceneFrame=requestAnimationFrame(draw);
+}
+
 function updateSceneControls(){
-  const container=$('spine-container');
-  container.style.transform=`translate(${sceneX}px,${sceneY}px) scale(${sceneScale})`;
-  // 将 PNG 画成舞台背景，不使用可能盖住 WebGL 画布的独立图片层。
-  const background=$('showcase-background');
-  const stage=$('spine-stage');
-  background.hidden=true; // 保留用于检验图片成功加载，避免形成前景遮挡。
-  stage.style.backgroundImage=sceneBgVisible && selected?.type==='showcase'
-    ? `url(${JSON.stringify(background.src)})` : 'none';
-  stage.style.backgroundSize=sceneFit;
-  stage.style.backgroundPosition='center';
-  stage.style.backgroundRepeat='no-repeat';
+  $('showcase-background').hidden=true; // 图片只用于 2D 合成画布，不独立遮挡 Spine。
+  $('spine-stage').style.backgroundImage='none';
+  $('spine-container').style.transform='';
   $('scene-bg-toggle').textContent=sceneBgVisible?'隐藏背景':'显示背景';
   $('scene-fit').textContent=sceneFit==='cover'?'背景：铺满':'背景：完整';
 }
@@ -254,6 +294,7 @@ function setupSceneControls(){
 
 async function selectModel(m){
   selected=m;renderList();const token=++requestId;
+  stopSceneComposite();
   ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
   disposeSpine();
@@ -270,6 +311,7 @@ async function selectModel(m){
     if(full){
       $('showcase-background').src=m.background;
       resetSceneControls(m);
+      startSceneComposite(token);
       $('model-skin').textContent=m.skin+' · 商城完整皮肤展示（分层预览）';
     }else{
       $('showcase-background').removeAttribute('src');

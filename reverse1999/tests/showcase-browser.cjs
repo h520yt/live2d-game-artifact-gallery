@@ -43,11 +43,14 @@ async function main(){
     assert.ok(result.motions.length>0);
     assert.deepEqual(errors,[]);
     // 核对人物真实出现在最终合成图中，而不是被一张不透明 PNG 覆盖。
+    await page.waitForFunction(()=>document.querySelector('#scene-composite')?.width>0,null,{timeout:10000});
     const { PNG } = require('pngjs');
     const fullImage = await page.screenshot({path:path.join(dir,'308603-showcase.png'),fullPage:true});
-    await page.locator('#spine-container').evaluate(el=>el.style.visibility='hidden');
+    await page.evaluate(()=>{sceneScale=0;});
+    await page.waitForTimeout(220);
     const backgroundOnly = await page.screenshot({path:path.join(dir,'308603-background-only.png'),fullPage:true});
-    await page.locator('#spine-container').evaluate(el=>el.style.visibility='visible');
+    await page.evaluate(()=>{sceneScale=1.8;});
+    await page.waitForTimeout(220);
     const foreground = PNG.sync.read(fullImage);
     const background = PNG.sync.read(backgroundOnly);
     assert.equal(foreground.width,background.width);
