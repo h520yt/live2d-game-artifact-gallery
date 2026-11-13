@@ -43,6 +43,9 @@ async function main(){
     assert.ok(result.motions.length>0);
     assert.deepEqual(errors,[]);
     await page.screenshot({path:path.join(dir,'308603-showcase.png'),fullPage:true});
+    await page.locator('#scene-bg-toggle').click();
+    await page.screenshot({path:path.join(dir,'308603-foreground-only.png'),fullPage:true});
+    await page.locator('#scene-bg-toggle').click();
     fs.writeFileSync(path.join(dir,'validation.json'),JSON.stringify(result,null,2));
     console.log('BROWSER-SMOKE-PASS',JSON.stringify(result));
   }finally{
