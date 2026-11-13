@@ -82,3 +82,13 @@ Python 3.9+，无需安装第三方 Python 库。GITHUB_TOKEN 环境变量可以
 scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstorecardface / skinstore / skinsuit 的自包含骨骼，下载后生成本地记录。场景仅列出完整下载、骨骼版本为 4.2 的资源。材质、前景分层、Unity 后处理和交互脚本尚未还原；明确标注为「原始商城素材组合预览」，绝不宣称游戏内效果 100% 复刻。
 
 原始游戏素材只保存在 reverse1999/data/scenes/<皮肤ID>/，由 .gitignore 忽略，不提交 Git。
+
+## 另一套实测通过浏览器的完整展示：露西「生如行棋」
+
+本项目另加入同 ID 的露西衣着 **308603**，可直接运行：
+
+    python reverse1999/scripts/sync.py showcase 308603
+
+组合资源：背景 singlebg/skin2dbg/308603.png，人物商城动画 roles_bust/v2a8_308603_lxxx_skinstore/。页面右侧能切换背景可见性、背景覆盖/适配及人物位置和缩放。已通过 GitHub Actions 从上游实际下载素材、用 Chromium 加载并对背景/人物合成画面进行像素对比。预览与真正 Unity 游戏展示仍可能存在视觉差异。技术说明见 docs/2026-11-13-完整皮肤展示.md。
+
+已有的 `scene 313403` 命令与贝丽尔样板保持不变；`showcase 308603` 是另一套独立可测试的场景下载入口。

@@ -1,0 +1,57 @@
+name: Reverse 1999 showcase - actual asset and browser smoke
+on:
+  push:
+    paths:
+      - 'reverse1999/**'
+      - '.github/workflows/reverse1999-showcase-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  download-and-preview:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch real Lucy 308603 showcase files and Spine runtime
+        run: python reverse1999/scripts/sync.py showcase 308603
+      - name: Validate original assets and generated manifest
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('reverse1999')
+          bg=root/'data/showcase/308603/background.png'
+          assert bg.read_bytes()[:8] == b'\x89PNG\r\n\x1a\n'
+          assets=list((root/'data/showcase/308603/foreground').iterdir())
+          assert sum(p.suffix=='.skel' for p in assets)>=1
+          assert sum(p.suffix=='.atlas' for p in assets)>=1
+          assert sum(p.suffix=='.png' for p in assets)>=1
+          manifest=json.loads((root/'viewer/manifest.json').read_text(encoding='utf-8'))
+          scene=next(x for x in manifest['models'] if x['type']=='showcase' and str(x['id'])=='308603')
+          assert scene['name']=='露西' and scene['skin']=='生如行棋'
+          assert scene['poses']['商城展示']['version'].startswith('4.2.')
+          print('REAL-ASSET-SMOKE-PASS:',scene['id'], scene['background'])
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Playwright Chromium for renderer smoke
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Run browser preview against real assets
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/reverse1999-http.log 2>&1 &
+          node reverse1999/tests/showcase-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lucy-308603-preview
+          path: reverse1999/test-output/
+          if-no-files-found: ignore

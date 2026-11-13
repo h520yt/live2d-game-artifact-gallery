@@ -19,13 +19,20 @@ button.item:hover,button.item.active{border-color:var(--accent);background:#2737
 section.stage{position:relative;min-height:580px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
 #stage-area{width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{display:block;width:100%;height:100%}
 #stage-area[hidden],#spine-stage[hidden]{display:none!important}
-#spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px}
-#spine-container{position:relative;z-index:1;width:100%;height:100%;min-height:580px}
-#scene-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;pointer-events:none}
-#scene-bg[hidden],#scene-notice[hidden]{display:none!important}
-#scene-notice{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);z-index:2;
-color:#fff5db;background:rgba(12,19,29,.8);border:1px solid #9e8662;
-padding:.4rem .8rem;border-radius:6px;font-size:.73rem;text-align:center;pointer-events:none;max-width:90%}
+#spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px;overflow:hidden}
+#showcase-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;z-index:0}
+#showcase-background[hidden]{display:none!important}
+#spine-stage.showcase{background:#0b1017}
+#spine-stage.showcase #spine-container{position:relative;z-index:1;background:transparent!important}
+#scene-composite{position:absolute;inset:0;width:100%;height:100%;z-index:5;pointer-events:none}
+#scene-composite[hidden]{display:none!important}
+#spine-stage.showcase #spine-container canvas{background:transparent!important}
+#scene-controls[hidden]{display:none!important}
+#scene-controls .scene-buttons{display:flex;flex-wrap:wrap;gap:.4rem;margin:.5rem 0}
+#scene-controls button{border:1px solid #45596c;border-radius:6px;padding:.38rem .55rem;background:#223041;color:inherit;font-size:.78rem;cursor:pointer}
+#scene-controls button:hover{border-color:var(--accent)}
+#scene-controls .scene-hint{font-size:.76rem;color:var(--muted);line-height:1.6}
+#spine-container{width:100%;height:100%;min-height:580px}
 #spine-container canvas{display:block}
 @media(max-width:660px){#spine-stage,#spine-container{min-height:450px}}
 .overlay{pointer-events:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90%;white-space:pre-wrap;color:#e8ddc8;background:#101923d8;padding:1rem 1.3rem;border-radius:10px;line-height:1.6}
@@ -45,15 +52,37 @@ padding:.4rem .8rem;border-radius:6px;font-size:.73rem;text-align:center;pointer
     <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
     <div class="count" id="count">读取资源清单中…</div>
     <div id="models"></div>
-    <p class="note">只显示本地已有资源。商城场景采用同 ID 的原始背景与商城骨骼组合预览，并非游戏全特效复刻。可运行 <code>python reverse1999/scripts/sync.py list --search 槲寄生</code> 查看可用模型，再下载对应 ID。</p>
+    <p class="note">只显示本地已下载的资源。完整皮肤展示样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
   </aside>
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><canvas id="canvas"></canvas></div>
-    <div id="spine-stage" hidden><img id="scene-bg" alt="该皮肤的原始商城背景" hidden><div id="spine-container"></div><div id="scene-notice" hidden>商城背景 + 角色骨骼素材组合预览 · 非游戏内完整复刻</div></div>
+    <div id="spine-stage" hidden>
+      <img id="showcase-background" alt="衣着专属背景" hidden>
+      <div id="spine-container"></div>
+    </div>
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
-  <aside class="right"><div class="controls"><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
+  <aside class="right"><div class="controls">
+    <div id="scene-controls" hidden>
+      <h3>完整皮肤展示</h3>
+      <div class="scene-buttons">
+        <button id="scene-bg-toggle" type="button">隐藏背景</button>
+        <button id="scene-fit" type="button">背景：铺满</button>
+      </div>
+      <div class="scene-buttons">
+        <button id="scene-left" type="button" title="向左移动人物">←</button>
+        <button id="scene-up" type="button" title="向上移动人物">↑</button>
+        <button id="scene-down" type="button" title="向下移动人物">↓</button>
+        <button id="scene-right" type="button" title="向右移动人物">→</button>
+      </div>
+      <div class="scene-buttons">
+        <button id="scene-zoom-out" type="button">缩小人物</button>
+        <button id="scene-reset" type="button">重置位置</button>
+        <button id="scene-zoom-in" type="button">放大人物</button>
+      </div>
+      <p class="scene-hint">由同衣着 ID 的背景图与商城动画组合。场景比例和游戏内特效尚未逐帧校准。</p>
+    </div><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
 </main>
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
@@ -63,19 +92,21 @@ padding:.4rem .8rem;border-radius:6px;font-size:.73rem;text-align:center;pointer
 const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
 let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
+let sceneScale = 1, sceneX = 0, sceneY = 0, sceneFit = 'cover', sceneBgVisible = true;
+
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
 function message(value){$('status').hidden = false; $('status').textContent = value;}
 function hideMessage(){ $('status').hidden = true; }
 function renderList(){
   const q = $('search').value.trim().toLocaleLowerCase();
-  const visible = models.filter(m => [m.id,m.name,m.en,m.skin,m.skin_en,m.folder,m.type].some(v => String(v||'').toLocaleLowerCase().includes(q)));
+  const visible = models.filter(m => [m.id,m.name,m.en,m.skin,m.skin_en,m.folder].some(v => String(v||'').toLocaleLowerCase().includes(q)));
   $('count').textContent = `本地 ${visible.length} / ${models.length} 套模型`;
   $('models').replaceChildren();
   visible.forEach(m => {
     const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
     const line=document.createElement('div');line.textContent=`${m.name} · ${m.skin}`;
-    const second=document.createElement('small');second.textContent=`${m.type==='scene'?'商城场景（组合预览）':m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
+    const second=document.createElement('small');second.textContent=`${m.type==='showcase'?'完整皮肤展示':m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
     btn.append(line,second);btn.onclick=()=>selectModel(m);
     $('models').appendChild(btn);
   });
@@ -158,7 +189,19 @@ async function loadSpinePose(m, poseName, modelToken){
     const runtime=await loadSpineRuntime();
     if(modelToken!==requestId||tk!==poseToken)return;
     const base=m.dir+'/';
+    // 官方 Spine Web Player 的 backgroundImage 在同一 WebGL 场景中正确绘制层次。
+    // 308603 世界坐标为首套视觉调试的初始参数，不等同游戏内的精确机位。
+    const backgroundOption=(m.type==='showcase'&&sceneBgVisible)?{
+      backgroundImage:{
+        url:m.background,
+        x:sceneFit==='cover'?-2500:-2200,
+        y:sceneFit==='cover'?-2500:-2200,
+        width:sceneFit==='cover'?5000:4400,
+        height:sceneFit==='cover'?5000:4400,
+      }
+    }:{};
     spinePlayer=new runtime.SpinePlayer('spine-container',{
+      ...backgroundOption,
       skeleton:base+p.skel,
       atlas:base+p.atlas,
       showControls:false,
@@ -169,6 +212,7 @@ async function loadSpinePose(m, poseName, modelToken){
       defaultMix:0.2,
       success:(pl)=>{
         if(modelToken!==requestId||tk!==poseToken)return;
+        updateSceneControls();
         hideMessage();
         try{
           const names=pl.animationState.data.skeletonData.animations.map(a=>a.name);
@@ -187,32 +231,74 @@ async function loadSpinePose(m, poseName, modelToken){
   }
 }
 
+// Spine 的透明 WebGL 画布与 CSS 背景在部分环境下组合异常，
+// 因此统一交给同一个 2D Canvas 分层合成；支持原图尺寸比例、背景切换、人物缩放。
+function updateSceneControls(){
+  $('showcase-background').hidden=true;
+  $('spine-stage').style.backgroundImage='none';
+  const skeleton=spinePlayer?.skeleton;
+  if(selected?.type==='showcase'&&skeleton){
+    // 此处是 Spine 模型世界坐标；背景由播放器自身 WebGL 合成，始终独立不动。
+    skeleton.x=sceneX;
+    skeleton.y=-sceneY;
+    skeleton.scaleX=sceneScale;
+    skeleton.scaleY=sceneScale;
+  }
+  $('scene-bg-toggle').textContent=sceneBgVisible?'隐藏背景':'显示背景';
+  $('scene-fit').textContent=sceneFit==='cover'?'背景：铺满':'背景：完整';
+}
+
+function resetSceneControls(model){
+  sceneScale=Number(model.display?.scale)||1;sceneX=0;sceneY=0;
+  sceneFit=model.display?.fit==='contain'?'contain':'cover';sceneBgVisible=true;
+  updateSceneControls();
+}
+
+function setupSceneControls(){
+  $('scene-bg-toggle').onclick=()=>{
+    sceneBgVisible=!sceneBgVisible;updateSceneControls();
+    if(selected?.type==='showcase')loadSpinePose(selected,'商城展示',requestId);
+  };
+  $('scene-fit').onclick=()=>{
+    sceneFit=sceneFit==='cover'?'contain':'cover';updateSceneControls();
+    if(selected?.type==='showcase')loadSpinePose(selected,'商城展示',requestId);
+  };
+  $('scene-left').onclick=()=>{sceneX-=24;updateSceneControls();};
+  $('scene-right').onclick=()=>{sceneX+=24;updateSceneControls();};
+  $('scene-up').onclick=()=>{sceneY-=24;updateSceneControls();};
+  $('scene-down').onclick=()=>{sceneY+=24;updateSceneControls();};
+  $('scene-zoom-in').onclick=()=>{sceneScale=Math.min(3,sceneScale*1.12);updateSceneControls();};
+  $('scene-zoom-out').onclick=()=>{sceneScale=Math.max(.3,sceneScale/1.12);updateSceneControls();};
+  $('scene-reset').onclick=()=>{if(selected?.type==='showcase')resetSceneControls(selected);};
+  $('showcase-background').onerror=()=>{
+    if(selected?.type==='showcase')message('商城背景 PNG 加载失败，请重新运行 showcase 下载命令。');
+  };
+}
+
 async function selectModel(m){
   selected=m;renderList();const token=++requestId;
   ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
   disposeSpine();
-  $('scene-bg').hidden=true;
-  $('scene-notice').hidden=true;
-  $('scene-bg').removeAttribute('src');
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
-  if(m.type==='scene'){
+  if(m.type==='spine'||m.type==='showcase'){
+    const full=m.type==='showcase';
     $('stage-area').hidden=true;
     $('spine-stage').hidden=false;
-    const cfg=m.scene;
-    $('scene-bg').src=cfg.background;
-    $('scene-bg').hidden=false;
-    $('scene-notice').hidden=false;
-    const sceneModel={...m,dir:cfg.dir,poses:{商城展示:{skel:cfg.skel,atlas:cfg.atlas,version:cfg.version}}};
-    buttons($('poses'),['商城展示'],()=>loadSpinePose(sceneModel,'商城展示',token));
-    loadSpinePose(sceneModel,'商城展示',token);
-    return;
-  }
-  if(m.type==='spine'){
-    $('stage-area').hidden=true;
-    $('spine-stage').hidden=false;
+    $('spine-stage').classList.toggle('showcase',full);
+    $('scene-controls').hidden=!full;
+    $('showcase-background').hidden=true;
+    if(full){
+      $('showcase-background').src=m.background;
+      resetSceneControls(m);
+      $('model-skin').textContent=m.skin+' · 商城完整皮肤展示（分层预览）';
+    }else{
+      $('showcase-background').removeAttribute('src');
+      $('spine-stage').style.backgroundImage='none';
+      $('spine-container').style.transform='';
+    }
     const poses=Object.keys(m.poses||{});
     const preferred=poses.includes('ui')?'ui':(poses.includes('room')?'room':poses[0]);
     buttons($('poses'),poses,name=>loadSpinePose(m,name,token));
@@ -221,6 +307,12 @@ async function selectModel(m){
     return;
   }
   $('spine-stage').hidden=true;
+  $('spine-stage').classList.remove('showcase');
+  $('scene-controls').hidden=true;
+  $('showcase-background').hidden=true;
+  $('showcase-background').removeAttribute('src');
+  $('spine-stage').style.backgroundImage='none';
+  $('spine-container').style.transform='';
   $('stage-area').hidden=false;
   buttons($('poses'),[],()=>{});
   message('正在加载 Live2D 模型和贴图…');
@@ -253,10 +345,24 @@ async function start(){
   try{
     const response=await fetch('manifest.json',{cache:'no-store'});
     if(!response.ok)throw new Error(`资源清单 HTTP ${response.status}`);
-    const payload=await response.json();models=payload.models||[];
+    const payload=await response.json();
+    // 兼容 main 已有的 scene.py 商城场景记录：统一交给实测通过的 WebGL 背景播放器。
+    // scene 的下载器和原有 manifest 结构均不变。
+    models=(payload.models||[]).map(m=>{
+      if(m.type!=='scene'||!m.scene)return m;
+      return {
+        ...m,
+        type:'showcase',
+        originType:'scene',
+        background:m.scene.background,
+        dir:m.scene.dir,
+        display:{fit:'cover',scale:1.8},
+        poses:{'商城展示':{skel:m.scene.skel,atlas:m.scene.atlas,version:m.scene.version}}
+      };
+    });
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
-    initInteraction();renderList();$('search').addEventListener('input',renderList);
-    if(!models.length)message('目前还没有下载任何模型。\n先运行：python reverse1999/scripts/sync.py download 315901');
+    initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
+    if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
   }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
 }
 start();
