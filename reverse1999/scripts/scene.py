@@ -5,7 +5,8 @@
 """
 import json
 import re
-from pathlib import Path
+from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path, PurePosixPath
 
 import spine
 
@@ -68,6 +69,86 @@ def verified_scene(skin_id):
         "atlas": record["atlas"],
         "pages": list(record["pages"]),
     }
+
+
+# 313403 的模型目录由上游真实文件验证，model3.json 可以列出完整的动作和贴图依赖。
+# 采用同一个源库的固定目录路径，不需要 GitHub API 查询目录。
+VERIFIED_LIVE2D = {
+    "313403": "v4a0_313403_ble",
+}
+
+
+def safe_cubism_reference(value):
+    """验证 model3.json 文件引用，仅允许当前 Live2D 根目录内的资源。"""
+    if not isinstance(value, str) or "\\" in value:
+        raise ValueError("Live2D 引用包含非法路径")
+    path = PurePosixPath(value)
+    if (path.is_absolute() or len(path.parts) not in (1, 2)
+            or any(not re.fullmatch(r"[a-zA-Z0-9_.-]+", part) or part in (".", "..")
+                   for part in path.parts)):
+        raise ValueError(f"Live2D 引用路径非法：{value!r}")
+    return path.as_posix()
+
+
+def cubism_references(model_json):
+    """解析 Cubism 的模型、贴图、动作、表情、物理文件等完整引用。"""
+    refs = model_json.get("FileReferences", {})
+    files = [refs.get("Moc")]
+    files.extend(refs.get("Textures") or [])
+    files.extend(refs.get(key) for key in ("Physics", "Pose", "DisplayInfo", "UserData"))
+    for motions in (refs.get("Motions") or {}).values():
+        for entry in motions:
+            files.append(entry.get("File"))
+            files.append(entry.get("Sound"))
+    for entry in refs.get("Expressions") or []:
+        files.append(entry.get("File"))
+    return sorted({safe_cubism_reference(p) for p in files if p})
+
+
+def download_verified_live2d(skin_id, root):
+    """从同皮肤 ID 的 Cubism 原始目录下载 model3.json 所需文件，不调用 GitHub API。"""
+    folder = VERIFIED_LIVE2D.get(str(skin_id))
+    if not folder:
+        return None
+    root_url = f"https://raw.githubusercontent.com/{spine.SOURCE}/master/live2d/roles/{folder}"
+    model_filename = f"{folder}.model3.json"
+    cubism_dir = root / "cubism"
+    config_path = cubism_dir / model_filename
+    spine.download_file(f"{root_url}/{model_filename}", config_path)
+    try:
+        model_json = json.loads(config_path.read_text(encoding="utf-8-sig"))
+        files = cubism_references(model_json)
+    except (ValueError, OSError, TypeError) as exc:
+        raise RuntimeError(f"Live2D 模型配置解析失败：{exc}") from exc
+    if not files or not any(f.endswith(".moc3") for f in files):
+        raise RuntimeError("Live2D 模型配置缺少 moc3")
+    print(f"已找到 {skin_id} 的 Cubism 动态立绘：{len(files)} 个依赖文件，含动作及表情")
+    # 每个文件独立原子写入；限制并发，不影响已有 Spine 资源。
+    def download_asset(path):
+        return spine.download_file(f"{root_url}/{path}", cubism_dir / path)
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        jobs = {pool.submit(download_asset, path): path for path in files}
+        for job in as_completed(jobs):
+            job.result()
+    return f"cubism/{model_filename}"
+
+
+def cubism_ready(skin_id, root, metadata):
+    """只有所有 model3.json 引用完整存在，才在浏览器提供 Live2D 模式。"""
+    model_path = metadata.get("cubism")
+    if str(skin_id) not in VERIFIED_LIVE2D or not model_path:
+        return None
+    try:
+        relative = safe_cubism_reference(model_path)
+        if not relative.startswith("cubism/") or not relative.endswith(".model3.json"):
+            return None
+        config = root / relative
+        model_json = json.loads(config.read_text(encoding="utf-8-sig"))
+        if not all((config.parent / p).is_file() for p in cubism_references(model_json)):
+            return None
+        return f"../data/scenes/{skin_id}/{relative}"
+    except (OSError, ValueError, TypeError):
+        return None
 
 
 def choose_bust_directory(tree, skin_id):
@@ -158,6 +239,7 @@ def download_scene(mapping, skin_id):
             raise RuntimeError("商城素材来源不可信")
         spine.download_file(remote, root / "spine" / name, int(item.get("size") or 0))
     spine.setup_runtime()
+    cubism_path = download_verified_live2d(sid, root)
     # 单独保存场景来源；索引由 manifest 命令统一扫描本地数据。
     metadata = {
         "id": sid,
@@ -168,6 +250,7 @@ def download_scene(mapping, skin_id):
         "atlas": found["atlas"],
         "pages": found["pages"],
         "composition": "local-preview",
+        "cubism": cubism_path,
         "notice": "同皮肤ID背景+商城骨骼组合预览；未验证Unity全部前景、特效及交互。",
     }
     (root / "scene.json").write_text(json.dumps(metadata, ensure_ascii=False, indent=2) + "\n",
@@ -219,4 +302,18 @@ def collect_scenes(mapping):
                 "label": "商城素材组合预览（非游戏内完整复刻）",
             },
         })
+        cubism_path = cubism_ready(folder.name, folder, record)
+        if cubism_path:
+            result.append({
+                "type": "scene-live2d",
+                "id": skin.get("id") or folder.name,
+                "name": skin.get("name") or folder.name,
+                "skin": skin.get("skin") or "未知衣着",
+                "en": skin.get("en") or "",
+                "skin_en": skin.get("skin_en") or "",
+                "folder": VERIFIED_LIVE2D[folder.name],
+                "path": cubism_path,
+                "background": f"../data/scenes/{folder.name}/background.png",
+                "description": "原始专属背景 + Cubism Live2D 角色动画（非全特效复刻）",
+            })
     return result

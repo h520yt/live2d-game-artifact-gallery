@@ -99,11 +99,52 @@ class SceneTests(unittest.TestCase):
 
         with mock.patch.object(spine, "fetch_json", side_effect=AssertionError("GitHub API called")), \
              mock.patch.object(spine, "download_file", side_effect=fake_download) as downloader, \
-             mock.patch.object(spine, "setup_runtime"):
+             mock.patch.object(spine, "setup_runtime"), \
+             mock.patch.object(scene, "download_verified_live2d", return_value=None):
             metadata = scene.download_scene(self.mapping, "313403")
         self.assertEqual(downloader.call_count, 4)
         self.assertEqual(metadata["id"], "313403")
         self.assertEqual(len(scene.collect_scenes(self.mapping)), 1)
+
+    def test_cubism_refs_include_entry_motions_expressions_and_textures(self):
+        config = {"FileReferences": {
+            "Moc": "v4a0_313403_ble.moc3",
+            "Textures": ["textures/313403_ble_00.png"],
+            "DisplayInfo": "v4a0_313403_ble.cdi3.json",
+            "Motions": {"b_idle": [{"File": "motions/b_idle.motion3.json"}],
+                        "b_ruchang": [{"File": "motions/b_ruchang.motion3.json"}]},
+            "Expressions": [{"Name": "smile", "File": "expressions/e_weixiao.exp3.json"}]
+        }}
+        files = scene.cubism_references(config)
+        self.assertIn("v4a0_313403_ble.moc3", files)
+        self.assertIn("motions/b_ruchang.motion3.json", files)
+        self.assertIn("expressions/e_weixiao.exp3.json", files)
+        self.assertIn("textures/313403_ble_00.png", files)
+        for unsafe in ("../../bad", "/tmp/secret", r"textures\escape.png", "textures/../bad"):
+            with self.assertRaises(ValueError):
+                scene.safe_cubism_reference(unsafe)
+
+    def test_cubism_scene_only_visible_when_dependencies_complete(self):
+        folder = scene.SCENES / "313403"
+        cubism = folder / "cubism"
+        (cubism / "textures").mkdir(parents=True)
+        file_name = "v4a0_313403_ble.model3.json"
+        model_json = {"FileReferences": {
+            "Moc": "v4a0_313403_ble.moc3",
+            "Textures": ["textures/313403_ble_00.png"],
+            "Motions": {"b_idle": [{"File": "motions/b_idle.motion3.json"}]}
+        }}
+        config = cubism / file_name
+        config.write_text(json.dumps(model_json), encoding="utf-8")
+        meta = {"cubism": "cubism/" + file_name}
+        self.assertIsNone(scene.cubism_ready("313403", folder, meta))
+        (cubism / "v4a0_313403_ble.moc3").write_bytes(b"fixture")
+        (cubism / "textures/313403_ble_00.png").write_bytes(b"fixture")
+        self.assertIsNone(scene.cubism_ready("313403", folder, meta))
+        (cubism / "motions").mkdir()
+        (cubism / "motions/b_idle.motion3.json").write_text("{}", encoding="utf-8")
+        self.assertEqual(scene.cubism_ready("313403", folder, meta),
+                         "../data/scenes/313403/cubism/" + file_name)
 
     def test_scene_manifest_requires_downloaded_files(self):
         folder = scene.SCENES / "313403"

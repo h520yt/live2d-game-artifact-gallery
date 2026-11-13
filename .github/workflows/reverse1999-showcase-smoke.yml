@@ -10,7 +10,7 @@ permissions:
 jobs:
   download-and-preview:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     env:
       GITHUB_TOKEN: ${{ github.token }}
     steps:
@@ -20,6 +20,8 @@ jobs:
           python-version: '3.11'
       - name: Fetch real Lucy 308603 showcase files and Spine runtime
         run: python reverse1999/scripts/sync.py showcase 308603
+      - name: Download verified Beryl 313403 Cubism stage and motions
+        run: python reverse1999/scripts/sync.py scene 313403
       - name: Validate original assets and generated manifest
         run: |
           python - <<'PY'
@@ -49,9 +51,10 @@ jobs:
         run: |
           python -m http.server 8000 --bind 127.0.0.1 > /tmp/reverse1999-http.log 2>&1 &
           node reverse1999/tests/showcase-browser.cjs
+          node reverse1999/tests/beryl-browser.cjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lucy-308603-preview
+          name: reverse1999-mall-skin-previews
           path: reverse1999/test-output/
           if-no-files-found: ignore

@@ -22,7 +22,7 @@ jobs:
         run: python -m compileall -q reverse1999/scripts reverse1999/tests
 
   skin-scene-asset-smoke:
-    if: github.ref == 'refs/heads/fix/reverse1999-313403-no-github-api'
+    if: github.ref == 'refs/heads/feat/reverse1999-313403-live2d-stage'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
@@ -34,4 +34,4 @@ jobs:
         run: python reverse1999/scripts/sync.py scene 313403
       - name: Assert downloaded skin scene and renderer
         run: |
-          python -c "import json; from pathlib import Path; r=Path('reverse1999'); j=json.loads((r/'viewer/manifest.json').read_text()); s=[x for x in j['models'] if x.get('type')=='scene' and str(x.get('id'))=='313403']; assert len(s)==1,s; assert s[0]['scene']['version'].startswith('4.2.'); assert (r/'data/scenes/313403/background.png').stat().st_size>1000000; assert (r/'vendor/spine-player4.2.min.js').stat().st_size>150000; print('Real downloaded scene resources verified')"
+          python -c "import json; from pathlib import Path; r=Path('reverse1999'); j=json.loads((r/'viewer/manifest.json').read_text()); s=[x for x in j['models'] if x.get('type')=='scene' and str(x.get('id'))=='313403']; assert len(s)==1,s; live=[x for x in j['models'] if x.get('type')=='scene-live2d' and str(x.get('id'))=='313403']; assert len(live)==1,live; assert live[0]['path'].endswith('v4a0_313403_ble.model3.json'); assert s[0]['scene']['version'].startswith('4.2.'); assert (r/'data/scenes/313403/background.png').stat().st_size>1000000; assert (r/'vendor/spine-player4.2.min.js').stat().st_size>150000; print('Real downloaded scene resources verified')"
