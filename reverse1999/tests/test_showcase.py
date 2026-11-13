@@ -74,17 +74,7 @@ class ShowcaseTests(unittest.TestCase):
         self.assertEqual(len(data["models"]), 1)
         self.assertEqual(data["models"][0]["type"], "showcase")
 
-    def test_download_uses_matched_resources(self):
-        asset_dir = "roles_bust/v2a8_308603_lxxx_skinstore"
-        files = [{
-            "name": name, "path": asset_dir + "/" + name,
-            "download_url": f"https://raw.githubusercontent.com/{spine.SOURCE}/master/{asset_dir}/{name}",
-            "size": 8,
-        } for name in ("308603_lxxx_skinstore.skel", "308603_lxxx_skinstore.atlas", "308603_lxxx_skinstore.png")]
-        meta = {
-            "type": "file", "size": 8,
-            "download_url": f"https://raw.githubusercontent.com/{spine.SOURCE}/master/singlebg/skin2dbg/308603.png",
-        }
+    def test_download_uses_verified_resources_without_github_api(self):
         def fake_download(url, dest, expected):
             dest = Path(dest)
             dest.parent.mkdir(parents=True, exist_ok=True)
@@ -95,14 +85,18 @@ class ShowcaseTests(unittest.TestCase):
             else:
                 data = b"308603_lxxx_skinstore.png\n"
             dest.write_bytes(data)
-        with mock.patch.object(spine, "fetch_json", return_value=meta) as fetched, \
-             mock.patch.object(spine, "github_files", return_value=files) as listed, \
+        with mock.patch.object(spine, "fetch_json", side_effect=AssertionError("API called")) as fetched, \
+             mock.patch.object(spine, "github_files", side_effect=AssertionError("API called")) as listed, \
              mock.patch.object(spine, "download_file", side_effect=fake_download) as downloaded, \
              mock.patch.object(spine, "setup_runtime") as runtime:
             self.assertEqual(showcase.download_showcase(self.mapping, "308603"), "308603")
-            fetched.assert_called_once_with(f"{spine.API}/contents/singlebg/skin2dbg/308603.png")
-            listed.assert_called_once_with(asset_dir)
+            fetched.assert_not_called()
+            listed.assert_not_called()
             self.assertEqual(downloaded.call_count, 4)
+            self.assertEqual(
+                sorted(call.args[2] for call in downloaded.call_args_list),
+                sorted([4303396, 2784, 725645, 106641])
+            )
             runtime.assert_called_once()
 
 

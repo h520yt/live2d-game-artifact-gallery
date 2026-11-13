@@ -89,6 +89,6 @@ scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstore
 
     python reverse1999/scripts/sync.py showcase 308603
 
-组合资源：背景 singlebg/skin2dbg/308603.png，人物商城动画 roles_bust/v2a8_308603_lxxx_skinstore/。页面右侧能切换背景可见性、背景覆盖/适配及人物位置和缩放。已通过 GitHub Actions 从上游实际下载素材、用 Chromium 加载并对背景/人物合成画面进行像素对比。预览与真正 Unity 游戏展示仍可能存在视觉差异。技术说明见 docs/2026-11-13-完整皮肤展示.md。
+组合资源：背景 singlebg/skin2dbg/308603.png，人物商城动画 roles_bust/v2a8_308603_lxxx_skinstore/。 308603 已核实每个文件的体积并使用原始素材直链下载，通常无需 GitHub API 配额。页面右侧能切换背景可见性、背景覆盖/适配及人物位置和缩放。已通过 GitHub Actions 从上游实际下载素材、用 Chromium 加载并对背景/人物合成画面进行像素对比。预览与真正 Unity 游戏展示仍可能存在视觉差异。技术说明见 docs/2026-11-13-完整皮肤展示.md。
 
 已有的 `scene 313403` 命令与贝丽尔样板保持不变；`showcase 308603` 是另一套独立可测试的场景下载入口。

@@ -22,6 +22,18 @@ SCENES = {
         "display": {"fit": "cover", "scale": 1.8},
     },
 }
+# 已从真实 GitHub 资源文件核对的大小，避免用户下载时再请求容易限流的 GitHub API。
+VERIFIED_ASSET_SIZES = {
+    "308603": {
+        "background": 4303396,
+        "foreground": {
+            "308603_lxxx_skinstore.atlas": 2784,
+            "308603_lxxx_skinstore.png": 725645,
+            "308603_lxxx_skinstore.skel": 106641,
+        },
+    },
+}
+
 ID_RE = re.compile(r"^\d{6}$")
 PNG_SIGNATURE = b"\x89PNG\r\n\x1a\n"
 
@@ -69,17 +81,26 @@ def download_showcase(mapping, skin_id):
     folder = SCENE_DIR / sid
     foreground = folder / "foreground"
 
-    # 核查精确文件路径，再下载；API 只用于取得 GitHub 文件元信息。
-    background = spine.fetch_json(f"{spine.API}/contents/{bg}")
-    if not isinstance(background, dict) or background.get("type") != "file":
-        raise RuntimeError(f"没有找到衣着专属背景：{bg}")
-    url = background.get("download_url") or ""
-    if not url.startswith(f"https://raw.githubusercontent.com/{spine.SOURCE}/"):
-        raise RuntimeError("背景下载地址不可信")
+    # 该样板的真实原始资源体积已核对；直接下载静态文件，避免 GitHub API 限流。
+    verified = VERIFIED_ASSET_SIZES.get(sid)
+    if not verified:
+        raise RuntimeError(f"衣着 {sid} 尚无经验证的下载资源清单")
+    raw_root = f"https://raw.githubusercontent.com/{spine.SOURCE}/master/"
+    background = {
+        "type": "file",
+        "name": sid + ".png",
+        "size": verified["background"],
+        "download_url": raw_root + bg,
+    }
+    files = [{
+        "type": "file",
+        "name": name,
+        "path": fg + "/" + name,
+        "size": size,
+        "download_url": raw_root + fg + "/" + name,
+    } for name, size in verified["foreground"].items()]
+    url = background["download_url"]
 
-    files = list(spine.github_files(fg))
-    if not files:
-        raise RuntimeError(f"找不到衣着商城动画目录：{fg}")
     names = [file["name"] for file in files]
     if not any(n.endswith(".skel") for n in names) or not any(n.endswith(".atlas") for n in names) or not any(n.endswith(".png") for n in names):
         raise RuntimeError("上游商城动画目录缺少核心文件")
