@@ -19,7 +19,7 @@ SCENES = {
         "foreground": "roles_bust/v2a8_308603_lxxx_skinstore",
         "description": "衣着关联背景 + 商城 Spine 展示动作（非游戏客户端逐帧复刻）",
         "pose": "商城展示",
-        "display": {"fit": "cover", "scale": 1.0},
+        "display": {"fit": "cover", "scale": 1.8},
     },
 }
 ID_RE = re.compile(r"^\d{6}$")
