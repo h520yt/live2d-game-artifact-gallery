@@ -69,9 +69,41 @@ class SceneTests(unittest.TestCase):
         with mock.patch.object(spine, "fetch_json", side_effect=replies), \
              mock.patch.object(spine, "github_files", return_value=iter(nodes)), \
              mock.patch.object(spine, "fetch_bytes", return_value=b"313403_ble_skinstorecardface.png\nsize:2048,2048\n"):
-            answer = scene.locate_scene("313403")
+            answer = scene.locate_scene_remote("313403")
         self.assertEqual(answer["skeleton"], "313403_ble_skinstorecardface.skel")
         self.assertEqual(answer["pages"], ["313403_ble_skinstorecardface.png"])
+
+    def test_verified_scene_bypasses_github_api(self):
+        with mock.patch.object(spine, "fetch_json", side_effect=AssertionError("GitHub API called")), \
+             mock.patch.object(spine, "github_files", side_effect=AssertionError("GitHub API called")):
+            found = scene.locate_scene("313403")
+        self.assertEqual(found["id"], "313403")
+        self.assertEqual(found["folder"], "v4a0_313403_ble_skinstorecardface")
+        self.assertEqual(found["background"]["size"], 9438795)
+        self.assertEqual(found["skeleton"], "313403_ble_skinstorecardface.skel")
+        self.assertEqual(found["atlas"], "313403_ble_skinstorecardface.atlas")
+        self.assertEqual(found["pages"], ["313403_ble_skinstorecardface.png"])
+        self.assertEqual(len(found["items"]), 3)
+        for item in found["items"]:
+            self.assertTrue(item["download_url"].startswith(
+                "https://raw.githubusercontent.com/myssal/Reverse-1999-CN-Asset/master/"))
+
+    def test_verified_download_and_manifest_without_api(self):
+        def fake_download(url, target, expected=0):
+            target.parent.mkdir(parents=True, exist_ok=True)
+            if target.name.endswith(".skel"):
+                target.write_bytes(b"\x00" * 8 + b"\x074.2.36\x00")
+            else:
+                target.write_bytes(b"fixture")
+            return True
+
+        with mock.patch.object(spine, "fetch_json", side_effect=AssertionError("GitHub API called")), \
+             mock.patch.object(spine, "download_file", side_effect=fake_download) as downloader, \
+             mock.patch.object(spine, "setup_runtime"):
+            metadata = scene.download_scene(self.mapping, "313403")
+        self.assertEqual(downloader.call_count, 4)
+        self.assertEqual(metadata["id"], "313403")
+        self.assertEqual(len(scene.collect_scenes(self.mapping)), 1)
 
     def test_scene_manifest_requires_downloaded_files(self):
         folder = scene.SCENES / "313403"

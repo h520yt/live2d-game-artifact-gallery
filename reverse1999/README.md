@@ -73,6 +73,8 @@ Python 3.9+，无需安装第三方 Python 库。GITHUB_TOKEN 环境变量可以
 
     git pull origin main
     python reverse1999/scripts/sync.py scene 313403
+
+313403 样板现在优先使用已核实的静态资源清单，通过 raw.githubusercontent.com 直接下载，不再调用 GitHub API 查询目录，通常无需 GITHUB_TOKEN。若原始资源直链失败，会尝试 jsDelivr 镜像。其他尚未验证的商城皮肤仍可能使用 GitHub API。
     python -m http.server 8000
 
 打开 http://localhost:8000/reverse1999/viewer/，搜索「贝丽尔」，选择「商城场景（组合预览）」。

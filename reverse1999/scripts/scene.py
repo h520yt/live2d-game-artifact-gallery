@@ -17,6 +17,59 @@ BUST_PRIORITY = ("skinstorecardface", "skinstore", "skinsuit")
 PNG_PATTERN = re.compile(r"(?m)^([a-zA-Z0-9_.-]+\.png)[ \t]*$")
 
 
+# 313403 是已通过真实下载验证的样板。记录经过确认的原始文件路径和大小，
+# 使这套场景不必向 api.github.com 请求目录树（匿名 GitHub API 容易触发 403）。
+# 新资源若未人工核实，仍按原有目录扫描流程处理，不猜测角色资产关系。
+VERIFIED_SCENES = {
+    "313403": {
+        "folder": "v4a0_313403_ble_skinstorecardface",
+        "background_size": 9438795,
+        "files": {
+            "313403_ble_skinstorecardface.atlas": 8017,
+            "313403_ble_skinstorecardface.png": 4154336,
+            "313403_ble_skinstorecardface.skel": 282811,
+        },
+        "skeleton": "313403_ble_skinstorecardface.skel",
+        "atlas": "313403_ble_skinstorecardface.atlas",
+        "pages": ["313403_ble_skinstorecardface.png"],
+    },
+}
+
+
+def verified_scene(skin_id):
+    """针对核对过的商城素材构造下载清单：只访问原始文件，不调用 GitHub API。"""
+    sid = str(skin_id)
+    record = VERIFIED_SCENES.get(sid)
+    if record is None:
+        return None
+    root = f"https://raw.githubusercontent.com/{spine.SOURCE}/master"
+    folder = record["folder"]
+    bg_name = sid + ".png"
+    bg_path = f"{BG_ROOT}/{bg_name}"
+    background = {
+        "type": "file",
+        "name": bg_name,
+        "size": record["background_size"],
+        "download_url": f"{root}/{bg_path}",
+    }
+    items = [{
+        "type": "file",
+        "name": name,
+        "size": size,
+        "path": f"{BUST_ROOT}/{folder}/{name}",
+        "download_url": f"{root}/{BUST_ROOT}/{folder}/{name}",
+    } for name, size in record["files"].items()]
+    return {
+        "id": sid,
+        "folder": folder,
+        "background": background,
+        "items": items,
+        "skeleton": record["skeleton"],
+        "atlas": record["atlas"],
+        "pages": list(record["pages"]),
+    }
+
+
 def choose_bust_directory(tree, skin_id):
     """仅从存在商城标识的目录里选。未出现专属展示骨骼时不假定普通人物骨骼等价。"""
     sid = str(skin_id)
@@ -31,8 +84,8 @@ def choose_bust_directory(tree, skin_id):
     return ""
 
 
-def locate_scene(skin_id):
-    """确认背景文件和商城动画资源分别真实存在。"""
+def locate_scene_remote(skin_id):
+    """对尚未核实过的皮肤，仍通过 API 检索原始商城目录。"""
     sid = str(skin_id)
     if not sid.isdigit() or len(sid) != 6:
         raise ValueError("请输入六位数字皮肤 ID")
@@ -69,6 +122,18 @@ def locate_scene(skin_id):
         raise RuntimeError("商城骨骼图集引用的贴图未全部包含在资源目录内")
     return {"id": sid, "folder": folder, "background": bg, "items": items,
             "skeleton": skeleton, "atlas": atlas, "pages": pages}
+
+
+
+def locate_scene(skin_id):
+    sid = str(skin_id)
+    if not sid.isdigit() or len(sid) != 6:
+        raise ValueError("请输入六位数字皮肤 ID")
+    verified = verified_scene(sid)
+    if verified is not None:
+        print(f"使用已核实的 {sid} 商城资源清单，无需 GitHub API。")
+        return verified
+    return locate_scene_remote(sid)
 
 
 def download_scene(mapping, skin_id):

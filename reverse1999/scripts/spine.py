@@ -186,7 +186,16 @@ def download_file(url, target, expected=0):
     if target.is_file() and target.stat().st_size == expected and expected > 0:
         return False
     target.parent.mkdir(parents=True, exist_ok=True)
-    data = fetch_bytes(url, timeout=90)
+    try:
+        data = fetch_bytes(url, timeout=90)
+    except RuntimeError as exc:
+        # raw.githubusercontent.com 也可能在某些网络下不可达，尝试静态文件镜像。
+        prefix = f"https://raw.githubusercontent.com/{SOURCE}/master/"
+        if not url.startswith(prefix):
+            raise
+        fallback = f"https://cdn.jsdelivr.net/gh/{SOURCE}@master/{url[len(prefix):]}"
+        print(f"原始素材直链失败，改用 CDN 镜像：{exc}")
+        data = fetch_bytes(fallback, timeout=90)
     if expected and len(data) != expected:
         raise RuntimeError(f"下载文件大小不符：{target.name}（期待 {expected}，实际 {len(data)}）")
     fd, temp = tempfile.mkstemp(prefix=".download-", dir=target.parent)
