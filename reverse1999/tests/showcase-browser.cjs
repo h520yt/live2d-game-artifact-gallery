@@ -63,6 +63,17 @@ async function main(){
     const foreground = PNG.sync.read(fullImage);
     const background = PNG.sync.read(backgroundOnly);
     assert.equal(foreground.width,background.width);
+    // 背景不能只有人物后面一小张贴纸：要求填充大部分舞台可见范围。
+    let stageBackgroundPixels=0;
+    for(let y=130;y<Math.min(background.height,850);y++){
+      for(let x=330;x<Math.min(background.width,1150);x++){
+        const i=(y*background.width+x)*4;
+        if(background.data[i]+background.data[i+1]+background.data[i+2]>200)stageBackgroundPixels++;
+      }
+    }
+    assert.ok(stageBackgroundPixels>90000,
+      '完整展示背景面积太小，亮色背景像素仅 '+stageBackgroundPixels);
+    result.backgroundVisiblePixels=stageBackgroundPixels;
     let modelPixels=0;
     for(let y=210;y<Math.min(foreground.height,820);y++){
       for(let x=500;x<Math.min(foreground.width,1120);x++){
