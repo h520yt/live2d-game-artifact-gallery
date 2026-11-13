@@ -249,7 +249,13 @@ def setup_runtime():
             continue
         print(f"安装官方 Spine Web Player：{name}")
         # 官方 unpkg 运行时按需下载到本地，不把第三方二进制分发进 GitHub 仓库。
-        content = fetch_bytes(url, timeout=90)
+        try:
+            content = fetch_bytes(url, timeout=90)
+        except RuntimeError as exc:
+            # 国内网络可能无法访问 unpkg，备用 jsDelivr 镜像。
+            backup = url.replace("https://unpkg.com/", "https://cdn.jsdelivr.net/npm/", 1)
+            print(f"主源失败，尝试备用 CDN：{exc}")
+            content = fetch_bytes(backup, timeout=90)
         if len(content) < minimum:
             raise RuntimeError(f"Spine 运行时文件异常：{name}，实际大小 {len(content)}")
         fd, temp = tempfile.mkstemp(prefix=".runtime-", dir=VENDOR_DIR)
