@@ -250,7 +250,8 @@ function startSceneComposite(modelToken){
       const w=image.naturalWidth*scale,h=image.naturalHeight*scale;
       context.drawImage(image,(width-w)/2,(height-h)/2,w,h);
     }
-    const foreground=spinePlayer?.canvas;
+    // spine-player 4.2 不保证暴露 player.canvas；使用真实 DOM WebGL 画布。
+    const foreground=$('spine-container').querySelector('canvas');
     if(foreground && foreground.width>0 && foreground.height>0){
       context.save();
       context.translate(width/2+sceneX,height/2+sceneY);
