@@ -194,10 +194,10 @@ async function loadSpinePose(m, poseName, modelToken){
     const backgroundOption=(m.type==='showcase'&&sceneBgVisible)?{
       backgroundImage:{
         url:m.background,
-        x:sceneFit==='cover'?-650:-500,
-        y:sceneFit==='cover'?-650:-500,
-        width:sceneFit==='cover'?1300:1000,
-        height:sceneFit==='cover'?1300:1000,
+        x:sceneFit==='cover'?-2500:-2200,
+        y:sceneFit==='cover'?-2500:-2200,
+        width:sceneFit==='cover'?5000:4400,
+        height:sceneFit==='cover'?5000:4400,
       }
     }:{};
     spinePlayer=new runtime.SpinePlayer('spine-container',{
