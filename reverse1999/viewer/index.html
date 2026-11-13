@@ -218,8 +218,15 @@ async function loadSpinePose(m, poseName, modelToken){
 function updateSceneControls(){
   const container=$('spine-container');
   container.style.transform=`translate(${sceneX}px,${sceneY}px) scale(${sceneScale})`;
-  $('showcase-background').style.objectFit=sceneFit;
-  $('showcase-background').hidden=!sceneBgVisible;
+  // 将 PNG 画成舞台背景，不使用可能盖住 WebGL 画布的独立图片层。
+  const background=$('showcase-background');
+  const stage=$('spine-stage');
+  background.hidden=true; // 保留用于检验图片成功加载，避免形成前景遮挡。
+  stage.style.backgroundImage=sceneBgVisible && selected?.type==='showcase'
+    ? `url(${JSON.stringify(background.src)})` : 'none';
+  stage.style.backgroundSize=sceneFit;
+  stage.style.backgroundPosition='center';
+  stage.style.backgroundRepeat='no-repeat';
   $('scene-bg-toggle').textContent=sceneBgVisible?'隐藏背景':'显示背景';
   $('scene-fit').textContent=sceneFit==='cover'?'背景：铺满':'背景：完整';
 }
@@ -259,13 +266,14 @@ async function selectModel(m){
     $('spine-stage').hidden=false;
     $('spine-stage').classList.toggle('showcase',full);
     $('scene-controls').hidden=!full;
-    $('showcase-background').hidden=!full;
+    $('showcase-background').hidden=true;
     if(full){
       $('showcase-background').src=m.background;
       resetSceneControls(m);
       $('model-skin').textContent=m.skin+' · 商城完整皮肤展示（分层预览）';
     }else{
       $('showcase-background').removeAttribute('src');
+      $('spine-stage').style.backgroundImage='none';
       $('spine-container').style.transform='';
     }
     const poses=Object.keys(m.poses||{});
@@ -280,6 +288,7 @@ async function selectModel(m){
   $('scene-controls').hidden=true;
   $('showcase-background').hidden=true;
   $('showcase-background').removeAttribute('src');
+  $('spine-stage').style.backgroundImage='none';
   $('spine-container').style.transform='';
   $('stage-area').hidden=false;
   buttons($('poses'),[],()=>{});

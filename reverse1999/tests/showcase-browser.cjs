@@ -42,7 +42,27 @@ async function main(){
     assert.ok(result.canvasWidth>100);
     assert.ok(result.motions.length>0);
     assert.deepEqual(errors,[]);
-    await page.screenshot({path:path.join(dir,'308603-showcase.png'),fullPage:true});
+    // 核对人物真实出现在最终合成图中，而不是被一张不透明 PNG 覆盖。
+    const { PNG } = require('pngjs');
+    const fullImage = await page.screenshot({path:path.join(dir,'308603-showcase.png'),fullPage:true});
+    await page.locator('#spine-container').evaluate(el=>el.style.visibility='hidden');
+    const backgroundOnly = await page.screenshot({path:path.join(dir,'308603-background-only.png'),fullPage:true});
+    await page.locator('#spine-container').evaluate(el=>el.style.visibility='visible');
+    const foreground = PNG.sync.read(fullImage);
+    const background = PNG.sync.read(backgroundOnly);
+    assert.equal(foreground.width,background.width);
+    let modelPixels=0;
+    for(let y=210;y<Math.min(foreground.height,820);y++){
+      for(let x=500;x<Math.min(foreground.width,1120);x++){
+        const i=(y*foreground.width+x)*4;
+        const diff=Math.abs(foreground.data[i]-background.data[i])+
+          Math.abs(foreground.data[i+1]-background.data[i+1])+
+          Math.abs(foreground.data[i+2]-background.data[i+2]);
+        if(diff>55)modelPixels++;
+      }
+    }
+    assert.ok(modelPixels>1500,'商城人物被背景遮挡：前景与纯背景差异像素太少: '+modelPixels);
+    result.modelVisiblePixels=modelPixels;
     await page.locator('#scene-bg-toggle').click();
     await page.screenshot({path:path.join(dir,'308603-foreground-only.png'),fullPage:true});
     await page.locator('#scene-bg-toggle').click();
