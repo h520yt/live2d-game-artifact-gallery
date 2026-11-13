@@ -27,6 +27,23 @@
           "version": "4.2.36"
         }
       }
+    },
+    {
+      "type": "scene",
+      "id": 313403,
+      "name": "贝丽尔",
+      "skin": "释命运以弦音",
+      "en": "Beryl",
+      "skin_en": "Plucking the Strings of Fate",
+      "folder": "roles_bust/v4a0_313403_ble_skinstorecardface",
+      "scene": {
+        "background": "../data/scenes/313403/background.png",
+        "dir": "../data/scenes/313403/spine",
+        "skel": "313403_ble_skinstorecardface.skel",
+        "atlas": "313403_ble_skinstorecardface.atlas",
+        "version": "4.2.36",
+        "label": "商城素材组合预览（非游戏内完整复刻）"
+      }
     }
   ]
 }
