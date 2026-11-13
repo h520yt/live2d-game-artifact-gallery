@@ -89,6 +89,20 @@ scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstore
 
     python reverse1999/scripts/sync.py showcase 308603
 
-组合资源：背景 singlebg/skin2dbg/308603.png，人物商城动画 roles_bust/v2a8_308603_lxxx_skinstore/。页面右侧能切换背景可见性、背景覆盖/适配及人物位置和缩放。已通过 GitHub Actions 从上游实际下载素材、用 Chromium 加载并对背景/人物合成画面进行像素对比。预览与真正 Unity 游戏展示仍可能存在视觉差异。技术说明见 docs/2026-11-13-完整皮肤展示.md。
+组合资源：背景 singlebg/skin2dbg/308603.png，人物商城动画 roles_bust/v2a8_308603_lxxx_skinstore/。 308603 已核实每个文件的体积并使用原始素材直链下载，通常无需 GitHub API 配额。页面右侧能切换背景可见性、背景覆盖/适配及人物位置和缩放。已通过 GitHub Actions 从上游实际下载素材、用 Chromium 加载并对背景/人物合成画面进行像素对比。预览与真正 Unity 游戏展示仍可能存在视觉差异。技术说明见 docs/2026-11-13-完整皮肤展示.md。
 
 已有的 `scene 313403` 命令与贝丽尔样板保持不变；`showcase 308603` 是另一套独立可测试的场景下载入口。
+
+
+### 贝丽尔 313403：Cubism 原始动态衣着展示
+
+上游另外存在 live2d/roles/v4a0_313403_ble/v4a0_313403_ble.model3.json，包含 34 个动作组、14 条表情配置（7 个不同表情文件）、57 张贴图和 9.37MB 的 moc3 骨骼模型。其中有 b_idle、b_ruchang（入场）、b_yanzou（演奏）和 b_jiaohu01～04（交互）。
+
+从本次更新开始，重新执行下面的命令，会在原有商城 Spine+背景素材之外继续下载这套 Cubism 动态衣着及 model3.json 声明的全部依赖：
+
+    git pull origin main
+    python reverse1999/scripts/sync.py scene 313403
+
+浏览器进入 http://localhost:8000/reverse1999/viewer/，搜索「贝丽尔」后会出现「Live2D 动态衣着+专属背景」和「商城卡面 Spine+背景」两种展示形式，前者支持选择 34 组动作及表情。固定的 313403 资源从 GitHub 原始文件直链下载，不调用 api.github.com，因此通常不需要 GITHUB_TOKEN。
+
+注意：网页中的 Live2D 动作、同皮肤背景已使用上游真实资源；但主界面入场特效的调用时机、前景遮挡、Unity 粒子及完整交互剧本尚未复刻，不能宣称 100% 还原商城效果。
