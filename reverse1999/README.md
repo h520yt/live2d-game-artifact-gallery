@@ -58,3 +58,25 @@
 已检查佩施塔及部分老角色的骨骼文件头为 Spine 4.2.36。安装官方 @esotericsoftware/spine-player@4.2.87（同主版本）进行播放；对其他版本会提示不兼容。与 Unity 游戏场景有关的特效可能不能完整还原。
 
 Python 3.9+，无需安装第三方 Python 库。GITHUB_TOKEN 环境变量可以提高 GitHub API 请求额度，请勿写入仓库配置。游戏美术资源版权属于原权利方，工具仅供个人本地欣赏、研究，不提交或分发原始游戏资源。
+
+
+## 商城高级衣着场景（试验性组合预览）
+
+第一套样板：贝丽尔「释命运以弦音」 313403。上游已核实：
+
+- 背景：singlebg/skin2dbg/313403.png
+- 商城展示骨骼：roles_bust/v4a0_313403_ble_skinstorecardface/
+- 骨骼版本：Spine 4.2.36
+- 同 ID 的普通人物骨骼：roles/v4a0_313403_ble（独立于商城展示骨骼）
+
+在项目根目录执行：
+
+    git pull origin main
+    python reverse1999/scripts/sync.py scene 313403
+    python -m http.server 8000
+
+打开 http://localhost:8000/reverse1999/viewer/，搜索「贝丽尔」，选择「商城场景（组合预览）」。
+
+scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstorecardface / skinstore / skinsuit 的自包含骨骼，下载后生成本地记录。场景仅列出完整下载、骨骼版本为 4.2 的资源。材质、前景分层、Unity 后处理和交互脚本尚未还原；明确标注为「原始商城素材组合预览」，绝不宣称游戏内效果 100% 复刻。
+
+原始游戏素材只保存在 reverse1999/data/scenes/<皮肤ID>/，由 .gitignore 忽略，不提交 Git。

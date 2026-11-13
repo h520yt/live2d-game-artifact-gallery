@@ -20,3 +20,20 @@ jobs:
         run: python -m unittest discover -s reverse1999/tests -v
       - name: Check Python syntax
         run: python -m compileall -q reverse1999/scripts reverse1999/tests
+
+  skin-scene-asset-smoke:
+    if: github.ref == 'refs/heads/feat/reverse1999-skin-scene'
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download actual 313403 skin components
+        run: python reverse1999/scripts/sync.py scene 313403
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Assert downloaded skin scene and renderer
+        run: |
+          python -c "import json; from pathlib import Path; r=Path('reverse1999'); j=json.loads((r/'viewer/manifest.json').read_text()); s=[x for x in j['models'] if x.get('type')=='scene' and str(x.get('id'))=='313403']; assert len(s)==1,s; assert s[0]['scene']['version'].startswith('4.2.'); assert (r/'data/scenes/313403/background.png').stat().st_size>1000000; assert (r/'vendor/spine-player4.2.min.js').stat().st_size>150000; print('Real downloaded scene resources verified')"

@@ -20,7 +20,12 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 #stage-area{width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{display:block;width:100%;height:100%}
 #stage-area[hidden],#spine-stage[hidden]{display:none!important}
 #spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px}
-#spine-container{width:100%;height:100%;min-height:580px}
+#spine-container{position:relative;z-index:1;width:100%;height:100%;min-height:580px}
+#scene-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;z-index:0;pointer-events:none}
+#scene-bg[hidden],#scene-notice[hidden]{display:none!important}
+#scene-notice{position:absolute;bottom:1rem;left:50%;transform:translateX(-50%);z-index:2;
+color:#fff5db;background:rgba(12,19,29,.8);border:1px solid #9e8662;
+padding:.4rem .8rem;border-radius:6px;font-size:.73rem;text-align:center;pointer-events:none;max-width:90%}
 #spine-container canvas{display:block}
 @media(max-width:660px){#spine-stage,#spine-container{min-height:450px}}
 .overlay{pointer-events:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90%;white-space:pre-wrap;color:#e8ddc8;background:#101923d8;padding:1rem 1.3rem;border-radius:10px;line-height:1.6}
@@ -40,12 +45,12 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
     <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
     <div class="count" id="count">读取资源清单中…</div>
     <div id="models"></div>
-    <p class="note">只显示已下载到本地的模型。可运行 <code>python reverse1999/scripts/sync.py list --search 槲寄生</code> 查看可用模型，再下载对应 ID。</p>
+    <p class="note">只显示本地已有资源。商城场景采用同 ID 的原始背景与商城骨骼组合预览，并非游戏全特效复刻。可运行 <code>python reverse1999/scripts/sync.py list --search 槲寄生</code> 查看可用模型，再下载对应 ID。</p>
   </aside>
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><canvas id="canvas"></canvas></div>
-    <div id="spine-stage" hidden><div id="spine-container"></div></div>
+    <div id="spine-stage" hidden><img id="scene-bg" alt="该皮肤的原始商城背景" hidden><div id="spine-container"></div><div id="scene-notice" hidden>商城背景 + 角色骨骼素材组合预览 · 非游戏内完整复刻</div></div>
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
   <aside class="right"><div class="controls"><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
@@ -64,13 +69,13 @@ function message(value){$('status').hidden = false; $('status').textContent = va
 function hideMessage(){ $('status').hidden = true; }
 function renderList(){
   const q = $('search').value.trim().toLocaleLowerCase();
-  const visible = models.filter(m => [m.id,m.name,m.en,m.skin,m.skin_en,m.folder].some(v => String(v||'').toLocaleLowerCase().includes(q)));
+  const visible = models.filter(m => [m.id,m.name,m.en,m.skin,m.skin_en,m.folder,m.type].some(v => String(v||'').toLocaleLowerCase().includes(q)));
   $('count').textContent = `本地 ${visible.length} / ${models.length} 套模型`;
   $('models').replaceChildren();
   visible.forEach(m => {
     const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
     const line=document.createElement('div');line.textContent=`${m.name} · ${m.skin}`;
-    const second=document.createElement('small');second.textContent=`${m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
+    const second=document.createElement('small');second.textContent=`${m.type==='scene'?'商城场景（组合预览）':m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
     btn.append(line,second);btn.onclick=()=>selectModel(m);
     $('models').appendChild(btn);
   });
@@ -187,9 +192,24 @@ async function selectModel(m){
   ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
   disposeSpine();
+  $('scene-bg').hidden=true;
+  $('scene-notice').hidden=true;
+  $('scene-bg').removeAttribute('src');
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
+  if(m.type==='scene'){
+    $('stage-area').hidden=true;
+    $('spine-stage').hidden=false;
+    const cfg=m.scene;
+    $('scene-bg').src=cfg.background;
+    $('scene-bg').hidden=false;
+    $('scene-notice').hidden=false;
+    const sceneModel={...m,dir:cfg.dir,poses:{商城展示:{skel:cfg.skel,atlas:cfg.atlas,version:cfg.version}}};
+    buttons($('poses'),['商城展示'],()=>loadSpinePose(sceneModel,'商城展示',token));
+    loadSpinePose(sceneModel,'商城展示',token);
+    return;
+  }
   if(m.type==='spine'){
     $('stage-area').hidden=true;
     $('spine-stage').hidden=false;
