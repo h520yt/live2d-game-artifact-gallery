@@ -1,0 +1,22 @@
+name: Reverse 1999 offline tests
+on:
+  push:
+    paths:
+      - "reverse1999/**"
+      - ".github/workflows/reverse1999-tests.yml"
+  pull_request:
+    paths:
+      - "reverse1999/**"
+      - ".github/workflows/reverse1999-tests.yml"
+jobs:
+  python-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Run resource sync unit tests
+        run: python -m unittest discover -s reverse1999/tests -v
+      - name: Check Python syntax
+        run: python -m compileall -q reverse1999/scripts reverse1999/tests

@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>重返未来：1999 · Live2D 本地预览</title>
+<title>重返未来：1999 · Live2D / Spine 本地预览</title>
+<link rel="stylesheet" href="../vendor/spine-player4.2.css">
 <style>
 :root{color-scheme:dark;--bg:#0d121b;--panel:#141e2a;--line:#304151;--muted:#9fb2c3;--accent:#d9b674}
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,"Microsoft YaHei",sans-serif;background:var(--bg);color:#f1eee7}
@@ -17,6 +18,11 @@ input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.7rem;ba
 button.item:hover,button.item.active{border-color:var(--accent);background:#273747}button.item small{color:var(--muted);display:block;margin-top:.15rem;font-size:.75rem}
 section.stage{position:relative;min-height:580px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
 #stage-area{width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{display:block;width:100%;height:100%}
+#stage-area[hidden],#spine-stage[hidden]{display:none!important}
+#spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px}
+#spine-container{width:100%;height:100%;min-height:580px}
+#spine-container canvas{display:block}
+@media(max-width:660px){#spine-stage,#spine-container{min-height:450px}}
 .overlay{pointer-events:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);text-align:center;max-width:90%;white-space:pre-wrap;color:#e8ddc8;background:#101923d8;padding:1rem 1.3rem;border-radius:10px;line-height:1.6}
 .stage-toolbar{position:absolute;left:1rem;top:1rem;z-index:2;background:#0e1724c2;border:1px solid #465568;border-radius:9px;padding:.6rem .8rem;max-width:80%;pointer-events:none}
 .stage-toolbar .title{font-weight:650}.stage-toolbar .subtitle{font-size:.78rem;color:var(--muted);margin-top:.2rem}
@@ -28,7 +34,7 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 </style>
 </head>
 <body>
-<header><a href="../../index.html">← 返回游戏列表</a><div><strong>重返未来：1999</strong><small>Live2D · 本地资源预览器</small></div></header>
+<header><a href="../../index.html">← 返回游戏列表</a><div><strong>重返未来：1999</strong><small>Live2D / Spine · 本地资源预览器</small></div></header>
 <main>
   <aside class="left">
     <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
@@ -39,9 +45,10 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><canvas id="canvas"></canvas></div>
+    <div id="spine-stage" hidden><div id="spine-container"></div></div>
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
-  <aside class="right"><div class="controls"><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
+  <aside class="right"><div class="controls"><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
 </main>
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
@@ -50,6 +57,7 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 'use strict';
 const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
+let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
 function message(value){$('status').hidden = false; $('status').textContent = value;}
@@ -62,7 +70,7 @@ function renderList(){
   visible.forEach(m => {
     const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
     const line=document.createElement('div');line.textContent=`${m.name} · ${m.skin}`;
-    const second=document.createElement('small');second.textContent=`${m.id} · ${m.folder}`;
+    const second=document.createElement('small');second.textContent=`${m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
     btn.append(line,second);btn.onclick=()=>selectModel(m);
     $('models').appendChild(btn);
   });
@@ -98,13 +106,104 @@ function fit(model){
   model.scale.set(Math.min(w*.82/width,h*.85/height,4));
   model.position.set(w/2,h/2);
 }
+function disposeSpine(){
+  if(spinePlayer){
+    try{spinePlayer.dispose();}catch(error){console.warn('Spine dispose:',error);}
+    spinePlayer=null;
+  }
+  $('spine-container').replaceChildren();
+}
+
+// NIKKE 的 4.0/4.1 播放器不兼容 1999 的 4.2；使用独立的本地运行时。
+function loadSpineRuntime(){
+  if(window.spine && window.spine.SpinePlayer) return Promise.resolve(window.spine);
+  if(spineScriptPromise) return spineScriptPromise;
+  spineScriptPromise=new Promise((resolve,reject)=>{
+    const script=document.createElement('script');
+    script.src='../vendor/spine-player4.2.min.js';
+    script.onload=()=>{
+      if(window.spine && window.spine.SpinePlayer) resolve(window.spine);
+      else reject(new Error('Spine 4.2 运行时加载后未暴露 SpinePlayer'));
+    };
+    script.onerror=()=>reject(new Error('缺少本地 Spine 4.2 运行时，请执行 python reverse1999/scripts/sync.py setup-runtime'));
+    document.head.appendChild(script);
+  }).catch(error=>{spineScriptPromise=null;throw error;});
+  return spineScriptPromise;
+}
+
+function playSpineAnimation(player, name){
+  const loop=/idle|stand|wait|loop/i.test(name);
+  player.setAnimation(name,loop);
+  player.play();
+}
+
+async function loadSpinePose(m, poseName, modelToken){
+  const tk=++poseToken;
+  disposeSpine();
+  const p=m.poses?.[poseName];
+  if(!p)return message('该姿态无骨骼文件');
+  buttons($('motions'),[],()=>{});
+  buttons($('expressions'),[],()=>{});
+  if(!String(p.version||'').startsWith('4.2.')){
+    message(`此资源是 Spine ${p.version}，目前仅配置了 4.2 运行时，不能强行解析。`);
+    return;
+  }
+  message(`正在加载 ${poseName} 动画…`);
+  try{
+    const runtime=await loadSpineRuntime();
+    if(modelToken!==requestId||tk!==poseToken)return;
+    const base=m.dir+'/';
+    spinePlayer=new runtime.SpinePlayer('spine-container',{
+      skeleton:base+p.skel,
+      atlas:base+p.atlas,
+      showControls:false,
+      alpha:true,
+      backgroundColor:'#00000000',
+      premultipliedAlpha:true,
+      preserveDrawingBuffer:true,
+      defaultMix:0.2,
+      success:(pl)=>{
+        if(modelToken!==requestId||tk!==poseToken)return;
+        hideMessage();
+        try{
+          const names=pl.animationState.data.skeletonData.animations.map(a=>a.name);
+          buttons($('motions'),names,name=>{
+            try{playSpineAnimation(pl,name);}catch(error){message('动作播放失败：'+error.message);}
+          });
+          const idle=names.find(name=>/idle|stand|wait|loop/i.test(name))||names[0];
+          if(idle)playSpineAnimation(pl,idle);
+        }catch(error){console.error(error);message('已加载模型，但无法读取动作列表：'+error.message);}
+      },
+      error:(pl,msg)=>{if(modelToken===requestId&&tk===poseToken)message('Spine 加载失败：'+String(msg||'资源不兼容'));}
+    });
+  }catch(error){
+    if(modelToken!==requestId||tk!==poseToken)return;
+    console.error(error);message('无法播放 Spine 模型：'+error.message);
+  }
+}
+
 async function selectModel(m){
   selected=m;renderList();const token=++requestId;
+  ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
+  disposeSpine();
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
-  message('正在加载模型和贴图…');
+  if(m.type==='spine'){
+    $('stage-area').hidden=true;
+    $('spine-stage').hidden=false;
+    const poses=Object.keys(m.poses||{});
+    const preferred=poses.includes('ui')?'ui':(poses.includes('room')?'room':poses[0]);
+    buttons($('poses'),poses,name=>loadSpinePose(m,name,token));
+    if(!preferred)message('当前目录没有可播放的 Spine 骨骼文件');
+    else loadSpinePose(m,preferred,token);
+    return;
+  }
+  $('spine-stage').hidden=true;
+  $('stage-area').hidden=false;
+  buttons($('poses'),[],()=>{});
+  message('正在加载 Live2D 模型和贴图…');
   try{
     const model=await PIXI.live2d.Live2DModel.from(m.path,{autoInteract:false});
     if(token!==requestId){model.destroy();return;}
@@ -114,7 +213,7 @@ async function selectModel(m){
     fit(model);
     setupControls(model);
     hideMessage();
-  }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
+  }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
 function initInteraction(){
   const area=$('stage-area');let drag=false,px=0,py=0;
@@ -137,7 +236,7 @@ async function start(){
     const payload=await response.json();models=payload.models||[];
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
     initInteraction();renderList();$('search').addEventListener('input',renderList);
-    if(!models.length)message('目前还没有下载任何模型。\n先运行：python reverse1999/scripts/sync.py download 300301');
+    if(!models.length)message('目前还没有下载任何模型。\n先运行：python reverse1999/scripts/sync.py download 315901');
   }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
 }
 start();

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""按需下载《重返未来：1999》Live2D 模型并生成本地查看器索引。
+"""按需获取《重返未来：1999》Spine / Cubism 模型，生成本地查看器索引。
 
 源：myssal/Reverse-1999-CN-Asset；不依赖游戏客户端。
 只下载使用者指定的模型，不批量克隆整个大型仓库。
@@ -16,6 +16,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
+
+import spine
 
 SOURCE = "myssal/Reverse-1999-CN-Asset"
 SOURCE_ROOT = "live2d/roles"
@@ -193,8 +195,10 @@ def generate_manifest(mapping):
                 except (ValueError, OSError, TypeError):
                     print(f"跳过配置错误的模型：{config.name}", file=sys.stderr)
                     continue
-                record = by_folder.get(folder.name, {})
+                # 新皮肤目录可能带版本前缀，通过唯一皮肤 ID 补全名称。
+                record = by_folder.get(folder.name, {}) or meta.get(str(spine.extract_id(folder.name)), {})
                 models.append({
+                    "type": "cubism",
                     "id": record.get("id") or folder.name,
                     "name": record.get("name") or folder.name,
                     "en": record.get("en") or "",
@@ -203,7 +207,8 @@ def generate_manifest(mapping):
                     "folder": folder.name,
                     "path": f"../data/models/{folder.name}/{config.name}",
                 })
-    models.sort(key=lambda x: (str(x["name"]), str(x["skin"]), str(x["folder"])))
+    models.extend(spine.collect_spine_models(mapping))
+    models.sort(key=lambda x: (str(x["name"]), str(x["skin"]), str(x["folder"]), str(x.get("type", ""))))
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
     output = {"source": SOURCE, "models": models}
     MANIFEST.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
@@ -211,28 +216,33 @@ def generate_manifest(mapping):
 
 
 def main(argv=None):
-    parser = argparse.ArgumentParser(description="重返未来：1999 Live2D 本地按需下载")
-    parser.add_argument("action", choices=["list", "download", "manifest"], help="列出角色、下载指定模型、重建本地索引")
-    parser.add_argument("target", nargs="?", help="download 使用角色皮肤 ID（例如 300301），也可使用资源目录名")
-    parser.add_argument("--search", default="", help="list 时按角色名或皮肤名搜索")
-    parser.add_argument("--refresh", action="store_true", help="刷新远程角色映射")
+    parser = argparse.ArgumentParser(description="重返未来：1999 动态角色资源按需下载与预览")
+    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime"],
+                        help="查看目录、下载资源、更新本地索引、审计全部皮肤、安装 Spine 播放器")
+    parser.add_argument("target", nargs="?", help="download 指定皮肤 ID，例如 315901")
+    parser.add_argument("--search", default="", help="list 按角色名、皮肤名或 ID 搜索")
+    parser.add_argument("--kind", choices=["auto", "cubism", "spine", "both"], default="auto",
+                        help="download 优先选择的模型类型，默认有 Cubism 优先，没有则 Spine")
+    parser.add_argument("--refresh", action="store_true", help="刷新 GitHub 角色映射和资源目录缓存")
+    parser.add_argument("--missing", action="store_true", help="audit 时打印没有对应 Cubism / Spine 的条目")
     args = parser.parse_args(argv)
     if args.action == "download" and not args.target:
-        parser.error("download 必须指定皮肤 ID 或资源目录名")
+        parser.error("download 必须指定皮肤 ID")
     try:
+        if args.action == "setup-runtime":
+            spine.setup_runtime()
+            return 0
         mapping = load_mapping(args.refresh)
         if args.action == "list":
-            list_remote(mapping, args.search)
+            spine.list_assets(mapping, args.search, args.refresh)
         elif args.action == "manifest":
             generate_manifest(mapping)
+        elif args.action == "audit":
+            spine.audit(mapping, args.refresh, args.missing)
         else:
-            entries = mapped_entries(mapping)
-            folder = entries[args.target]["folder"] if args.target in entries else args.target
-            # 不允许任意服务器 URL，只允许上游安全目录名。
-            safe_model_dir(folder)
-            download_model(folder)
+            spine.download_selected(mapping, args.target, args.kind, args.refresh)
             generate_manifest(mapping)
-    except (RuntimeError, ValueError, KeyError) as exc:
+    except (RuntimeError, ValueError, KeyError, OSError) as exc:
         print(f"错误：{exc}", file=sys.stderr)
         return 1
     return 0

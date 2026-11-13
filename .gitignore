@@ -27,3 +27,6 @@ Thumbs.db
 reverse1999/data/
 reverse1999/config/
 # 重返未来：1999 资源缓存不提交
+
+# 1999 Spine 官方运行时仅在本机安装，不提交
+reverse1999/vendor/

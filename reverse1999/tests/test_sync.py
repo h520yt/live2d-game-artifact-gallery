@@ -2,11 +2,14 @@
 import importlib.util
 import json
 import tempfile
+import sys
 import unittest
 from pathlib import Path
 from unittest import mock
 
 SYNC_PATH = Path(__file__).resolve().parents[1] / "scripts" / "sync.py"
+if str(SYNC_PATH.parent) not in sys.path:
+    sys.path.insert(0, str(SYNC_PATH.parent))
 spec = importlib.util.spec_from_file_location("reverse1999_sync", SYNC_PATH)
 sync = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(sync)
