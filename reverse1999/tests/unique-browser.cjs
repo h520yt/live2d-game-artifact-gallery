@@ -14,6 +14,8 @@ async function verifySkin(browser, row) {
   page.on('pageerror',error=>errors.push(error.message));
   try{
     await page.goto('http://127.0.0.1:8000/reverse1999/viewer/',{waitUntil:'domcontentloaded',timeout:25000});
+    // 页面要等 manifest + 静态目录加载完，筛选按钮才会绑定 onclick。
+    await page.waitForFunction(()=>typeof document.querySelector('#filter-unique')?.onclick==='function',null,{timeout:30000});
     await page.locator('#filter-unique').click();
     const buttons=page.locator('#models button.item');
     await page.waitForFunction(()=>document.querySelectorAll('#models button.item').length===12,{timeout:25000});
@@ -43,21 +45,37 @@ async function verifySkin(browser, row) {
     assert.ok(info.backgroundWidth>500);
     await page.waitForTimeout(300);
     const stage=page.locator('#stage-area');
+    // 隐去背景（只用于测试时的前景像素对比），避免 DOM 微小宽度变化让背景整体错位。
+    await page.evaluate(()=>{
+      const area=document.querySelector('#stage-area');
+      const rect=area.getBoundingClientRect();
+      area.style.width=Math.round(rect.width)+'px';
+      area.style.height=Math.round(rect.height)+'px';
+      document.querySelector('#live2d-background').style.visibility='hidden';
+    });
+    await page.waitForTimeout(200);
     const full=PNG.sync.read(await stage.screenshot());
     await page.evaluate(()=>{active.visible=false;});
-    await page.waitForTimeout(180);
+    await page.waitForTimeout(220);
     const bg=PNG.sync.read(await stage.screenshot());
-    assert.equal(full.width,bg.width);
-    assert.equal(full.height,bg.height);
+    const width=Math.min(full.width,bg.width);
+    const height=Math.min(full.height,bg.height);
     let modelPixels=0;
-    for(let i=0;i<full.data.length;i+=4){
-      const diff=Math.abs(full.data[i]-bg.data[i])+
-        Math.abs(full.data[i+1]-bg.data[i+1])+
-        Math.abs(full.data[i+2]-bg.data[i+2]);
-      if(diff>50)modelPixels++;
+    for(let y=0;y<height;y++){
+      for(let x=0;x<width;x++){
+        const i=(y*full.width+x)*4;
+        const j=(y*bg.width+x)*4;
+        const diff=Math.abs(full.data[i]-bg.data[j])+
+          Math.abs(full.data[i+1]-bg.data[j+1])+
+          Math.abs(full.data[i+2]-bg.data[j+2]);
+        if(diff>50)modelPixels++;
+      }
     }
     assert.ok(modelPixels>500,'Live2D foreground visually absent: '+row.id+' '+modelPixels);
-    await page.evaluate(()=>{active.visible=true;});
+    await page.evaluate(()=>{
+      active.visible=true;
+      document.querySelector('#live2d-background').style.visibility='visible';
+    });
     // 触发第一组可用动作，实际检查运行时没有抛异常。
     await page.locator('#motions button').first().click();
     await page.waitForTimeout(220);
