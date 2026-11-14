@@ -1,0 +1,201 @@
+{
+  "as_of": "2026-11-14",
+  "game_version": "CN 4.1",
+  "source": "myssal/Reverse-1999-CN-Asset",
+  "channel": "JUKEBOX",
+  "note": "吼吼点唱机·典藏光碟历期皮肤，非品质分级；无独立商城背景不拼图。",
+  "skins": [
+    {
+      "id": 301703,
+      "name": "夏利",
+      "skin": "镜中幕间",
+      "type": "spine"
+    },
+    {
+      "id": 302003,
+      "name": "柏林以东",
+      "skin": "铅红的真相",
+      "type": "spine"
+    },
+    {
+      "id": 304103,
+      "name": "玛蒂尔达",
+      "skin": "天才假日",
+      "type": "cubism"
+    },
+    {
+      "id": 301103,
+      "name": "玛丽莲",
+      "skin": "维纳斯的传道",
+      "type": "spine"
+    },
+    {
+      "id": 302203,
+      "name": "帕米埃",
+      "skin": "枪尖向上",
+      "type": "cubism"
+    },
+    {
+      "id": 302403,
+      "name": "气球派对",
+      "skin": "银翅谣",
+      "type": "spine"
+    },
+    {
+      "id": 303803,
+      "name": "五色月",
+      "skin": "银玫瑰",
+      "type": "cubism"
+    },
+    {
+      "id": 301603,
+      "name": "婴儿蓝",
+      "skin": "于麻雀山上",
+      "type": "spine"
+    },
+    {
+      "id": 307503,
+      "name": "沙丝绒",
+      "skin": "野性的倾洒",
+      "type": "cubism"
+    },
+    {
+      "id": 307103,
+      "name": "坎吉拉",
+      "skin": "午夜来客",
+      "type": "cubism"
+    },
+    {
+      "id": 306003,
+      "name": "金蜜儿",
+      "skin": "铅黄色磨坊",
+      "type": "cubism"
+    },
+    {
+      "id": 308203,
+      "name": "小叶尼塞",
+      "skin": "蓝河湾",
+      "type": "cubism"
+    },
+    {
+      "id": 304304,
+      "name": "坦南特",
+      "skin": "鉴赏家之战",
+      "type": "cubism"
+    },
+    {
+      "id": 309503,
+      "name": "环状水星",
+      "skin": "午夜曼波",
+      "type": "cubism"
+    },
+    {
+      "id": 300306,
+      "name": "槲寄生",
+      "skin": "荆棘环绕处",
+      "type": "cubism"
+    },
+    {
+      "id": 306204,
+      "name": "梅兰妮",
+      "skin": "红与白",
+      "type": "cubism"
+    },
+    {
+      "id": 304804,
+      "name": "远旅",
+      "skin": "群星齐唱时",
+      "type": "cubism"
+    },
+    {
+      "id": 305604,
+      "name": "洁西卡",
+      "skin": "乐园之声",
+      "type": "cubism"
+    },
+    {
+      "id": 308804,
+      "name": "塞梅尔维斯",
+      "skin": "心之盈亏",
+      "type": "cubism"
+    },
+    {
+      "id": 305104,
+      "name": "温妮弗雷德",
+      "skin": "以黄金哺育",
+      "type": "cubism"
+    },
+    {
+      "id": 300731,
+      "name": "未锈铠",
+      "skin": "魂灵长青",
+      "type": "cubism"
+    },
+    {
+      "id": 308004,
+      "name": "卡卡尼亚",
+      "skin": "时代病陪护",
+      "type": "cubism"
+    },
+    {
+      "id": 304704,
+      "name": "兔毛手袋",
+      "skin": "永生苦短",
+      "type": "cubism"
+    },
+    {
+      "id": 310404,
+      "name": "笃笃骨",
+      "skin": "裁春衫",
+      "type": "cubism"
+    },
+    {
+      "id": 309804,
+      "name": "蓝手帕",
+      "skin": "冷襁褓",
+      "type": "cubism"
+    },
+    {
+      "id": 311404,
+      "name": "虚构集",
+      "skin": "文字，自始至终",
+      "type": "cubism"
+    },
+    {
+      "id": 306605,
+      "name": "37",
+      "skin": "完美的流体",
+      "type": "cubism"
+    },
+    {
+      "id": 311604,
+      "name": "冷周六",
+      "skin": "巫阳抚彗歌",
+      "type": "cubism"
+    },
+    {
+      "id": 307705,
+      "name": "北方哨歌",
+      "skin": "银色等高线",
+      "type": "cubism"
+    },
+    {
+      "id": 312104,
+      "name": "莫莉德尔",
+      "skin": "玫瑰午睡时",
+      "type": "cubism"
+    },
+    {
+      "id": 311705,
+      "name": "库珀花环",
+      "skin": "牧于晚星",
+      "type": "cubism"
+    },
+    {
+      "id": 312704,
+      "name": "玛尔纱",
+      "skin": "告慰尘与惘",
+      "type": "cubism"
+    }
+  ]
+}

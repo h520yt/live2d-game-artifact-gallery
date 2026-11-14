@@ -18,7 +18,7 @@ input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.7rem;ba
 button.item:hover,button.item.active{border-color:var(--accent);background:#273747}
 button.item.not-downloaded{opacity:.72;border-style:dashed;border-color:#455568}
 button.item.not-downloaded:hover{opacity:1}
-.unique-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.7rem 0}
+.unique-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.45rem;margin:.7rem 0}
 .unique-tabs button{cursor:pointer;background:#1b2838;color:inherit;border:1px solid #455568;border-radius:8px;padding:.55rem .4rem;font-size:.82rem}
 .unique-tabs button.active{border-color:var(--accent);background:#31404a;font-weight:650}
 .unique-tip{margin:.65rem 0;color:var(--muted);font-size:.78rem;line-height:1.7}button.item small{color:var(--muted);display:block;margin-top:.15rem;font-size:.75rem}
@@ -61,11 +61,13 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
     <div class="unique-tabs">
       <button id="filter-all" class="active" type="button">全部资源</button>
       <button id="filter-unique" type="button">Unique 最高档</button>
+      <button id="filter-jukebox" type="button">吼吼点唱机</button>
     </div>
+    <div id="jukebox-tip" class="unique-tip" hidden>点唱机·典藏光碟历期衣着，已收录 32 套。<strong>非 UNIQUE 品质分级</strong>。27 套 Cubism、5 套 Spine；无独立商城背景的不拼接背景。批量下载：<code>python reverse1999/scripts/sync.py jukebox all</code></div>
     <div id="unique-tip" class="unique-tip" hidden>已收录 12 套女性 Unique 衣着；灰色项目尚未下载。批量下载：<code>python reverse1999/scripts/sync.py unique all</code></div>
     <div class="count" id="count">读取资源清单中…</div>
     <div id="models"></div>
-    <p class="note">Unique 女性最高档已建目录，点击筛选查看下载状态；可执行 <code>python reverse1999/scripts/sync.py unique all</code> 批量下载。贝丽尔动态衣着：<code>python reverse1999/scripts/sync.py scene 313403</code>（完整 Live2D 动作 + 独立背景）；另有露西样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
+    <p class="note">可在「吼吼点唱机」查看至 4.1 的 32 套典藏光碟衣着，或用 <code>python reverse1999/scripts/sync.py jukebox all</code> 批量下载。Unique 女性最高档已建目录，点击筛选查看下载状态；可执行 <code>python reverse1999/scripts/sync.py unique all</code> 批量下载。贝丽尔动态衣着：<code>python reverse1999/scripts/sync.py scene 313403</code>（完整 Live2D 动作 + 独立背景）；另有露西样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
   </aside>
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
@@ -114,7 +116,7 @@ const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
 let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
 let sceneScale = 1, sceneX = 0, sceneY = 0, sceneFit = 'cover', sceneBgVisible = true;
-let uniqueOnly = false, uniqueCatalog = [];
+let galleryFilter='all', uniqueCatalog = [], jukeboxCatalog = [];
 
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
@@ -123,11 +125,33 @@ function hideMessage(){ $('status').hidden = true; }
 function renderList(){
   const q=$('search').value.trim().toLocaleLowerCase();
   const matches=record=>[record.id,record.name,record.en,record.skin,record.skin_en,record.folder,record.version].some(v=>String(v||'').toLocaleLowerCase().includes(q));
-  $('filter-all').classList.toggle('active',!uniqueOnly);
-  $('filter-unique').classList.toggle('active',uniqueOnly);
-  $('unique-tip').hidden=!uniqueOnly;
+  $('filter-all').classList.toggle('active',galleryFilter==='all');
+  $('filter-unique').classList.toggle('active',galleryFilter==='unique');
+  $('filter-jukebox').classList.toggle('active',galleryFilter==='jukebox');
+  $('unique-tip').hidden=galleryFilter!=='unique';
+  $('jukebox-tip').hidden=galleryFilter!=='jukebox';
   $('models').replaceChildren();
-  if(uniqueOnly){
+  if(galleryFilter==='jukebox'){
+    const visible=jukeboxCatalog.filter(matches);
+    const complete=jukeboxCatalog.filter(x=>x.downloaded).length;
+    $('count').textContent='点唱机典藏衣着 '+complete+' / '+jukeboxCatalog.length+' 套已下载';
+    visible.forEach(row=>{
+      const model=models.find(m=>m.channel==='JUKEBOX'&&String(m.id)===String(row.id));
+      const btn=document.createElement('button');
+      btn.className='item'+(!model?' not-downloaded':'')+(model&&selected===model?' active':'');
+      const name=document.createElement('div');name.textContent=row.name+' · '+row.skin;
+      const meta=document.createElement('small');meta.textContent='点唱机 · '+(row.type==='spine'?'Spine':'Live2D')+
+        ' · '+row.id+' · '+(model?'点击播放':'待下载，点击查看安装指令');
+      btn.append(name,meta);
+      btn.onclick=()=>{
+        if(model){selectModel(model);return;}
+        message('未下载 '+row.name+'「'+row.skin+'」\nVS Code 项目根目录执行：\npython reverse1999/scripts/sync.py jukebox '+row.id+'\n然后刷新浏览器。');
+      };
+      $('models').appendChild(btn);
+    });
+    return;
+  }
+  if(galleryFilter==='unique'){
     const visible=uniqueCatalog.filter(matches);
     const completed=uniqueCatalog.filter(x=>x.downloaded).length;
     $('count').textContent='UNIQUE 女性 '+completed+' / '+uniqueCatalog.length+' 套已下载';
@@ -154,7 +178,7 @@ function renderList(){
     const line=document.createElement('div');line.textContent=m.name+' · '+m.skin;
     const second=document.createElement('small');
     const type=m.type==='scene-live2d'?'Live2D 动态衣着+专属背景':m.type==='scene'?'商城卡面 Spine+背景':m.type==='showcase'?'完整皮肤展示':m.type==='spine'?'Spine':'Live2D';
-    second.textContent=(m.tier==='UNIQUE'?'UNIQUE · ':'')+type+' · '+m.id+' · '+m.folder;
+    second.textContent=(m.tier==='UNIQUE'?'UNIQUE · ':m.channel==='JUKEBOX'?'点唱机 · ':'')+type+' · '+m.id+' · '+m.folder;
     btn.append(line,second);btn.onclick=()=>selectModel(m);
     $('models').appendChild(btn);
   });
@@ -504,6 +528,7 @@ async function start(){
     if(!response.ok)throw new Error(`资源清单 HTTP ${response.status}`);
     const payload=await response.json();
     uniqueCatalog=payload.unique||[];
+    jukeboxCatalog=payload.jukebox||[];
     try{
       // 不要求先下载数据：新建项目刚拉取代码时也能看到全部 12 套衣着。
       const catalogResponse=await fetch('unique-catalog.json',{cache:'no-store'});
@@ -515,6 +540,14 @@ async function start(){
         }));
       }
     }catch(error){console.warn('Unique 静态目录不可用，使用本地资源清单',error);}
+    try{
+      const response=await fetch('jukebox-catalog.json',{cache:'no-store'});
+      if(response.ok){
+        const staticCatalog=await response.json();
+        const statuses=new Map(jukeboxCatalog.map(x=>[String(x.id),!!x.downloaded]));
+        jukeboxCatalog=(staticCatalog.skins||[]).map(x=>({...x,downloaded:statuses.get(String(x.id))||false}));
+      }
+    }catch(error){console.warn('点唱机静态目录不可用，采用本地清单：',error);}
     // 兼容 main 已有的 scene.py 商城场景记录：统一交给实测通过的 WebGL 背景播放器。
     // scene 的下载器和原有 manifest 结构均不变。
     models=(payload.models||[]).map(m=>{
@@ -531,8 +564,9 @@ async function start(){
     });
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
     initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
-    $('filter-all').onclick=()=>{uniqueOnly=false;renderList();};
-    $('filter-unique').onclick=()=>{uniqueOnly=true;renderList();};
+    $('filter-all').onclick=()=>{galleryFilter='all';renderList();};
+    $('filter-unique').onclick=()=>{galleryFilter='unique';renderList();};
+    $('filter-jukebox').onclick=()=>{galleryFilter='jukebox';renderList();};
     if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
   }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
 }
