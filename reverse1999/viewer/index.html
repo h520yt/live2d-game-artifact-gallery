@@ -229,7 +229,10 @@ function visibleLive2dBounds(){
   const canvas=renderer.view;
   const width=canvas.width,height=canvas.height;
   if(width<=0||height<=0)return null;
-  const pixels=extract.pixels(app.stage);
+  // 只读取当前画布。传 app.stage 会创建按模型包围盒尺寸的巨大纹理，
+  // 不仅尺寸不等于画布，还可能耗尽 WebGL 显存。
+  renderer.render(app.stage);
+  const pixels=extract.pixels();
   if(!pixels||pixels.length!==width*height*4)return null;
   let left=width,top=height,right=-1,bottom=-1,total=0;
   const step=Math.max(1,Math.round(Math.min(width,height)/460));
@@ -269,7 +272,7 @@ async function fitVisibleLive2d(model,token){
       box.x+box.width>w*.975||box.y+box.height>h*.975;
     let factor=Math.min(w*.76/Math.max(1,box.width),h*.76/Math.max(1,box.height));
     // 若截图像素被裁掉，不能根据残缺的矩形盲目放大。
-    factor=Math.max(.62,Math.min(factor,touchesEdge?.80:1.20));
+    factor=Math.max(.62,Math.min(factor,touchesEdge ? .80 : 1.20));
     const currentX=box.x+box.width/2,currentY=box.y+box.height/2;
     model.position.set(w/2-(currentX-model.x)*factor,
                        h/2-(currentY-model.y)*factor);
