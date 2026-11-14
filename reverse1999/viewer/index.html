@@ -10,7 +10,7 @@
 *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:system-ui,"Microsoft YaHei",sans-serif;background:var(--bg);color:#f1eee7}
 a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}button,input{font:inherit}
 header{display:flex;align-items:center;gap:1rem;padding:1rem 1.4rem;border-bottom:1px solid var(--line)}header strong{font-size:1.18rem}header small{display:block;color:var(--muted);margin-top:.25rem}
-main{display:grid;grid-template-columns:290px minmax(320px,1fr) 260px;min-height:calc(100vh - 76px)}
+main{display:grid;grid-template-columns:290px minmax(320px,1fr) 260px;height:calc(100vh - 76px);min-height:580px}
 aside{background:var(--panel);min-width:0;padding:1rem;overflow-y:auto}aside.left{border-right:1px solid var(--line)}aside.right{border-left:1px solid var(--line)}
 input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.7rem;background:#0f1721;color:inherit;outline:none}input:focus{border-color:var(--accent)}
 .note{font-size:.78rem;color:var(--muted);line-height:1.6}.count{font-size:.8rem;color:var(--muted);margin:.7rem 0}
@@ -22,9 +22,9 @@ button.item.not-downloaded:hover{opacity:1}
 .unique-tabs button{cursor:pointer;background:#1b2838;color:inherit;border:1px solid #455568;border-radius:8px;padding:.55rem .4rem;font-size:.82rem}
 .unique-tabs button.active{border-color:var(--accent);background:#31404a;font-weight:650}
 .unique-tip{margin:.65rem 0;color:var(--muted);font-size:.78rem;line-height:1.7}button.item small{color:var(--muted);display:block;margin-top:.15rem;font-size:.75rem}
-section.stage{position:relative;min-height:580px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
-#stage-area{position:relative;width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
-#live2d-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
+section.stage{position:relative;min-height:0;height:100%;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
+#stage-area{position:relative;width:100%;height:100%;min-height:0;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
+#live2d-background{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:0;pointer-events:none}
 #live2d-background[hidden]{display:none!important}
 #stage-area[hidden],#spine-stage[hidden]{display:none!important}
 #spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px;overflow:hidden}
@@ -49,8 +49,8 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 .controls h3{font-size:.95rem;margin:0 0 .7rem}.controls .list{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.2rem}
 .controls button{border:1px solid #45596c;border-radius:6px;padding:.38rem .58rem;background:#223041;color:inherit;font-size:.77rem;cursor:pointer;max-width:100%;overflow-wrap:anywhere}
 .controls button:hover{border-color:var(--accent)}.empty{color:var(--muted);font-size:.82rem;line-height:1.6}
-@media(max-width:1080px){main{grid-template-columns:240px 1fr}.right{grid-column:1 / -1;border-top:1px solid var(--line);border-left:0!important}.right .controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem}}
-@media(max-width:660px){main{display:flex;flex-direction:column}.left{max-height:230px;border-right:0!important;border-bottom:1px solid var(--line)}.stage{min-height:450px!important}#stage-area{height:450px;min-height:450px}.right .controls{display:block}header{padding:.8rem}}
+@media(max-width:1080px){main{height:auto;grid-template-columns:240px 1fr}section.stage{height:calc(100vh - 76px);min-height:580px}.right{grid-column:1 / -1;border-top:1px solid var(--line);border-left:0!important}.right .controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem}}
+@media(max-width:660px){main{display:flex;flex-direction:column}.left{max-height:230px;border-right:0!important;border-bottom:1px solid var(--line)}.stage{height:450px!important;min-height:450px!important}#stage-area{height:450px;min-height:450px}.right .controls{display:block}header{padding:.8rem}}
 </style>
 </head>
 <body>
@@ -219,6 +219,66 @@ function fit(model){
     model.position.set(w/2,h/2);
   }
 }
+
+// 根据实际渲染像素而不是 Cubism 模型原点校正人物。
+// skin2dbg 背景是独立 DOM 图片，不参与读取，因此不会误把背景当作人物。
+function visibleLive2dBounds(){
+  const renderer=app?.renderer;
+  const extract=renderer?.plugins?.extract || renderer?.extract;
+  if(!extract || typeof extract.pixels!=='function')return null;
+  const canvas=renderer.view;
+  const width=canvas.width,height=canvas.height;
+  if(width<=0||height<=0)return null;
+  const pixels=extract.pixels(app.stage);
+  if(!pixels||pixels.length!==width*height*4)return null;
+  let left=width,top=height,right=-1,bottom=-1,total=0;
+  const step=Math.max(1,Math.round(Math.min(width,height)/460));
+  for(let y=0;y<height;y+=step){
+    for(let x=0;x<width;x+=step){
+      if(pixels[(y*width+x)*4+3]<54)continue;
+      left=Math.min(left,x);top=Math.min(top,y);
+      right=Math.max(right,x);bottom=Math.max(bottom,y);
+      total++;
+    }
+  }
+  if(total<50)return null;
+  const sx=$('stage-area').clientWidth/width,sy=$('stage-area').clientHeight/height;
+  return {x:left*sx,y:top*sy,width:(right-left+step)*sx,
+    height:(bottom-top+step)*sy,stageWidth:$('stage-area').clientWidth,
+    stageHeight:$('stage-area').clientHeight};
+}
+async function fitVisibleLive2d(model,token){
+  // 第一轮可能已被裁切，先略微缩小，让隐藏在顶端之外的头部有机会重新进入画布。
+  const area=$('stage-area'),w=area.clientWidth,h=area.clientHeight;
+  if(!w||!h)return;
+  const initial=0.70;
+  model.position.set(w/2+(model.position.x-w/2)*initial,
+                     h/2+(model.position.y-h/2)*initial);
+  model.scale.set(model.scale.x*initial);
+  for(let n=0;n<8;n++){
+    if(token!==requestId||active!==model)return;
+    await new Promise(resolve=>requestAnimationFrame(resolve));
+    if(token!==requestId||active!==model)return;
+    let box;
+    try{box=visibleLive2dBounds();}catch(error){
+      console.warn('Live2D 像素校正不可用，保留模型包围盒定位：',error);
+      return;
+    }
+    if(!box)return;
+    const touchesEdge=box.x<w*.025||box.y<h*.025||
+      box.x+box.width>w*.975||box.y+box.height>h*.975;
+    let factor=Math.min(w*.76/Math.max(1,box.width),h*.76/Math.max(1,box.height));
+    // 若截图像素被裁掉，不能根据残缺的矩形盲目放大。
+    factor=Math.max(.62,Math.min(factor,touchesEdge?.80:1.20));
+    const currentX=box.x+box.width/2,currentY=box.y+box.height/2;
+    model.position.set(w/2-(currentX-model.x)*factor,
+                       h/2-(currentY-model.y)*factor);
+    model.scale.set(model.scale.x*factor);
+    if(!touchesEdge&&Math.abs(currentX-w/2)<w*.02&&
+       Math.abs(currentY-h/2)<h*.02&&Math.abs(factor-1)<.07)break;
+  }
+}
+
 function disposeSpine(){
   if(spinePlayer){
     try{spinePlayer.dispose();}catch(error){console.warn('Spine dispose:',error);}
@@ -426,16 +486,15 @@ async function selectModel(m){
     fit(model);
     setupControls(model);
     if(m.type==='scene-live2d'){
-      // 等待首帧动画更新 drawable 顶点，再定位一次，兼容不同衣着动作初始姿态。
-      requestAnimationFrame(()=>{
-        if(token===requestId && active===model)fit(model);
-      });
+      message('正在根据实际人物画面校准构图…');
+      await fitVisibleLive2d(model,token);
+      if(token!==requestId||active!==model)return;
     }
     hideMessage();
   }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
 function initInteraction(){
-  $('live2d-fit').onclick=()=>{if(active)fit(active);};
+  $('live2d-fit').onclick=async()=>{if(!active)return;fit(active);await fitVisibleLive2d(active,requestId);};
   const area=$('stage-area');let drag=false,px=0,py=0;
   area.addEventListener('pointerdown',e=>{if(!active)return;drag=true;px=e.clientX;py=e.clientY;area.setPointerCapture(e.pointerId);});
   area.addEventListener('pointerup',()=>drag=false);
