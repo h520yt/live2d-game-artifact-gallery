@@ -150,3 +150,44 @@ scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstore
 下载器不依赖 GitHub 目录 API，直接从已核实的 raw.githubusercontent.com 文件地址按需要下载，原始直链失败会按本项目现有策略尝试 jsDelivr 镜像。分皮肤下载，最多并发 5 个文件，失败可重新执行，已下载完整的文件会复用。即使下载部分失败，也会保留已完整下载的皮肤进入资源索引，缺失的皮肤显示为「待下载」。
 
 游戏素材下载在本机的 reverse1999/data/unique/<皮肤ID> 中（被 Git 忽略），不上传版权美术资源到公开 GitHub 仓库。此功能为展示柜、Wallpaper Engine 网页壁纸的素材验证基础；Wallpaper Engine 导出和 Unity 全场景特效复刻是独立的后续功能，不应与此次「已收录资源」混为一谈。
+
+
+## 吼吼点唱机典藏光碟（俗称手册）历期衣着
+
+截至国服 4.1（2026-11-14）收录 **32 套点唱机衣着**，包括男、女、非人形角色；不沿用上次 UNIQUE 项目的“仅女性”限制，因为本次要求收录全部历期手册皮肤。
+
+**「吼吼点唱机」是获得途径，不是品质等级。** 这 32 套的已验证资源目录中，27 套采用原生 Live2D Cubism，另 5 套没有独立 Cubism 目录，但有原始 Spine 骨骼，可使用 ui、room、fight 三种模式播放。
+
+### 如何使用
+
+在 VS Code 的项目根目录执行：
+
+    git checkout main
+    git pull origin main
+
+    # 查看历期 32 套衣着与本地下载状态
+    python reverse1999/scripts/sync.py jukebox list
+
+    # 下载完整 32 套（断网可重试，已有完整文件不重复下载）
+    python reverse1999/scripts/sync.py jukebox all
+
+    # 只下载一套，例如玛尔纱「告慰尘与惘」
+    python reverse1999/scripts/sync.py jukebox 312704
+
+    # 若尚未开启本地 Web 服务
+    python -m http.server 8000
+
+打开 http://localhost:8000/reverse1999/viewer/ ，点击左侧 **「吼吼点唱机」**，可以看到从早期到 4.1 的全部 32 套和下载状态。点击已下载的衣着预览动作与表情；5 套 Spine 则可在右侧切换 ui / room / fight 动作组。
+
+### 资源范围
+
+- 32 套衣着及实际皮肤 ID，见 viewer/jukebox-catalog.json（静态目录，不要求已下载）。
+- 27 套 live2d/roles：读取真实 model3.json 的 Moc、Textures、Motions、Expressions 等依赖，下载至 data/jukebox/<ID>/cubism/。
+- 5 套 roles：下载 atlas、PNG、bloom 辅助贴图、ui/room/fight 骨骼，保存至 data/jukebox/<ID>/spine/。五套是：夏利「镜中幕间」、柏林以东「铅红的真相」、玛丽莲「维纳斯的传道」、气球派对「银翅谣」、婴儿蓝「于麻雀山上」。
+- 所有素材使用上游已核实的原始 GitHub 路径下载，不依赖 GitHub API 列出文件夹；如果原始文件域名访问失败，沿用项目现有的 CDN 备用方案。
+- 文件缺失不会冒充完整安装。下载途中发生错误仍将完整资源列入展示柜，尚未下载完成的显示为“待下载”，可单独重试。
+- 原始游戏美术资源不提交到 Git；第三方素材版权属于原权利方。
+
+**区别于 UNIQUE 级完整商城展示：** 点唱机皮肤不保证有独立全场景背景（skin2dbg），因此这里收录的是原始角色动画、贴图与动作，不为它们配假背景；Unity 粒子、游戏内交互编排和 Wallpaper Engine 导出仍属于后续独立功能。
+
+分类依据：2026-11-14 前各期官方版本公告、[灰机中文维基](https://res1999.huijiwiki.com/wiki/%E5%90%BC%E5%90%BC%E8%87%AA%E9%80%89%E8%A1%A3%E7%AE%B1)及具体衣着获取途径；名单 ID 和资源目录与 [Reverse-1999-CN-Asset](https://github.com/myssal/Reverse-1999-CN-Asset) 对照。

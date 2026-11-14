@@ -1,0 +1,59 @@
+name: Reverse 1999 Jukebox all historic skins - real resource and browser check
+on:
+  push:
+    paths:
+      - 'reverse1999/**'
+      - '.github/workflows/reverse1999-jukebox-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  jukebox-all:
+    if: github.ref == 'refs/heads/feat/reverse1999-jukebox-complete'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install all 32 verified historic Jukebox skin resources without GitHub API token
+        run: python reverse1999/scripts/sync.py jukebox all
+        env:
+          GITHUB_TOKEN: ''
+      - name: Assert all 32 original models are complete and searchable
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('reverse1999')
+          data=json.loads((root/'viewer/manifest.json').read_text(encoding='utf-8'))
+          catalog=data['jukebox']
+          assert len(catalog)==32, len(catalog)
+          assert sum(1 for x in catalog if x['downloaded'])==32, [x for x in catalog if not x['downloaded']]
+          models=[x for x in data['models'] if x.get('channel')=='JUKEBOX']
+          assert len(models)==32, len(models)
+          cubism=[x for x in models if x['type']=='cubism']
+          spine=[x for x in models if x['type']=='spine']
+          assert len(cubism)==27, len(cubism)
+          assert len(spine)==5, len(spine)
+          for m in cubism:
+              p=root/'data/jukebox'/str(m['id'])/'cubism'
+              assert list(p.glob('*.moc3')), m
+              assert list(p.glob('*.model3.json')), m
+          for m in spine:
+              assert set(m['poses'])=={'ui','room','fight'}, m
+              print('SPINE-POSES',m['id'],[x['version'] for x in m['poses'].values()])
+          print('REAL-JUKEBOX-ALL-PASS: 32 (27 Cubism + 5 Spine)')
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install browser verification dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Open Jukebox gallery using real model assets in Chromium
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/jukebox-server.log 2>&1 &
+          node reverse1999/tests/jukebox-browser.cjs
