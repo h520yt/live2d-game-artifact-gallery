@@ -106,7 +106,7 @@ const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
 let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
 let sceneScale = 1, sceneX = 0, sceneY = 0, sceneFit = 'cover', sceneBgVisible = true;
-let uniqueOnly = true, uniqueCatalog = [];
+let uniqueOnly = false, uniqueCatalog = [];
 
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
