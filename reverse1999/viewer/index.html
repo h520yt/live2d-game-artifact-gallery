@@ -265,6 +265,13 @@ function fitSkin(model,skin){
   model.scale.set(model.scale.x*zoom);
   model.position.set(w/2-(centerX-prevX)*zoom,
                      h/2-(centerY-prevY)*zoom);
+  // 「虹色冠冕」的右侧宽场景中，人物头部相对于几何中心有额外上移。
+  // Chromium 1920x1080 测试发现无此修正时头部恰好贴到顶边；
+  // 仅在宽屏逐渐增加纵向补偿，不改变常规展示比例及其他皮肤。
+  if(String(skin.id)==='315503'){
+    const wide=Math.max(0,Math.min(1,(w/h-1.08)/.20));
+    model.y+=h*.070*wide;
+  }
 }
 
 function disposeSpine(){
