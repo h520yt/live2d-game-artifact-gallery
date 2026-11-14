@@ -106,3 +106,47 @@ scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstore
 浏览器进入 http://localhost:8000/reverse1999/viewer/，搜索「贝丽尔」后会出现「Live2D 动态衣着+专属背景」和「商城卡面 Spine+背景」两种展示形式，前者支持选择 34 组动作及表情。固定的 313403 资源从 GitHub 原始文件直链下载，不调用 api.github.com，因此通常不需要 GITHUB_TOKEN。
 
 注意：网页中的 Live2D 动作、同皮肤背景已使用上游真实资源；但主界面入场特效的调用时机、前景遮挡、Unity 粒子及完整交互剧本尚未复刻，不能宣称 100% 还原商城效果。
+
+
+## 女性角色 UNIQUE 最高档衣着完整展示柜（国服 4.1，2026-11-14）
+
+已收录 **12 套 UNIQUE**（最高品质、通常 ¥98/1680 粹雨滴）。皮肤档次与动画引擎类型不同：即使是 UNIQUE，也不保证所有 Unity 粒子、场景脚本能在网页中原样复刻。资源列表已同时加入 viewer/unique-catalog.json，即使尚未下载也能在左侧「Unique 最高档」中看到 12 套和下载状态。
+
+| 角色 | UNIQUE 衣着 | 皮肤 ID | 实装版本 |
+|---|---|---|---|
+| 星锑 | 启航！向明日 | 302504 | 1.9 |
+| 37 | 泉眼深处 | 306604 | 2.2 |
+| 曲娘 | 壁上桃源 | 308303 | 2.5 |
+| 露西 | 生如行棋 | 308603 | 2.8 |
+| 天使娜娜 | 恶之果 | 310003 | 3.2 |
+| 梁月 | 照雪明 | 311003 | 3.4 |
+| 牙仙 | 彩衣曲 | 305305 | 3.4 |
+| 珐琅眼 | 醒时声 | 314403 | 3.7 |
+| 诺谛卡 | 名以光辉 | 312003 | 3.7 |
+| 纸信圈儿 | 原子时报晓 | 310504 | S02 联动 |
+| 狩勋女巫红弩箭 | 虹色冠冕 | 315503 | 4.0 |
+| 贝丽尔 | 释命运以弦音 | 313403 | 4.0 |
+
+这 12 个 ID 恰好对应上游 singlebg/skin2dbg 中 12 张完整专属背景，同时在 live2d/roles 中都有已核实的版本前缀 Cubism 模型目录。数据源：myssal/Reverse-1999-CN-Asset；皮肤等级可核查 [灰机中文维基](https://res1999.huijiwiki.com/wiki/%E5%88%86%E7%B1%BB%3A%E8%A1%A3%E7%9D%80)。
+
+在 **VS Code 项目根目录**执行：
+
+    git pull origin main
+
+    # 只显示 12 套的名字、皮肤 ID、本地下载状态
+    python reverse1999/scripts/sync.py unique list
+
+    # 一次性下载全部 12 套背景 + Live2D 模型 + 动作 + 表情
+    python reverse1999/scripts/sync.py unique all
+
+    # 或者单独下载某一套，例如 37「泉眼深处」
+    python reverse1999/scripts/sync.py unique 306604
+
+    # 如果已有本地 HTTP 服务不用重启
+    python -m http.server 8000
+
+打开 http://localhost:8000/reverse1999/viewer/ ，切换「Unique 最高档」。每套支持专属背景 + Cubism 原生角色动画，右侧可切换动作、表情；默认播放 b_idle（若该衣着存在）。
+
+下载器不依赖 GitHub 目录 API，直接从已核实的 raw.githubusercontent.com 文件地址按需要下载，原始直链失败会按本项目现有策略尝试 jsDelivr 镜像。分皮肤下载，最多并发 5 个文件，失败可重新执行，已下载完整的文件会复用。即使下载部分失败，也会保留已完整下载的皮肤进入资源索引，缺失的皮肤显示为「待下载」。
+
+游戏素材下载在本机的 reverse1999/data/unique/<皮肤ID> 中（被 Git 忽略），不上传版权美术资源到公开 GitHub 仓库。此功能为展示柜、Wallpaper Engine 网页壁纸的素材验证基础；Wallpaper Engine 导出和 Unity 全场景特效复刻是独立的后续功能，不应与此次「已收录资源」混为一谈。

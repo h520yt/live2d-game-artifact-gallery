@@ -1,0 +1,43 @@
+name: Reverse 1999 UNIQUE female wardrobe - real resource check
+on:
+  push:
+    paths:
+      - 'reverse1999/**'
+      - '.github/workflows/reverse1999-unique-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  unique-female-real-assets:
+    if: github.ref == 'refs/heads/feat/reverse1999-unique-female-bundle'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download all twelve UNIQUE skin backgrounds and Cubism model dependencies WITHOUT GitHub API token
+        run: python reverse1999/scripts/sync.py unique all
+        env:
+          GITHUB_TOKEN: ''
+      - name: Validate the complete twelve-skin gallery index
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('reverse1999')
+          manifest=json.loads((root/'viewer/manifest.json').read_text(encoding='utf-8'))
+          roster=manifest.get('unique', [])
+          complete=[entry for entry in roster if entry.get('downloaded')]
+          models=[entry for entry in manifest['models'] if entry.get('tier')=='UNIQUE']
+          assert len(roster)==12, f'Expected 12 UNIQUE female entries, got {len(roster)}'
+          assert len(complete)==12, f'Expected 12 downloaded entries, got {len(complete)}'
+          assert len(models)==12, f'Expected 12 showcase models, got {len(models)}'
+          for m in models:
+              assert m['type']=='scene-live2d' and m['motion_groups']>0, m
+              rootpath=root/'data/unique'/str(m['id'])
+              assert (rootpath/'background.png').stat().st_size>1000000
+              assert (rootpath/'cubism').exists()
+              print(f"REAL-UNIQUE-SKIN-PASS {m['id']} {m['name']} {m['skin']}: {m['motion_groups']} animation groups")
+          PY
