@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>碧蓝航线 · 第二批换装</title>
+<style>
+:root{color-scheme:dark;--bg:#0a101c;--surface:#151f30;--line:#2a3a51;--text:#e8eef8;--muted:#99a9bf;--accent:#98d9ed}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at 40% -10%,#203852 0,#0a101c 56%);color:var(--text);font-family:"Microsoft YaHei",system-ui,sans-serif}
+.wrap{max-width:1450px;margin:auto;padding:34px 22px 70px}
+nav{display:flex;gap:15px;align-items:center;margin-bottom:32px}a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+h1{font-size:clamp(26px,4vw,42px);letter-spacing:2px;margin:0 0 12px}.subtitle{color:var(--muted);margin:0 0 25px;line-height:1.75}
+.tools{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}input,select,button{font:inherit;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 13px}
+input{min-width:240px;flex:1}button{cursor:pointer}button.on{background:#23445c;border-color:#4b9bb4}
+.summary{color:var(--muted);font-size:14px;min-height:24px;margin:12px 0}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:18px}
+.card{background:linear-gradient(145deg,#19273b,#101a29);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 16px 30px #03080e55}
+.art{height:330px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 65%,#2a4259,#090f18 80%);position:relative;overflow:hidden}
+.art img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 14px #0009)}
+.art .empty{padding:20px;text-align:center;color:var(--muted);line-height:1.8}
+.tag{position:absolute;left:12px;top:12px;padding:5px 10px;border-radius:30px;background:#071624ce;border:1px solid #45617c;font-size:12px}
+.info{padding:17px}.name{font-size:19px;font-weight:700;margin:0 0 7px}.skinname{color:#c5d5e8;min-height:21px}.desc{font-size:12px;color:var(--muted);margin-top:12px;min-height:17px}
+.actions{display:flex;gap:8px;margin-top:14px;align-items:center;flex-wrap:wrap}.actions button{flex:1;min-width:65px}.actions a{border:1px solid #39748e;border-radius:9px;padding:9px 12px;background:#18374a}
+small{color:var(--muted)}@media(max-width:600px){.wrap{padding:20px 12px}.art{height:330px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav><a href="../../index.html">← 展示柜首页</a><a href="index.html">碧蓝航线完整展厅</a></nav>
+<h1>碧蓝航线 · 第二批换装</h1>
+<p class="subtitle">按成熟御姐画风、腿部展示方向整理的 10 款候选。4 款 Live2D+ 可通过原有控制台查看模型；其他 6 款目前提供立绘展示，动态效果尚未还原。实际资源以本地安装结果为准。</p>
+<div class="tools"><input id="query" placeholder="搜索角色、皮肤、资源名" aria-label="搜索角色与皮肤"><button class="on" data-filter="all">全部</button><button data-filter="live2d_plus">Live2D+</button><button data-filter="special_dynamic">特殊动态</button><button data-filter="dynamic">普通动态</button></div>
+<div class="summary" id="summary">读取本地清单中…</div>
+<div class="cards" id="cards"></div>
+</div>
+<script>
+'use strict';
+const items=[
+ {c:'光辉',t:'幽影徘徊之夜',a:'guanghui_9',id:237031,k:'live2d_plus'},
+ {c:'白凤',t:'晴雨狐嫁',a:'baifeng_3',id:307162,k:'live2d_plus'},
+ {c:'本宁顿',t:'全速！盛夏逐光企划',a:'benningdun_2',id:107201,k:'live2d_plus'},
+ {c:'水星号',t:'天使降临之日',a:'shuixinghao_2',id:9600171,k:'live2d_plus'},
+ {c:'伊冯娜（约克DE）',t:'幻夜绮舞',a:'yueke_ger_4',id:403113,k:'special_dynamic'},
+ {c:'虎',t:'临水的辰星',a:'hu_2',id:202381,k:'dynamic'},
+ {c:'七省',t:'秽翼天使',a:'qisheng_3',id:1102012,k:'dynamic'},
+ {c:'安妮女王复仇号',t:'堕翼之诱',a:'anninvwang_3',id:9600122,k:'dynamic'},
+ {c:'菲莉西娅·鲁梅',t:'暮色邀约',a:'fulici_3',id:407042,k:'dynamic'},
+ {c:'埃塞克斯',t:'泳池里的默契训练',a:'aisaikesi_10',id:137090,k:'dynamic'}
+];
+const cat={live2d_plus:'Live2D+',special_dynamic:'特殊动态',dynamic:'普通动态'};
+let filter='all';let manifest={characters:[],models:[]};let report=new Map();
+const cards=document.getElementById('cards');const summary=document.getElementById('summary');const query=document.getElementById('query');
+const esc=s=>String(s).replace(/[&<>"']/g,x=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]));
+const onDisk=s=>{const r=report.get(s.id);return r?.status||'not_checked'};
+function render(){
+ const q=query.value.trim().toLowerCase();
+ const matching=items.filter(s=>(filter==='all'||filter===s.k)&&`${s.c} ${s.t} ${s.a} ${s.id}`.toLowerCase().includes(q));
+ cards.replaceChildren();
+ matching.forEach(s=>{
+  const group=manifest.characters.find(x=>x.skin===s.id);
+  const model=manifest.models.find(x=>x.id===s.id);
+  const imgs=(group?.items||[]).filter(x=>x.kind!=='part').map(x=>x.path);
+  const rep=group?.rep_path;
+  if(rep&&imgs.includes(rep)){imgs.splice(imgs.indexOf(rep),1);imgs.unshift(rep)}
+  let idx=0;
+  const element=document.createElement('article');element.className='card';
+  const st=onDisk(s);
+  const label=st==='live2d_files_ready'?'模型文件已提取':st==='painting_only'?'立绘已还原':st==='failed'?'安装失败':'等待本地安装验证';
+  element.innerHTML=`<div class="art"><span class="tag">${cat[s.k]}</span><div class="empty">请运行安装脚本，生成本地资源</div></div><div class="info"><div class="name">${esc(s.c)}</div><div class="skinname">${esc(s.t)}</div><div class="desc">${esc(s.a)} · ${esc(label)}</div><div class="actions"><button type="button" class="prev" aria-label="上一张立绘">◀</button><small class="counter">0 / 0</small><button type="button" class="next" aria-label="下一张立绘">▶</button>${model?'<a href="index.html" title="在完整展厅搜索资源名进入模型工作台">模型控制台</a>':''}</div></div>`;
+  const art=element.querySelector('.art');const counter=element.querySelector('.counter');
+  function show(){
+    counter.textContent=imgs.length?`${idx+1} / ${imgs.length}`:'0 / 0';
+    art.querySelector('img')?.remove();
+    const empty=art.querySelector('.empty');
+    if(!imgs.length){empty.textContent='当前清单尚未收录立绘';empty.style.display='block';return;}
+    const image=document.createElement('img');image.alt=`${s.c} · ${s.t} · ${idx+1}`;image.loading='lazy';image.src=imgs[idx];
+    image.onload=()=>{empty.style.display='none'};
+    image.onerror=()=>{empty.textContent='本地图片尚不存在，请先运行安装脚本';empty.style.display='block';image.remove()};
+    art.appendChild(image);
+  }
+  element.querySelector('.prev').onclick=()=>{if(imgs.length){idx=(idx-1+imgs.length)%imgs.length;show()}};
+  element.querySelector('.next').onclick=()=>{if(imgs.length){idx=(idx+1)%imgs.length;show()}};
+  show();cards.appendChild(element);
+ });
+ const ready=items.filter(s=>onDisk(s)==='live2d_files_ready'||onDisk(s)==='painting_only').length;
+ summary.textContent=`显示 ${matching.length} / 10 款 · 安装记录显示已还原 ${ready} 款 · 动效仍需本地验证`;
+}
+query.addEventListener('input',render);
+document.querySelectorAll('[data-filter]').forEach(b=>b.addEventListener('click',()=>{filter=b.dataset.filter;document.querySelectorAll('[data-filter]').forEach(x=>x.classList.toggle('on',x===b));render()}));
+Promise.all([
+ fetch('manifest.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).catch(()=>({characters:[],models:[]})),
+ fetch('../data/batch2-install-report.json').then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).catch(()=>null)
+]).then(([m,r])=>{manifest=m;report=new Map((r?.skins||[]).map(x=>[x.skin_id,x]));render()});
+</script>
+</body>
+</html>
