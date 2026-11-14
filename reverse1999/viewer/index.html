@@ -95,7 +95,15 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
         <button id="scene-zoom-in" type="button">放大人物</button>
       </div>
       <p class="scene-hint">由同衣着 ID 的背景图与商城动画组合。场景比例和游戏内特效尚未逐帧校准。</p>
-    </div><div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
+    </div>
+    <div id="live2d-framing" hidden>
+      <h3>人物构图</h3>
+      <div class="list">
+        <button id="live2d-fit" type="button">重新定位 · 全身适配</button>
+      </div>
+      <p class="note">自动按动态模型包围盒居中，预留头部和脚部空间；也支持拖动人物、滚轮缩放。</p>
+    </div>
+    <div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
 </main>
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
@@ -173,14 +181,43 @@ function setupControls(model){
     try{model.expression(name)}catch(err){message('表情切换失败：'+err.message)}
   });
 }
+// 只使用 scale/width 会把 Live2D 的模型原点误认成画面中心。
+// 部分 UNIQUE 衣着模型含偏移的网格、飘带和大幅装饰；先在单位缩放下
+// 获取真实模型包围盒，然后按包围盒中心定位，留安全边距保证头部不被裁切。
+function framingRect(bounds){
+  if(!bounds || ![bounds.x,bounds.y,bounds.width,bounds.height].every(Number.isFinite)
+     || bounds.width<=1 || bounds.height<=1)throw new Error('模型包围盒无效');
+  return {x:bounds.x,y:bounds.y,width:bounds.width,height:bounds.height};
+}
+function framingTransform(bounds,width,height){
+  const b=framingRect(bounds);
+  if(!Number.isFinite(width)||!Number.isFinite(height)||width<=0||height<=0)throw new Error('展示画布尺寸无效');
+  const scale=Math.min(width*.80/b.width,height*.76/b.height,4);
+  return {
+    scale,
+    x:width*.50-(b.x+b.width*.5)*scale,
+    y:height*.50-(b.y+b.height*.5)*scale
+  };
+}
 function fit(model){
-  const w=$('stage-area').clientWidth,h=$('stage-area').clientHeight;
+  const area=$('stage-area'),w=area.clientWidth,h=area.clientHeight;
   if(w<=0||h<=0)return;
   app.renderer.resize(w,h);
+  // 计算原始包围盒时重置所有变换，避免用户先前拖动/缩放影响结果。
   model.scale.set(1);
-  const width=model.width||1,height=model.height||1;
-  model.scale.set(Math.min(w*.82/width,h*.85/height,4));
-  model.position.set(w/2,h/2);
+  model.position.set(0,0);
+  const b=model.getBounds(false);
+  try{
+    const frame=framingTransform(b,w,h);
+    model.scale.set(frame.scale);
+    model.position.set(frame.x,frame.y);
+    model.updateTransform();
+  }catch(error){
+    console.warn('Live2D 包围盒定位失败，使用保守回退:',error);
+    const scale=Math.min(w*.70/Math.max(model.width,1),h*.67/Math.max(model.height,1),4);
+    model.scale.set(scale);
+    model.position.set(w/2,h/2);
+  }
 }
 function disposeSpine(){
   if(spinePlayer){
@@ -329,6 +366,7 @@ async function selectModel(m){
   ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
   disposeSpine();
+  $('live2d-framing').hidden=true;
   $('live2d-background').hidden=true;
   $('live2d-background').removeAttribute('src');
   $('model-info').hidden=false;$('model-title').textContent=m.name;
@@ -366,6 +404,7 @@ async function selectModel(m){
   $('spine-stage').style.backgroundImage='none';
   $('spine-container').style.transform='';
   $('stage-area').hidden=false;
+  $('live2d-framing').hidden=false;
   if(m.type==='scene-live2d'){
     $('live2d-background').src=m.background;
     $('live2d-background').hidden=false;
@@ -379,15 +418,24 @@ async function selectModel(m){
     active=model;
     model.anchor.set(.5,.5);
     app.stage.addChild(model);
+    // 先开启默认待机动作，再在后续渲染帧用真实包围盒定位，
+    // 避免以尚未应用首帧动作时的几何范围计算人物中心。
+    if(m.type==='scene-live2d'){
+      try{model.motion('b_idle',0,FORCE);}catch(error){console.warn('Live2D 默认动作不可用:',error);}
+    }
     fit(model);
     setupControls(model);
     if(m.type==='scene-live2d'){
-      try{model.motion('b_idle',0,FORCE);}catch(error){console.warn('Live2D 默认动作不可用:',error);}
+      // 等待首帧动画更新 drawable 顶点，再定位一次，兼容不同衣着动作初始姿态。
+      requestAnimationFrame(()=>{
+        if(token===requestId && active===model)fit(model);
+      });
     }
     hideMessage();
   }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
 function initInteraction(){
+  $('live2d-fit').onclick=()=>{if(active)fit(active);};
   const area=$('stage-area');let drag=false,px=0,py=0;
   area.addEventListener('pointerdown',e=>{if(!active)return;drag=true;px=e.clientX;py=e.clientY;area.setPointerCapture(e.pointerId);});
   area.addEventListener('pointerup',()=>drag=false);

@@ -61,6 +61,7 @@ async function verifySkin(browser, row) {
     const width=Math.min(full.width,bg.width);
     const height=Math.min(full.height,bg.height);
     let modelPixels=0;
+    let left=width,top=height,right=-1,bottom=-1;
     for(let y=0;y<height;y++){
       for(let x=0;x<width;x++){
         const i=(y*full.width+x)*4;
@@ -68,9 +69,19 @@ async function verifySkin(browser, row) {
         const diff=Math.abs(full.data[i]-bg.data[j])+
           Math.abs(full.data[i+1]-bg.data[j+1])+
           Math.abs(full.data[i+2]-bg.data[j+2]);
-        if(diff>50)modelPixels++;
+        if(diff>50){
+          modelPixels++;
+          left=Math.min(left,x);right=Math.max(right,x);
+          top=Math.min(top,y);bottom=Math.max(bottom,y);
+        }
       }
     }
+    // 区分“确实渲染出人物”和“人物被裁掉头部/下半身”。
+    // 验证实际前景像素不触及画布边缘，覆盖所有 UNIQUE 衣着。
+    assert.ok(top>=height*.015 && bottom<=height*.985 &&
+      left>=width*.015 && right<=width*.985,
+      'Model clipped or too close to stage edge: '+row.id+' bounds='+
+        JSON.stringify({left,top,right,bottom,width,height}));
     assert.ok(modelPixels>500,'Live2D foreground visually absent: '+row.id+' '+modelPixels);
     await page.evaluate(()=>{
       active.visible=true;
@@ -83,7 +94,8 @@ async function verifySkin(browser, row) {
     console.log('UNIQUE-BROWSER-PASS',JSON.stringify({
       id:row.id,name:row.name,skin:row.skin,
       motions:info.motions.length,expressions:info.expressions.length,
-      backgroundWidth:info.backgroundWidth,visibleModelPixels:modelPixels
+      backgroundWidth:info.backgroundWidth,visibleModelPixels:modelPixels,
+      modelBounds:{left,top,right,bottom,width,height}
     }));
   }finally{
     await page.close();
