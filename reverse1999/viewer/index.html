@@ -220,66 +220,51 @@ function fit(model){
   }
 }
 
-// 根据实际渲染像素而不是 Cubism 模型原点校正人物。
-// skin2dbg 背景是独立 DOM 图片，不参与读取，因此不会误把背景当作人物。
-function visibleLive2dBounds(){
-  const renderer=app?.renderer;
-  const extract=renderer?.plugins?.extract || renderer?.extract;
-  if(!extract || typeof extract.pixels!=='function')return null;
-  const canvas=renderer.view;
-  const width=canvas.width,height=canvas.height;
-  if(width<=0||height<=0)return null;
-  // 只读取当前画布。传 app.stage 会创建按模型包围盒尺寸的巨大纹理，
-  // 不仅尺寸不等于画布，还可能耗尽 WebGL 显存。
-  renderer.render(app.stage);
-  const pixels=extract.pixels();
-  if(!pixels||pixels.length!==width*height*4)return null;
-  let left=width,top=height,right=-1,bottom=-1,total=0;
-  const step=Math.max(1,Math.round(Math.min(width,height)/460));
-  for(let y=0;y<height;y+=step){
-    for(let x=0;x<width;x+=step){
-      if(pixels[(y*width+x)*4+3]<54)continue;
-      left=Math.min(left,x);top=Math.min(top,y);
-      right=Math.max(right,x);bottom=Math.max(bottom,y);
-      total++;
-    }
-  }
-  if(total<50)return null;
-  const sx=$('stage-area').clientWidth/width,sy=$('stage-area').clientHeight/height;
-  return {x:left*sx,y:top*sy,width:(right-left+step)*sx,
-    height:(bottom-top+step)*sy,stageWidth:$('stage-area').clientWidth,
-    stageHeight:$('stage-area').clientHeight};
-}
-async function fitVisibleLive2d(model,token){
-  // 第一轮可能已被裁切，先略微缩小，让隐藏在顶端之外的头部有机会重新进入画布。
-  const area=$('stage-area'),w=area.clientWidth,h=area.clientHeight;
+// 12 套 UNIQUE 的实测可见区域：基于 Chromium 1366x900、舞台 816x824，
+// 在基础模型边界适配后缩放 0.70 的状态下，对前景像素做差得到。
+//
+// 数值为 [left,top,right,bottom]。它们不是游戏美术文件中的角色原点：
+// Cubism 动态立绘含大量偏移的空白、装饰网格，不能直接把模型原点当视觉中心。
+// 将实际可见区域的中心移到画布中心，并在视觉上保持约 70% 的安全高度。
+// 不在浏览器里读取 WebGL 像素，避免卡顿或破坏动态模型绘制状态。
+const UNIQUE_FRAME_REFERENCE={
+  "302504":[331,19,491,404],     // 星锑
+  "306604":[288,90,508,412],     // 37
+  "308303":[214,40,562,420],    // 曲娘
+  "308603":[295,13,506,428],    // 露西
+  "310003":[297,29,507,425],    // 天使娜娜
+  "311003":[287,35,523,406],    // 梁月
+  "305305":[308,44,550,402],    // 牙仙
+  "314403":[377,57,535,396],    // 珐琅眼
+  "312003":[183,228,633,398],   // 诺谛卡
+  "310504":[316,83,521,405],    // 纸信圈儿
+  "315503":[248,50,631,426],    // 狩勋女巫红弩箭
+  "313403":[276,4,516,422]      // 贝丽尔
+};
+function fitSkin(model,skin){
+  fit(model);
+  if(skin?.type!=='scene-live2d')return;
+  const w=$('stage-area').clientWidth,h=$('stage-area').clientHeight;
   if(!w||!h)return;
-  const initial=0.70;
-  model.position.set(w/2+(model.position.x-w/2)*initial,
-                     h/2+(model.position.y-h/2)*initial);
+  const initial=.70;
+  model.position.set(w/2+(model.x-w/2)*initial,
+                     h/2+(model.y-h/2)*initial);
   model.scale.set(model.scale.x*initial);
-  for(let n=0;n<8;n++){
-    if(token!==requestId||active!==model)return;
-    await new Promise(resolve=>requestAnimationFrame(resolve));
-    if(token!==requestId||active!==model)return;
-    let box;
-    try{box=visibleLive2dBounds();}catch(error){
-      console.warn('Live2D 像素校正不可用，保留模型包围盒定位：',error);
-      return;
-    }
-    if(!box)return;
-    const touchesEdge=box.x<w*.025||box.y<h*.025||
-      box.x+box.width>w*.975||box.y+box.height>h*.975;
-    let factor=Math.min(w*.76/Math.max(1,box.width),h*.76/Math.max(1,box.height));
-    // 若截图像素被裁掉，不能根据残缺的矩形盲目放大。
-    factor=Math.max(.62,Math.min(factor,touchesEdge ? .80 : 1.20));
-    const currentX=box.x+box.width/2,currentY=box.y+box.height/2;
-    model.position.set(w/2-(currentX-model.x)*factor,
-                       h/2-(currentY-model.y)*factor);
-    model.scale.set(model.scale.x*factor);
-    if(!touchesEdge&&Math.abs(currentX-w/2)<w*.02&&
-       Math.abs(currentY-h/2)<h*.02&&Math.abs(factor-1)<.07)break;
+  const ref=UNIQUE_FRAME_REFERENCE[String(skin.id)];
+  if(!ref){
+    // 新加入的皮肤没做过视觉标定时，先用保守缩放展示。
+    return;
   }
+  const [left,top,right,bottom]=ref;
+  const centerX=(left+right)/2/816*w;
+  const centerY=(top+bottom)/2/824*h;
+  const widthNorm=Math.max(.05,(right-left)/816);
+  const heightNorm=Math.max(.05,(bottom-top)/824);
+  const zoom=Math.min(.74/widthNorm,.72/heightNorm,1.60);
+  const prevX=model.x,prevY=model.y;
+  model.scale.set(model.scale.x*zoom);
+  model.position.set(w/2-(centerX-prevX)*zoom,
+                     h/2-(centerY-prevY)*zoom);
 }
 
 function disposeSpine(){
@@ -486,18 +471,13 @@ async function selectModel(m){
     if(m.type==='scene-live2d'){
       try{model.motion('b_idle',0,FORCE);}catch(error){console.warn('Live2D 默认动作不可用:',error);}
     }
-    fit(model);
+    fitSkin(model,m);
     setupControls(model);
-    if(m.type==='scene-live2d'){
-      message('正在根据实际人物画面校准构图…');
-      await fitVisibleLive2d(model,token);
-      if(token!==requestId||active!==model)return;
-    }
     hideMessage();
   }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
 function initInteraction(){
-  $('live2d-fit').onclick=async()=>{if(!active)return;fit(active);await fitVisibleLive2d(active,requestId);};
+  $('live2d-fit').onclick=()=>{if(active)fitSkin(active,selected);};
   const area=$('stage-area');let drag=false,px=0,py=0;
   area.addEventListener('pointerdown',e=>{if(!active)return;drag=true;px=e.clientX;py=e.clientY;area.setPointerCapture(e.pointerId);});
   area.addEventListener('pointerup',()=>drag=false);
@@ -509,7 +489,7 @@ function initInteraction(){
     try{active.focus(e.clientX-rect.left,e.clientY-rect.top)}catch(error){/* 不是每个模型都带视线参数 */}
   });
   area.addEventListener('wheel',e=>{if(!active)return;e.preventDefault();const factor=e.deltaY<0?1.07:.93;active.scale.set(Math.max(.01,Math.min(50,active.scale.x*factor)));},{passive:false});
-  window.addEventListener('resize',()=>{if(active)fit(active);});
+  window.addEventListener('resize',()=>{if(active)fitSkin(active,selected);});
 }
 async function start(){
   try{
