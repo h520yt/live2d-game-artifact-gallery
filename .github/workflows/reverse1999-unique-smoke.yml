@@ -11,7 +11,7 @@ jobs:
   unique-female-real-assets:
     if: github.ref == 'refs/heads/feat/reverse1999-unique-female-bundle'
     runs-on: ubuntu-24.04
-    timeout-minutes: 35
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -41,3 +41,14 @@ jobs:
               assert (rootpath/'cubism').exists()
               print(f"REAL-UNIQUE-SKIN-PASS {m['id']} {m['name']} {m['skin']}: {m['motion_groups']} animation groups")
           PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install Chromium and browser preview dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Load and compare all twelve skin layers in Chromium
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/reverse1999-unique-server.log 2>&1 &
+          node reverse1999/tests/unique-browser.cjs
