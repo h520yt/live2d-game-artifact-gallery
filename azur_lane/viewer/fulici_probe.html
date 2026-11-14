@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>菲莉西娅·鲁梅 · Live2D 单皮验证</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#081420;color:#edf2f6;font:14px/1.55 -apple-system,BlinkMacSystemFont,"Microsoft Yahei",sans-serif}
+header{padding:14px 20px;border-bottom:1px solid #264459;background:#10263a;display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+h1{font-size:18px;margin:0}header a{color:#f1bc63}small{color:#abc0cc}
+main{display:grid;grid-template-columns:minmax(0,1fr) 330px;min-height:calc(100vh - 82px)}
+#stage{position:relative;min-height:600px;touch-action:none;background:radial-gradient(circle at 50% 48%,#173348 0%,#081420 70%);overflow:hidden}
+#stage canvas{display:block;width:100%;height:100%}
+aside{padding:17px;background:#10263a;border-left:1px solid #264459;max-height:calc(100vh - 82px);overflow-y:auto}
+h2{font-size:15px;margin:0 0 10px}button{cursor:pointer;background:#21455d;color:#f5f8fa;border:1px solid #4a6c7f;border-radius:7px;padding:8px 11px;margin:3px 4px 3px 0}
+button:hover{background:#396078}button:disabled{opacity:.45;cursor:default}.accent{background:#9c6b25;border-color:#d8a24a;color:white}
+#status{font-weight:600;color:#d8bd80}#checks,#trace{font-family:Consolas,monospace;font-size:12px;white-space:pre-wrap;word-break:break-word;color:#b4cbd6;background:#081a28;padding:11px;border-radius:8px;margin:9px 0}
+#buttons{display:flex;flex-wrap:wrap;gap:3px}p{margin:8px 0;color:#c8d5df}.note{border-left:3px solid #d8a24a;padding-left:10px}
+@media(max-width:850px){main{grid-template-columns:1fr}#stage{min-height:60vh}aside{max-height:unset;border-left:0;border-top:1px solid #264459}}
+</style>
+</head>
+<body>
+<header>
+ <div><h1>菲莉西娅·鲁梅 · Schwarzes Kaninchen</h1><small>目标模型 fulici_2 ｜ 皮肤 ID 407041 ｜ Live2D/Cubism</small></div>
+ <a href="./">返回碧蓝航线展示柜（在搜索框输入 fulici_2）</a>
+</header>
+<main>
+ <div id="stage"><canvas id="canvas"></canvas></div>
+ <aside>
+  <h2>单皮可行性验证</h2>
+  <p id="status">准备检测……</p>
+  <button id="btn-load" class="accent">加载 Live2D</button>
+  <button id="btn-tap" disabled>模拟通用点击动作</button>
+  <button id="btn-reset" disabled>重置位置/缩放</button>
+  <div id="checks">模型文件检查中……</div>
+  <h2>提取到的动作组</h2>
+  <div id="buttons"></div>
+  <h2>测试记录</h2>
+  <div id="trace">等待开始</div>
+  <p class="note">本页验证模型加载、纹理、动作组、普通点击动作。所谓「腿部特写」「鞋履切换」是游戏内高级交互，当前提取管线不含官方交互脚本或点击区域配置：不能仅靠播放 touch 动作宣称已完整还原。</p>
+  <p>鼠标：左键拖拽平移、滚轮缩放；单击人物区域时尝试顺序播放通用 touch 动作。也可使用右侧按钮逐个测试。</p>
+ </aside>
+</main>
+<script src="../../shared/vendor/live2dcubismcore.min.js"></script>
+<script src="../../shared/vendor/pixi.min.js"></script>
+<script src="../../shared/vendor/live2d.min.js"></script>
+<script>
+'use strict';
+const TARGET='fulici_2', SKIN=407041;
+const $=id=>document.getElementById(id);
+const checks=$('checks'), trace=$('trace'), status=$('status');
+let record, manifestModel, model, app, groups=[], touches=[], touchIndex=0;
+const FORCE=PIXI.live2d.MotionPriority?.FORCE || 3;
+function log(s){trace.textContent=`${new Date().toLocaleTimeString()}  ${s}\n`+trace.textContent.slice(0,5000)}
+function setStatus(s){status.textContent=s;log(s)}
+const fileUrl=(base,file)=>new URL(file,new URL(base,location.href)).href;
+async function assertFile(url){const r=await fetch(url,{method:'HEAD'});if(!r.ok)throw Error(`HTTP ${r.status} ${url}`);return Number(r.headers.get('content-length')||0)}
+async function inspect(){
+ try{
+  const r=await fetch('manifest.json');if(!r.ok)throw Error(`manifest HTTP ${r.status}`);
+  const m=await r.json();record=m.models.find(v=>v.name===TARGET&&v.id===SKIN);
+  if(!record)throw Error('manifest 中不存在 fulici_2 / 407041');
+  const u=record.path;
+  const res=await fetch(u);if(!res.ok)throw Error(`model3 HTTP ${res.status}`);
+  manifestModel=await res.json();
+  const refs=manifestModel.FileReferences||{};
+  const files=[refs.Moc,...(refs.Textures||[]),refs.Physics].filter(Boolean);
+  for(const motions of Object.values(refs.Motions||{}))for(const x of motions)if(x.File)files.push(x.File);
+  const checksResult=await Promise.all(files.map(async f=>{
+    try{const bytes=await assertFile(fileUrl(u,f));return {file:f,bytes,ok:true}}
+    catch(e){return {file:f,error:e.message,ok:false}}
+  }));
+  const missing=checksResult.filter(v=>!v.ok);
+  const motionCount=Object.values(refs.Motions||{}).reduce((n,x)=>n+x.length,0);
+  checks.textContent=`manifest: 有（${record.en}）\n`+
+   `moc3: ${refs.Moc||'无'}\n贴图: ${(refs.Textures||[]).length} 张\n`+
+   `动作组: ${Object.keys(refs.Motions||{}).length} 组 / ${motionCount} 文件\n`+
+   `引用完整: ${checksResult.length-missing.length}/${checksResult.length}\n`+
+   (missing.length?`缺失文件:\n${missing.map(x=>x.file+' '+x.error).join('\n')}`:'文件 HEAD 检测通过');
+  if(missing.length){setStatus('资源缺失，请先执行 python azur_lane/scripts/probe_fulici.py install');return}
+  setStatus('资源文件齐全，可尝试载入渲染');
+ }catch(e){checks.textContent=e.stack||e.message;setStatus('预检查失败：'+e.message)}
+}
+function layout(){if(!model||!app)return;const w=app.renderer.width/(devicePixelRatio||1),h=app.renderer.height/(devicePixelRatio||1);
+ model.anchor.set(.5,.5);model.scale.set(Math.min(w/model.width,h/model.height)*.83);model.position.set(w/2,h/2)}
+function play(group){if(!model)return;try{model.motion(group,0,FORCE);log('播放 '+group)}catch(e){log('动作失败 '+group+': '+e.message)}}
+function buildButtons(){
+ $('buttons').replaceChildren();
+ const motions=model.internalModel?.settings?.motions||manifestModel.FileReferences?.Motions||{};
+ groups=Object.keys(motions);touches=groups.filter(g=>/^touch/i.test(g));touchIndex=0;
+ for(const g of groups){const b=document.createElement('button');b.textContent=g;b.onclick=()=>play(g);$('buttons').append(b)}
+ $('btn-tap').disabled=touches.length===0;
+ $('btn-reset').disabled=false;
+ log(`检测到 ${groups.length} 个动作组；其中 TOUCH ${touches.length} 组`);
+}
+async function load(){
+ if(!record){await inspect();if(!record)return}
+ $('btn-load').disabled=true;setStatus('加载模型……');
+ try{
+  if(!app){app=new PIXI.Application({view:$('canvas'),resizeTo:$('stage'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:devicePixelRatio||1});initPointer()}
+  if(model){app.stage.removeChild(model);model.destroy();model=null}
+  model=await PIXI.live2d.Live2DModel.from(record.path,{autoInteract:false});
+  app.stage.addChild(model);layout();buildButtons();
+  const idle=groups.find(g=>/^idle$/i.test(g))||groups.find(g=>/^idle/i.test(g));
+  if(idle)play(idle);
+  setStatus('模型已加载且动作可操作；请继续检查画面和交互');
+ }catch(e){setStatus('载入失败：'+e.message);log(e.stack||e.message)}
+ finally{$('btn-load').disabled=false}
+}
+function tap(){if(!touches.length){log('未发现 TOUCH 动作组');return}play(touches[touchIndex++%touches.length])}
+function initPointer(){
+ const st=$('stage');let dragging=false,down=null;
+ st.addEventListener('pointerdown',e=>{dragging=true;down={x:e.clientX,y:e.clientY,moved:false};st.setPointerCapture(e.pointerId)});
+ st.addEventListener('pointermove',e=>{
+  if(!model)return;
+  if(dragging&&down){const dx=e.clientX-down.x,dy=e.clientY-down.y;if(Math.abs(dx)+Math.abs(dy)>5)down.moved=true;
+   model.x+=dx;model.y+=dy;down.x=e.clientX;down.y=e.clientY}
+  const r=st.getBoundingClientRect();model.focus(e.clientX-r.left,e.clientY-r.top)
+ });
+ st.addEventListener('pointerup',()=>{if(down&&!down.moved)tap();dragging=false;down=null});
+ st.addEventListener('pointercancel',()=>{dragging=false;down=null});
+ st.addEventListener('wheel',e=>{if(!model)return;e.preventDefault();const s=e.deltaY<0?1.08:.92;model.scale.set(model.scale.x*s)},{passive:false});
+ window.addEventListener('resize',()=>{if(app&&model)layout()});
+}
+$('btn-load').onclick=load;$('btn-tap').onclick=tap;$('btn-reset').onclick=()=>{layout();log('位置重置')};
+inspect();
+</script>
+</body>
+</html>
