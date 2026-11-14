@@ -8,8 +8,8 @@ const {PNG} = require('pngjs');
 const root=path.resolve(__dirname,'../viewer');
 const catalog=JSON.parse(fs.readFileSync(path.join(root,'unique-catalog.json'),'utf8')).skins;
 
-async function verifySkin(browser, row) {
-  const page=await browser.newPage({viewport:{width:1366,height:900},deviceScaleFactor:1});
+async function verifySkin(browser, row, viewport) {
+  const page=await browser.newPage({viewport,deviceScaleFactor:1});
   const errors=[];
   page.on('pageerror',error=>errors.push(error.message));
   try{
@@ -83,6 +83,11 @@ async function verifySkin(browser, row) {
       'Model clipped or too close to stage edge: '+row.id+' bounds='+
         JSON.stringify({left,top,right,bottom,width,height}));
     assert.ok(modelPixels>500,'Live2D foreground visually absent: '+row.id+' '+modelPixels);
+    const visualCenterX=(left+right)/2,visualCenterY=(top+bottom)/2;
+    assert.ok(Math.abs(visualCenterX-width/2)<width*.12 &&
+      Math.abs(visualCenterY-height/2)<height*.12,
+      'Visible character not centered: '+row.id+' viewport='+JSON.stringify(viewport)+
+        ' bounds='+JSON.stringify({left,top,right,bottom,width,height}));
     await page.evaluate(()=>{
       active.visible=true;
       document.querySelector('#live2d-background').style.visibility='visible';
@@ -92,7 +97,7 @@ async function verifySkin(browser, row) {
     await page.waitForTimeout(220);
     assert.deepEqual(errors,[],'Unexpected browser JS error for skin '+row.id);
     console.log('UNIQUE-BROWSER-PASS',JSON.stringify({
-      id:row.id,name:row.name,skin:row.skin,
+      id:row.id,name:row.name,skin:row.skin,viewport,
       motions:info.motions.length,expressions:info.expressions.length,
       backgroundWidth:info.backgroundWidth,visibleModelPixels:modelPixels,
       modelBounds:{left,top,right,bottom,width,height}
@@ -108,11 +113,14 @@ async function verifySkin(browser, row) {
     '--no-sandbox','--use-gl=angle','--use-angle=swiftshader','--enable-webgl'
   ]});
   try{
-    for(const [index,row] of catalog.entries()){
-      console.log('UNIQUE-BROWSER-VERIFY',index+1,'/',catalog.length,row.id,row.name);
-      await verifySkin(browser,row);
+    for(const viewport of [{width:1366,height:900},{width:1920,height:1080}]){
+      for(const [index,row] of catalog.entries()){
+        console.log('UNIQUE-BROWSER-VERIFY',index+1,'/',catalog.length,
+          'viewport',viewport.width+'x'+viewport.height,row.id,row.name);
+        await verifySkin(browser,row,viewport);
+      }
     }
-    console.log('UNIQUE-BROWSER-ALL-PASS: 12 / 12');
+    console.log('UNIQUE-BROWSER-ALL-PASS: 12 / 12 at both 1366x900 and 1920x1080');
   }finally{
     await browser.close();
   }
