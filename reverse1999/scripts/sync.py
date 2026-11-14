@@ -20,6 +20,7 @@ from pathlib import Path
 import spine
 import scene
 import showcase
+import unique
 
 SOURCE = "myssal/Reverse-1999-CN-Asset"
 SOURCE_ROOT = "live2d/roles"
@@ -212,18 +213,24 @@ def generate_manifest(mapping):
     models.extend(spine.collect_spine_models(mapping))
     models.extend(scene.collect_scenes(mapping))
     models.extend(showcase.collect_showcases(mapping))
+    unique_models = unique.collect_models(mapping)
+    # 已下载 UNIQUE 后，以最高档专用的资源为主，避免重复列出同一张贝丽尔 Live2D。
+    unique_ids = {str(m["id"]) for m in unique_models}
+    models = [m for m in models if not
+              (m.get("type") == "scene-live2d" and str(m.get("id")) in unique_ids)]
+    models.extend(unique_models)
     models.sort(key=lambda x: (str(x["name"]), str(x["skin"]), str(x["folder"]), str(x.get("type", ""))))
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-    output = {"source": SOURCE, "models": models}
+    output = {"source": SOURCE, "models": models, "unique": unique.catalog()}
     MANIFEST.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"已生成索引：{MANIFEST}，包含 {len(models)} 套模型")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="重返未来：1999 动态角色资源按需下载与预览")
-    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime", "scene", "showcase"],
-                        help="查看目录、下载资源、更新本地索引、审计全部皮肤、安装 Spine 播放器")
-    parser.add_argument("target", nargs="?", help="download 指定皮肤 ID，例如 315901")
+    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime", "scene", "showcase", "unique"],
+                        help="查看目录、下载资源、UNIQUE 女性最高档衣着批量打包、更新本地索引")
+    parser.add_argument("target", nargs="?", help="指定皮肤 ID，unique 可用 all 下载全部 12 套")
     parser.add_argument("--search", default="", help="list 按角色名、皮肤名或 ID 搜索")
     parser.add_argument("--kind", choices=["auto", "cubism", "spine", "both"], default="auto",
                         help="download 优先选择的模型类型，默认有 Cubism 优先，没有则 Spine")
@@ -249,6 +256,18 @@ def main(argv=None):
         elif args.action == "showcase":
             showcase.download_showcase(mapping, args.target)
             generate_manifest(mapping)
+        elif args.action == "unique":
+            if not args.target or args.target == "list":
+                for record in unique.catalog():
+                    status = "已下载" if record["downloaded"] else "待下载"
+                    print(f'{record["id"]} {record["name"]:<10} {record["skin"]:<16} {status}')
+                print("全部下载：python reverse1999/scripts/sync.py unique all")
+            else:
+                try:
+                    unique.download(mapping, args.target)
+                finally:
+                    # 断网或中途失败也保留完整皮肤进入展示柜。
+                    generate_manifest(mapping)
         else:
             spine.download_selected(mapping, args.target, args.kind, args.refresh)
             generate_manifest(mapping)

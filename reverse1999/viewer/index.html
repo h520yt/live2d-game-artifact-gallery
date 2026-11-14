@@ -15,7 +15,13 @@ aside{background:var(--panel);min-width:0;padding:1rem;overflow-y:auto}aside.lef
 input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.7rem;background:#0f1721;color:inherit;outline:none}input:focus{border-color:var(--accent)}
 .note{font-size:.78rem;color:var(--muted);line-height:1.6}.count{font-size:.8rem;color:var(--muted);margin:.7rem 0}
 #models{display:flex;flex-direction:column;gap:.45rem}button.item{width:100%;text-align:left;cursor:pointer;border-radius:8px;border:1px solid transparent;background:#1b2838;color:inherit;padding:.65rem .75rem}
-button.item:hover,button.item.active{border-color:var(--accent);background:#273747}button.item small{color:var(--muted);display:block;margin-top:.15rem;font-size:.75rem}
+button.item:hover,button.item.active{border-color:var(--accent);background:#273747}
+button.item.not-downloaded{opacity:.72;border-style:dashed;border-color:#455568}
+button.item.not-downloaded:hover{opacity:1}
+.unique-tabs{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.7rem 0}
+.unique-tabs button{cursor:pointer;background:#1b2838;color:inherit;border:1px solid #455568;border-radius:8px;padding:.55rem .4rem;font-size:.82rem}
+.unique-tabs button.active{border-color:var(--accent);background:#31404a;font-weight:650}
+.unique-tip{margin:.65rem 0;color:var(--muted);font-size:.78rem;line-height:1.7}button.item small{color:var(--muted);display:block;margin-top:.15rem;font-size:.75rem}
 section.stage{position:relative;min-height:580px;overflow:hidden;background:radial-gradient(ellipse at 50% 40%,#243447,#101923 72%)}
 #stage-area{position:relative;width:100%;height:100%;min-height:580px;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
 #live2d-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0;pointer-events:none}
@@ -52,9 +58,14 @@ section.stage{position:relative;min-height:580px;overflow:hidden;background:radi
 <main>
   <aside class="left">
     <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
+    <div class="unique-tabs">
+      <button id="filter-all" class="active" type="button">全部资源</button>
+      <button id="filter-unique" type="button">Unique 最高档</button>
+    </div>
+    <div id="unique-tip" class="unique-tip" hidden>已收录 12 套女性 Unique 衣着；灰色项目尚未下载。批量下载：<code>python reverse1999/scripts/sync.py unique all</code></div>
     <div class="count" id="count">读取资源清单中…</div>
     <div id="models"></div>
-    <p class="note">只显示本地已下载的资源。贝丽尔动态衣着：<code>python reverse1999/scripts/sync.py scene 313403</code>（完整 Live2D 动作 + 独立背景）；另有露西样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
+    <p class="note">Unique 女性最高档已建目录，点击筛选查看下载状态；可执行 <code>python reverse1999/scripts/sync.py unique all</code> 批量下载。贝丽尔动态衣着：<code>python reverse1999/scripts/sync.py scene 313403</code>（完整 Live2D 动作 + 独立背景）；另有露西样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
   </aside>
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
@@ -95,20 +106,47 @@ const $ = id => document.getElementById(id);
 let app, active = null, selected = null, requestId = 0, models = [];
 let spinePlayer = null, spineScriptPromise = null, poseToken = 0;
 let sceneScale = 1, sceneX = 0, sceneY = 0, sceneFit = 'cover', sceneBgVisible = true;
+let uniqueOnly = false, uniqueCatalog = [];
 
 const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) || 3;
 
 function message(value){$('status').hidden = false; $('status').textContent = value;}
 function hideMessage(){ $('status').hidden = true; }
 function renderList(){
-  const q = $('search').value.trim().toLocaleLowerCase();
-  const visible = models.filter(m => [m.id,m.name,m.en,m.skin,m.skin_en,m.folder].some(v => String(v||'').toLocaleLowerCase().includes(q)));
-  $('count').textContent = `本地 ${visible.length} / ${models.length} 套模型`;
+  const q=$('search').value.trim().toLocaleLowerCase();
+  const matches=record=>[record.id,record.name,record.en,record.skin,record.skin_en,record.folder,record.version].some(v=>String(v||'').toLocaleLowerCase().includes(q));
+  $('filter-all').classList.toggle('active',!uniqueOnly);
+  $('filter-unique').classList.toggle('active',uniqueOnly);
+  $('unique-tip').hidden=!uniqueOnly;
   $('models').replaceChildren();
-  visible.forEach(m => {
+  if(uniqueOnly){
+    const visible=uniqueCatalog.filter(matches);
+    const completed=uniqueCatalog.filter(x=>x.downloaded).length;
+    $('count').textContent='UNIQUE 女性 '+completed+' / '+uniqueCatalog.length+' 套已下载';
+    visible.forEach(row=>{
+      const m=models.find(item=>item.tier==='UNIQUE'&&String(item.id)===String(row.id));
+      const btn=document.createElement('button');
+      btn.className='item'+(!m?' not-downloaded':'')+(selected===m&&m?' active':'');
+      const label=document.createElement('div');label.textContent=row.name+' · '+row.skin;
+      const detail=document.createElement('small');
+      detail.textContent='UNIQUE · '+row.version+' · '+row.id+' · '+(m?'点击预览 Live2D':'待下载（点击查看命令）');
+      btn.append(label,detail);
+      btn.onclick=()=>{
+        if(m){selectModel(m);return;}
+        message('尚未下载 '+row.name+'「'+row.skin+'」\n在 VS Code 项目根目录执行：\npython reverse1999/scripts/sync.py unique '+row.id+'\n然后刷新浏览器。');
+      };
+      $('models').appendChild(btn);
+    });
+    return;
+  }
+  const visible=models.filter(matches);
+  $('count').textContent='本地 '+visible.length+' / '+models.length+' 套模型';
+  visible.forEach(m=>{
     const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
-    const line=document.createElement('div');line.textContent=`${m.name} · ${m.skin}`;
-    const second=document.createElement('small');second.textContent=`${m.type==='scene-live2d'?'Live2D 动态衣着+专属背景':m.type==='scene'?'商城卡面 Spine+背景':m.type==='showcase'?'完整皮肤展示':m.type==='spine'?'Spine':'Live2D'} · ${m.id} · ${m.folder}`;
+    const line=document.createElement('div');line.textContent=m.name+' · '+m.skin;
+    const second=document.createElement('small');
+    const type=m.type==='scene-live2d'?'Live2D 动态衣着+专属背景':m.type==='scene'?'商城卡面 Spine+背景':m.type==='showcase'?'完整皮肤展示':m.type==='spine'?'Spine':'Live2D';
+    second.textContent=(m.tier==='UNIQUE'?'UNIQUE · ':'')+type+' · '+m.id+' · '+m.folder;
     btn.append(line,second);btn.onclick=()=>selectModel(m);
     $('models').appendChild(btn);
   });
@@ -367,7 +405,7 @@ async function start(){
   try{
     const response=await fetch('manifest.json',{cache:'no-store'});
     if(!response.ok)throw new Error(`资源清单 HTTP ${response.status}`);
-    const payload=await response.json();
+    const payload=await response.json();uniqueCatalog=payload.unique||[];
     // 兼容 main 已有的 scene.py 商城场景记录：统一交给实测通过的 WebGL 背景播放器。
     // scene 的下载器和原有 manifest 结构均不变。
     models=(payload.models||[]).map(m=>{
@@ -384,6 +422,8 @@ async function start(){
     });
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
     initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
+    $('filter-all').onclick=()=>{uniqueOnly=false;renderList();};
+    $('filter-unique').onclick=()=>{uniqueOnly=true;renderList();};
     if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
   }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
 }
