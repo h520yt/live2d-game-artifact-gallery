@@ -9,7 +9,7 @@ permissions:
   contents: read
 jobs:
   unique-female-real-assets:
-    if: github.ref == 'refs/heads/feat/reverse1999-unique-female-bundle'
+    if: github.ref == 'refs/heads/feat/reverse1999-unique-female-bundle' || github.ref == 'refs/heads/fix/reverse1999-live2d-framing'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     steps:
