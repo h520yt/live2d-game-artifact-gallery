@@ -139,11 +139,12 @@ def valid_live2d_model(model_dir: Path, name: str) -> bool:
         return False
 
 
-def pick_skins(only: list[str] | None) -> list[Skin]:
+def pick_skins(only: list[str] | None, batch: tuple[Skin, ...] | None = None) -> list[Skin]:
+    skins = BATCH if batch is None else batch
     if not only:
-        return list(BATCH)
+        return list(skins)
     wanted = set(only)
-    selected = [s for s in BATCH if s.asset in wanted or str(s.skin_id) in wanted or s.character in wanted]
+    selected = [s for s in skins if s.asset in wanted or str(s.skin_id) in wanted or s.character in wanted]
     found = {key for s in selected for key in (s.asset, str(s.skin_id), s.character)}
     unknown = wanted - found
     if unknown:
@@ -164,8 +165,12 @@ def download_selection(label: str, rows: list[AssetRow], cache_dir: Path) -> lis
     return missing
 
 
-def main(argv: list[str] | None = None) -> int:
-    parser = argparse.ArgumentParser(description="碧蓝航线第二批 10 款皮肤按需安装")
+def main(argv: list[str] | None = None, *, batch: tuple[Skin, ...] | None = None,
+         batch_key: str = "batch2", batch_label: str = "第二批",
+         gallery_page: str = "batch2.html") -> int:
+    """公共批次安装入口：batch2 默认行为保持不变，其他批次传入独立目录与报告名。"""
+    skins = BATCH if batch is None else batch
+    parser = argparse.ArgumentParser(description=f"碧蓝航线{batch_label} {len(skins)} 款皮肤按需安装")
     parser.add_argument("--plan", action="store_true", help="只核对目录、资源类型、下载规模，不修改文件")
     parser.add_argument("--refresh", action="store_true", help="更新皮肤元数据和官方资源清单")
     parser.add_argument("--only", nargs="+", metavar="NAME", help="只安装指定资源名/skin ID/角色名")
@@ -176,7 +181,7 @@ def main(argv: list[str] | None = None) -> int:
     import config as C
 
     try:
-        selected = pick_skins(args.only)
+        selected = pick_skins(args.only, batch=skins)
     except ValueError as exc:
         parser.error(str(exc))
 
@@ -209,7 +214,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"{skin.character}《{skin.title}》 | skin={skin.skin_id} | {skin.category} | 立绘包={len(paints)} | 模型包={len(models)}")
         if not paints:
             print("  [警告] 清单中缺少绘画资源；可能需要 --refresh 或切换资源服")
-        if skin.category == "live2d_plus" and not models:
+        if skin.category in ("live2d_plus", "live2d") and not models:
             print("  [警告] 官方标注 Live2D+，但 L2D 清单中没有匹配模型，请检查版本")
         elif skin.category != "live2d_plus" and not models:
             print("  [提示] 非 Live2D 换装，现有工具链只能还原静态立绘；动效未接入")
@@ -241,7 +246,7 @@ def main(argv: list[str] | None = None) -> int:
             continue
         bundle = cache_dir.joinpath(*row.path.split("/"))
         # 使用临时输出，重建失败不覆盖既有的正常立绘文件。
-        temporary = output.with_name(f".{output.stem}.batch2.tmp.png")
+        temporary = output.with_name(f".{output.stem}.{batch_key}.tmp.png")
         if temporary.exists():
             temporary.unlink()
         print(f"  [重建] {output.name}", flush=True)
@@ -256,9 +261,13 @@ def main(argv: list[str] | None = None) -> int:
     print("\n[3/4] 下载并还原 Live2D 模型")
     bad_models = {r.path for r in download_selection("L2D", all_models, cache_dir)}
     ok_model_paths = {r.path for r in all_models if r.path not in bad_models}
-    if ok_model_paths:
+    needs_build = {r.path for r in all_models if r.path in ok_model_paths
+                   and not valid_live2d_model(model_dir / Path(r.path).name, Path(r.path).name)}
+    if needs_build:
         from build import build_live2d
-        build_live2d(only=ok_model_paths)
+        build_live2d(only=needs_build)
+    else:
+        print("  已有模型文件通过检查，无需重复提取", flush=True)
 
     print("\n[4/4] 检查结果，更新查看器")
     report = []
@@ -270,7 +279,7 @@ def main(argv: list[str] | None = None) -> int:
         model_ok = bool(passed_models)
         # 动态/特殊动态不等于拥有可播放的完整特效，即使提取出模型也需验证交互/特效。
         status = "live2d_files_ready" if model_ok else "painting_only" if painting_ok else "failed"
-        if status == "failed" or (skin.category == "live2d_plus" and not model_ok):
+        if not painting_ok or (skin.category in ("live2d_plus", "live2d") and not model_ok):
             failed = True
         record = {
             **asdict(skin),
@@ -280,7 +289,7 @@ def main(argv: list[str] | None = None) -> int:
             "models_built": len(passed_models),
             "models_expected": len(models),
             "animated_effect_verified": False,
-            "notes": "静态立绘可浏览；动态/特殊动态效果尚未被当前查看器验证" if skin.category != "live2d_plus" else "模型已提取，需在查看器实测动作/交互",
+            "notes": "静态立绘可浏览；动态/特殊动态效果尚未被当前查看器验证" if skin.category not in ("live2d_plus", "live2d") else "模型文件已提取，需在查看器实测动作/交互",
         }
         report.append(record)
         print(f"  {skin.character}《{skin.title}》 => {status} (PNG {len(passed_paints)}/{len(paints)}, L2D {len(passed_models)}/{len(models)})")
@@ -290,12 +299,12 @@ def main(argv: list[str] | None = None) -> int:
         from gen_manifest import generate
         generate()
 
-    report_path = Path(C.DATA_DIR) / "batch2-install-report.json"  # data/ 已被 .gitignore 排除
+    report_path = Path(C.DATA_DIR) / f"{batch_key}-install-report.json"  # data/ 已被 .gitignore 排除
     report_path.parent.mkdir(parents=True, exist_ok=True)
     with report_path.open("w", encoding="utf-8") as f:
-        json.dump({"batch": "azur_lane_batch2", "generated_at": datetime.now(timezone.utc).isoformat(), "skins": report}, f, ensure_ascii=False, indent=2)
+        json.dump({"batch": f"azur_lane_{batch_key}", "generated_at": datetime.now(timezone.utc).isoformat(), "skins": report}, f, ensure_ascii=False, indent=2)
     print(f"安装检查记录：{report_path}")
-    print("可在仓库根执行 python -m http.server 8000 并打开 /azur_lane/viewer/")
+    print(f"可在仓库根执行 python -m http.server 8000 并打开 /azur_lane/viewer/{gallery_page}")
     return 1 if failed or paint_errors or bad_models else 0
 
 

@@ -1,0 +1,30 @@
+name: Azur Lane batch installers
+
+on:
+  push:
+    paths:
+      - 'azur_lane/scripts/install_batch*.py'
+      - 'azur_lane/tests/test_install_batch*.py'
+      - 'azur_lane/config/hashes/PAINTING.csv'
+      - 'azur_lane/config/hashes/L2D.csv'
+      - '.github/workflows/azur-lane-batch-tests.yml'
+  pull_request:
+    paths:
+      - 'azur_lane/scripts/install_batch*.py'
+      - 'azur_lane/tests/test_install_batch*.py'
+      - 'azur_lane/config/hashes/PAINTING.csv'
+      - 'azur_lane/config/hashes/L2D.csv'
+      - '.github/workflows/azur-lane-batch-tests.yml'
+
+jobs:
+  batch-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run pure logic and resource-index tests
+        run: python -m unittest discover -s azur_lane/tests -p 'test_install_batch*.py' -v
+      - name: Third batch dry-run
+        run: python azur_lane/scripts/install_batch3.py --plan

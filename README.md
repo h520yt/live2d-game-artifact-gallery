@@ -69,6 +69,25 @@ python -m http.server 8000
 
 ---
 
+## 碧蓝航线第三批：12 款 Live2D 定向安装
+
+新增第三批 12 款御姐 / 腿部构图候选，不需要重新下载全部资源库。运行前确保本地项目同步到最新代码：
+
+```powershell
+git pull origin main
+python azur_lane/scripts/install_batch3.py --plan
+python azur_lane/scripts/install_batch3.py
+python -m http.server 8000
+```
+
+打开 [第三批专属画廊](azur_lane/viewer/batch3.html)（本地服务地址：`http://127.0.0.1:8000/azur_lane/viewer/batch3.html`）。
+支持按角色名、资源名搜索和立绘变体切换。已缓存文件验证后跳过，模型需要具备有效 moc3 与贴图才视作文件就绪；**文件就绪不代表游戏内全部动态交互和双形态已经还原**。
+
+指定某款：`python azur_lane/scripts/install_batch3.py --only gaoxiong_7`。
+详细皮肤清单、验收范围及修复说明见 [第三批安装记录](azur_lane/docs/2026-11-15-第三批安装说明.md)。
+
+---
+
 ## 安装依赖（需要更新资源时）
 
 ```bash
