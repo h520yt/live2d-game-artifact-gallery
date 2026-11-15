@@ -83,6 +83,8 @@ python azur_lane/scripts/install_scene_layers.py
 python -m http.server 8000
 ```
 
+Windows 也可以直接双击项目根目录的 `补齐碧蓝航线场景素材.bat`。
+
 打开 `http://127.0.0.1:8000/azur_lane/viewer/index.html`，点击「立绘画廊」即可查看。
 需要补充人物与背景的 Mesh 坐标时可运行 `python azur_lane/scripts/install_scene_layers.py --geometry`。
 尚未下载到本地的版权素材不会随着 Git 更新自动出现；找不到专属背景时继续显示人物并明确提示。
