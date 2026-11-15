@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>解包资源查看器 · Azur Lane</title>
+<link rel="stylesheet" href="scene_gallery.css">
 <style>
   :root{
     /* ===== 色阶（海军深海 + 黄铜）===== */
@@ -422,7 +423,24 @@
       </div>
       <span class="close" id="detail-close">关闭 ✕</span>
     </div>
-    <div class="detail-grid" id="detail-grid"></div>
+    <div class="detail-modes" id="detail-modes">
+      <button type="button" data-mode="scene" class="on">完整场景</button>
+      <button type="button" data-mode="raw">原始素材</button>
+    </div>
+    <div class="scene-options" id="scene-options">
+      <label>形态 <select class="sortsel" id="scene-figure-select" aria-label="选择人物立绘形态"></select></label>
+      <label>人物缩放 <input id="scene-scale" type="range" min="60" max="160" value="100"></label>
+      <label>左右 <input id="scene-offset-x" type="range" min="-40" max="40" value="0"></label>
+      <label>上下 <input id="scene-offset-y" type="range" min="-40" max="40" value="0"></label>
+      <label><input id="scene-show-front" type="checkbox" checked> 前景</label>
+      <button type="button" id="scene-reset">重置</button>
+      <button type="button" class="scene-export" id="scene-export" disabled>导出完整 PNG</button>
+    </div>
+    <div class="scene-area" id="scene-area">
+      <canvas id="scene-canvas" aria-label="人物与背景组合预览"></canvas>
+      <p class="scene-notice" id="scene-notice">正在准备场景…</p>
+    </div>
+    <div class="detail-grid" id="detail-grid" hidden></div>
   </div>
 </div>
 
@@ -435,6 +453,7 @@
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
 <script src="../../shared/vendor/live2d.min.js"></script>
+<script src="scene_gallery.js"></script>
 <script>
 const { Live2DModel } = PIXI.live2d;
 let app, current, manifest;
@@ -923,13 +942,17 @@ function buildGallery(){
 
   const appendCards = () => {
     const slice = charFiltered.slice(charShown, charShown + PAGE);
-    slice.forEach(c => grid.appendChild(createCard({
-      img: c.rep_path,
-      alt: c.rep,
-      badge: c.items.length > 1 ? `<span class="cbadge">${c.items.length}</span>` : '',
-      info: cardInfo(c.en, c.rep),
-      onClick: () => openDetail(c),
-    })));
+    slice.forEach(c => {
+      const card = createCard({
+        img: c.rep_path,
+        alt: c.rep,
+        badge: c.items.length > 1 ? `<span class="cbadge">${c.items.length}</span>` : '',
+        info: cardInfo(c.en, c.rep),
+        onClick: () => openDetail(c),
+      });
+      AzurSceneGallery.decorateCard(card, c);
+      grid.appendChild(card);
+    });
     charShown += slice.length;
   };
 
@@ -981,6 +1004,7 @@ function openDetail(c){
       onClick: () => openLightbox(it),
     }));
   });
+  AzurSceneGallery.open(c);
   document.getElementById('detail').classList.add('on');
 }
 document.getElementById('detail-close').onclick =
