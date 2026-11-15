@@ -188,10 +188,12 @@ def generate():
         items_sorted = sorted(items, key=lambda x: (kind_order.get(x["kind"], 3), suffix_count(x["name"]), x["name"]))
         info = find_info(rep["name"], p2info)
         chars.append({"group": items[0]["group"], "en": rep["en"], "rep": rep["name"],
+                      "asset": split_suffixes(rep["name"])[0],
                       "rep_path": rep["path"], "skin": sid, "rel": (info or {}).get("rel", 0),
                       "items": [{"name": x["name"], "path": x["path"], "kind": x["kind"], "bounds": x["bounds"]} for x in items_sorted]})
     for p in ungrouped:
-        chars.append({"group": -1, "en": "", "rep": p["name"], "rep_path": p["path"], "skin": -1, "rel": 0,
+        chars.append({"group": -1, "en": "", "rep": p["name"], "asset": split_suffixes(p["name"])[0],
+                      "rep_path": p["path"], "skin": -1, "rel": 0,
                       "items": [{"name": p["name"], "path": p["path"], "kind": p["kind"], "bounds": p["bounds"]}]})
 
     # Live2D 模型
