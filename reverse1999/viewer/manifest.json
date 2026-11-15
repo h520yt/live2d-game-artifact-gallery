@@ -2,6 +2,17 @@
   "source": "myssal/Reverse-1999-CN-Asset",
   "models": [
     {
+      "id": 306605,
+      "name": "37",
+      "skin": "完美的流体",
+      "en": "Thirty-seven",
+      "skin_en": "A Gift of Nourishment",
+      "folder": "v3a7_306605_37",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/306605/cubism/v3a7_306605_37.model3.json"
+    },
+    {
       "type": "scene-live2d",
       "tier": "UNIQUE",
       "id": 306604,
@@ -15,6 +26,17 @@
       "version": "2.2",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
       "motion_groups": 37
+    },
+    {
+      "id": 303803,
+      "name": "五色月",
+      "skin": "银玫瑰",
+      "en": "Satsuki",
+      "skin_en": "Silver Rose",
+      "folder": "v1a7_303803_wuseyue",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/303803/cubism/v1a7_303803_wuseyue.model3.json"
     },
     {
       "type": "spine",
@@ -44,6 +66,111 @@
       }
     },
     {
+      "id": 304704,
+      "name": "兔毛手袋",
+      "skin": "永生苦短",
+      "en": "Medicine Pocket",
+      "skin_en": "Forever Is Too Short",
+      "folder": "v3a3_304704_tmsd",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/304704/cubism/v3a3_304704_tmsd.model3.json"
+    },
+    {
+      "id": 311604,
+      "name": "冷周六",
+      "skin": "巫阳抚彗歌",
+      "en": "Hissabeth",
+      "skin_en": "Verses to Heaven",
+      "folder": "v3a8_311604_lzl",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/311604/cubism/v3a8_311604_lzl.model3.json"
+    },
+    {
+      "id": 307705,
+      "name": "北方哨歌",
+      "skin": "银色等高线",
+      "en": "Windsong",
+      "skin_en": "Silver Isoheight",
+      "folder": "s02_307705_bfsg",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/307705/cubism/s02_307705_bfsg.model3.json"
+    },
+    {
+      "id": 308004,
+      "name": "卡卡尼亚",
+      "skin": "时代病陪护",
+      "en": "Kakania",
+      "skin_en": "Guardian of the Broken",
+      "folder": "v3a2_308004_kkny",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/308004/cubism/v3a2_308004_kkny.model3.json"
+    },
+    {
+      "id": 307103,
+      "name": "坎吉拉",
+      "skin": "午夜来客",
+      "en": "Kanjira",
+      "skin_en": "The Night Visitor",
+      "folder": "v2a0_307103_kjl",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/307103/cubism/v2a0_307103_kjl.model3.json"
+    },
+    {
+      "id": 304304,
+      "name": "坦南特",
+      "skin": "鉴赏家之战",
+      "en": "Tennant",
+      "skin_en": "Dueling Connoisseurs",
+      "folder": "v2a3_304304_tnt",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/304304/cubism/v2a3_304304_tnt.model3.json"
+    },
+    {
+      "id": 308804,
+      "name": "塞梅尔维斯",
+      "skin": "心之盈亏",
+      "en": "Semmelweis",
+      "skin_en": "The Wax and Wane of the Heart",
+      "folder": "v3a0_308804_smews",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/308804/cubism/v3a0_308804_smews.model3.json"
+    },
+    {
+      "id": 301703,
+      "name": "夏利",
+      "skin": "镜中幕间",
+      "en": "Charlie",
+      "skin_en": "Through Mirrors and Curtains",
+      "folder": "301703_xiali",
+      "channel": "JUKEBOX",
+      "type": "spine",
+      "dir": "../data/jukebox/301703/spine",
+      "poses": {
+        "ui": {
+          "skel": "301703_xiali_ui.skel",
+          "atlas": "301703_xiali.atlas",
+          "version": "4.2.36"
+        },
+        "room": {
+          "skel": "301703_xiali_room.skel",
+          "atlas": "301703_xiali.atlas",
+          "version": "4.2.36"
+        },
+        "fight": {
+          "skel": "301703_xiali_fight.skel",
+          "atlas": "301703_xiali.atlas",
+          "version": "4.2.36"
+        }
+      }
+    },
+    {
       "type": "scene-live2d",
       "tier": "UNIQUE",
       "id": 310003,
@@ -57,6 +184,67 @@
       "version": "3.2",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
       "motion_groups": 38
+    },
+    {
+      "id": 301603,
+      "name": "婴儿蓝",
+      "skin": "于麻雀山上",
+      "en": "Baby Blue",
+      "skin_en": "On the Sparrow Hills ",
+      "folder": "v1a8_301603_yingerlan",
+      "channel": "JUKEBOX",
+      "type": "spine",
+      "dir": "../data/jukebox/301603/spine",
+      "poses": {
+        "ui": {
+          "skel": "301603_yingerlan_ui.skel",
+          "atlas": "301603_yingerlan.atlas",
+          "version": "4.2.36"
+        },
+        "room": {
+          "skel": "301603_yingerlan_room.skel",
+          "atlas": "301603_yingerlan.atlas",
+          "version": "4.2.36"
+        },
+        "fight": {
+          "skel": "301603_yingerlan_fight.skel",
+          "atlas": "301603_yingerlan.atlas",
+          "version": "4.2.36"
+        }
+      }
+    },
+    {
+      "id": 308203,
+      "name": "小叶尼塞",
+      "skin": "蓝河湾",
+      "en": "Енисей",
+      "skin_en": "Around the Riverbend",
+      "folder": "v2a2_308203_xyns",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/308203/cubism/v2a2_308203_xyns.model3.json"
+    },
+    {
+      "id": 302203,
+      "name": "帕米埃",
+      "skin": "枪尖向上",
+      "en": "Dikke",
+      "skin_en": "The Pointy End Up",
+      "folder": "v1a5_302203_pamiai",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/302203/cubism/v1a5_302203_pamiai.model3.json"
+    },
+    {
+      "id": 311705,
+      "name": "库珀花环",
+      "skin": "牧于晚星",
+      "en": "Kiperina",
+      "skin_en": "Star Shepherdess",
+      "folder": "v4a0_311705_kphh",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/311705/cubism/v4a0_311705_kphh.model3.json"
     },
     {
       "type": "scene-live2d",
@@ -89,6 +277,45 @@
       "motion_groups": 36
     },
     {
+      "id": 300731,
+      "name": "未锈铠",
+      "skin": "魂灵长青",
+      "en": "A Knight",
+      "skin_en": "The Evergreen Soul",
+      "folder": "v3a1_300731_wxk",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/300731/cubism/v3a1_300731_wxk.model3.json"
+    },
+    {
+      "id": 302003,
+      "name": "柏林以东",
+      "skin": "铅红的真相",
+      "en": "Bkornblume",
+      "skin_en": "Truth of the Dark Red",
+      "folder": "302003_bolinyidong",
+      "channel": "JUKEBOX",
+      "type": "spine",
+      "dir": "../data/jukebox/302003/spine",
+      "poses": {
+        "ui": {
+          "skel": "302003_bolinyidong_ui.skel",
+          "atlas": "302003_bolinyidong.atlas",
+          "version": "4.2.36"
+        },
+        "room": {
+          "skel": "302003_bolinyidong_room.skel",
+          "atlas": "302003_bolinyidong.atlas",
+          "version": "4.2.36"
+        },
+        "fight": {
+          "skel": "302003_bolinyidong_fight.skel",
+          "atlas": "302003_bolinyidong.atlas",
+          "version": "4.2.36"
+        }
+      }
+    },
+    {
       "type": "scene-live2d",
       "tier": "UNIQUE",
       "id": 311003,
@@ -102,6 +329,89 @@
       "version": "3.4",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
       "motion_groups": 40
+    },
+    {
+      "id": 306204,
+      "name": "梅兰妮",
+      "skin": "红与白",
+      "en": "Melania",
+      "skin_en": "Red and White",
+      "folder": "v2a6_306204_meilanni",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/306204/cubism/v2a6_306204_meilanni.model3.json"
+    },
+    {
+      "id": 300306,
+      "name": "槲寄生",
+      "skin": "荆棘环绕处",
+      "en": "Druvis III",
+      "skin_en": "Shrouded in Thorns",
+      "folder": "v2a5_300306_hjs",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/300306/cubism/v2a5_300306_hjs.model3.json"
+    },
+    {
+      "id": 302403,
+      "name": "气球派对",
+      "skin": "银翅谣",
+      "en": "Balloon Party",
+      "skin_en": "The Folk Song of Silver Butterfly",
+      "folder": "v1a6_302403_qqpd",
+      "channel": "JUKEBOX",
+      "type": "spine",
+      "dir": "../data/jukebox/302403/spine",
+      "poses": {
+        "ui": {
+          "skel": "302403_qqpd_ui.skel",
+          "atlas": "302403_qqpd.atlas",
+          "version": "4.2.36"
+        },
+        "room": {
+          "skel": "302403_qqpd_room.skel",
+          "atlas": "302403_qqpd.atlas",
+          "version": "4.2.36"
+        },
+        "fight": {
+          "skel": "302403_qqpd_fight.skel",
+          "atlas": "302403_qqpd.atlas",
+          "version": "4.2.36"
+        }
+      }
+    },
+    {
+      "id": 307503,
+      "name": "沙丝绒",
+      "skin": "野性的倾洒",
+      "en": "Desert Flannel",
+      "skin_en": "Call of the Wild",
+      "folder": "v1a9_307503_shasirong",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/307503/cubism/v1a9_307503_shasirong.model3.json"
+    },
+    {
+      "id": 305604,
+      "name": "洁西卡",
+      "skin": "乐园之声",
+      "en": "Changeling",
+      "skin_en": "The Sound of Paradise",
+      "folder": "v2a8_305604_jxk",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/305604/cubism/v2a8_305604_jxk.model3.json"
+    },
+    {
+      "id": 305104,
+      "name": "温妮弗雷德",
+      "skin": "以黄金哺育",
+      "en": "Eternity",
+      "skin_en": "The Golden Nurturer",
+      "folder": "s01_305104_wnfld",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/305104/cubism/s01_305104_wnfld.model3.json"
     },
     {
       "type": "scene-live2d",
@@ -134,6 +444,67 @@
       "motion_groups": 36
     },
     {
+      "id": 301103,
+      "name": "玛丽莲",
+      "skin": "维纳斯的传道",
+      "en": "Sweetheart",
+      "skin_en": "The Preaching of Venus",
+      "folder": "v1a4_301103_malilian",
+      "channel": "JUKEBOX",
+      "type": "spine",
+      "dir": "../data/jukebox/301103/spine",
+      "poses": {
+        "ui": {
+          "skel": "301103_malilian_ui.skel",
+          "atlas": "301103_malilian.atlas",
+          "version": "4.2.36"
+        },
+        "room": {
+          "skel": "301103_malilian_room.skel",
+          "atlas": "301103_malilian.atlas",
+          "version": "4.2.36"
+        },
+        "fight": {
+          "skel": "301103_malilian_fight.skel",
+          "atlas": "301103_malilian.atlas",
+          "version": "4.2.36"
+        }
+      }
+    },
+    {
+      "id": 312704,
+      "name": "玛尔纱",
+      "skin": "告慰尘与惘",
+      "en": "Marsha",
+      "skin_en": "Solace for the Lost",
+      "folder": "v4a1_312704_mes",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/312704/cubism/v4a1_312704_mes.model3.json"
+    },
+    {
+      "id": 304103,
+      "name": "玛蒂尔达",
+      "skin": "天才假日",
+      "en": "Matilda Bouanich",
+      "skin_en": "The Genius's Holiday",
+      "folder": "304103_madierda",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/304103/cubism/304103_madierda.model3.json"
+    },
+    {
+      "id": 309503,
+      "name": "环状水星",
+      "skin": "午夜曼波",
+      "en": "Mercuria",
+      "skin_en": "Midnight Mistmancer",
+      "folder": "v2a4_309503_hzsx",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/309503/cubism/v2a4_309503_hzsx.model3.json"
+    },
+    {
       "type": "scene-live2d",
       "tier": "UNIQUE",
       "id": 314403,
@@ -149,6 +520,17 @@
       "motion_groups": 33
     },
     {
+      "id": 310404,
+      "name": "笃笃骨",
+      "skin": "裁春衫",
+      "en": "Willow",
+      "skin_en": "Reborn and Restored",
+      "folder": "v3a4_310404_ddg",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/310404/cubism/v3a4_310404_ddg.model3.json"
+    },
+    {
       "type": "scene-live2d",
       "tier": "UNIQUE",
       "id": 310504,
@@ -162,6 +544,39 @@
       "version": "S02",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
       "motion_groups": 36
+    },
+    {
+      "id": 312104,
+      "name": "莫莉德尔",
+      "skin": "玫瑰午睡时",
+      "en": "Moldir",
+      "skin_en": "Repose Amidst the Roses",
+      "folder": "v3a9_312104_mlde",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/312104/cubism/v3a9_312104_mlde.model3.json"
+    },
+    {
+      "id": 309804,
+      "name": "蓝手帕",
+      "skin": "冷襁褓",
+      "en": "Tuesday",
+      "skin_en": "Cold Cradle",
+      "folder": "v3a5_309804_lsp",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/309804/cubism/v3a5_309804_lsp.model3.json"
+    },
+    {
+      "id": 311404,
+      "name": "虚构集",
+      "skin": "文字，自始至终",
+      "en": "Recoleta",
+      "skin_en": "The Weight of Words",
+      "folder": "v3a6_311404_xgj",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/311404/cubism/v3a6_311404_xgj.model3.json"
     },
     {
       "type": "scene-live2d",
@@ -209,6 +624,28 @@
       "version": "4.0",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
       "motion_groups": 34
+    },
+    {
+      "id": 304804,
+      "name": "远旅",
+      "skin": "群星齐唱时",
+      "en": "Voyager",
+      "skin_en": "Choir of the Stars",
+      "folder": "v2a7_304804_yl",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/304804/cubism/v2a7_304804_yl.model3.json"
+    },
+    {
+      "id": 306003,
+      "name": "金蜜儿",
+      "skin": "铅黄色磨坊",
+      "en": "Blonney",
+      "skin_en": "The Giallo Grind",
+      "folder": "v2a1_306003_jinmier",
+      "channel": "JUKEBOX",
+      "type": "cubism",
+      "path": "../data/jukebox/306003/cubism/v2a1_306003_jinmier.model3.json"
     },
     {
       "type": "scene-live2d",
@@ -321,6 +758,264 @@
       "skin": "释命运以弦音",
       "tier": "UNIQUE",
       "version": "4.0",
+      "downloaded": true
+    }
+  ],
+  "jukebox": [
+    {
+      "id": 301703,
+      "name": "夏利",
+      "skin": "镜中幕间",
+      "type": "spine",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 302003,
+      "name": "柏林以东",
+      "skin": "铅红的真相",
+      "type": "spine",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 304103,
+      "name": "玛蒂尔达",
+      "skin": "天才假日",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 301103,
+      "name": "玛丽莲",
+      "skin": "维纳斯的传道",
+      "type": "spine",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 302203,
+      "name": "帕米埃",
+      "skin": "枪尖向上",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 302403,
+      "name": "气球派对",
+      "skin": "银翅谣",
+      "type": "spine",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 303803,
+      "name": "五色月",
+      "skin": "银玫瑰",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 301603,
+      "name": "婴儿蓝",
+      "skin": "于麻雀山上",
+      "type": "spine",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 307503,
+      "name": "沙丝绒",
+      "skin": "野性的倾洒",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 307103,
+      "name": "坎吉拉",
+      "skin": "午夜来客",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 306003,
+      "name": "金蜜儿",
+      "skin": "铅黄色磨坊",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 308203,
+      "name": "小叶尼塞",
+      "skin": "蓝河湾",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 304304,
+      "name": "坦南特",
+      "skin": "鉴赏家之战",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 309503,
+      "name": "环状水星",
+      "skin": "午夜曼波",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 300306,
+      "name": "槲寄生",
+      "skin": "荆棘环绕处",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 306204,
+      "name": "梅兰妮",
+      "skin": "红与白",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 304804,
+      "name": "远旅",
+      "skin": "群星齐唱时",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 305604,
+      "name": "洁西卡",
+      "skin": "乐园之声",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 308804,
+      "name": "塞梅尔维斯",
+      "skin": "心之盈亏",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 305104,
+      "name": "温妮弗雷德",
+      "skin": "以黄金哺育",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 300731,
+      "name": "未锈铠",
+      "skin": "魂灵长青",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 308004,
+      "name": "卡卡尼亚",
+      "skin": "时代病陪护",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 304704,
+      "name": "兔毛手袋",
+      "skin": "永生苦短",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 310404,
+      "name": "笃笃骨",
+      "skin": "裁春衫",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 309804,
+      "name": "蓝手帕",
+      "skin": "冷襁褓",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 311404,
+      "name": "虚构集",
+      "skin": "文字，自始至终",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 306605,
+      "name": "37",
+      "skin": "完美的流体",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 311604,
+      "name": "冷周六",
+      "skin": "巫阳抚彗歌",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 307705,
+      "name": "北方哨歌",
+      "skin": "银色等高线",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 312104,
+      "name": "莫莉德尔",
+      "skin": "玫瑰午睡时",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 311705,
+      "name": "库珀花环",
+      "skin": "牧于晚星",
+      "type": "cubism",
+      "channel": "JUKEBOX",
+      "downloaded": true
+    },
+    {
+      "id": 312704,
+      "name": "玛尔纱",
+      "skin": "告慰尘与惘",
+      "type": "cubism",
+      "channel": "JUKEBOX",
       "downloaded": true
     }
   ]
