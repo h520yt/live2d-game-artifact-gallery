@@ -80,6 +80,7 @@ def main(argv=None) -> int:
     pending = [
         row for row in targeted
         if args.force or not valid_png(painting_output(row, output_dir))
+        or (args.geometry and not painting_output(row, output_dir).with_suffix(".meta.json").exists())
     ]
     missing_bg = {
         asset for asset in selected
