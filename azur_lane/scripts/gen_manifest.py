@@ -10,7 +10,7 @@ import config as C
 
 SKIN_TPL = os.path.join(C.CFG_JSON_DIR, "ship_skin_template.json")
 
-PART = ["bg","front","back","shadow","dark_shadow","dark","effect","light",
+PART = ["bj","bg","front","back","shadow","dark_shadow","dark","effect","light",
         "middle","mid","shophx","wjz","jz","pt","tx","s"]
 VAR  = ["n","rw","hx","g","ex","hd","bh","h","p","d","renwu"]
 
@@ -158,8 +158,20 @@ def generate():
     for f in paint_files:
         name = os.path.splitext(os.path.basename(f))[0]
         group, sid, en, kind = resolve(name, p2info)
+        # 重建脚本保存的 Mesh 空间边界：只有同坐标系图层才使用精确叠放。
+        bounds = None
+        meta_path = os.path.splitext(f)[0] + ".meta.json"
+        if os.path.isfile(meta_path):
+            try:
+                with open(meta_path, encoding="utf-8") as meta_file:
+                    metadata = json.load(meta_file)
+                if metadata.get("geometry") == "mesh":
+                    bounds = metadata.get("bounds")
+            except (OSError, ValueError, TypeError):
+                pass
         paintings.append({"name": name, "path": f"../data/paintings/{name}.png",
-                          "group": group or -1, "skin": sid, "en": en, "kind": kind})
+                          "group": group or -1, "skin": sid, "en": en, "kind": kind,
+                          "bounds": bounds})
 
     by_skin = defaultdict(list)
     ungrouped = []
@@ -177,10 +189,10 @@ def generate():
         info = find_info(rep["name"], p2info)
         chars.append({"group": items[0]["group"], "en": rep["en"], "rep": rep["name"],
                       "rep_path": rep["path"], "skin": sid, "rel": (info or {}).get("rel", 0),
-                      "items": [{"name": x["name"], "path": x["path"], "kind": x["kind"]} for x in items_sorted]})
+                      "items": [{"name": x["name"], "path": x["path"], "kind": x["kind"], "bounds": x["bounds"]} for x in items_sorted]})
     for p in ungrouped:
         chars.append({"group": -1, "en": "", "rep": p["name"], "rep_path": p["path"], "skin": -1, "rel": 0,
-                      "items": [{"name": p["name"], "path": p["path"], "kind": p["kind"]}]})
+                      "items": [{"name": p["name"], "path": p["path"], "kind": p["kind"], "bounds": p["bounds"]}]})
 
     # Live2D 模型
     paint_names = set(os.path.splitext(os.path.basename(f))[0] for f in paint_files)
