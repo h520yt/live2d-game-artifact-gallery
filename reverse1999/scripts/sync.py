@@ -230,7 +230,7 @@ def generate_manifest(mapping):
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="重返未来：1999 动态角色资源按需下载与预览")
-    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime", "scene", "showcase", "unique", "jukebox"],
+    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime", "scene", "showcase", "unique", "jukebox", "jukebox-art"],
                         help="查看目录、下载资源、点唱机典藏光碟衣着 / UNIQUE 衣着批量下载、更新本地索引")
     parser.add_argument("target", nargs="?", help="指定皮肤 ID，unique / jukebox 可使用 all 批量下载")
     parser.add_argument("--search", default="", help="list 按角色名、皮肤名或 ID 搜索")
@@ -269,11 +269,22 @@ def main(argv=None):
                     unique.download(mapping, args.target)
                 finally:
                     generate_manifest(mapping)
+        elif args.action == "jukebox-art":
+            if not args.target or args.target == "list":
+                for row in jukebox.catalog():
+                    status = "原画已下载" if row["artwork_downloaded"] else "原画待补齐"
+                    print(f'{row["id"]} {row["name"]} · {row["skin"]}：{status}')
+            else:
+                try:
+                    jukebox.download_artworks(args.target)
+                finally:
+                    generate_manifest(mapping)
         elif args.action == "jukebox":
             if not args.target or args.target == "list":
                 for record in jukebox.catalog():
                     status = "已下载" if record["downloaded"] else "待下载"
-                    print(f'{record["id"]} {record["name"]:<10} {record["skin"]:<16} {record["type"]:<7} {status}')
+                    art = "原画已下载" if record["artwork_downloaded"] else "原画待补齐"
+                    print(f'{record["id"]} {record["name"]:<10} {record["skin"]:<16} {record["type"]:<7} 模型{status} · {art}')
                 print("全部下载：python reverse1999/scripts/sync.py jukebox all")
             else:
                 try:
