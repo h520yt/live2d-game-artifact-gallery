@@ -168,8 +168,14 @@ scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstore
     # 查看历期 32 套衣着与本地下载状态
     python reverse1999/scripts/sync.py jukebox list
 
-    # 下载完整 32 套（断网可重试，已有完整文件不重复下载）
+    # 下载完整 32 套：模型 + 对应高分辨率原画（断网可重试）
     python reverse1999/scripts/sync.py jukebox all
+
+    # 已有模型时，只补齐原画，不重下 Live2D / Spine
+    python reverse1999/scripts/sync.py jukebox-art all
+
+    # 单独补某一套原画，例如 37「完美的流体」
+    python reverse1999/scripts/sync.py jukebox-art 306605
 
     # 只下载一套，例如玛尔纱「告慰尘与惘」
     python reverse1999/scripts/sync.py jukebox 312704
@@ -177,17 +183,19 @@ scene 命令先核查该皮肤的专属 skin2dbg 背景和角色商城 skinstore
     # 若尚未开启本地 Web 服务
     python -m http.server 8000
 
-打开 http://localhost:8000/reverse1999/viewer/ ，点击左侧 **「吼吼点唱机」**，可以看到从早期到 4.1 的全部 32 套和下载状态。点击已下载的衣着预览动作与表情；5 套 Spine 则可在右侧切换 ui / room / fight 动作组。
+打开 http://localhost:8000/reverse1999/viewer/ ，点击左侧 **「吼吼点唱机」**，可以看到从早期到 4.1 的全部 32 套和**模型/原画各自的下载状态**。已下载原画的皮肤默认展示完整原画，右侧可切换「原画 / 动态模型」；动态模型保留原有动作、表情和 Spine 的 ui / room / fight 姿态。仅有原画时也可查看原画，不会误报模型已下载。
 
 ### 资源范围
 
 - 32 套衣着及实际皮肤 ID，见 viewer/jukebox-catalog.json（静态目录，不要求已下载）。
 - 27 套 live2d/roles：读取真实 model3.json 的 Moc、Textures、Motions、Expressions 等依赖，下载至 data/jukebox/<ID>/cubism/。
 - 5 套 roles：下载 atlas、PNG、bloom 辅助贴图、ui/room/fight 骨骼，保存至 data/jukebox/<ID>/spine/。五套是：夏利「镜中幕间」、柏林以东「铅红的真相」、玛丽莲「维纳斯的传道」、气球派对「银翅谣」、婴儿蓝「于麻雀山上」。
-- 所有素材使用上游已核实的原始 GitHub 路径下载，不依赖 GitHub API 列出文件夹；如果原始文件域名访问失败，沿用项目现有的 CDN 备用方案。
+- 动态模型使用上游已核实的原始 GitHub 路径下载，不依赖 GitHub API 列出文件夹；如果原始文件域名访问失败，沿用项目现有的 CDN 备用方案。
+- **静态原画**：按同一个皮肤 ID 寻找灰机维基的高分辨率原图 `Portrait-<皮肤ID>.webp`，使用 MediaWiki 原始文件地址（MD5 路径）及其重定向作为备用源，拒绝头像、无效 HTML、过小图片；保存为 `data/jukebox/<ID>/artwork.webp`。这与专属商城背景不是同一类素材。
+- 某些较新的皮肤可能尚未被社区上传；下载失败将显示「原画待补齐」并给出错误，不会标为完整。模型和原画独立校验，已安装模型不受失败影响。
 - 文件缺失不会冒充完整安装。下载途中发生错误仍将完整资源列入展示柜，尚未下载完成的显示为“待下载”，可单独重试。
 - 原始游戏美术资源不提交到 Git；第三方素材版权属于原权利方。
 
-**区别于 UNIQUE 级完整商城展示：** 点唱机皮肤不保证有独立全场景背景（skin2dbg），因此这里收录的是原始角色动画、贴图与动作，不为它们配假背景；Unity 粒子、游戏内交互编排和 Wallpaper Engine 导出仍属于后续独立功能。
+**区别于 UNIQUE 级完整商城展示：** 点唱机收录独立高分辨率角色原画及原始角色动画、贴图与动作。普通角色原画不等于「人物 + 专属场景背景」的完整商城画面，点唱机皮肤也不保证有独立 skin2dbg；不为它们配假背景。Unity 粒子、游戏内交互编排和 Wallpaper Engine 导出仍属于后续独立功能。
 
 分类依据：2026-11-14 前各期官方版本公告、[灰机中文维基](https://res1999.huijiwiki.com/wiki/%E5%90%BC%E5%90%BC%E8%87%AA%E9%80%89%E8%A1%A3%E7%AE%B1)及具体衣着获取途径；名单 ID 和资源目录与 [Reverse-1999-CN-Asset](https://github.com/myssal/Reverse-1999-CN-Asset) 对照。
