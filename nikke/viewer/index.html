@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NIKKE · 立绘 / Spine 查看器</title>
 <link rel="stylesheet" href="../../shared/vendor/spine-player.css">
+<link rel="stylesheet" href="art_scene.css">
 <style>
   :root{
     --abyss:#12080e; --deep:#1e0f16; --panel:#2a1620;
@@ -326,6 +327,7 @@ const ui = { cat: 'all', pose: '', ver: '', sort: 'id', q: '' };
 
 async function boot(){
   manifest = await (await fetch('nikke_manifest.json')).json();
+  window.NikkeArt?.fillBackgrounds?.();
   setupCardColumns();
   buildGrid();
   document.getElementById('back').onclick = exitStage;
@@ -428,11 +430,13 @@ function enterStage(i, preferPose){
     : (c.poses.fb ? 'fb' : Object.keys(c.poses)[0]);
   document.getElementById('grid-view').style.display = 'none';
   document.getElementById('stage-view').style.display = 'block';
+  window.NikkeArt?.onStageEnter?.();
   buildPoseTabs(c);
   setTimeout(()=> loadPose(), 30);
 }
 
 function exitStage(){
+  window.NikkeArt?.onStageExit?.();
   disposePlayer();
   document.getElementById('stage-view').style.display = 'none';
   document.getElementById('grid-view').style.display = 'block';
@@ -557,6 +561,7 @@ async function loadPose(){
   const info = c.poses[current.pose];
   if(!info){ setLoading(true, '该姿态无资源', true); return; }
 
+  window.NikkeArt?.onPoseChanging?.();
   disposePlayer();
   setLoading(true, '加载模型…');
 
@@ -606,11 +611,15 @@ async function loadPose(){
         setLoading(false);
         try{
           const anims = pl.animationState.data.skeletonData.animations.map(a=>a.name);
-          if(!anims.length){ buildMotionPanel(pl, [], null); return; }
-          const pick = pickDefaultAnim(anims, current.pose);
-          playAnim(pl, anims, pick);
-          buildMotionPanel(pl, anims, pick);
+          if(!anims.length){
+            buildMotionPanel(pl, [], null);
+          }else{
+            const pick = pickDefaultAnim(anims, current.pose);
+            playAnim(pl, anims, pick);
+            buildMotionPanel(pl, anims, pick);
+          }
         }catch(e){ buildMotionPanel(pl, [], null); }
+        window.NikkeArt?.onPoseReady?.();
       },
       error: (pl, msg) => { if(tk===loadToken) setLoading(true, '加载失败: ' + (msg||''), true); },
     });
@@ -642,5 +651,6 @@ function waitForSize(id){
 
 boot();
 </script>
+<script src="art_scene.js"></script>
 </body>
 </html>

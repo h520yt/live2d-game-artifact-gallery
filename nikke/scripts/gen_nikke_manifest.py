@@ -14,6 +14,7 @@ import os
 import re
 import json
 import glob
+from urllib.parse import quote
 
 import config as C
 
@@ -159,8 +160,55 @@ def categorize(cid):
     return "misc"
 
 
+def static_art_url(cid):
+    """独立静态图优先；没有时使用本地 Spine 帧渲染图。两者均非强制官方原画。"""
+    for filename in ("art.png", "art.webp", "art.jpg", "art_render.png"):
+        path = os.path.join(C.DATA_DIR, cid, filename)
+        if os.path.isfile(path) and os.path.getsize(path) > 0:
+            return f"../data/{quote(cid)}/{quote(filename)}"
+    return None
+
+
+def load_backgrounds():
+    """从本地背景目录建索引：只有真实存在的文件才会进入查看器。"""
+    folder = os.path.join(C.DATA_DIR, "backgrounds")
+    if not os.path.isdir(folder):
+        return []
+
+    # 可选元数据文件（随仓库追踪）；不把场景与特定皮肤错误绑定。
+    metadata_file = os.path.join(C.BASE, "backgrounds.json")
+    metadata = {}
+    if os.path.isfile(metadata_file):
+        try:
+            with open(metadata_file, encoding="utf-8") as fp:
+                metadata = json.load(fp)
+        except (ValueError, OSError) as err:
+            print(f"背景元数据读取失败: {err}")
+    backgrounds = []
+    for filename in sorted(os.listdir(folder)):
+        base, ext = os.path.splitext(filename)
+        if ext.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
+            continue
+        path = os.path.join(folder, filename)
+        if not os.path.isfile(path) or os.path.getsize(path) == 0:
+            continue
+        info = metadata.get(filename, {})
+        if not isinstance(info, dict):
+            info = {}
+        backgrounds.append({
+            "id": base,
+            "name": info.get("name") or base,
+            "category": info.get("category") or "",
+            "file": "../data/backgrounds/" + quote(filename),
+        })
+    return backgrounds
+
+
 def cover_url(cid, pose_info):
     """封面优先用渲染好的头像图标 _icon.png；否则退回姿态首张贴图（可能是碎片 atlas）。"""
+    art = static_art_url(cid)
+    if art:
+        return art
     icon = os.path.join(C.DATA_DIR, cid, "_icon.png")
     if os.path.exists(icon) and os.path.getsize(icon) > 0:
         return f"../data/{cid}/_icon.png"
@@ -207,12 +255,14 @@ def main():
             "poses": poses,
             "version": fb["version"],
             "cover": cover_url(cid, fb),
+            "art": static_art_url(cid),
         })
 
     os.makedirs(C.VIEWER_DIR, exist_ok=True)
-    json.dump({"characters": chars}, open(C.MANIFEST_PATH, "w", encoding="utf-8"),
+    backgrounds = load_backgrounds()
+    json.dump({"characters": chars, "backgrounds": backgrounds}, open(C.MANIFEST_PATH, "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
-    print(f"NIKKE 角色 {len(chars)} -> {C.MANIFEST_PATH}")
+    print(f"NIKKE 角色 {len(chars)} / 背景 {len(backgrounds)} -> {C.MANIFEST_PATH}")
     # 版本 + 分类统计
     from collections import Counter
     vc = Counter(c["version"] for c in chars)
