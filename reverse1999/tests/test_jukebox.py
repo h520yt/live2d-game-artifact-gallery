@@ -1,4 +1,6 @@
 """吼吼点唱机典藏衣着批量下载器：清单、重试、Spine/Cubism 分支及索引。"""
+import hashlib
+import io
 import json
 import sys
 import tempfile
@@ -9,6 +11,7 @@ from unittest import mock
 SCRIPTS = Path(__file__).resolve().parents[1] / "scripts"
 if str(SCRIPTS) not in sys.path:
     sys.path.insert(0, str(SCRIPTS))
+import artwork
 import jukebox
 import spine
 import sync
@@ -126,6 +129,63 @@ class JukeboxTests(unittest.TestCase):
         self.assertEqual(data["models"][0]["channel"], "JUKEBOX")
         self.assertEqual(data["models"][0]["type"], "cubism")
         self.assertTrue(data["models"][0]["path"].endswith("v4a1_312704_mes.model3.json"))
+
+    @staticmethod
+    def sample_webp(width=1024, height=2048):
+        """最小 VP8X 容器夹具，供下载器头部/尺寸校验使用。"""
+        body = (b"WEBP" + b"VP8X" + (10).to_bytes(4, "little")
+                + bytes(4) + (width - 1).to_bytes(3, "little")
+                + (height - 1).to_bytes(3, "little") + bytes(9000))
+        return b"RIFF" + len(body).to_bytes(4, "little") + body
+
+    def test_artwork_source_uses_skin_id_not_avatar(self):
+        url, fallback = artwork.urls("312704")
+        digest = hashlib.md5(b"Portrait-312704.webp").hexdigest()
+        self.assertIn(f"/{digest[0]}/{digest[:2]}/Portrait-312704.webp", url)
+        self.assertIn("Special:Redirect/file/Portrait-312704.webp", fallback)
+        with self.assertRaises(ValueError):
+            artwork.urls("../312704")
+
+    def test_artwork_is_verified_and_indexed_separately(self):
+        with mock.patch.object(artwork.urllib.request, "urlopen",
+                               return_value=io.BytesIO(self.sample_webp())) as get:
+            self.assertTrue(jukebox.download_artwork("312704"))
+            self.assertEqual(get.call_count, 1)
+        self.assertFalse(jukebox.download_artwork("312704"))  # 离线复用已验证原画
+        self.assertTrue(jukebox.has_artwork("312704"))
+        self.assertFalse(jukebox.known_models("312704"))
+        self.assertTrue(next(x for x in jukebox.catalog() if x["id"] == 312704)["artwork_downloaded"])
+        self.assertFalse(next(x for x in jukebox.catalog() if x["id"] == 312704)["complete"])
+        sync.generate_manifest(self.mapping)
+        data = json.loads(sync.MANIFEST.read_text(encoding="utf-8"))
+        self.assertEqual(data["models"][0]["type"], "artwork")
+        self.assertTrue(data["models"][0]["artwork"].endswith("/312704/artwork.webp"))
+
+    def test_reject_fake_artwork_and_keep_model_downloaded(self):
+        with mock.patch.object(artwork.urllib.request, "urlopen",
+                               side_effect=lambda req, timeout: io.BytesIO(b"<html>404</html>")):
+            with self.assertRaises(RuntimeError):
+                jukebox.download_artwork("312704")
+        self.assertFalse(jukebox.has_artwork("312704"))
+        with mock.patch.object(spine, "download_file", side_effect=self.fake_file):
+            jukebox.download_one(self.mapping, "312704")
+        status = next(x for x in jukebox.catalog() if x["id"] == 312704)
+        self.assertTrue(status["downloaded"])
+        self.assertFalse(status["artwork_downloaded"])
+        self.assertFalse(status["complete"])
+
+    def test_combined_model_and_full_portrait_manifest(self):
+        with mock.patch.object(spine, "download_file", side_effect=self.fake_file):
+            jukebox.download_one(self.mapping, "312704")
+        with mock.patch.object(artwork.urllib.request, "urlopen",
+                               return_value=io.BytesIO(self.sample_webp())):
+            jukebox.download_artwork("312704")
+        sync.generate_manifest(self.mapping)
+        data = json.loads(sync.MANIFEST.read_text(encoding="utf-8"))
+        skin = next(x for x in data["models"] if x["id"] == 312704)
+        self.assertEqual(skin["type"], "cubism")
+        self.assertTrue(skin["artwork"].endswith("artwork.webp"))
+        self.assertTrue(next(x for x in data["jukebox"] if x["id"] == 312704)["complete"])
 
 
 if __name__ == "__main__":
