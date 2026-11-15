@@ -40,3 +40,27 @@ jobs:
           assert item['type'] == 'artwork' and item['artwork'].endswith('/306204/artwork.webp')
           print('REAL PORTRAIT VERIFIED', dimensions, target.stat().st_size)
           PY
+
+      - name: Audit all 32 portraits against the upstream CDN (keep missing ones explicit)
+        run: |
+          python - <<'PY'
+          import sys
+          from concurrent.futures import ThreadPoolExecutor, as_completed
+          sys.path.insert(0, 'reverse1999/scripts')
+          import jukebox
+          def check(sid):
+              try:
+                  jukebox.download_artwork(sid)
+                  return sid, True, ''
+              except Exception as exc:
+                  return sid, False, str(exc).split('；')[0]
+          with ThreadPoolExecutor(max_workers=4) as pool:
+              results = list(pool.map(check, jukebox.BY_ID))
+          ok = [sid for sid, good, _ in results if good]
+          missing = [(sid, why) for sid, good, why in results if not good]
+          print(f'ALL JUKEBOX PORTRAITS COVERAGE: {len(ok)}/32')
+          print('AVAILABLE:', ', '.join(ok))
+          for sid, why in missing:
+              print(f'PORTRAIT MISSING {sid} ({jukebox.BY_ID[sid][1]}): {why}')
+          assert len(ok) >= 1, 'even confirmed known portraits became unavailable'
+          PY
