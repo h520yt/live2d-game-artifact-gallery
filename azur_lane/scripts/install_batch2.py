@@ -48,12 +48,19 @@ BATCH = (
     Skin("埃塞克斯", "泳池里的默契训练", "aisaikesi_10", 137090, "dynamic"),
 )
 
-# 绘画贴图中 *_bj_tex / *_bg_tex 等只是背景、特效分层，不是完整人物。
-# 排除它们，防止被 gen_manifest 当成另一款皮肤。
+# 主立绘和换装变体；背景/前景属于同一皮肤的场景分层，也需要安装。
 PAINT_VARIANTS = frozenset({
     "", "_n", "_rw", "_n_rw", "_hx", "_n_hx", "_rw_hx", "_n_rw_hx",
     "_g", "_n_g", "_rw_g", "_n_rw_g",
 })
+
+# 支持官方分层资源命名：hu_2_bj / hu_2_n_bj_hx / xxx_front。
+# 不含任意未知后缀，也不会把 hu_20 误匹配为 hu_2。
+SCENE_PART_TOKENS = frozenset({
+    "bj", "bg", "front", "back", "middle", "mid",
+    "shadow", "dark", "effect", "light", "wjz", "jz", "pt",
+})
+VARIANT_TOKENS = frozenset({"n", "rw", "hx", "g", "ex", "hd", "bh", "h", "p", "d"})
 
 
 @dataclass(frozen=True)
@@ -84,7 +91,11 @@ def painting_rows(rows: list[AssetRow], asset: str) -> list[AssetRow]:
         if not row.path.startswith(prefix) or not row.path.endswith("_tex"):
             continue
         variant = row.path[len(prefix):-len("_tex")]
-        if variant in PAINT_VARIANTS:
+        tokens = variant.lstrip("_").split("_") if variant.startswith("_") else []
+        # 无后缀 / 正常角色变体，或包含明确场景层且其它字段都是已知变体。
+        is_scene_part = (bool(tokens) and any(t.rstrip("0123456789") in SCENE_PART_TOKENS for t in tokens)
+                         and all(t in VARIANT_TOKENS or t.rstrip("0123456789") in SCENE_PART_TOKENS for t in tokens))
+        if variant in PAINT_VARIANTS or is_scene_part:
             result.append(row)
     return sorted(result, key=lambda x: x.path)
 
@@ -257,6 +268,10 @@ def main(argv: list[str] | None = None, *, batch: tuple[Skin, ...] | None = None
             print(f"  [失败] {row.path}", flush=True)
         else:
             os.replace(temporary, output)
+            # 保留重建时导出的 Mesh 坐标，供前端准确对齐分层；失败时保留原图。
+            temp_meta = temporary.with_suffix(".meta.json")
+            if temp_meta.exists():
+                os.replace(temp_meta, output.with_suffix(".meta.json"))
 
     print("\n[3/4] 下载并还原 Live2D 模型")
     bad_models = {r.path for r in download_selection("L2D", all_models, cache_dir)}
