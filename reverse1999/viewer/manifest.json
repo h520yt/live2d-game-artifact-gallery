@@ -9,6 +9,7 @@
       "skin_en": "A Gift of Nourishment",
       "folder": "v3a7_306605_37",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/306605/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/306605/cubism/v3a7_306605_37.model3.json"
     },
@@ -35,6 +36,7 @@
       "skin_en": "Silver Rose",
       "folder": "v1a7_303803_wuseyue",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/303803/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/303803/cubism/v1a7_303803_wuseyue.model3.json"
     },
@@ -73,6 +75,7 @@
       "skin_en": "Forever Is Too Short",
       "folder": "v3a3_304704_tmsd",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/304704/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/304704/cubism/v3a3_304704_tmsd.model3.json"
     },
@@ -84,6 +87,7 @@
       "skin_en": "Verses to Heaven",
       "folder": "v3a8_311604_lzl",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/311604/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/311604/cubism/v3a8_311604_lzl.model3.json"
     },
@@ -95,6 +99,7 @@
       "skin_en": "Silver Isoheight",
       "folder": "s02_307705_bfsg",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/307705/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/307705/cubism/s02_307705_bfsg.model3.json"
     },
@@ -106,6 +111,7 @@
       "skin_en": "Guardian of the Broken",
       "folder": "v3a2_308004_kkny",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/308004/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/308004/cubism/v3a2_308004_kkny.model3.json"
     },
@@ -117,6 +123,7 @@
       "skin_en": "The Night Visitor",
       "folder": "v2a0_307103_kjl",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/307103/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/307103/cubism/v2a0_307103_kjl.model3.json"
     },
@@ -128,6 +135,7 @@
       "skin_en": "Dueling Connoisseurs",
       "folder": "v2a3_304304_tnt",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/304304/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/304304/cubism/v2a3_304304_tnt.model3.json"
     },
@@ -139,6 +147,7 @@
       "skin_en": "The Wax and Wane of the Heart",
       "folder": "v3a0_308804_smews",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/308804/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/308804/cubism/v3a0_308804_smews.model3.json"
     },
@@ -150,6 +159,7 @@
       "skin_en": "Through Mirrors and Curtains",
       "folder": "301703_xiali",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/301703/artwork.webp",
       "type": "spine",
       "dir": "../data/jukebox/301703/spine",
       "poses": {
@@ -193,6 +203,7 @@
       "skin_en": "On the Sparrow Hills ",
       "folder": "v1a8_301603_yingerlan",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/301603/artwork.webp",
       "type": "spine",
       "dir": "../data/jukebox/301603/spine",
       "poses": {
@@ -221,6 +232,7 @@
       "skin_en": "Around the Riverbend",
       "folder": "v2a2_308203_xyns",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/308203/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/308203/cubism/v2a2_308203_xyns.model3.json"
     },
@@ -232,6 +244,7 @@
       "skin_en": "The Pointy End Up",
       "folder": "v1a5_302203_pamiai",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/302203/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/302203/cubism/v1a5_302203_pamiai.model3.json"
     },
@@ -243,6 +256,7 @@
       "skin_en": "Star Shepherdess",
       "folder": "v4a0_311705_kphh",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/311705/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/311705/cubism/v4a0_311705_kphh.model3.json"
     },
@@ -284,6 +298,7 @@
       "skin_en": "The Evergreen Soul",
       "folder": "v3a1_300731_wxk",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/300731/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/300731/cubism/v3a1_300731_wxk.model3.json"
     },
@@ -295,6 +310,7 @@
       "skin_en": "Truth of the Dark Red",
       "folder": "302003_bolinyidong",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/302003/artwork.webp",
       "type": "spine",
       "dir": "../data/jukebox/302003/spine",
       "poses": {
@@ -338,6 +354,7 @@
       "skin_en": "Red and White",
       "folder": "v2a6_306204_meilanni",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/306204/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/306204/cubism/v2a6_306204_meilanni.model3.json"
     },
@@ -349,6 +366,7 @@
       "skin_en": "Shrouded in Thorns",
       "folder": "v2a5_300306_hjs",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/300306/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/300306/cubism/v2a5_300306_hjs.model3.json"
     },
@@ -360,6 +378,7 @@
       "skin_en": "The Folk Song of Silver Butterfly",
       "folder": "v1a6_302403_qqpd",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/302403/artwork.webp",
       "type": "spine",
       "dir": "../data/jukebox/302403/spine",
       "poses": {
@@ -388,6 +407,7 @@
       "skin_en": "Call of the Wild",
       "folder": "v1a9_307503_shasirong",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/307503/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/307503/cubism/v1a9_307503_shasirong.model3.json"
     },
@@ -399,6 +419,7 @@
       "skin_en": "The Sound of Paradise",
       "folder": "v2a8_305604_jxk",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/305604/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/305604/cubism/v2a8_305604_jxk.model3.json"
     },
@@ -410,6 +431,7 @@
       "skin_en": "The Golden Nurturer",
       "folder": "s01_305104_wnfld",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/305104/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/305104/cubism/s01_305104_wnfld.model3.json"
     },
@@ -451,6 +473,7 @@
       "skin_en": "The Preaching of Venus",
       "folder": "v1a4_301103_malilian",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/301103/artwork.webp",
       "type": "spine",
       "dir": "../data/jukebox/301103/spine",
       "poses": {
@@ -479,6 +502,7 @@
       "skin_en": "Solace for the Lost",
       "folder": "v4a1_312704_mes",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/312704/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/312704/cubism/v4a1_312704_mes.model3.json"
     },
@@ -490,6 +514,7 @@
       "skin_en": "The Genius's Holiday",
       "folder": "304103_madierda",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/304103/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/304103/cubism/304103_madierda.model3.json"
     },
@@ -501,6 +526,7 @@
       "skin_en": "Midnight Mistmancer",
       "folder": "v2a4_309503_hzsx",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/309503/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/309503/cubism/v2a4_309503_hzsx.model3.json"
     },
@@ -527,6 +553,7 @@
       "skin_en": "Reborn and Restored",
       "folder": "v3a4_310404_ddg",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/310404/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/310404/cubism/v3a4_310404_ddg.model3.json"
     },
@@ -553,6 +580,7 @@
       "skin_en": "Repose Amidst the Roses",
       "folder": "v3a9_312104_mlde",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/312104/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/312104/cubism/v3a9_312104_mlde.model3.json"
     },
@@ -564,6 +592,7 @@
       "skin_en": "Cold Cradle",
       "folder": "v3a5_309804_lsp",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/309804/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/309804/cubism/v3a5_309804_lsp.model3.json"
     },
@@ -575,6 +604,7 @@
       "skin_en": "The Weight of Words",
       "folder": "v3a6_311404_xgj",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/311404/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/311404/cubism/v3a6_311404_xgj.model3.json"
     },
@@ -633,6 +663,7 @@
       "skin_en": "Choir of the Stars",
       "folder": "v2a7_304804_yl",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/304804/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/304804/cubism/v2a7_304804_yl.model3.json"
     },
@@ -644,6 +675,7 @@
       "skin_en": "The Giallo Grind",
       "folder": "v2a1_306003_jinmier",
       "channel": "JUKEBOX",
+      "artwork": "../data/jukebox/306003/artwork.webp",
       "type": "cubism",
       "path": "../data/jukebox/306003/cubism/v2a1_306003_jinmier.model3.json"
     },
@@ -768,7 +800,9 @@
       "skin": "镜中幕间",
       "type": "spine",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 302003,
@@ -776,7 +810,9 @@
       "skin": "铅红的真相",
       "type": "spine",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 304103,
@@ -784,7 +820,9 @@
       "skin": "天才假日",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 301103,
@@ -792,7 +830,9 @@
       "skin": "维纳斯的传道",
       "type": "spine",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 302203,
@@ -800,7 +840,9 @@
       "skin": "枪尖向上",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 302403,
@@ -808,7 +850,9 @@
       "skin": "银翅谣",
       "type": "spine",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 303803,
@@ -816,7 +860,9 @@
       "skin": "银玫瑰",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 301603,
@@ -824,7 +870,9 @@
       "skin": "于麻雀山上",
       "type": "spine",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 307503,
@@ -832,7 +880,9 @@
       "skin": "野性的倾洒",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 307103,
@@ -840,7 +890,9 @@
       "skin": "午夜来客",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 306003,
@@ -848,7 +900,9 @@
       "skin": "铅黄色磨坊",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 308203,
@@ -856,7 +910,9 @@
       "skin": "蓝河湾",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 304304,
@@ -864,7 +920,9 @@
       "skin": "鉴赏家之战",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 309503,
@@ -872,7 +930,9 @@
       "skin": "午夜曼波",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 300306,
@@ -880,7 +940,9 @@
       "skin": "荆棘环绕处",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 306204,
@@ -888,7 +950,9 @@
       "skin": "红与白",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 304804,
@@ -896,7 +960,9 @@
       "skin": "群星齐唱时",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 305604,
@@ -904,7 +970,9 @@
       "skin": "乐园之声",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 308804,
@@ -912,7 +980,9 @@
       "skin": "心之盈亏",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 305104,
@@ -920,7 +990,9 @@
       "skin": "以黄金哺育",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 300731,
@@ -928,7 +1000,9 @@
       "skin": "魂灵长青",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 308004,
@@ -936,7 +1010,9 @@
       "skin": "时代病陪护",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 304704,
@@ -944,7 +1020,9 @@
       "skin": "永生苦短",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 310404,
@@ -952,7 +1030,9 @@
       "skin": "裁春衫",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 309804,
@@ -960,7 +1040,9 @@
       "skin": "冷襁褓",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 311404,
@@ -968,7 +1050,9 @@
       "skin": "文字，自始至终",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 306605,
@@ -976,7 +1060,9 @@
       "skin": "完美的流体",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 311604,
@@ -984,7 +1070,9 @@
       "skin": "巫阳抚彗歌",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 307705,
@@ -992,7 +1080,9 @@
       "skin": "银色等高线",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 312104,
@@ -1000,7 +1090,9 @@
       "skin": "玫瑰午睡时",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 311705,
@@ -1008,7 +1100,9 @@
       "skin": "牧于晚星",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     },
     {
       "id": 312704,
@@ -1016,7 +1110,9 @@
       "skin": "告慰尘与惘",
       "type": "cubism",
       "channel": "JUKEBOX",
-      "downloaded": true
+      "downloaded": true,
+      "artwork_downloaded": true,
+      "complete": true
     }
   ]
 }
