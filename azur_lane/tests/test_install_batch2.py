@@ -18,13 +18,13 @@ class TestInstaller(unittest.TestCase):
         self.assertEqual(len({s.skin_id for s in mod.BATCH}), 10)
         self.assertEqual(len({s.asset for s in mod.BATCH}), 10)
 
-    def test_painting_does_not_include_neighbours_or_backgrounds(self):
+    def test_painting_includes_scene_layers_but_not_neighbours(self):
         rows = [mod.AssetRow(f"painting/{name}", 10, "a" * 32) for name in (
             "hu_2_tex", "hu_2_n_rw_tex", "hu_2_bj_tex", "hu_20_tex",
-            "hu_2_bg_tex", "hu_2", "hu_2_rw_hx_tex",
+            "hu_2_bg_tex", "hu_2", "hu_2_rw_hx_tex", "hu_2_n_bj_hx_tex", "hu_2_front_tex", "hu_2_unknown_tex",
         )]
         got = [r.path for r in mod.painting_rows(rows, "hu_2")]
-        self.assertEqual(got, ["painting/hu_2_n_rw_tex", "painting/hu_2_rw_hx_tex", "painting/hu_2_tex"])
+        self.assertEqual(got, ["painting/hu_2_bg_tex", "painting/hu_2_bj_tex", "painting/hu_2_front_tex", "painting/hu_2_n_bj_hx_tex", "painting/hu_2_n_rw_tex", "painting/hu_2_rw_hx_tex", "painting/hu_2_tex"])
 
     def test_model_does_not_include_neighbours(self):
         rows = [mod.AssetRow(f"live2d/{name}", 10, "a" * 32) for name in (
