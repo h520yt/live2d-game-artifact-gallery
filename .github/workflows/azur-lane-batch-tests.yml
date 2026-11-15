@@ -5,6 +5,12 @@ on:
     paths:
       - 'azur_lane/scripts/install_batch*.py'
       - 'azur_lane/tests/test_install_batch*.py'
+      - 'azur_lane/tests/test_scene_gallery.py'
+      - 'azur_lane/tests/test_scene_gallery.cjs'
+      - 'azur_lane/scripts/install_scene_layers.py'
+      - 'azur_lane/scripts/gen_manifest.py'
+      - 'azur_lane/viewer/scene_gallery.js'
+      - 'azur_lane/viewer/index.html'
       - 'azur_lane/config/hashes/PAINTING.csv'
       - 'azur_lane/config/hashes/L2D.csv'
       - '.github/workflows/azur-lane-batch-tests.yml'
@@ -12,6 +18,12 @@ on:
     paths:
       - 'azur_lane/scripts/install_batch*.py'
       - 'azur_lane/tests/test_install_batch*.py'
+      - 'azur_lane/tests/test_scene_gallery.py'
+      - 'azur_lane/tests/test_scene_gallery.cjs'
+      - 'azur_lane/scripts/install_scene_layers.py'
+      - 'azur_lane/scripts/gen_manifest.py'
+      - 'azur_lane/viewer/scene_gallery.js'
+      - 'azur_lane/viewer/index.html'
       - 'azur_lane/config/hashes/PAINTING.csv'
       - 'azur_lane/config/hashes/L2D.csv'
       - '.github/workflows/azur-lane-batch-tests.yml'
@@ -26,5 +38,9 @@ jobs:
           python-version: '3.11'
       - name: Run pure logic and resource-index tests
         run: python -m unittest discover -s azur_lane/tests -p 'test_install_batch*.py' -v
+      - name: Scene manifests and background matching
+        run: python -m unittest discover -s azur_lane/tests -p 'test_scene_gallery.py' -v
+      - name: Browser-side scene matcher
+        run: node azur_lane/tests/test_scene_gallery.cjs
       - name: Third batch dry-run
         run: python azur_lane/scripts/install_batch3.py --plan
