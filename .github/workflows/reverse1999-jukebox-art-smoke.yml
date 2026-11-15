@@ -1,0 +1,42 @@
+name: Reverse 1999 Jukebox portrait CDN smoke
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'reverse1999/scripts/artwork.py'
+      - 'reverse1999/scripts/jukebox.py'
+      - 'reverse1999/scripts/sync.py'
+      - '.github/workflows/reverse1999-jukebox-art-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  portrait-real-download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Download a known original skin portrait, not a model texture
+        run: python reverse1999/scripts/sync.py jukebox-art 306204
+      - name: Verify original portrait dimensions and manifest metadata
+        run: |
+          python - <<'PY'
+          import json
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'reverse1999/scripts')
+          import artwork
+          target = Path('reverse1999/data/jukebox/306204/artwork.webp')
+          assert artwork.exists(target), 'original portrait missing or invalid'
+          dimensions = artwork.dimensions(target.read_bytes())
+          assert dimensions and dimensions[1] >= 720, dimensions
+          manifest = json.loads(Path('reverse1999/viewer/manifest.json').read_text(encoding='utf-8'))
+          status = next(x for x in manifest['jukebox'] if x['id'] == 306204)
+          assert status['artwork_downloaded'] and not status['downloaded']
+          item = next(x for x in manifest['models'] if x['id'] == 306204 and x.get('channel') == 'JUKEBOX')
+          assert item['type'] == 'artwork' and item['artwork'].endswith('/306204/artwork.webp')
+          print('REAL PORTRAIT VERIFIED', dimensions, target.stat().st_size)
+          PY
