@@ -84,6 +84,10 @@
     border:1px solid var(--line);
   }
   .card .poses i.hl{background:var(--accent); color:var(--abyss); border-color:var(--accent); font-weight:600}
+  .card .style-tags{position:absolute; top:.5rem; left:.45rem; display:flex; flex-wrap:wrap; gap:.2rem; max-width:70%}
+  .card .style-tags i{font:normal .59rem var(--sans); background:rgba(18,8,14,.86); color:#f5c7d6;
+    padding:.13rem .35rem; border:1px solid var(--line-lit); border-radius:3px}
+  .grid-empty{grid-column:1/-1; margin:1.5rem auto; color:var(--foam); font-size:.82rem; line-height:1.9; text-align:center}
 
   #stage-view{height:calc(100vh - var(--header-h)); position:relative; display:none}
   .back-btn{
@@ -236,6 +240,12 @@
           <option value="aim">瞄准</option>
           <option value="skillcut">技能演出</option>
         </select>
+        <select class="sortsel" id="filter-style" title="风格筛选">
+          <option value="">全部风格</option>
+          <option value="御姐">御姐</option>
+          <option value="腿部重点">腿部重点</option>
+          <option value="运动系">运动系</option>
+        </select>
         <select class="sortsel" id="filter-ver" title="Spine 版本">
           <option value="">全部版本</option>
           <option value="4.0">Spine 4.0</option>
@@ -323,7 +333,7 @@ let manifest = null;
 let current = { idx: -1, pose: 'fb' };
 let player = null;
 let loadToken = 0;
-const ui = { cat: 'all', pose: '', ver: '', sort: 'id', q: '' };
+const ui = { cat: 'all', pose: '', style: '', ver: '', sort: 'id', q: '' };
 
 async function boot(){
   manifest = await (await fetch('nikke_manifest.json')).json();
@@ -359,6 +369,7 @@ function applyFilters(){
   let items = manifest.characters;
   if(ui.cat !== 'all') items = items.filter(c => (c.category||'misc') === ui.cat);
   if(ui.pose) items = items.filter(c => c.poses && c.poses[ui.pose]);
+  if(ui.style) items = items.filter(c => (c.tags || []).includes(ui.style));
   if(ui.ver)  items = items.filter(c => String(c.version) === ui.ver);
   if(ui.q){
     const q = ui.q;
@@ -385,6 +396,7 @@ function buildGrid(){
       card.innerHTML =
         `<div class="thumb">`+
           `<span class="badge">${c.version||''}</span>`+
+          `<div class="style-tags">${(c.tags||[]).filter(t=>['御姐','腿部重点','运动系'].includes(t)).map(t=>`<i>${t}</i>`).join('')}</div>`+
           `<img loading="lazy" src="${c.cover||''}" alt="${c.name}">`+
           `<div class="poses">${poseKeys.map(p=>`<i${p===ui.pose?' class="hl"':''}>${POSE_LABEL[p]||p}</i>`).join('')}</div>`+
         `</div>`+
@@ -396,6 +408,9 @@ function buildGrid(){
   };
   const reset = () => {
     filtered = applyFilters(); shown = 0; grid.innerHTML = ''; append();
+    if(!filtered.length){
+      grid.innerHTML = '<p class="grid-empty">当前筛选条件下没有已安装的资源。<br>运动系可先运行：<code>python nikke/scripts/install_style.py 运动系</code></p>';
+    }
     document.getElementById('count').textContent = `${filtered.length} ${CAT_NOUN[ui.cat]||'条目'}`;
   };
   new IntersectionObserver(e=>{ if(e[0].isIntersecting && shown<filtered.length) append(); },{rootMargin:'400px'})
@@ -411,6 +426,7 @@ function buildGrid(){
   });
   // 筛选/排序下拉
   document.getElementById('filter-pose').onchange = e => { ui.pose = e.target.value; reset(); };
+  document.getElementById('filter-style').onchange = e => { ui.style = e.target.value; reset(); };
   document.getElementById('filter-ver').onchange  = e => { ui.ver = e.target.value; reset(); };
   document.getElementById('sort-by').onchange     = e => { ui.sort = e.target.value; reset(); };
   // 搜索

@@ -141,6 +141,26 @@ def load_name_map():
     return names
 
 
+def load_style_tags():
+    """读取人工审核的外观风格标签，不影响 character / event / story 的资源分类。"""
+    tag_path = os.path.join(C.BASE, "style_tags.json")
+    if not os.path.isfile(tag_path):
+        return {}
+    try:
+        with open(tag_path, encoding="utf-8") as f:
+            data = json.load(f)
+    except (OSError, ValueError) as err:
+        print(f"风格标签读取失败: {err}")
+        return {}
+    if not isinstance(data, dict):
+        return {}
+    return {
+        cid: list(dict.fromkeys(tag for tag in tags if isinstance(tag, str) and tag.strip()))
+        for cid, tags in data.items()
+        if isinstance(cid, str) and isinstance(tags, list)
+    }
+
+
 def categorize(cid):
     """给条目打分类标签，用于前端导航/筛选。
 
@@ -221,6 +241,7 @@ def cover_url(cid, pose_info):
 
 def main():
     names = load_name_map()
+    style_tags = load_style_tags()
     chars = []
     if not os.path.isdir(C.DATA_DIR):
         print("无 data 目录")
@@ -252,6 +273,7 @@ def main():
             "name": names.get(cid, cid),
             "dir": f"../data/{cid}",
             "category": categorize(cid),
+            "tags": style_tags.get(cid, []),
             "poses": poses,
             "version": fb["version"],
             "cover": cover_url(cid, fb),

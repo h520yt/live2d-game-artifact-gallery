@@ -17,6 +17,7 @@
   正确处理预乘 alpha（premultipliedAlpha），透明背景，自带动作切换/播放控件
 - 数据来源：社区 [`Nikke-db`](https://github.com/Nikke-db/Nikke-db.github.io) 已解包的 Spine 资源
 - **新：原画/静态、动态模型、场景合成三模式**：可从 Spine 透明渲染批量导出 PNG；读取独立静态图和本地背景图库；切换背景并导出合成图。官方独立原画及背景图片需另行提供，不随代码提交。详见 [`nikke/ART_SCENE.md`](nikke/ART_SCENE.md)。
+- **外观风格筛选**：新增「御姐 / 腿部重点 / 运动系」标签与一键安装脚本 `python nikke/scripts/install_style.py 运动系`，自动识别并下载选中风格的 NIKKE 角色、皮肤。详见 [`nikke/SPORTS.md`](nikke/SPORTS.md)。
 
 ---
 
