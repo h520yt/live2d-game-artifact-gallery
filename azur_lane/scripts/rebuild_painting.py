@@ -4,7 +4,7 @@
 """
 import UnityPy, numpy as np
 from PIL import Image, ImageDraw, ImageChops
-import sys
+import sys, json, os
 import config as C
 
 # 子进程单独加载 Unity 资源时也必须配置版本回退（与 build.py 保持一致）。
@@ -90,7 +90,10 @@ def rebuild(tex_file, out_png):
     if not textures:
         print("  no texture"); return
     if not meshes:
-        textures[0].image.convert("RGBA").save(out_png)
+        raw = textures[0].image.convert("RGBA")
+        raw.save(out_png)
+        with open(os.path.splitext(out_png)[0] + ".meta.json", "w", encoding="utf-8") as fp:
+            json.dump({"geometry": "image", "width": raw.width, "height": raw.height}, fp)
         print("  no mesh, saved raw"); return
 
     # 去重完全相同的 mesh（同名+同顶点数视为重复，取一个）
@@ -107,7 +110,10 @@ def rebuild(tex_file, out_png):
         seen.add(key)
         uniq.append((v, u, idx))
     if not uniq:
-        textures[0].image.convert("RGBA").save(out_png)
+        raw = textures[0].image.convert("RGBA")
+        raw.save(out_png)
+        with open(os.path.splitext(out_png)[0] + ".meta.json", "w", encoding="utf-8") as fp:
+            json.dump({"geometry": "image", "width": raw.width, "height": raw.height}, fp)
         print("  no mesh data, saved raw"); return
 
     # 全局包围盒（覆盖所有 mesh）
@@ -126,6 +132,10 @@ def rebuild(tex_file, out_png):
         _composite(canvas, atlas, v, u, idx, minx, maxy)
 
     canvas.save(out_png)
+    with open(os.path.splitext(out_png)[0] + ".meta.json", "w", encoding="utf-8") as fp:
+        json.dump({"geometry": "mesh",
+                   "bounds": {"minX": float(minx), "minY": float(miny),
+                              "maxX": float(maxx), "maxY": float(maxy)}}, fp)
     print(f"  rebuilt {W}x{H} ({len(uniq)}mesh/{len(atlases)}tex) -> {out_png}")
 
 if __name__ == "__main__":
