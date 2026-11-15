@@ -26,7 +26,12 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 #stage-area{position:relative;width:100%;height:100%;min-height:0;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
 #live2d-background{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:0;pointer-events:none}
 #live2d-background[hidden]{display:none!important}
-#stage-area[hidden],#spine-stage[hidden]{display:none!important}
+#stage-area[hidden],#spine-stage[hidden],#artwork-stage[hidden]{display:none!important}
+#artwork-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:4.5rem 1.5rem 1.5rem;overflow:hidden;background:radial-gradient(ellipse at center,#273443,#101923 75%)}
+#artwork-image{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 8px 18px #0005)}
+#jukebox-view-controls[hidden]{display:none!important}
+#jukebox-view-controls button.active{border-color:var(--accent);background:#31404a;font-weight:650}
+#jukebox-view-controls button:disabled{opacity:.45;cursor:not-allowed}
 #spine-stage{position:absolute;inset:0;width:100%;height:100%;min-height:580px;overflow:hidden}
 #showcase-background{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;pointer-events:none;z-index:0}
 #showcase-background[hidden]{display:none!important}
@@ -63,7 +68,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
       <button id="filter-unique" type="button">Unique 最高档</button>
       <button id="filter-jukebox" type="button">吼吼点唱机</button>
     </div>
-    <div id="jukebox-tip" class="unique-tip" hidden>点唱机·典藏光碟历期衣着，已收录 32 套。<strong>非 UNIQUE 品质分级</strong>。27 套 Cubism、5 套 Spine；无独立商城背景的不拼接背景。批量下载：<code>python reverse1999/scripts/sync.py jukebox all</code></div>
+    <div id="jukebox-tip" class="unique-tip" hidden>点唱机·典藏光碟历期衣着，已收录 32 套。<strong>非 UNIQUE 品质分级</strong>。27 套 Cubism、5 套 Spine；原画和模型分别下载、分别标记状态，不使用假背景。原画补齐：<code>python reverse1999/scripts/sync.py jukebox-art all</code>。完整安装：<code>python reverse1999/scripts/sync.py jukebox all</code></div>
     <div id="unique-tip" class="unique-tip" hidden>已收录 12 套女性 Unique 衣着；灰色项目尚未下载。批量下载：<code>python reverse1999/scripts/sync.py unique all</code></div>
     <div class="count" id="count">读取资源清单中…</div>
     <div id="models"></div>
@@ -72,6 +77,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><img id="live2d-background" alt="这套衣着对应的专属背景" hidden><canvas id="canvas"></canvas></div>
+    <div id="artwork-stage" hidden><img id="artwork-image" alt="该套衣着的完整高分辨率静态立绘"></div>
     <div id="spine-stage" hidden>
       <img id="showcase-background" alt="衣着专属背景" hidden>
       <div id="spine-container"></div>
@@ -79,6 +85,14 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
   <aside class="right"><div class="controls">
+    <div id="jukebox-view-controls" hidden>
+      <h3>衣着展示方式</h3>
+      <div class="list">
+        <button id="view-artwork" type="button">原画</button>
+        <button id="view-model" type="button">动态模型</button>
+      </div>
+      <p class="note" id="jukebox-artwork-status">按皮肤 ID 对应原始静态立绘，独立于 Live2D / Spine 模型。</p>
+    </div>
     <div id="scene-controls" hidden>
       <h3>完整皮肤展示</h3>
       <div class="scene-buttons">
@@ -133,19 +147,23 @@ function renderList(){
   $('models').replaceChildren();
   if(galleryFilter==='jukebox'){
     const visible=jukeboxCatalog.filter(matches);
-    const complete=jukeboxCatalog.filter(x=>x.downloaded).length;
-    $('count').textContent='点唱机典藏衣着 '+complete+' / '+jukeboxCatalog.length+' 套已下载';
+    const complete=jukeboxCatalog.filter(x=>x.downloaded&&x.artwork_downloaded).length;
+    const countModel=jukeboxCatalog.filter(x=>x.downloaded).length;
+    const countArt=jukeboxCatalog.filter(x=>x.artwork_downloaded).length;
+    $('count').textContent='点唱机全套 '+complete+'/'+jukeboxCatalog.length+
+      ' · 模型 '+countModel+' · 原画 '+countArt;
     visible.forEach(row=>{
       const model=models.find(m=>m.channel==='JUKEBOX'&&String(m.id)===String(row.id));
       const btn=document.createElement('button');
       btn.className='item'+(!model?' not-downloaded':'')+(model&&selected===model?' active':'');
       const name=document.createElement('div');name.textContent=row.name+' · '+row.skin;
-      const meta=document.createElement('small');meta.textContent='点唱机 · '+(row.type==='spine'?'Spine':'Live2D')+
-        ' · '+row.id+' · '+(model?'点击播放':'待下载，点击查看安装指令');
+      const meta=document.createElement('small');
+      meta.textContent='点唱机 · '+(row.type==='spine'?'Spine':'Live2D')+' · '+row.id+
+        ' · 模型'+(row.downloaded?'已安装':'待下载')+' / 原画'+(row.artwork_downloaded?'已安装':'待补齐');
       btn.append(name,meta);
       btn.onclick=()=>{
         if(model){selectModel(model);return;}
-        message('未下载 '+row.name+'「'+row.skin+'」\nVS Code 项目根目录执行：\npython reverse1999/scripts/sync.py jukebox '+row.id+'\n然后刷新浏览器。');
+        message('尚未下载 '+row.name+'「'+row.skin+'」\nVS Code 项目根目录执行：\npython reverse1999/scripts/sync.py jukebox '+row.id+'\n然后刷新浏览器。');
       };
       $('models').appendChild(btn);
     });
@@ -172,7 +190,7 @@ function renderList(){
     return;
   }
   const visible=models.filter(matches);
-  $('count').textContent='本地 '+visible.length+' / '+models.length+' 套模型';
+  $('count').textContent='本地 '+visible.length+' / '+models.length+' 套可预览资源';
   visible.forEach(m=>{
     const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
     const line=document.createElement('div');line.textContent=m.name+' · '+m.skin;
@@ -440,7 +458,7 @@ function setupSceneControls(){
   };
 }
 
-async function selectModel(m){
+async function selectModel(m, viewMode){
   selected=m;renderList();const token=++requestId;
   ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
@@ -448,9 +466,37 @@ async function selectModel(m){
   $('live2d-framing').hidden=true;
   $('live2d-background').hidden=true;
   $('live2d-background').removeAttribute('src');
+  $('artwork-stage').hidden=true;
+  $('artwork-image').removeAttribute('src');
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
+  const jukebox=m.channel==='JUKEBOX', hasArt=jukebox&&!!m.artwork, artOnly=m.type==='artwork';
+  const showArt=hasArt&&viewMode!=='model';
+  $('jukebox-view-controls').hidden=!jukebox;
+  $('view-artwork').disabled=!hasArt;
+  $('view-model').disabled=artOnly;
+  $('view-artwork').classList.toggle('active',showArt);
+  $('view-model').classList.toggle('active',jukebox&&!showArt);
+  $('jukebox-artwork-status').textContent=hasArt
+    ? '原画为本地独立高分辨率 WebP，保持原始比例；动态模型仍可切换。'
+    : '尚未安装原画：运行 python reverse1999/scripts/sync.py jukebox-art '+m.id;
+  if(showArt){
+    $('stage-area').hidden=true;
+    $('spine-stage').hidden=true;
+    $('spine-stage').classList.remove('showcase');
+    $('scene-controls').hidden=true;
+    $('artwork-stage').hidden=false;
+    $('artwork-image').src=m.artwork;
+    $('model-skin').textContent=m.skin+' · 完整衣着原画（静态）';
+    buttons($('poses'),[],()=>{});
+    hideMessage();
+    return;
+  }
+  if(artOnly){
+    message('这套衣着只有原画；动态模型尚未安装，请运行 jukebox '+m.id);
+    return;
+  }
   if(m.type==='spine'||m.type==='showcase'||m.type==='scene'){
     const playable=m.type==='scene'?previewForScene(m):m;
     const full=m.type==='showcase'||m.type==='scene';
@@ -544,8 +590,12 @@ async function start(){
       const response=await fetch('jukebox-catalog.json',{cache:'no-store'});
       if(response.ok){
         const staticCatalog=await response.json();
-        const statuses=new Map(jukeboxCatalog.map(x=>[String(x.id),!!x.downloaded]));
-        jukeboxCatalog=(staticCatalog.skins||[]).map(x=>({...x,downloaded:statuses.get(String(x.id))||false}));
+        const statuses=new Map(jukeboxCatalog.map(x=>[String(x.id),x]));
+        jukeboxCatalog=(staticCatalog.skins||[]).map(x=>({
+          ...x,
+          downloaded:!!statuses.get(String(x.id))?.downloaded,
+          artwork_downloaded:!!statuses.get(String(x.id))?.artwork_downloaded
+        }));
       }
     }catch(error){console.warn('点唱机静态目录不可用，采用本地清单：',error);}
     // 兼容 main 已有的 scene.py 商城场景记录：统一交给实测通过的 WebGL 背景播放器。
@@ -564,6 +614,12 @@ async function start(){
     });
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
     initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
+    $('view-artwork').onclick=()=>{if(selected)selectModel(selected,'artwork');};
+    $('view-model').onclick=()=>{if(selected&&selected.type!=='artwork')selectModel(selected,'model');};
+    $('artwork-image').onerror=()=>{
+      if(selected?.channel==='JUKEBOX'&&!$('artwork-stage').hidden)
+        message('原画文件无法加载，请重新运行 jukebox-art '+selected.id+' 后刷新。');
+    };
     $('filter-all').onclick=()=>{galleryFilter='all';renderList();};
     $('filter-unique').onclick=()=>{galleryFilter='unique';renderList();};
     $('filter-jukebox').onclick=()=>{galleryFilter='jukebox';renderList();};
