@@ -102,6 +102,25 @@ def suffix_count(name):
     return name.count("_")
 
 
+def valid_model_files(model_dir, name):
+    """不把缺失 moc3 / 贴图的残缺模型放进展示柜清单。"""
+    try:
+        path = os.path.join(model_dir, f"{name}.model3.json")
+        with open(path, encoding="utf-8") as fp:
+            refs = json.load(fp)["FileReferences"]
+        moc = refs.get("Moc")
+        textures = refs.get("Textures")
+        if not isinstance(moc, str) or not moc or not isinstance(textures, list) or not textures:
+            return False
+        with open(os.path.join(model_dir, moc), "rb") as fp:
+            if fp.read(4) != b"MOC3":
+                return False
+        return all(isinstance(t, str) and t and os.path.isfile(os.path.join(model_dir, t))
+                   and os.path.getsize(os.path.join(model_dir, t)) > 0 for t in textures)
+    except (OSError, ValueError, TypeError, KeyError):
+        return False
+
+
 def moc3_version(moc_path):
     """读 moc3 文件头的版本号(offset 0x04)。1=Cubism3.0, 2=3.3, 3=4.0, 4=4.2, 5=5.0。读不到返回 0。"""
     try:
@@ -182,7 +201,7 @@ def generate():
     models = []
     for d in sorted(os.listdir(C.MODELS_DIR)) if os.path.isdir(C.MODELS_DIR) else []:
         m3 = os.path.join(C.MODELS_DIR, d, f"{d}.model3.json")
-        if os.path.exists(m3):
+        if valid_model_files(os.path.join(C.MODELS_DIR, d), d):
             _, sid, en, _ = resolve(d, p2info)
             ver = moc3_version(os.path.join(C.MODELS_DIR, d, f"{d}.moc3"))
             info = find_info(d, p2info)

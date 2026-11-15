@@ -508,6 +508,17 @@ function createCard({img, alt, badge='', leftBadge='', info, onClick}){
   const card = document.createElement('div');
   card.className = 'card';
   card.innerHTML = `<div class="thumb">${badge}${leftBadge}<img loading="lazy" src="${escapeHtml(img)}" alt="${escapeHtml(alt)}"></div>${info}`;
+  const preview = card.querySelector('img');
+  const showMissing = () => {
+    if (!preview.isConnected) return;
+    preview.remove();
+    const message = document.createElement('span');
+    message.textContent = '暂无预览 · 请检查立绘安装';
+    message.style.cssText = 'display:flex;align-items:center;justify-content:center;width:100%;height:100%;padding:18px;text-align:center;font-size:12px;color:#a5b9cc';
+    card.querySelector('.thumb').appendChild(message);
+  };
+  if (!img) showMissing();
+  else preview.addEventListener('error', showMissing, { once: true });
   card.onclick = onClick;
   return card;
 }

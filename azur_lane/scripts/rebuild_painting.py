@@ -5,6 +5,10 @@
 import UnityPy, numpy as np
 from PIL import Image, ImageDraw, ImageChops
 import sys
+import config as C
+
+# 子进程单独加载 Unity 资源时也必须配置版本回退（与 build.py 保持一致）。
+UnityPy.config.FALLBACK_UNITY_VERSION = C.UNITY_FALLBACK_VERSION
 
 def get_mesh_data(mesh):
     """从 UnityPy 导出的 OBJ 解析 顶点/UV/面。"""

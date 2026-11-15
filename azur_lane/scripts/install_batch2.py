@@ -112,6 +112,33 @@ def check_hash(row: AssetRow, cache_root: Path) -> bool:
     return digest.hexdigest() == row.md5
 
 
+def valid_png(path: Path) -> bool:
+    """先验证 PNG 文件头，避免将旧的空文件误认作成功立绘。"""
+    try:
+        with path.open("rb") as fp:
+            return fp.read(8) == b"\x89PNG\r\n\x1a\n"
+    except OSError:
+        return False
+
+
+def valid_live2d_model(model_dir: Path, name: str) -> bool:
+    """有效模型至少需要 settings、MOC3 以及全部贴图。"""
+    try:
+        model3 = model_dir / f"{name}.model3.json"
+        refs = json.loads(model3.read_text(encoding="utf-8"))["FileReferences"]
+        moc = refs.get("Moc")
+        textures = refs.get("Textures")
+        if not isinstance(moc, str) or not moc or not isinstance(textures, list) or not textures:
+            return False
+        with (model_dir / moc).open("rb") as fp:
+            if fp.read(4) != b"MOC3":
+                return False
+        return all(isinstance(t, str) and t and (model_dir / t).is_file()
+                   and (model_dir / t).stat().st_size > 0 for t in textures)
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
+
+
 def pick_skins(only: list[str] | None) -> list[Skin]:
     if not only:
         return list(BATCH)
@@ -209,16 +236,22 @@ def main(argv: list[str] | None = None) -> int:
             paint_errors[row.path] = "download_or_md5_failed"
             continue
         output = painting_output(row, painting_dir)
-        if output.is_file() and output.stat().st_size > 0 and not args.force_paintings:
+        if valid_png(output) and not args.force_paintings:
             print(f"  [跳过] {output.name}")
             continue
         bundle = cache_dir.joinpath(*row.path.split("/"))
+        # 使用临时输出，重建失败不覆盖既有的正常立绘文件。
+        temporary = output.with_name(f".{output.stem}.batch2.tmp.png")
+        if temporary.exists():
+            temporary.unlink()
         print(f"  [重建] {output.name}", flush=True)
-        # 原脚本在部分资源出错时返回码可能仍为 0，故还需验证输出存在且非空。
-        result = subprocess.run([sys.executable, str(SCRIPT_DIR / "rebuild_painting.py"), str(bundle), str(output)], check=False)
-        if result.returncode != 0 or not output.is_file() or output.stat().st_size == 0:
+        result = subprocess.run([sys.executable, str(SCRIPT_DIR / "rebuild_painting.py"), str(bundle), str(temporary)], check=False)
+        if result.returncode != 0 or not valid_png(temporary):
             paint_errors[row.path] = f"rebuild_failed_{result.returncode}"
+            temporary.unlink(missing_ok=True)
             print(f"  [失败] {row.path}", flush=True)
+        else:
+            os.replace(temporary, output)
 
     print("\n[3/4] 下载并还原 Live2D 模型")
     bad_models = {r.path for r in download_selection("L2D", all_models, cache_dir)}
@@ -231,8 +264,8 @@ def main(argv: list[str] | None = None) -> int:
     report = []
     failed = False
     for skin, paints, models in plans:
-        passed_paints = [r for r in paints if r.path not in paint_errors and painting_output(r, painting_dir).is_file()]
-        passed_models = [r for r in models if r.path in ok_model_paths and (model_dir / Path(r.path).name / (Path(r.path).name + ".model3.json")).is_file()]
+        passed_paints = [r for r in paints if r.path not in paint_errors and valid_png(painting_output(r, painting_dir))]
+        passed_models = [r for r in models if r.path in ok_model_paths and valid_live2d_model(model_dir / Path(r.path).name, Path(r.path).name)]
         painting_ok = bool(passed_paints)
         model_ok = bool(passed_models)
         # 动态/特殊动态不等于拥有可播放的完整特效，即使提取出模型也需验证交互/特效。
