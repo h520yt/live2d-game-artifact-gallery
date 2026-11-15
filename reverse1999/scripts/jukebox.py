@@ -10,6 +10,7 @@ import re
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
+import artwork
 import scene
 import spine
 
@@ -95,6 +96,36 @@ def download_file(url, target):
     return spine.download_file(url, target)
 
 
+
+def artwork_path(sid):
+    return DATA_DIR / require_skin(sid)[0] / "artwork.webp"
+
+
+def has_artwork(sid):
+    return artwork.exists(artwork_path(sid))
+
+
+def download_artwork(sid):
+    sid = require_skin(sid)[0]
+    return artwork.download(sid, artwork_path(sid))
+
+
+def download_artworks(target):
+    """仅补原画，已下载的模型不重复处理。"""
+    ids = list(BY_ID) if str(target).lower() == "all" else [require_skin(target)[0]]
+    failures = []
+    for sid in ids:
+        try:
+            download_artwork(sid)
+            print(f"[{sid}] 原画就绪")
+        except (RuntimeError, OSError, ValueError) as exc:
+            failures.append((sid, str(exc)))
+            print(f"[{sid}] 原画失败：{exc}")
+    print(f"原画已就绪 {len(ids) - len(failures)}/{len(ids)} 套")
+    if failures:
+        raise RuntimeError("部分原画未能下载：" + "；".join(f"{sid}: {why}" for sid, why in failures))
+
+
 def known_models(sid):
     sid, name, garment, kind, folder = require_skin(sid)
     root = DATA_DIR / sid
@@ -130,7 +161,9 @@ def known_models(sid):
 
 def catalog():
     return [{"id": int(sid), "name": name, "skin": garment, "type": kind,
-             "channel": "JUKEBOX", "downloaded": known_models(sid) is not None}
+             "channel": "JUKEBOX", "downloaded": known_models(sid) is not None,
+             "artwork_downloaded": has_artwork(sid),
+             "complete": known_models(sid) is not None and has_artwork(sid)}
             for sid, name, garment, kind, folder in SKINS]
 
 
@@ -188,18 +221,24 @@ def download_one(mapping, ident):
 
 def download(mapping, target):
     ids = list(BY_ID) if str(target).lower() == "all" else [require_skin(target)[0]]
-    failed, done = [], 0
+    failures, models_done, artwork_done = [], 0, 0
     for i, sid in enumerate(ids, 1):
         print(f"\n点唱机衣着 [{i}/{len(ids)}] {sid} {BY_ID[sid][1]} · {BY_ID[sid][2]}")
         try:
             download_one(mapping, sid)
-            done += 1
+            models_done += 1
         except (RuntimeError, ValueError, OSError) as exc:
-            failed.append((sid, str(exc)))
-            print(f"失败 {sid}：{exc}")
-    print(f"\n点唱机下载完成 {done}/{len(ids)}；失败 {len(failed)}")
-    if failed:
-        raise RuntimeError("尚未完成：" + "；".join(f"{x}: {reason}" for x, reason in failed))
+            failures.append((sid, f"模型：{exc}"))
+            print(f"模型失败 {sid}：{exc}")
+        try:
+            download_artwork(sid)
+            artwork_done += 1
+        except (RuntimeError, ValueError, OSError) as exc:
+            failures.append((sid, f"原画：{exc}"))
+            print(f"原画失败 {sid}：{exc}")
+    print(f"\n点唱机批量结果：模型 {models_done}/{len(ids)}，原画 {artwork_done}/{len(ids)}")
+    if failures:
+        raise RuntimeError("存在未补齐资源：" + "；".join(f"{sid}: {why}" for sid, why in failures))
 
 
 def collect_models(mapping):
@@ -207,12 +246,19 @@ def collect_models(mapping):
     out = []
     for sid, name, garment, kind, folder in SKINS:
         info = known_models(sid)
-        if not info or sid not in rows:
+        has_portrait = has_artwork(sid)
+        if (not info and not has_portrait) or sid not in rows:
             continue
         standard = {"id": int(sid), "name": name, "skin": garment,
                     "en": rows[sid].get("en") or "",
                     "skin_en": rows[sid].get("skin_en") or "",
                     "folder": folder, "channel": "JUKEBOX"}
+        if has_portrait:
+            standard["artwork"] = f"../data/jukebox/{sid}/artwork.webp"
+        if not info:
+            standard["type"] = "artwork"
+            out.append(standard)
+            continue
         if kind == "cubism":
             standard.update({"type": "cubism",
                              "path": f"../data/jukebox/{sid}/cubism/{folder}.model3.json"})
