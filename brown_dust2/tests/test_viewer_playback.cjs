@@ -20,7 +20,7 @@ function extract(startLabel, endLabel) {
 
 const helpers = extract("function isIdleAnimation(name) {", "\nfunction countSkinAttachments(skin) {");
 const skinHelpers = extract("function countSkinAttachments(skin) {", "\nfunction applySkin(pl, name) {");
-const playback = extract("function selectAnimation(pl, name) {", "\nasync function loadRole(role) {");
+const playback = extract("function selectAnimation(pl, name) {", "\nasync function loadRole(");
 
 function harness(animations, role="character") {
   const calls = [];
