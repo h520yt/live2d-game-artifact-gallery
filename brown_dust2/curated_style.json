@@ -1,0 +1,81 @@
+{
+  "description": "用户指定的筛选偏好：成熟御姐、黑丝/网袜、腿部重点；只保留 Prestige/Special Skin 及核对过造型的精选服装。Live2D/Spine可播性依赖本地下载验证。",
+  "selection_policy": "所有 Prestige Skin 和 Special Skin 自动保留；其它服装仅保留 styles 中显式列出的 ID。Fated Guest 不再整组接入。",
+  "evidence_note": "标签为外观检索与人工筛选结果；非官方游戏稀有度/属性。来源图片可能与骨骼动画表现有所区别。",
+  "styles": [
+    {
+      "id": "costume-000706",
+      "tags": [
+        "成熟御姐",
+        "黑丝/网袜",
+        "腿部重点"
+      ],
+      "reason": "Eclipse Nightmare Bunny：紫色兔女郎及网袜，腿部明显突出",
+      "evidence": "https://x.com/BROWNDUST2_EN/status/1998920757657702527"
+    },
+    {
+      "id": "costume-001207",
+      "tags": [
+        "黑丝/网袜",
+        "腿部重点"
+      ],
+      "reason": "Liatris Maid Name R：深色长筒丝袜与女仆造型",
+      "evidence": "https://www.browndust2.com/uploads/EN_2_b2548419bb.png"
+    },
+    {
+      "id": "costume-101601",
+      "tags": [
+        "成熟御姐",
+        "黑丝/网袜",
+        "腿部重点"
+      ],
+      "reason": "Celia The Curse：深色蕾丝长袜与成熟暗黑系造型",
+      "evidence": "https://game.naver.com/lounge/BrownDust2/board/detail/5347923"
+    },
+    {
+      "id": "costume-060403",
+      "tags": [
+        "成熟御姐",
+        "黑丝/网袜",
+        "腿部重点"
+      ],
+      "reason": "Celia Masquerade Bunny：黑色兔女郎与黑丝/破损丝袜造型",
+      "evidence": "https://news.17173.com/content/12082025/150848536.shtml"
+    },
+    {
+      "id": "costume-061101",
+      "tags": [
+        "黑丝/网袜",
+        "腿部重点"
+      ],
+      "reason": "Eleaneer Piercing Magic Bow：不对称破损黑丝与腿部动作突出",
+      "evidence": "https://www.browndust2.com/en-us/news/view?id=4115"
+    },
+    {
+      "id": "costume-067301",
+      "tags": [
+        "成熟御姐",
+        "腿部重点"
+      ],
+      "reason": "Levia Track and Field Captain：运动系短装，腿部展示突出；不是黑丝",
+      "evidence": "https://www.browndust2.com/uploads/EN_4_4fcabc75e7.png"
+    },
+    {
+      "id": "costume-003303",
+      "tags": [
+        "成熟御姐",
+        "腿部重点"
+      ],
+      "reason": "Nebris New Hire：短裙及黑色过膝靴突出腿部；不是黑丝",
+      "evidence": "https://game.naver.com/lounge/BrownDust2/board/detail/5607004"
+    },
+    {
+      "id": "costume-003402",
+      "tags": [
+        "腿部重点"
+      ],
+      "reason": "Morpeah Daydream Bunny：兔女郎与蕾丝长袜，腿部设计明显",
+      "evidence": "https://www.browndust2.com/en-us/news/view?id=4690"
+    }
+  ]
+}

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>棕色尘埃2 · 服装与动态皮肤展示柜</title>
+<title>棕色尘埃2 · 精选动态皮肤展示柜</title>
 <link rel="stylesheet" href="../../shared/vendor/spine-player.css">
 <style>
 :root{--bg:#100d19;--panel:#1b1829;--line:#40354e;--gold:#e8c58b;--text:#f4ecf6;--muted:#ab9cae}
@@ -81,23 +81,24 @@ code{font-family:Consolas,monospace;color:#eace9b}
 </head>
 <body>
 <header>
- <div><div class="subtitle">GAME ARTIFACT GALLERY · PRESTIGE COLLECTION</div><h1>棕色尘埃2 · 服装展示柜</h1></div>
+ <div><div class="subtitle">GAME ARTIFACT GALLERY · PRESTIGE COLLECTION</div><h1>棕色尘埃2 · 精选皮肤展示柜</h1></div>
  <a class="back" href="../../index.html">← 返回游戏展柜</a>
 </header>
 <main class="layout">
  <section class="sidebar">
   <div class="sidebar-top"><h2>服装目录</h2><span class="counter" id="count">读取中</span></div>
   <div class="collection-filters" id="filters">
-    <button type="button" data-filter="all" class="active">全部</button>
-    <button type="button" data-filter="prestige">尊爵</button>
+    <button type="button" data-filter="all" class="active">全部精选</button>
     <button type="button" data-filter="special">特殊皮肤</button>
-    <button type="button" data-filter="guest">羁绊访客</button>
-    <button type="button" data-filter="other">其它服装</button>
+    <button type="button" data-filter="style">御姐/腿部</button>
+    <button type="button" data-filter="mature">成熟御姐</button>
+    <button type="button" data-filter="stockings">黑丝/网袜</button>
+    <button type="button" data-filter="legs">腿部重点</button>
     <button type="button" data-filter="interactive">有互动</button>
     <button type="button" data-filter="installed">已安装</button>
   </div>
   <input class="search" id="search" placeholder="搜索角色或皮肤名称" aria-label="搜索皮肤">
-  <div class="collection-info" id="collection-info">目录可预览，素材按需下载到本地</div>
+  <div class="collection-info" id="collection-info">仅显示高规格特殊皮肤和符合偏好的精选造型</div>
   <div class="cards" id="cards"></div>
   <p class="status" id="list-status"></p>
  </section>
@@ -461,6 +462,14 @@ function isPrestige(skin) {
   return skin.tier === "Prestige Skin" || !skin.id.startsWith("costume-");
 }
 
+function isSpecial(skin) {
+  return isPrestige(skin) || skin.tier === "Special Skin";
+}
+
+function hasStyleTag(skin, tag) {
+  return Array.isArray(skin.preference_tags) && skin.preference_tags.includes(tag);
+}
+
 function hasInstalledModel(skin) {
   return Boolean(installed.get(skin.id) && Object.keys(installed.get(skin.id).roles).length);
 }
@@ -473,10 +482,11 @@ function renderCards(filter) {
       skin.skin_en,skin.id,skin.costume_id || ""]
       .some(value => String(value).toLowerCase().includes(q));
     if (!keyword) return false;
-    if (collectionFilter === "prestige") return isPrestige(skin);
-    if (collectionFilter === "special") return skin.tier === "Special Skin";
-    if (collectionFilter === "guest") return skin.tier === "Fated Guest";
-    if (collectionFilter === "other") return !isPrestige(skin);
+    if (collectionFilter === "special") return isSpecial(skin);
+    if (collectionFilter === "style") return Boolean(skin.preference_tags?.length);
+    if (collectionFilter === "mature") return hasStyleTag(skin, "成熟御姐");
+    if (collectionFilter === "stockings") return hasStyleTag(skin, "黑丝/网袜");
+    if (collectionFilter === "legs") return hasStyleTag(skin, "腿部重点");
     if (collectionFilter === "installed") return hasInstalledModel(skin);
     if (collectionFilter === "interactive") return Boolean(skin.roles.interaction);
     return true;
@@ -485,16 +495,17 @@ function renderCards(filter) {
     const present = installed.get(skin.id);
     const roles = present ? Object.keys(present.roles) : [];
     const card = el("button", "card" + (selected && selected.id === skin.id ? " active" : ""));
-    card.appendChild(el("div","card-title",skin.character + " · " + skin.skin));
-    card.appendChild(el("div","card-sub",skin.character_en + " / " +
+    card.appendChild(el("div", "card-title", skin.character + " · " + skin.skin));
+    card.appendChild(el("div", "card-sub", skin.character_en + " / " +
       skin.skin_en + (skin.costume_id ? " · " + skin.costume_id : "")));
     const tags = el("div","tags");
     const tierLabel = isPrestige(skin) ? "Prestige"
-      : skin.tier === "Special Skin" ? "Special Skin"
-      : skin.tier === "Fated Guest" ? "羁绊访客" : "角色服装";
+      : skin.tier === "Special Skin" ? "Special Skin" : "风格精选";
     tags.appendChild(badge(tierLabel));
     tags.appendChild(badge(roles.length ? "本地 " + roles.length +
-      "/" + Object.keys(skin.roles).length + " 类" : "待安装", roles.length ? "ready" : "wait"));
+      "/" + Object.keys(skin.roles).length + " 类" : "待安装",
+      roles.length ? "ready" : "wait"));
+    for (const name of skin.preference_tags || []) tags.appendChild(badge(name));
     if (skin.roles.interaction) tags.appendChild(badge("互动"));
     if (skin.mapping === "candidate") tags.appendChild(badge("映射待核实"));
     card.appendChild(tags);
@@ -502,13 +513,12 @@ function renderCards(filter) {
     $("cards").appendChild(card);
   }
   const localCount = catalog.filter(hasInstalledModel).length;
-  $("count").textContent = localCount + " 已安装 / " + catalog.length + " 收录";
-  $("collection-info").textContent = "本页显示 " + matches.length +
-    " 套 · 尊爵 " + catalog.filter(isPrestige).length +
-    " · 特殊 " + catalog.filter(skin => skin.tier === "Special Skin").length +
-    " · 羁绊 " + catalog.filter(skin => skin.tier === "Fated Guest").length +
-    " · 未安装的资源需要本地下载";
-  $("list-status").textContent = matches.length ? "" : "该条件下暂无皮肤";
+  $("count").textContent = localCount + " 已安装 / " + catalog.length + " 精选";
+  $("collection-info").textContent = "本页显示 " + matches.length
+    + " 套 · 特殊 " + catalog.filter(isSpecial).length
+    + " · 风格精选 " + catalog.filter(skin => skin.preference_tags?.length).length
+    + " · 已排除普通无关服装";
+  $("list-status").textContent = matches.length ? "" : "当前条件没有符合要求的皮肤";
   for (const button of $("filters").querySelectorAll("button")) {
     button.classList.toggle("active", button.dataset.filter === collectionFilter);
   }
@@ -775,21 +785,37 @@ for (const button of $("filters").querySelectorAll("button")) {
 }
 (async () => {
   try {
-    const [a,b,c] = await Promise.all([
+    const [a,b,c,d] = await Promise.all([
       fetch("../curated_prestige.json", {cache:"no-store"}),
       fetch("manifest.json", {cache:"no-store"}),
-      fetch("../costume_catalog.json", {cache:"no-store"})
+      fetch("../costume_catalog.json", {cache:"no-store"}),
+      fetch("../curated_style.json", {cache:"no-store"})
     ]);
-    if(!a.ok || !b.ok || !c.ok) throw new Error("资源索引不存在，请从项目根目录启动 HTTP 服务，并更新最新代码");
+    if(!a.ok || !b.ok || !c.ok || !d.ok) {
+      throw new Error("精选资源索引不存在，请从项目根目录启动 HTTP 服务并更新代码");
+    }
     const original = (await a.json()).skins || [];
-    const regular = (await c.json()).skins || [];
-    catalog = [...original.map(skin => ({...skin,tier:"Prestige Skin"})), ...regular];
+    const allRegular = (await c.json()).skins || [];
+    const styles = (await d.json()).styles || [];
+    const styleMap = new Map(styles.map(style => [style.id, style]));
+    const regular = allRegular.filter(skin => skin.tier === "Special Skin"
+      || styleMap.has(skin.id)).map(skin => {
+        const preference = styleMap.get(skin.id);
+        return {
+          ...skin,
+          preference_tags: preference ? preference.tags : [],
+          preference_reason: preference ? preference.reason : null
+        };
+      }).sort((a,b) => (a.tier === "Special Skin" ? 0 : 1)
+        - (b.tier === "Special Skin" ? 0 : 1));
+    catalog = [...original.map(skin => ({...skin,tier:"Prestige Skin"})),
+      ...regular];
     const manifest = await b.json();
     installed = new Map((manifest.installed || []).map(item => [item.id,item]));
     renderCards("");
-    $("install-hint").textContent = "共收录 " + catalog.length + " 套角色服装。"
-      + " 未安装条目仅提供目录索引，默认安装器仍只处理六款尊爵；"
-      + " 下载其它服装请使用 --collection other --limit 20 分批执行。";
+    $("install-hint").textContent = "当前只保留尊爵、特殊皮肤及明确匹配的御姐/黑丝/腿部精选。"
+      + " 本地已下载但未入选的服装不会删除，只是不再展示；"
+      + " 使用 --collection all 安装精选，或 --collection style 仅安装风格精选。";
     setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
     if(catalog.length) selectSkin(catalog[0]);
   } catch(error) {

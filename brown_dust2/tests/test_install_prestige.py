@@ -124,32 +124,61 @@ class PrestigeInstallTests(unittest.TestCase):
         self.assertEqual(Path("skin/cutscene/bg/back.png"), target.relative_to(installer.DATA))
 
 
-    def test_full_catalog_has_200_additional_costumes_without_prestige_duplicates(self):
-        prestige, other = installer.read_catalog()
+    def test_curated_catalog_only_exposes_special_and_style_matches(self):
+        prestige, chosen = installer.read_catalog()
         self.assertEqual(6, len(prestige))
-        self.assertEqual(200, len(other))
-        self.assertEqual(206, len(prestige + other))
-        self.assertEqual(206, len({x["id"] for x in prestige + other}))
-        self.assertEqual(8, sum(x["tier"] == "Special Skin" for x in other))
-        self.assertEqual(15, sum(x["tier"] == "Fated Guest" for x in other))
-        self.assertEqual(177, sum(x["tier"] == "Costume" for x in other))
-        self.assertEqual(15, sum("interaction" in x["roles"] for x in other))
+        self.assertEqual(16, len(chosen))
+        self.assertEqual(22, len(prestige + chosen))
+        self.assertEqual(22, len({item["id"] for item in prestige + chosen}))
+        self.assertEqual(8, sum(item["tier"] == "Special Skin" for item in chosen))
+        self.assertEqual(8, sum(bool(item.get("preference_tags")) for item in chosen))
+        self.assertEqual(3, sum(item["tier"] == "Fated Guest" for item in chosen))
+        self.assertEqual(3, sum("interaction" in item["roles"] for item in chosen))
 
-    def test_collection_selection_and_character_filter(self):
-        prestige, other = installer.read_catalog()
-        self.assertEqual(6, len(installer.select_skins(prestige, other, "prestige")))
-        self.assertEqual(8, len(installer.select_skins(prestige, other, "special")))
-        self.assertEqual(15, len(installer.select_skins(prestige, other, "guest")))
-        self.assertEqual(21, len(installer.select_skins(prestige, other, "interactive")))
-        self.assertEqual(20, len(installer.select_skins(prestige, other, "other", limit=20)))
-        target = installer.select_skins(prestige, other, "all",
-                                        only="costume-000706")
-        self.assertEqual(1, len(target))
-        self.assertEqual("Eclipse", target[0]["character_en"])
-        group = installer.select_skins(prestige, other, "all", character="Teresse")
-        self.assertGreaterEqual(len(group), 2)
+        full_catalog = json.loads(installer.ALL_COSTUMES.read_text(encoding="utf-8"))
+        self.assertEqual(200, len(full_catalog["skins"]))
+        self.assertNotIn("costume-100501", {item["id"] for item in chosen})
+        self.assertIn("costume-000706", {item["id"] for item in chosen})
+
+    def test_only_curated_collections_are_downloadable(self):
+        prestige, chosen = installer.read_catalog()
+        select = installer.select_skins
+        self.assertEqual(6, len(select(prestige, chosen, "prestige")))
+        self.assertEqual(14, len(select(prestige, chosen, "special")))
+        self.assertEqual(8, len(select(prestige, chosen, "style")))
+        self.assertEqual(8, len(select(prestige, chosen, "other")))
+        self.assertEqual(3, len(select(prestige, chosen, "guest")))
+        self.assertEqual(9, len(select(prestige, chosen, "interactive")))
+        self.assertEqual(22, len(select(prestige, chosen, "all")))
+        self.assertEqual(3, len(select(prestige, chosen, "all", limit=3)))
+        self.assertEqual(3, len(select(prestige, chosen, "all", limit=3, offset=3)))
+        selected = select(prestige, chosen, "all", only="costume-000706")
+        self.assertEqual(1, len(selected))
+        self.assertEqual("Eclipse", selected[0]["character_en"])
+        self.assertTrue(select(prestige, chosen, "all", character="Celia"))
         with self.assertRaises(ValueError):
-            installer.select_skins(prestige, other, "other", limit=0)
+            select(prestige, chosen, "all", only="costume-100501")
+        with self.assertRaises(ValueError):
+            select(prestige, chosen, "all", limit=0)
+        with self.assertRaises(ValueError):
+            select(prestige, chosen, "all", offset=-1)
+
+    def test_style_tags_and_sources_have_valid_catalog_entries(self):
+        full = json.loads(installer.ALL_COSTUMES.read_text(encoding="utf-8"))
+        selections = json.loads(installer.CURATED_STYLE.read_text(encoding="utf-8"))
+        all_ids = {item["id"] for item in full["skins"]}
+        styles = selections["styles"]
+        self.assertEqual(8, len(styles))
+        self.assertEqual(len(styles), len({item["id"] for item in styles}))
+        for item in styles:
+            self.assertIn(item["id"], all_ids)
+            self.assertTrue(item["tags"])
+            self.assertTrue(item["reason"])
+            self.assertTrue(item["evidence"].startswith("https://"))
+        _, chosen = installer.read_catalog()
+        eclipse = next(item for item in chosen if item["id"] == "costume-000706")
+        self.assertIn("黑丝/网袜", eclipse["preference_tags"])
+        self.assertEqual("Fated Guest", eclipse["tier"])
 
     def test_scheherazade_interaction_directory_added(self):
         prestige, _ = installer.read_catalog()

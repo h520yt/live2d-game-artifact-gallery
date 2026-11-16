@@ -21,13 +21,13 @@
 - **外观风格筛选**：新增「御姐 / 腿部重点 / 运动系」标签与一键安装脚本 `python nikke/scripts/install_style.py 运动系`，自动识别并下载选中风格的 NIKKE 角色、皮肤。详见 [`nikke/SPORTS.md`](nikke/SPORTS.md)。
 - **四批收藏一键补齐**：新增 35 个黑丝、网袜、长筒袜、成熟御姐与兔女郎候选 ID，并提供分批下载、文件完整性核验、缺失资源报告。`python nikke/scripts/install_batches.py --all`，详见 [`nikke/CURATED_BATCHES.md`](nikke/CURATED_BATCHES.md)。
 
-## 棕色尘埃2 · 服装展示柜（206 套目录）
+## 棕色尘埃2 · 精选皮肤展示柜（22 套）
 
-- 已整理 6 套 Prestige Skin、8 套 Special Skin、15 套 Fated Guest，以及 177 套其它服装的来源目录映射，总计 206 套。目录收录不代表资源均已安装。
-- 展示柜新增多分类筛选、角色搜索、人物/技能/互动切换；本地下载器支持按单套、角色、类别、批次安装和离线校验。
-- 优先下载特殊皮肤：`python brown_dust2/scripts/install_prestige.py --collection special`。
-- 分批安装其它：`python brown_dust2/scripts/install_prestige.py --collection other --offset 0 --limit 20`，之后调整 offset。
-- 详见 [棕色尘埃2完整说明](brown_dust2/README.md)；游戏素材只放在 `brown_dust2/data/`（Git 忽略）。
+- **只展示 14 款高规格特殊皮肤**（Prestige 6 + Special Skin 8），以及 **8 款符合成熟御姐、黑丝/网袜或腿部重点展示的动态服装**；其它普通服装不会进入展示列表或默认下载范围。
+- 原始 200 条角色服装索引仅保留为后台资料，筛选依据和每个入选 ID 见 [curated_style.json](brown_dust2/curated_style.json)。
+- 查看精选目录：`python brown_dust2/scripts/install_prestige.py --list`；下载安装精选：`python brown_dust2/scripts/install_prestige.py --collection all`。
+- 支持按「特殊皮肤 / 成熟御姐 / 黑丝网袜 / 腿部重点 / 已安装」筛选、Spine 动画和大屏预览。详见 [详细说明](brown_dust2/README.md)。
+- 游戏素材只存放在本地 `brown_dust2/data/`（Git 忽略），此前已下载的非精选素材不会被删除。
 
 ---
 

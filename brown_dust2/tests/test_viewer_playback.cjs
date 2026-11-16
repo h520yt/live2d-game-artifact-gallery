@@ -226,18 +226,32 @@ test("目录索引与本地资源状态分离，所有收藏并不等于已安�
   assert.doesNotMatch(page,/<div class="hint">未下载的皮肤/);
 });
 
-test("展示柜合并尊爵及全部服装索引，并能按类别搜索",()=>{
+test("前端严格筛选特殊皮肤和风格白名单，不显示200套原始目录",()=>{
   assert.match(page,/fetch\("\.\.\/costume_catalog\.json"/);
+  assert.match(page,/fetch\("\.\.\/curated_style\.json"/);
+  assert.match(page,/const styleMap = new Map\(styles\.map/);
+  assert.match(page,/allRegular\.filter\(skin => skin\.tier === "Special Skin"/);
+  assert.match(page,/styleMap\.has\(skin\.id\)/);
   assert.match(page,/catalog = \[\.\.\.original\.map/);
   assert.match(page,/\.\.\.regular\]/);
-  for (const value of ["all", "prestige", "special", "guest",
-                       "other", "interactive", "installed"]) {
+  for (const value of ["all", "special", "style", "mature",
+                       "stockings", "legs", "interactive", "installed"]) {
     assert.match(page, new RegExp('data-filter="' + value + '"'));
   }
-  assert.match(page,/collectionFilter === "special"/);
-  assert.match(page,/collectionFilter === "guest"/);
-  assert.match(page,/collectionFilter === "installed"/);
+  for (const value of ["guest", "other", "prestige"]) {
+    assert.doesNotMatch(page, new RegExp('data-filter="' + value + '"'));
+  }
+  assert.match(page,/function isSpecial\(skin\)/);
+  assert.match(page,/function hasStyleTag\(skin, tag\)/);
   assert.match(page,/const localCount = catalog\.filter\(hasInstalledModel\)\.length/);
+});
+
+test("风格偏好标签展示与已安装状态彼此独立",()=>{
+  assert.match(page,/skin\.preference_tags \|\| \[\]/);
+  assert.match(page,/skin\.tier === "Special Skin"/);
+  assert.match(page,/id="collection-info"/);
+  assert.match(page,/已排除普通无关服装/);
+  assert.match(page,/当前只保留尊爵、特殊皮肤及明确匹配/);
 });
 
 test("未下载服装显示可执行的独立安装命令而不是空白播放器",()=>{

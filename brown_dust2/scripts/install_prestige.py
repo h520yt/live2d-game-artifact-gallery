@@ -17,6 +17,7 @@ BASE = Path(__file__).resolve().parents[1]
 DATA = BASE / "data"
 CATALOG = BASE / "curated_prestige.json"
 ALL_COSTUMES = BASE / "costume_catalog.json"
+CURATED_STYLE = BASE / "curated_style.json"
 MANIFEST = BASE / "viewer" / "manifest.json"
 REPORT = DATA / "install-report.json"
 REPO = "myssal/Brown-Dust-2-Asset"
@@ -240,35 +241,60 @@ def write_json(path, obj):
 
 
 def read_catalog():
-    """合并原六款尊爵与其它服装，保留稳定 ID 和本地缓存。"""
+    """只暴露尊爵、特殊皮肤及经过外观筛选的服装，保留完整索引作资料。"""
     prestige = json.loads(CATALOG.read_text(encoding="utf-8"))["skins"]
-    costumes = json.loads(ALL_COSTUMES.read_text(encoding="utf-8"))["skins"]
-    ids = [skin["id"] for skin in prestige + costumes]
+    all_costumes = json.loads(ALL_COSTUMES.read_text(encoding="utf-8"))["skins"]
+    style_entries = json.loads(CURATED_STYLE.read_text(encoding="utf-8"))["styles"]
+    style_ids = [entry["id"] for entry in style_entries]
+    if len(style_ids) != len(set(style_ids)):
+        raise ValueError("风格精选存在重复 ID")
+    style_map = {entry["id"]: entry for entry in style_entries}
+    missing = set(style_ids) - {entry["id"] for entry in all_costumes}
+    if missing:
+        raise ValueError("风格精选映射不存在: " + ", ".join(sorted(missing)))
+
+    selected = []
+    for costume in all_costumes:
+        preference = style_map.get(costume["id"])
+        if costume.get("tier") != "Special Skin" and preference is None:
+            continue
+        item = dict(costume)
+        if preference is not None:
+            item["preference_tags"] = preference["tags"]
+            item["preference_reason"] = preference["reason"]
+        selected.append(item)
+    selected.sort(key=lambda item: (
+        0 if item["tier"] == "Special Skin" else 1,
+        item["character_en"].casefold(),
+        item["skin_en"].casefold(),
+    ))
+    ids = [item["id"] for item in prestige + selected]
     if len(ids) != len(set(ids)):
-        raise ValueError("服装索引存在重复 ID")
-    return prestige, costumes
+        raise ValueError("精选目录存在重复 ID")
+    return prestige, selected
 
 
 def select_skins(prestige, costumes, collection, only=None, character=None, limit=None,
                  offset=0):
-    """默认仍安装六款尊爵；扩大集合需显式指定，防止意外下载数 GB。"""
+    """所有命令只允许下载精选资源，不能误把原始 200 套全部下载。"""
+    all_selected = prestige + costumes
     if only:
-        selected = [skin for skin in prestige + costumes if skin["id"] == only]
+        selected = [skin for skin in all_selected if skin["id"] == only]
         if not selected:
-            raise ValueError("未知服装 ID: " + only)
+            raise ValueError("不在当前精选范围的服装 ID: " + only)
     elif collection == "prestige":
         selected = prestige
-    elif collection == "other":
-        selected = costumes
-    elif collection == "interactive":
-        selected = [skin for skin in prestige + costumes
-                    if "interaction" in skin["roles"]]
     elif collection == "special":
-        selected = [skin for skin in costumes if skin["tier"] == "Special Skin"]
+        selected = prestige + [skin for skin in costumes
+                               if skin["tier"] == "Special Skin"]
+    elif collection in ("style", "other"):
+        selected = [skin for skin in costumes if skin.get("preference_tags")]
     elif collection == "guest":
         selected = [skin for skin in costumes if skin["tier"] == "Fated Guest"]
+    elif collection == "interactive":
+        selected = [skin for skin in all_selected if "interaction" in skin["roles"]]
     else:
-        selected = prestige + costumes
+        selected = all_selected
     if character:
         query = character.casefold().strip()
         selected = [skin for skin in selected if query in
@@ -285,12 +311,12 @@ def select_skins(prestige, costumes, collection, only=None, character=None, limi
 
 def main(argv=None):
     prestige, costumes = read_catalog()
-    parser = argparse.ArgumentParser(description="BD2 服装展示柜资源安装器")
+    parser = argparse.ArgumentParser(description="BD2 精选服装展示柜资源安装器")
     parser.add_argument("--plan", action="store_true", help="列举上游文件，不下载模型")
     parser.add_argument("--list", action="store_true", help="离线列出服装、模型数量与安装状态")
     parser.add_argument("--collection",
-                        choices=("prestige", "special", "guest", "other", "interactive", "all"),
-                        default="prestige", help="默认尊爵；special=特殊；guest=羁绊访客；other=其它服装")
+                        choices=("all", "special", "prestige", "style", "guest", "other", "interactive"),
+                        default="all", help="默认全部精选；special=尊爵+特殊；style=御姐黑丝腿部；other=style别名")
     parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")
     parser.add_argument("--limit", type=int, help="本次最多处理的套数，建议批量安装时设置")
     parser.add_argument("--offset", type=int, default=0,
