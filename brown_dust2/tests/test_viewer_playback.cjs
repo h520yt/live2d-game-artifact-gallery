@@ -152,8 +152,8 @@ test("互动动画自动识别实际可见内容并忽略黑色像素",()=>{
 
 test("智能取景只对互动动画生效，支持手动放大和重试",()=>{
   assert.match(page,/currentRole !== "interaction"/);
-  assert.match(page,/0\.82\/content\.width/);
-  assert.match(page,/0\.78\/content\.height/);
+  assert.match(page,/0\.86\/content\.width/);
+  assert.match(page,/0\.84\/content\.height/);
   assert.match(page,/id="auto-focus"/);
   assert.match(page,/id="zoom"/);
   assert.match(page,/scheduleAutoFocus\(pl\)/);
@@ -252,6 +252,51 @@ test("风格偏好标签展示与已安装状态彼此独立",()=>{
   assert.match(page,/id="collection-info"/);
   assert.match(page,/互动优先/);
   assert.match(page,/互动优先：本批新增/);
+});
+
+test("巨大异常黑色遮罩不再主导互动相机边界",()=>{
+  const section=extract("function getInteractionBounds(skeleton) {",
+                        "\nfunction resetCamera(pl) {");
+  const bounds=vm.runInNewContext(section + "\ngetInteractionBounds;", {});
+  const region=(name,x1,y1,x2,y2)=>({
+    data:{name},bone:{},
+    getAttachment:()=>({
+      computeWorldVertices:(_bone,vertices)=>{
+        vertices.set([x1,y1,x2,y1,x2,y2,x1,y2]);
+      }
+    })
+  });
+  const slots=[
+    region("background_huge",-120000,-120000,120000,120000),
+    region("invisibleBlackMask",-90000,-90000,90000,90000),
+    region("hair",20,120,180,300),
+    region("torso",30,20,175,170),
+    region("leg1",40,-160,85,25),
+    region("leg2",90,-155,140,25)
+  ];
+  const actual=bounds({drawOrder:slots});
+  assert.deepEqual({x:actual.x,y:actual.y,width:actual.width,height:actual.height},
+                   {x:20,y:-160,width:160,height:460});
+  assert.equal(bounds({drawOrder:[slots[0]]}),null);
+});
+
+test("互动相机遇到骨骼边界远大于有效内容时会切换，不再失败后禁用缩放",()=>{
+  const start=page.indexOf("function resetCamera(pl) {");
+  const end=page.indexOf("\nfunction el(tag, cls, text)",start);
+  const section=page.slice(start,end);
+  assert.match(section,/currentRole === "interaction"\s*\?\s*getInteractionBounds\(skeleton\)/);
+  assert.match(section,/const limit = currentRole === "interaction" \? 4 : 1\.4/);
+  assert.match(section,/if \(!fallbackValid \|\| ratio >= limit\)/);
+  assert.match(section,/if \(!boundsUsable\(size\.x, size\.y\)\)/);
+  assert.match(section,/baseZoom:camera\.zoom, factor:1, token:loadId/);
+  assert.match(section,/\$\("auto-focus"\)\.disabled=currentRole !== "interaction"/);
+  assert.doesNotMatch(section,/pl\.config\.viewport\s*=/);
+});
+
+test("极小中心场景允许高倍率自动聚焦但不放大单个闪光像素",()=>{
+  assert.match(page,/Math\.min\(20, 0\.86\/content\.width, 0\.84\/content\.height\)/);
+  assert.match(page,/content\.width \* content\.height < 0\.002/);
+  assert.match(page,/function sampleVisibleContent\(canvas\)/);
 });
 
 test("新一批独立互动即使没有人物/技能模型也可单独展示",()=>{

@@ -234,7 +234,10 @@ function autoFocusInteraction(pl, serial=focusSerial) {
   try {
     const content = sampleVisibleContent(pl.canvas);
     if (!content) return false;
-    const ratio = Math.min(7, 0.82/content.width, 0.78/content.height);
+    // 黑色遮罩可能将正常画面压缩到不足舞台的 1/15，7 倍仍无法看清。
+    // 极限 20 倍只在有足够大且连续的可见内容区域时启用。
+    if (content.width * content.height < 0.002) return false;
+    const ratio = Math.min(20, 0.86/content.width, 0.84/content.height);
     if (!Number.isFinite(ratio) || ratio < 1.15) return false;
     const unitsPerPixel = cameraView.baseZoom / cameraView.factor;
     cameraView.x += (content.x - 0.5) * pl.canvas.width * unitsPerPixel;
@@ -386,6 +389,63 @@ function getCharacterBounds(skeleton) {
   return {x:left,y:bottom,width:right-left,height:top-bottom};
 }
 
+
+// 互动骨骼的背景/遮罩网格可能比真正场景大几十倍；对这种情况按可见主体计算边界。
+// 只改变摄像机，不修改 Spine 贴图、mesh 顶点、skin 或动画轨道。
+function getInteractionBounds(skeleton) {
+  if (!skeleton || !Array.isArray(skeleton.drawOrder)) return null;
+  const regions = [];
+  for (const slot of skeleton.drawOrder) {
+    if (!slot || !slot.data) continue;
+    const name = String(slot.data.name || "");
+    if (/(?:^|[_\s-])(?:bg|background|backdrop|mask|vignette|blackout|screenfade)(?:$|[_\s-])/i.test(name)
+        || /^(?:bg|bk|background|mask|vignette)/i.test(name)) continue;
+    const attachment = slot.getAttachment?.();
+    if (!attachment || typeof attachment.computeWorldVertices !== "function") continue;
+    try {
+      let vertices;
+      if (Number.isInteger(attachment.worldVerticesLength) && attachment.worldVerticesLength >= 4) {
+        if (attachment.worldVerticesLength > 100000) continue;
+        vertices = new Float32Array(attachment.worldVerticesLength);
+        attachment.computeWorldVertices(slot, 0, vertices.length, vertices, 0, 2);
+      } else {
+        vertices = new Float32Array(8);
+        attachment.computeWorldVertices(slot.bone, vertices, 0, 2);
+      }
+      let left=Infinity, right=-Infinity, bottom=Infinity, top=-Infinity;
+      for (let i=0;i<vertices.length;i+=2) {
+        if (!Number.isFinite(vertices[i]) || !Number.isFinite(vertices[i+1])) continue;
+        left=Math.min(left,vertices[i]); right=Math.max(right,vertices[i]);
+        bottom=Math.min(bottom,vertices[i+1]); top=Math.max(top,vertices[i+1]);
+      }
+      if (right > left && top > bottom) {
+        regions.push({left,right,bottom,top,size:Math.max(right-left,top-bottom)});
+      }
+    } catch (error) {
+      // clipping 等无常规世界顶点的附件不参与相机取景。
+    }
+  }
+  if (regions.length < 3) return null;
+  // 防止名称不规范的巨型遮罩仍把场景挤成中心小点。
+  const sizes=regions.map(item=>item.size).sort((a,b)=>a-b);
+  const median=sizes[Math.floor(sizes.length / 2)];
+  const core=regions.filter(item=>item.size <= Math.max(100, median*18));
+  if (core.length < 3) return null;
+  const left=Math.min(...core.map(item=>item.left));
+  const right=Math.max(...core.map(item=>item.right));
+  const bottom=Math.min(...core.map(item=>item.bottom));
+  const top=Math.max(...core.map(item=>item.top));
+  if (!(right > left && top > bottom) || right-left > 50000 || top-bottom > 50000) {
+    return null;
+  }
+  return {x:left,y:bottom,width:right-left,height:top-bottom};
+}
+
+function boundsUsable(width,height) {
+  return Number.isFinite(width) && Number.isFinite(height)
+    && width > 1 && height > 1 && width < 50000 && height < 50000;
+}
+
 function resetCamera(pl) {
   const skeleton = pl && pl.skeleton;
   const camera = pl && pl.sceneRenderer && pl.sceneRenderer.camera;
@@ -396,16 +456,36 @@ function resetCamera(pl) {
   try {
     skeleton.updateWorldTransform();
     skeleton.getBounds(offset, size);
-    if (currentRole === "character") {
-      const trimmed = getCharacterBounds(skeleton);
-      if (trimmed && (size.x > trimmed.width * 1.4 || size.y > trimmed.height * 1.4)) {
-        offset.x = trimmed.x;
-        offset.y = trimmed.y;
-        size.x = trimmed.width;
-        size.y = trimmed.height;
+    const originalSize = {width:size.x, height:size.y};
+    const fallbackValid = boundsUsable(size.x, size.y);
+    const trimmed = currentRole === "interaction"
+      ? getInteractionBounds(skeleton)
+      : currentRole === "character" ? getCharacterBounds(skeleton) : null;
+    if (trimmed && boundsUsable(trimmed.width, trimmed.height)) {
+      // 人物背景轻微超出时可裁掉；互动必须确认存在严重的背景异常才切换，
+      // 保持原有完整场景，不随意截断人物或正常大小的室内背景。
+      const ratio = Math.max(size.x / trimmed.width, size.y / trimmed.height);
+      const limit = currentRole === "interaction" ? 4 : 1.4;
+      if (!fallbackValid || ratio >= limit) {
+        offset.x=trimmed.x; offset.y=trimmed.y;
+        size.x=trimmed.width; size.y=trimmed.height;
+        console.info("BD2 已排除异常巨大背景网格，重新取景", {
+          original:originalSize, trimmed, ratio
+        });
       }
     }
-    if (!(size.x > 1 && size.y > 1 && size.x < 50000 && size.y < 50000)) return false;
+    if (!boundsUsable(size.x, size.y)) {
+      // 无有效骨骼边界时，不再禁用“智能铺满”：保留播放器原生相机，
+      // 继续使用当前帧实际像素取景。
+      cameraView = {
+        x:camera.position.x, y:camera.position.y,
+        baseZoom:camera.zoom, factor:1, token:loadId
+      };
+      $("zoom").disabled=false;
+      $("auto-focus").disabled=currentRole !== "interaction";
+      setZoomFactor(pl,1);
+      return false;
+    }
     // 完整适配保留约 8% 留白；取 max 表示 contain，不会因为放大而裁掉身体。
     const paddedWidth = size.x * 1.12;
     const paddedHeight = size.y * 1.12;
@@ -424,7 +504,15 @@ function resetCamera(pl) {
     // 动画的 <empty> 过渡可能在下一帧才调用 setViewport()。
     return true;
   } catch (error) {
-    console.warn("BD2 模型取景计算失败，使用自动取景", error);
+    console.warn("BD2 模型取景计算失败，回退到播放器相机+像素取景", error);
+    cameraView = {
+      x:camera.position.x, y:camera.position.y,
+      baseZoom:Number.isFinite(camera.zoom) && camera.zoom > 0 ? camera.zoom : 1,
+      factor:1,token:loadId
+    };
+    $("zoom").disabled=false;
+    $("auto-focus").disabled=currentRole !== "interaction";
+    setZoomFactor(pl,1);
     return false;
   }
 }
