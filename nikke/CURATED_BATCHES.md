@@ -70,3 +70,31 @@ python -m unittest discover -s nikke/tests -v
 ```
 
 验证四批数据无重复、选批次行为、缺少贴图不算完整等。
+
+
+## 展示柜数量仍停留在 16 条？
+
+**原因先分清两层：** `nikke/curated_batches.json` 里的 35 个 ID 是“计划收藏”；网页实际读取的是 `nikke/viewer/nikke_manifest.json`，后者只由本机 `nikke/data/` 里成功下载并经过校验的 Spine 资源生成。`git pull` 只拉代码，不会把 Git 忽略的游戏素材下载到本机。
+
+旧版还有三个问题：PNG 下载失败仍报告成功、只请求主 CDN 而未使用 GitHub 镜像、浏览器可能缓存旧 manifest。本次已修复这三个问题。
+
+在仓库根目录的 PowerShell 依次执行：
+
+```powershell
+git pull
+python nikke/scripts/install_batches.py --all
+python nikke/scripts/install_batches.py --all --verify-only
+python -c "import json; p='nikke/viewer/nikke_manifest.json'; d=json.load(open(p,encoding='utf-8')); print('当前清单角色数:',len(d['characters']))"
+```
+
+若网络报代理连接失败，默认代理是 `http://127.0.0.1:7897`；没有代理或代理没有运行时改用**直连模式**：
+
+```powershell
+python nikke/scripts/install_batches.py --all --direct
+```
+
+主 CDN 失败时脚本会尝试 `Nikke-db/Nikke-db.github.io` 的 GitHub 镜像；镜像也失败会明确输出「未找到图集 / 未找到骨骼 / 贴图不完整」。脚本即使返回非零退出码，已成功下载的文件仍会保留，重跑可继续补齐。
+
+确认本地 `nikke_manifest.json` 数量增长后，访问 `http://127.0.0.1:8000/nikke/viewer/` 并刷新页面。查看器会强制重新读取最新 manifest，顶部显示四批计划数、已收录数及缺失 ID。这个“收录数”基于当前 manifest；精确文件级验证以 `nikke/data/_curated_batches_report.json` 为准。
+
+如果仍显示旧数量，检查浏览器访问的项目路径是否就是执行下载命令的那个仓库（不要从另一个旧目录启动静态服务器）。如果 `--verify-only` 报告缺失，请使用正常安装命令补资源，单纯 `gen_nikke_manifest.py` 不会从网络下载新文件。

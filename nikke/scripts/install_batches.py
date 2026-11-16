@@ -146,6 +146,7 @@ def main():
     parser.add_argument("--all", action="store_true", help="安装全部四批（35 个 ID）")
     parser.add_argument("--dry-run", action="store_true", help="仅查看将处理的资源")
     parser.add_argument("--verify-only", action="store_true", help="不下载，只重建清单并检查本地资源")
+    parser.add_argument("--direct", action="store_true", help="网络未使用代理时直连 CDN / GitHub 镜像")
     args = parser.parse_args()
 
     if args.all and args.batches:
@@ -167,10 +168,11 @@ def main():
 
     if not args.verify_only:
         # 使用已经支持断点续传的抓取器，始终在本机 nikke/data 下保存资产。
-        subprocess.run(
-            [sys.executable, str(NIKKE_DIR / "scripts" / "fetch_nikke.py"), *ids],
-            cwd=NIKKE_DIR, check=True,
-        )
+        command = [sys.executable, str(NIKKE_DIR / "scripts" / "fetch_nikke.py")]
+        if args.direct:
+            command.append("--direct")
+        command.extend(ids)
+        subprocess.run(command, cwd=NIKKE_DIR, check=True)
 
     subprocess.run(
         [sys.executable, str(NIKKE_DIR / "scripts" / "gen_nikke_manifest.py")],

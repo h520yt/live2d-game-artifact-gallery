@@ -88,6 +88,13 @@
   .card .style-tags i{font:normal .59rem var(--sans); background:rgba(18,8,14,.86); color:#f5c7d6;
     padding:.13rem .35rem; border:1px solid var(--line-lit); border-radius:3px}
   .grid-empty{grid-column:1/-1; margin:1.5rem auto; color:var(--foam); font-size:.82rem; line-height:1.9; text-align:center}
+  .collection-status{font-size:.73rem;line-height:1.7;color:var(--foam);margin:-.65rem 0 1.3rem}
+  .collection-status strong{color:var(--ivory)}
+  .collection-status details{display:inline-block;vertical-align:top;margin-left:.6rem}
+  .collection-status summary{color:var(--accent-lit);cursor:pointer}
+  .collection-status ul{padding:.5rem 1.2rem;max-height:16rem;overflow:auto;font-family:var(--mono);font-size:.66rem}
+  .collection-status code{font-size:.68rem;color:var(--ivory)}
+
   .card .batch-mark{position:absolute;top:2.1rem;right:.5rem;color:var(--foam);
     font:.56rem var(--mono);padding:.12rem .35rem;border:1px solid var(--line-lit);
     border-radius:3px;background:rgba(18,8,14,.82)}
@@ -278,6 +285,7 @@
         <input class="search" id="search" placeholder="搜索 NIKKE (名字/id)…" autocomplete="off" style="max-width:220px">
       </div>
     </div>
+    <div id="collection-status" class="collection-status" aria-live="polite"></div>
     <div class="grid" id="grid"></div>
     <div id="sentinel" style="height:40px"></div>
   </div>
@@ -354,11 +362,58 @@ let loadToken = 0;
 const ui = { cat: 'all', pose: '', style: '', batch: '', ver: '', sort: 'id', q: '' };
 
 async function boot(){
-  manifest = await (await fetch('nikke_manifest.json')).json();
+  // manifest 是本机下载/生成的资源列表，禁止读取浏览器缓存的旧版本。
+  const response = await fetch('nikke_manifest.json?refresh=' + Date.now(), {cache:'no-store'});
+  if(!response.ok) throw new Error('资源清单读取失败：HTTP ' + response.status);
+  manifest = await response.json();
   window.NikkeArt?.fillBackgrounds?.();
   setupCardColumns();
   buildGrid();
+  loadCollectionStatus();
   document.getElementById('back').onclick = exitStage;
+}
+
+// 四批收藏是“计划清单”，manifest 是“本地已生成的资源清单”。
+// 两者必须区分，避免把索引里有的角色误报为已经下载成功。
+async function loadCollectionStatus(){
+  const status = document.getElementById('collection-status');
+  try{
+    const response = await fetch('../curated_batches.json?refresh=' + Date.now(), {cache:'no-store'});
+    if(!response.ok) return;
+    const catalog = await response.json();
+    const batches = catalog.batches || [];
+    const planned = new Set();
+    const installed = new Set(manifest.characters.map(c=>c.id));
+    batches.forEach(batch => (batch.items||[]).forEach(item => planned.add(item.id)));
+    const present = [...planned].filter(id=>installed.has(id));
+    const missing = batches.map(batch => ({
+      title: batch.title,
+      items: (batch.items||[]).filter(item=>!installed.has(item.id))
+    }));
+    const headline = document.createElement('span');
+    headline.innerHTML = '四批收藏计划 <strong>' + planned.size +
+      '</strong> 套 · 当前清单已收录 <strong>' + present.length +
+      '</strong> 套 · 未收录 <strong>' + (planned.size-present.length) + '</strong> 套';
+    status.replaceChildren(headline);
+    if(present.length===planned.size) return;
+    const details = document.createElement('details');
+    const summary = document.createElement('summary');
+    summary.textContent = '查看未收录资源';
+    details.appendChild(summary);
+    const list = document.createElement('ul');
+    missing.forEach(batch => batch.items.forEach(item => {
+      const line = document.createElement('li');
+      line.textContent = batch.title + ' · ' + item.id + ' ' + (item.name||'');
+      list.appendChild(line);
+    }));
+    details.appendChild(list);
+    const command = document.createElement('code');
+    command.textContent = 'python nikke/scripts/install_batches.py --all';
+    details.appendChild(command);
+    status.appendChild(details);
+  }catch(error){
+    console.warn('收藏计划读取失败',error);
+  }
 }
 
 function applyCardColumns(value){

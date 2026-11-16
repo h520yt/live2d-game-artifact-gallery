@@ -49,50 +49,41 @@ def atlas_pages(atlas_path):
 
 
 def find_pose(rdir, cid, pose):
-    """返回该姿态的 {skel, atlas, pages, dir}（相对 rdir），找不到返回 None。
+    """选择 skel/atlas 匹配且 PNG 图集页完整的姿态。
 
-    不假设固定文件名，而是扫描对应目录里实际存在的 skel/atlas，
-    以兼容 Nikke-db 命名({cid}_00) 和本地解包命名({cid}_00_skillcut) 等。
+    不能把只存在 skel、atlas 但缺图的目录写进 manifest，
+    否则浏览器看起来收录了该皮肤，实际无法渲染。
     """
     pdir = rdir if pose == "fb" else os.path.join(rdir, pose)
     if not os.path.isdir(pdir):
         return None
     skels = sorted(glob.glob(os.path.join(pdir, "*.skel")))
-    atlases = sorted(glob.glob(os.path.join(pdir, "*.atlas")))
-    if not skels or not atlases:
-        return None
-    # fb 目录下可能混有多个 skel（不同来源），优先取与 atlas 同名的一组
-    skel = skels[0]
-    atlas = atlases[0]
-    stem = os.path.splitext(os.path.basename(skel))[0]
-    same = os.path.join(pdir, stem + ".atlas")
-    if os.path.exists(same):
-        atlas = same
-    return {
-        "sub": "" if pose == "fb" else pose,
-        "skel": os.path.basename(skel),
-        "atlas": os.path.basename(atlas),
-        "pages": atlas_pages(atlas),
-        "version": detect_version(skel),
-    }
-
+    for skel in skels:
+        stem = os.path.splitext(os.path.basename(skel))[0]
+        atlas = os.path.join(pdir, stem + ".atlas")
+        if not os.path.isfile(atlas) or os.path.getsize(atlas) == 0:
+            continue
+        if os.path.getsize(skel) == 0:
+            continue
+        pages = atlas_pages(atlas)
+        if not pages:
+            continue
+        if any(os.path.basename(page) != page or
+               not os.path.isfile(os.path.join(pdir, page)) or
+               os.path.getsize(os.path.join(pdir, page)) == 0 for page in pages):
+            continue
+        return {
+            "sub": "" if pose == "fb" else pose,
+            "skel": os.path.basename(skel),
+            "atlas": os.path.basename(atlas),
+            "pages": pages,
+            "version": detect_version(skel),
+        }
+    return None
 
 def scan_legacy(rdir, cid):
-    """兼容旧 EventScene：任意 .skel + .atlas（无姿态命名规范）。"""
-    skels = sorted(glob.glob(os.path.join(rdir, "*.skel")))
-    atlases = sorted(glob.glob(os.path.join(rdir, "*.atlas")))
-    if not skels or not atlases:
-        return None
-    skel = os.path.basename(skels[0])
-    atlas = os.path.basename(atlases[0])
-    return {
-        "sub": "",
-        "skel": skel,
-        "atlas": atlas,
-        "pages": atlas_pages(os.path.join(rdir, atlas)),
-        "version": detect_version(os.path.join(rdir, skel)),
-    }
-
+    """兼容旧 EventScene，但仍需要骨骼、atlas、贴图页齐全。"""
+    return find_pose(rdir, cid, "fb")
 
 def load_name_map():
     """构建 id->显示名 映射，多来源合并（优先级低->高）：
@@ -271,9 +262,8 @@ def main():
     style_tags = load_style_tags()
     curated_batches = load_curated_batches()
     chars = []
-    if not os.path.isdir(C.DATA_DIR):
-        print("无 data 目录")
-        return
+    # 即使 data/ 暂时不存在，也生成空清单，避免展示柜误读仓库跟踪的旧数据。
+    os.makedirs(C.DATA_DIR, exist_ok=True)
 
     for cid in sorted(os.listdir(C.DATA_DIR)):
         rdir = os.path.join(C.DATA_DIR, cid)

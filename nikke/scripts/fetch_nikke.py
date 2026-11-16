@@ -75,34 +75,109 @@ def fetch_index(session):
     raise RuntimeError("无法获取 l2d.json 索引")
 
 
-def download(session, url, dest):
-    """下载单个文件；已存在且非空则跳过。返回 (ok, size, skipped)。"""
-    if os.path.exists(dest) and os.path.getsize(dest) > 0:
+def asset_base_urls(cid, sub):
+    """主 CDN 与 GitHub 镜像按顺序回退；两个地址指向同一套已解包文件。"""
+    configured = [C.CDN_BASE, getattr(C, "CDN_MIRROR", "")]
+    bases = []
+    for base in configured:
+        if not base:
+            continue
+        url = f"{base.rstrip('/')}/{cid}/{sub}"
+        if url not in bases:
+            bases.append(url)
+    return bases
+
+
+def download(session, urls, dest):
+    """下载文件，主源失败自动尝试镜像；已有非空文件不重复请求。
+
+    返回 (ok, size, skipped)。仅 HTTP 200 且非 HTML、实际非空才视为成功。
+    """
+    if os.path.isfile(dest) and os.path.getsize(dest) > 0:
         return True, os.path.getsize(dest), True
+
+    if isinstance(urls, str):
+        urls = [urls]
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
     tmp = dest + ".part"
-    for attempt in range(3):
-        try:
-            r = session.get(url, timeout=60, stream=True)
-            if r.status_code != 200 or r.headers.get("content-type", "").startswith("text/html"):
-                return False, 0, False
-            os.makedirs(os.path.dirname(dest), exist_ok=True)
-            n = 0
-            with open(tmp, "wb") as f:
-                for chunk in r.iter_content(65536):
-                    f.write(chunk)
-                    n += len(chunk)
-            os.replace(tmp, dest)
-            return True, n, False
-        except Exception:
-            if os.path.exists(tmp):
-                try:
-                    os.remove(tmp)
-                except OSError:
-                    pass
-            if attempt < 2:
-                time.sleep(0.5)
+    for url in urls:
+        for attempt in range(2):
+            try:
+                with session.get(url, timeout=60, stream=True) as response:
+                    if response.status_code != 200:
+                        break
+                    content_type = response.headers.get("content-type", "").lower()
+                    if "text/html" in content_type:
+                        break
+                    size = 0
+                    with open(tmp, "wb") as file:
+                        for chunk in response.iter_content(65536):
+                            if chunk:
+                                file.write(chunk)
+                                size += len(chunk)
+                    if size == 0:
+                        continue
+                    # 某些镜像把不存在的文件返回为 HTML 页面，不能作为资源写入。
+                    with open(tmp, "rb") as file:
+                        header = file.read(96).lstrip().lower()
+                    if header.startswith((b"<!doctype html", b"<html")):
+                        continue
+                    os.replace(tmp, dest)
+                    return True, size, False
+            except requests.RequestException:
+                if attempt == 0:
+                    time.sleep(0.3)
+            except OSError as error:
+                print(f"  [写入错误] {dest}: {error}")
+                break
+            finally:
+                if os.path.isfile(tmp):
+                    try:
+                        os.remove(tmp)
+                    except OSError:
+                        pass
     return False, 0, False
 
+
+def download_atlas(session, urls, dest):
+    """读取已有 atlas 或下载主源/镜像；校验贴图页列表，拒绝 HTML 与空文件。"""
+    if os.path.isfile(dest) and os.path.getsize(dest) > 0:
+        try:
+            with open(dest, encoding="utf-8", errors="ignore") as file:
+                pages = parse_atlas_pages(file.read())
+            if pages:
+                return pages
+        except OSError:
+            pass
+
+    for url in urls:
+        for attempt in range(2):
+            try:
+                with session.get(url, timeout=30) as response:
+                    if response.status_code != 200:
+                        break
+                    if "text/html" in response.headers.get("content-type", "").lower():
+                        break
+                    payload = response.content
+                    pages = parse_atlas_pages(payload.decode("utf-8", "ignore"))
+                    if not pages:
+                        break
+                    os.makedirs(os.path.dirname(dest), exist_ok=True)
+                    tmp = dest + ".part"
+                    try:
+                        with open(tmp, "wb") as file:
+                            file.write(payload)
+                        os.replace(tmp, dest)
+                    finally:
+                        if os.path.isfile(tmp):
+                            os.remove(tmp)
+                    return pages
+            except (requests.RequestException, OSError) as error:
+                if attempt == 0:
+                    time.sleep(0.3)
+                else:
+                    print(f"  [atlas 源失败] {url}: {error}")
+    return []
 
 def parse_atlas_pages(atlas_text):
     """解析 atlas，返回引用的所有 .png 文件名（按出现顺序）。"""
@@ -156,17 +231,22 @@ def get_local_pose(cid, pose, f_name=None):
         # 兼容已有以 f_name(小写) 为目录名的情况（例如 eventscene_terminusticket_01）
         if f_name and pose == "fb":
             alt_dir = os.path.join(C.DATA_DIR, f_name.lower())
-            if os.path.isdir(alt_dir):
-                alt_skel = os.path.join(alt_dir, skel_name)
-                alt_atlas = os.path.join(alt_dir, atlas_name)
-                if (os.path.exists(alt_skel) and os.path.getsize(alt_skel) > 0 and
-                        os.path.exists(alt_atlas) and os.path.getsize(alt_atlas) > 0):
+            alt_skel = os.path.join(alt_dir, skel_name)
+            alt_atlas = os.path.join(alt_dir, atlas_name)
+            if (os.path.isfile(alt_skel) and os.path.getsize(alt_skel) > 0
+                    and os.path.isfile(alt_atlas) and os.path.getsize(alt_atlas) > 0):
+                pages = parse_atlas_pages(open(alt_atlas, encoding="utf-8", errors="ignore").read())
+                if pages and all(
+                        os.path.basename(page) == page and
+                        os.path.isfile(os.path.join(alt_dir, page)) and
+                        os.path.getsize(os.path.join(alt_dir, page)) > 0
+                        for page in pages):
                     return {
                         "pose": pose,
                         "sub": "",
                         "skel": skel_name,
                         "atlas": atlas_name,
-                        "pages": parse_atlas_pages(open(alt_atlas, "r", encoding="utf-8", errors="ignore").read()),
+                        "pages": pages,
                     }
         return None
     try:
@@ -190,48 +270,41 @@ def get_local_pose(cid, pose, f_name=None):
 
 
 def fetch_pose(session, cid, pose, f_name=None):
-    """拉取某角色某姿态。返回 dict 描述（None 表示该姿态不存在）。"""
+    """下载完整姿态：骨骼+图集+全部贴图，网络失败自动回退镜像。"""
     local_info = get_local_pose(cid, pose, f_name)
     if local_info:
         return local_info
 
     sub, skel_name, atlas_name = pose_paths(cid, pose, f_name)
-    base_url = f"{C.CDN_BASE}/{cid}/{sub}"
+    bases = asset_base_urls(cid, sub)
     local_dir = os.path.join(C.DATA_DIR, cid, sub.rstrip("/")) if sub else os.path.join(C.DATA_DIR, cid)
 
-    # 先探测 atlas 是否存在
-    atlas_url = base_url + atlas_name
-    ra = None
-    for _ in range(3):
-        try:
-            ra = session.get(atlas_url, timeout=30)
-            if ra.status_code == 200 and ra.content:
-                if not ra.headers.get("content-type", "").startswith("text/html"):
-                    break
-        except Exception:
-            pass
-        time.sleep(0.5)
-    if ra is None or ra.status_code != 200 or not ra.content or ra.headers.get("content-type", "").startswith("text/html"):
-        return None
-    atlas_text = ra.content.decode("utf-8", "ignore")
-    pages = parse_atlas_pages(atlas_text)
+    atlas_path = os.path.join(local_dir, atlas_name)
+    pages = download_atlas(session, [base + atlas_name for base in bases], atlas_path)
     if not pages:
+        print(f"  [未找到图集] {cid}/{sub}{atlas_name} (主源和镜像均失败)")
         return None
 
-    # 写 atlas
-    os.makedirs(local_dir, exist_ok=True)
-    with open(os.path.join(local_dir, atlas_name), "wb") as f:
-        f.write(ra.content)
-
-    # 下载 skel
-    ok_skel, _, _ = download(session, base_url + skel_name,
-                             os.path.join(local_dir, skel_name))
+    ok_skel, _, _ = download(
+        session, [base + skel_name for base in bases],
+        os.path.join(local_dir, skel_name),
+    )
     if not ok_skel:
+        print(f"  [未找到骨骼] {cid}/{sub}{skel_name} (主源和镜像均失败)")
         return None
 
-    # 下载全部贴图页
+    missing = []
     for png in pages:
-        download(session, base_url + png, os.path.join(local_dir, png))
+        if os.path.basename(png) != png:
+            print(f"  [图集路径异常] {cid}: {png}")
+            missing.append(png)
+            continue
+        ok, _, _ = download(session, [base + png for base in bases], os.path.join(local_dir, png))
+        if not ok:
+            missing.append(png)
+    if missing:
+        print(f"  [贴图不完整] {cid}/{sub}: 缺少 {len(missing)} 张：{', '.join(missing[:4])}")
+        return None
 
     return {
         "pose": pose,
@@ -240,7 +313,6 @@ def fetch_pose(session, cid, pose, f_name=None):
         "atlas": atlas_name,
         "pages": pages,
     }
-
 
 def fetch_character(session, entry):
     cid = entry["id"]
@@ -275,18 +347,8 @@ def fetch_character(session, entry):
 
 
 def _pose_exists_local(cid, pose, f_name=None):
-    """本地是否已存在该姿态的 skel（用于扫描模式跳过已抓取的姿态）。"""
-    sub, skel_name, _ = pose_paths(cid, pose, f_name)
-    local_dir = (os.path.join(C.DATA_DIR, cid, sub.rstrip("/"))
-                 if sub else os.path.join(C.DATA_DIR, cid))
-    skel = os.path.join(local_dir, skel_name)
-    if os.path.exists(skel) and os.path.getsize(skel) > 0:
-        return True
-    if f_name and pose == "fb":
-        alt_skel = os.path.join(C.DATA_DIR, f_name.lower(), skel_name)
-        if os.path.exists(alt_skel) and os.path.getsize(alt_skel) > 0:
-            return True
-    return False
+    """检查整个姿态是否完整；不能只凭 skel 存在跳过缺失的贴图。"""
+    return get_local_pose(cid, pose, f_name) is not None
 
 
 def fetch_icon(session, cid):
@@ -334,6 +396,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("ids", nargs="*", help="只拉取指定角色 id")
     ap.add_argument("--limit", type=int, default=0, help="只拉前 N 个角色")
+    ap.add_argument("--direct", action="store_true", help="不使用默认代理，直接访问资源源站")
     ap.add_argument("--new-only", action="store_true",
                     help="仅拉取本地 manifest 尚未收录的新角色/新条目")
     ap.add_argument("--scan-existing", action="store_true",
@@ -342,6 +405,8 @@ def main():
                     help="仅补抓本地尚不存在的姿态（配合 --scan-existing 使用，避免重复下载）")
     args = ap.parse_args()
 
+    if args.direct:
+        C.PROXY = None
     session = make_session()
 
     if args.scan_existing:
