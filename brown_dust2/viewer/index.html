@@ -73,6 +73,7 @@ body.theater-mode{overflow:hidden}
 .status{color:var(--muted);font-size:12px;min-height:18px}
 .motions{max-height:96px;overflow:auto}
 .motions button{font-size:12px;padding:6px 9px}
+.motions button.sequence-action{border-color:var(--gold);color:var(--gold);background:#382b34;font-weight:600}
 .hint{border-left:2px solid #8d734f;background:#2a2330;padding:10px 13px;color:#c9b9c8;font-size:12px}
 code{font-family:Consolas,monospace;color:#eace9b}
 @media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar,.viewer{min-height:0}.cards{max-height:230px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.stage{height:max(530px,68dvh)}.viewer.theater .stage{height:auto}}
@@ -325,6 +326,41 @@ function isIdleAnimation(name) {
 function getAnimationGroup(name) {
   const match = /^mix(\d+)(?:[_-]|$)/i.exec(name);
   return match ? Number(match[1]) : null;
+}
+
+// BD2 的 mix2_1_1、mix2_1_2 ... mix2_1_end 是连续的过渡片段，
+// 单独播放某一帧可能恰好位于遮罩或隐藏身体的时间段。
+function parseMixSegment(name) {
+  const match = /^mix(\d+)_(\d+)_(\d+|end)$/i.exec(name || "");
+  return match ? {
+    group: Number(match[1]),
+    action: Number(match[2]),
+    step: match[3].toLowerCase() === "end" ? Infinity : Number(match[3]),
+    name
+  } : null;
+}
+
+function getMixSequence(names, name) {
+  const selected = parseMixSegment(name);
+  if (!selected) return null;
+  const segments = names.map(parseMixSegment).filter(item =>
+    item && item.group === selected.group && item.action === selected.action);
+  if (segments.length < 2) return null;
+  segments.sort((a,b) => a.step-b.step || a.name.localeCompare(b.name));
+  return {
+    key: "mix" + selected.group + "_" + selected.action,
+    group: selected.group,
+    clips: segments.map(item => item.name)
+  };
+}
+
+function getMixSequences(names) {
+  const groups = new Map();
+  for (const name of names) {
+    const sequence = getMixSequence(names,name);
+    if (sequence && !groups.has(sequence.key)) groups.set(sequence.key,sequence);
+  }
+  return [...groups.values()];
 }
 
 function countSkinAttachments(skin) {
@@ -758,7 +794,9 @@ function selectAnimation(pl, name) {
     ? names.find(item => item.toLowerCase() === "idle" + group)
       || names.find(item => idleSceneKey(item)?.group === group)
     : null;
-  const loop = isIdleAnimation(name);
+  const sequence = currentRole === "interaction" && baseIdle
+    ? getMixSequence(names,name) : null;
+  const loop = isIdleAnimation(name) || (currentRole === "interaction" && group !== null && !sequence);
   const fallback = names.find(item => /^idle\d*$/i.test(item))
     || names.find(item => /^(stand|wait|loop)/i.test(item));
   try {
@@ -771,7 +809,6 @@ function selectAnimation(pl, name) {
         if (menu) menu.value = candidate.name;
       }
     }
-
     if (baseIdle) {
       const state = pl.animationState;
       state.clearTracks();
@@ -782,31 +819,44 @@ function selectAnimation(pl, name) {
         base.mixDuration = 0;
         base.mixTime = 0;
       }
-      const entry = state.setAnimation(1, name, false);
-      if (entry) {
-        entry.mixDuration = 0;
-        entry.mixTime = 0;
+      const clips = sequence?.clips || [name];
+      const first = state.setAnimation(1, clips[0], !sequence);
+      if (first) {
+        first.mixDuration = 0;
+        first.mixTime = 0;
+      }
+      if (sequence) {
+        // 同一互动按帧序执行，不能把 mix2_1_13 排在 mix2_1_2 之前；
+        // 结束后清除轨道 1，保留轨道 0 的 idle2，防止黑屏永久留在结束帧。
+        for (const clip of clips.slice(1)) {
+          const entry = state.addAnimation(1, clip, false, 0);
+          if (entry) {
+            entry.mixDuration = 0;
+            entry.mixTime = 0;
+          }
+        }
+        state.addEmptyAnimation?.(1, 0, 0);
       }
     } else {
       pl.animationState.clearTracks();
-      // 使用 SpinePlayer API 确保内部动画视口的映射仍然有效。
       pl.setAnimation(name, loop);
       if (!loop && fallback && fallback !== name) {
         pl.addAnimation(fallback, true, 0);
       }
     }
-    // 重新应用当前动画才能让 Skin 里的角色附件获得正确姿态。
     if (pl.skeleton) {
       pl.animationState.apply?.(pl.skeleton);
       pl.skeleton.updateWorldTransform?.();
     }
     pl.play();
-    if (changedSkin) {
-      resetCamera(pl);
-      scheduleAutoFocus(pl, 260);
+    if (changedSkin) resetCamera(pl);
+    if (currentRole === "interaction" && (changedSkin || sequence)) {
+      scheduleAutoFocus(pl, 380);
     }
     for (const button of $("motions").children) {
-      button.classList.toggle("active", button.textContent === name);
+      button.classList.toggle("active",
+        button.dataset?.animation === name || button.textContent === name ||
+        (sequence && button.dataset?.sequence === sequence.key));
     }
     if (currentRole === "interaction") {
       const menu = $("scene-choice");
@@ -815,8 +865,9 @@ function selectAnimation(pl, name) {
         menu.value = idleName;
       }
       setStatus("互动场景 · Skin: " + (chosenSkin || "默认") +
-        " · 动作: " + name +
-        (manualSkinSelection ? " · 手动锁定Skin" : " · 自动配对"));
+        " · 动作: " + (sequence ? sequence.key + " 连续 " + sequence.clips.length + " 段" : name) +
+        (manualSkinSelection ? " · 手动锁定Skin" : " · 自动配对") +
+        (group !== null && !baseIdle ? " · ⚠ 当前动作缺少对应 idle" + group : ""));
     }
     return true;
   } catch (error) {
@@ -948,8 +999,23 @@ async function loadRole(role, restore=null) {
           }
         };
         $("motions").replaceChildren();
+        if (currentRole === "interaction") {
+          for (const group of getMixSequences(anims)) {
+            const button = el("button","sequence-action",
+              "▶ " + group.key + " 连播（" + group.clips.length + "段）");
+            button.dataset.animation = group.clips[0];
+            button.dataset.sequence = group.key;
+            button.title = "完整播放连续动作，结束后返回对应 idle 场景";
+            button.onclick = () => selectAnimation(pl,group.clips[0]);
+            $("motions").appendChild(button);
+          }
+        }
         for(const name of anims) {
           const button = el("button","",name);
+          button.dataset.animation = name;
+          if (currentRole === "interaction" && getMixSequence(anims,name)) {
+            button.title = "此动作是连续片段；点击后将完整连播同组动作";
+          }
           button.onclick = () => selectAnimation(pl,name);
           $("motions").appendChild(button);
         }
@@ -993,7 +1059,7 @@ function setTheaterMode(enabled) {
   const savedSkin = chosenSkin;
   const savedSkinLocked = manualSkinSelection;
   const selectedMotion = $("motions").querySelector("button.active");
-  const savedAnimation = selectedMotion ? selectedMotion.textContent : null;
+  const savedAnimation = selectedMotion ? (selectedMotion.dataset.animation || selectedMotion.textContent) : null;
   stage.classList.toggle("theater", enabled);
   document.body.classList.toggle("theater-mode", enabled);
   $("theater-toggle").textContent = enabled ? "退出大屏（Esc）" : "大屏预览 ⛶";

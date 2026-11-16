@@ -33,6 +33,8 @@ function harness(animations, role="character") {
   const scope = {
     $: id => id === "motions" ? {children:buttons} : null,
     setStatus: message => status.push(message),
+    resetCamera: () => {},
+    scheduleAutoFocus: () => {},
     currentRole: role,
     chosenSkin: null,
     manualSkinSelection: false,
@@ -45,6 +47,13 @@ function harness(animations, role="character") {
     setAnimation:(track,name,loop)=>{
       calls.push(["setTrack",track,name,loop]);
       return {mixDuration:0.15};
+    },
+    addAnimation:(track,name,loop,delay)=>{
+      calls.push(["addTrack",track,name,loop,delay]);
+      return {mixDuration:0.15};
+    },
+    addEmptyAnimation:(track,mixDuration,delay)=>{
+      calls.push(["clearOverlayAfterSequence",track,mixDuration,delay]);
     }
   };
   const player = {
@@ -70,7 +79,7 @@ test("mix1_1 叠加 idle1 后再播放", ()=>{
   assert.equal(a.run(a.player,"mix1_1"),true);
   assert.deepEqual(a.calls,[
     ["clearTracks"],["setupPose"],
-    ["setTrack",0,"idle1",true],["setTrack",1,"mix1_1",false],["play"]
+    ["setTrack",0,"idle1",true],["setTrack",1,"mix1_1",true],["play"]
   ]);
 });
 
@@ -78,6 +87,54 @@ test("只有 mix2_1 时优先补对应 idle2，而非 idle1",()=>{
   const a = harness(["idle1","idle2","mix2_1"],"interaction");
   a.run(a.player,"mix2_1");
   assert.ok(a.calls.some(x=>x[0]==="setTrack" && x[1]===0 && x[2]==="idle2"));
+});
+
+test("独立 mix 片段按官方查看器循环，避免短动画结束后残留黑帧",()=>{
+  const a=harness(["idle1","mix1_1","idle2","mix2_1"],"interaction");
+  assert.equal(a.run(a.player,"mix2_1"),true);
+  assert.ok(a.calls.some(x=>x[0]==="setTrack" && x[1]===0 && x[2]==="idle2"));
+  assert.ok(a.calls.some(x=>x[0]==="setTrack" && x[1]===1 && x[2]==="mix2_1" && x[3]===true));
+});
+
+test("mix2_1_1 到 mix2_1_end 是数字顺序连播，结束清空上层保留 idle2",()=>{
+  const names=["idle2","mix2_1_10","mix2_1_1","mix2_1_end","mix2_1_2",
+               "mix2_2_1","mix2_2_2","idle3"];
+  const f=vm.runInNewContext(helpers+"\n({getMixSequence,getMixSequences});");
+  const group=f.getMixSequence(names,"mix2_1_10");
+  assert.equal(group.key,"mix2_1");
+  assert.deepEqual(Array.from(group.clips),
+    ["mix2_1_1","mix2_1_2","mix2_1_10","mix2_1_end"]);
+  assert.equal(f.getMixSequences(names).length,2);
+  const a=harness(names,"interaction");
+  assert.equal(a.run(a.player,"mix2_1_2"),true);
+  assert.deepEqual(a.calls,[
+    ["clearTracks"],["setupPose"],["setTrack",0,"idle2",true],
+    ["setTrack",1,"mix2_1_1",false],
+    ["addTrack",1,"mix2_1_2",false,0],
+    ["addTrack",1,"mix2_1_10",false,0],
+    ["addTrack",1,"mix2_1_end",false,0],
+    ["clearOverlayAfterSequence",1,0,0],
+    ["play"]
+  ]);
+  assert.match(a.status[0],/mix2_1 连续 4 段/);
+});
+
+test("带分组前缀但没有足够片段的 mix，仍可作为单个循环动作",()=>{
+  const a=harness(["idle3","mix3_7_1"],"interaction");
+  assert.equal(a.run(a.player,"mix3_7_1"),true);
+  assert.ok(a.calls.some(x=>x[0]==="setTrack" && x[1]===1 &&
+    x[2]==="mix3_7_1" && x[3]===true));
+});
+
+test("连续动作分组按钮不会把原始动作去掉，黑屏时仍能查看实际名称",()=>{
+  assert.match(page,/function parseMixSegment\(name\)/);
+  assert.match(page,/function getMixSequence\(names, name\)/);
+  assert.match(page,/function getMixSequences\(names\)/);
+  assert.match(page,/button\.dataset\.sequence = group\.key/);
+  assert.match(page,/getMixSequence\(anims,name\)/);
+  assert.match(page,/完整播放连续动作/);
+  assert.match(page,/state\.addAnimation\(1, clip, false, 0\)/);
+  assert.match(page,/state\.addEmptyAnimation\?\.\(1, 0, 0\)/);
 });
 
 test("没有对应 idle 的 mix 动作按普通单轨处理",()=>{
@@ -222,7 +279,7 @@ test("切换大屏保留当前资源分类、Skin 和动画，重建播放器以
   assert.match(page,/function setTheaterMode\(enabled\)/);
   assert.match(page,/const savedRole = currentRole/);
   assert.match(page,/const savedSkin = chosenSkin/);
-  assert.match(page,/savedAnimation = selectedMotion \? selectedMotion\.textContent : null/);
+  assert.match(page,/savedAnimation = selectedMotion \? \(selectedMotion\.dataset\.animation \|\| selectedMotion\.textContent\) : null/);
   assert.match(page,/loadRole\(savedRole, \{skin:savedSkin, skinLocked:savedSkinLocked, animation:savedAnimation\}\)/);
   assert.match(page,/async function loadRole\(role, restore=null\)/);
   assert.match(page,/restore\?\.skin && skinOptions\.find/);
