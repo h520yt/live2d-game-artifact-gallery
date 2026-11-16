@@ -76,7 +76,7 @@ code{font-family:Consolas,monospace;color:#eace9b}
   </div>
   <div class="status" id="status"></div>
   <div class="motions" id="motions"></div>
-  <div class="hint">未下载的皮肤只显示收藏计划，不会假装已安装。先在项目根目录运行 <code>python brown_dust2/scripts/install_prestige.py</code>，再刷新网页。</div>
+  <div class="hint" id="install-hint">正在检查本地模型完整性...</div>
  </section>
 </main>
 <script src="../../shared/vendor/spine-player4.0.js"></script>
@@ -173,10 +173,28 @@ async function blobDataUrl(blob) {
   });
 }
 
+// 使用 SpinePlayer 对外的播放接口；setAnimation 只指定动作，必须 play() 才会渲染。
+// 不循环的技能/触摸演出结束后自动回到待机，避免停在空白帧。
 function selectAnimation(pl, name) {
+  const names = pl.animationState.data.skeletonData.animations.map(item => item.name);
   const loop = /(^|[_ -])(idle|stand|wait|loop)([_ -]|$)/i.test(name);
-  pl.animationState.setAnimation(0, name, loop);
-  for(const b of $("motions").children) b.classList.toggle("active",b.textContent === name);
+  const fallback = names.find(item => /(^|[_ -])idle([_ -]|$)/i.test(item))
+    || names.find(item => /(^|[_ -])(stand|wait|loop)([_ -]|$)/i.test(item));
+  try {
+    pl.setAnimation(name, loop);
+    if (!loop && fallback && fallback !== name) {
+      pl.addAnimation(fallback, true, 0);
+    }
+    pl.play();
+    for (const button of $("motions").children) {
+      button.classList.toggle("active", button.textContent === name);
+    }
+    return true;
+  } catch (error) {
+    setStatus("动作播放失败：" + (error.message || String(error)));
+    console.error("BD2 Spine 播放失败", name, error);
+    return false;
+  }
 }
 
 async function loadRole(role) {
@@ -237,14 +255,22 @@ async function loadRole(role) {
           $("motions").appendChild(button);
         }
         const first = anims.find(name => /idle|stand|wait|loop/i.test(name)) || anims[0];
-        if(first) selectAnimation(pl,first);
-        setStatus(ROLE_NAME[role] + " · " + anims.length + " 个可选动作 · 拖动调整位置 / 滚轮缩放");
+        const started = first ? selectAnimation(pl, first) : false;
+        if (started) {
+          setStatus(ROLE_NAME[role] + " · " + anims.length + " 个可选动作 · 正在播放 · 拖拽平移 / 滚轮缩放");
+        } else {
+          $("empty").hidden = false;
+          $("empty").textContent = "骨骼已读取，但动作播放没有成功。请查看下方错误或浏览器控制台。";
+          if (!first) setStatus("模型中没有可用动作，无法播放");
+        }
       },
-      error:err => {
+      error:(pl, message) => {
         if(ownLoad !== loadId) return;
         $("empty").hidden = false;
-        $("empty").textContent = "动画加载失败，请核验资源版本和 atlas 图片页";
-        setStatus(String(err));
+        $("empty").textContent = "动画加载失败，请核验骨骼版本及 atlas 贴图";
+        const details = message || (pl && pl.message) || "Spine 加载失败，请查看控制台";
+        setStatus("模型加载失败：" + details);
+        console.error("BD2 Spine 加载失败", details);
       }
     });
   } catch(error) {
@@ -278,7 +304,10 @@ $("search").oninput = event => renderCards(event.target.value);
     const manifest = await b.json();
     installed = new Map((manifest.installed || []).map(item => [item.id,item]));
     renderCards("");
-    setStatus("模型文件存放于本地 data/；未安装资源不会出现在播放器里。");
+    $("install-hint").textContent = installed.size
+      ? "已识别 " + installed.size + " 款本地模型。可切换人物、技能与互动动作；若画面仍为空，请打开浏览器控制台查看具体错误。"
+      : "尚未安装本地模型。请在项目根目录执行 python brown_dust2/scripts/install_prestige.py，再刷新网页。";
+    setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
     if(catalog.length) selectSkin(catalog[0]);
   } catch(error) {
     $("cards").appendChild(el("p","status",String(error)));
