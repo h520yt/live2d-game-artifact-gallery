@@ -78,10 +78,19 @@
       "skin_en": "Forever Mascot",
       "roles": {
         "character": "spine/char/char065193",
-        "cutscene": "spine/cutscenes/cutscene_char065193"
+        "cutscene": "spine/cutscenes/cutscene_char065193",
+        "interaction": "spine/illust/illust_dating/illust_dating21"
       },
-      "mapping": "candidate",
-      "note": "角色与技能演出目录已确认；互动资源未核实"
+      "mapping": "confirmed",
+      "extra_files": {
+        "cutscene": [
+          "bg/Char065193_back1-1.png",
+          "bg/Char065193_back1-2.png",
+          "bg/Char065193_back1-3.png",
+          "bg/Char065193_back2-1.png",
+          "bg/Char065193_back2-2.png"
+        ]
+      }
     }
   ]
 }

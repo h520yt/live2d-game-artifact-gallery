@@ -62,8 +62,8 @@ def validate_folder(folder):
         raise ValueError("目录不在白名单: " + folder)
 
 
-def raw_files(folder):
-    """不调用 GitHub API：直接读取 atlas，再按贴图页名称组装下载清单。"""
+def raw_files(folder, extras=None):
+    """不调用 GitHub API：解析 atlas，并下载配置明确指定的附加背景。"""
     validate_folder(folder)
     stem = folder.rsplit("/", 1)[-1]
     atlas_name = stem + ".atlas"
@@ -77,6 +77,15 @@ def raw_files(folder):
         raise RuntimeError("无法从 atlas 中获取贴图页: " + atlas_path)
 
     filenames = [stem + ".skel", atlas_name, *pages]
+    for extra in extras or []:
+        # 仅允许当前资源目录下的相对背景图，禁止回退和跨目录下载。
+        relative = PurePosixPath(extra)
+        if (relative.is_absolute() or not relative.parts or
+                any(part in (".", "..", "") for part in relative.parts) or
+                relative.parts[0] != "bg" or
+                relative.suffix.lower() not in {".png", ".jpg", ".jpeg", ".webp"}):
+            raise ValueError("无效的额外背景资源路径: " + str(extra))
+        filenames.append(relative.as_posix())
     records = []
     for filename in dict.fromkeys(filenames):
         path = folder + "/" + filename
@@ -119,11 +128,11 @@ def api_files(folder, root=None):
     return found
 
 
-def remote_files(folder, source="raw"):
-    """默认 raw 模式不占用 API 配额，需附加目录时可显式切换 API 模式。"""
+def remote_files(folder, source="raw", extras=None):
+    """默认 raw 模式不占用 API 配额，附加背景文件由收藏配置声明。"""
     validate_folder(folder)
     if source == "raw":
-        return raw_files(folder)
+        return raw_files(folder, extras)
     if source == "api":
         return api_files(folder)
     raise ValueError("未知资源来源: " + str(source))
@@ -254,7 +263,8 @@ def main(argv=None):
         print(f"\n[{skin['id']}] {skin['character']} · {skin['skin']}")
         for role, folder in skin["roles"].items():
             try:
-                files = remote_files(folder, args.source)
+                extras = skin.get("extra_files", {}).get(role, [])
+                files = remote_files(folder, args.source, extras)
                 if not files or not any(record["path"].endswith(".skel") for record in files):
                     raise RuntimeError("上游未找到可用的 Spine 骨骼")
                 known_bytes = sum(record["size"] or 0 for record in files)

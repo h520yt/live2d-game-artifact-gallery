@@ -62,3 +62,14 @@
 
 修改后 `git pull origin main`，刷新浏览器即可；无需重新下载已有素材。
 
+
+### 尤里「永恒吉祥物」完整资源映射（2026-11-16）
+
+已核对上游 `myssal/Brown-Dust-2-Asset` 与 `Jelosus2/BD2-L2D-Viewer` 的角色目录：
+
+- 人物：`spine/char/char065193`
+- 技能骨骼：`spine/cutscenes/cutscene_char065193`
+- **互动骨骼**：`spine/illust/illust_dating/illust_dating21`，包含 13 张 atlas 引用贴图，使用互动双轨动画
+- 技能附加背景：`spine/cutscenes/cutscene_char065193/bg/` 的 5 张 PNG
+
+执行 `python brown_dust2/scripts/install_prestige.py --only yuri-forever-mascot` 后，安装器会只补缺失文件并重建 manifest。附加背景会下载到 `data/yuri-forever-mascot/cutscene/bg`，当前播放器仍可能需要后续场景合成支持才能展示这些独立背景。原 `char065193` 和 `cutscene_char065193` 编号正确，无需替换。

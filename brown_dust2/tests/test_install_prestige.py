@@ -53,6 +53,43 @@ class PrestigeInstallTests(unittest.TestCase):
         self.assertEqual(atlas, files[1]["payload"])
         self.assertTrue(all(item["size"] is None for item in (files[0], files[2])))
 
+    def test_yuri_prestige_has_real_interaction_and_backgrounds(self):
+        catalog = json.loads(installer.CATALOG.read_text(encoding="utf-8"))
+        yuri = next(skin for skin in catalog["skins"]
+                    if skin["id"] == "yuri-forever-mascot")
+        self.assertEqual("spine/illust/illust_dating/illust_dating21",
+                         yuri["roles"]["interaction"])
+        self.assertEqual("confirmed", yuri["mapping"])
+        self.assertEqual(5, len(yuri["extra_files"]["cutscene"]))
+
+    def test_additional_yuri_backgrounds_use_raw_urls_and_preserve_subfolder(self):
+        atlas = b"cutscene_char065193.png\nsize:2048,2048\n"
+        folder = "spine/cutscenes/cutscene_char065193"
+        extras = ["bg/Char065193_back1-1.png", "bg/Char065193_back2-2.png"]
+        with patch.object(installer, "request", return_value=atlas) as mocked:
+            files = installer.remote_files(folder, extras=extras)
+        self.assertEqual(1, mocked.call_count)
+        self.assertEqual(5, len(files))
+        paths = [item["path"] for item in files]
+        self.assertIn(folder + "/bg/Char065193_back1-1.png", paths)
+        self.assertEqual(
+            installer.DATA / "yuri-forever-mascot" / "cutscene" /
+            "bg" / "Char065193_back1-1.png",
+            installer.target_path("yuri-forever-mascot", "cutscene", paths[-2], folder)
+        )
+        self.assertTrue(all("api.github.com" not in record["url"]
+                            for record in files))
+
+    def test_extra_files_cannot_escape_resource_directory(self):
+        folder = "spine/cutscenes/cutscene_char065193"
+        atlas = b"cutscene_char065193.png\n"
+        for path in ("../escape.png", "/escape.png", "other/file.png",
+                     "bg/../../escape.png", "bg/unsafe.exe"):
+            with self.subTest(path=path), patch.object(
+                installer, "request", return_value=atlas
+            ), self.assertRaises(ValueError):
+                installer.raw_files(folder, extras=[path])
+
     def test_raw_mode_works_with_expired_api_quota(self):
         atlas = b"cutscene_char001197.png\ncutscene_char001197_2.png\n"
         with patch.object(installer, "request", side_effect=lambda url, binary=False:
