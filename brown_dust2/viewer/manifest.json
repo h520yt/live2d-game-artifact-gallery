@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T11:38:53.163544+00:00",
+  "generated_at": "2026-11-16T12:50:48.181305+00:00",
   "installed": [
     {
       "id": "justia-hot-summer-dream",
@@ -233,6 +233,27 @@
           ],
           "version": "4.1",
           "dir": "../data/yuri-forever-mascot/cutscene"
+        },
+        "interaction": {
+          "skel": "illust_dating21.skel",
+          "atlas": "illust_dating21.atlas",
+          "pages": [
+            "illust_dating21.png",
+            "illust_dating21_2.png",
+            "illust_dating21_3.png",
+            "illust_dating21_4.png",
+            "illust_dating21_5.png",
+            "illust_dating21_6.png",
+            "illust_dating21_7.png",
+            "illust_dating21_8.png",
+            "illust_dating21_9.png",
+            "illust_dating21_10.png",
+            "illust_dating21_11.png",
+            "illust_dating21_12.png",
+            "illust_dating21_13.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/yuri-forever-mascot/interaction"
         }
       }
     }
