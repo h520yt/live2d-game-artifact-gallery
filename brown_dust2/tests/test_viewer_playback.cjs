@@ -34,6 +34,8 @@ function harness(animations, role="character") {
     $: id => id === "motions" ? {children:buttons} : null,
     setStatus: message => status.push(message),
     currentRole: role,
+    chosenSkin: null,
+    manualSkinSelection: false,
     console: {error: () => {}}
   };
   const run = vm.runInNewContext(helpers + skinHelpers + playback + "\nselectAnimation;", scope);
@@ -221,7 +223,7 @@ test("切换大屏保留当前资源分类、Skin 和动画，重建播放器以
   assert.match(page,/const savedRole = currentRole/);
   assert.match(page,/const savedSkin = chosenSkin/);
   assert.match(page,/savedAnimation = selectedMotion \? selectedMotion\.textContent : null/);
-  assert.match(page,/loadRole\(savedRole, \{skin:savedSkin, animation:savedAnimation\}\)/);
+  assert.match(page,/loadRole\(savedRole, \{skin:savedSkin, skinLocked:savedSkinLocked, animation:savedAnimation\}\)/);
   assert.match(page,/async function loadRole\(role, restore=null\)/);
   assert.match(page,/restore\?\.skin && skinOptions\.find/);
   assert.match(page,/restore\?\.animation && anims\.includes/);
