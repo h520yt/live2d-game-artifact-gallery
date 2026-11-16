@@ -219,8 +219,28 @@ test("完整人物优先根据可见部件计算世界边界，忽略巨型背�
   assert.doesNotMatch(page,/pl\.config\.viewport\s*=/);
 });
 
-test("索引与本地安装状态仍分离",()=>{
-  assert.match(page,/installed\.size\s*\?/);
+test("目录索引与本地资源状态分离，所有收藏并不等于已安装",()=>{
+  assert.match(page,/function hasInstalledModel\(skin\)/);
+  assert.match(page,/Object\.keys\(installed\.get\(skin\.id\)\.roles\)\.length/);
   assert.match(page,/id="install-hint"/);
   assert.doesNotMatch(page,/<div class="hint">未下载的皮肤/);
+});
+
+test("展示柜合并尊爵及全部服装索引，并能按类别搜索",()=>{
+  assert.match(page,/fetch\("\.\.\/costume_catalog\.json"/);
+  assert.match(page,/catalog = \[\.\.\.original\.map/);
+  assert.match(page,/\.\.\.regular\]/);
+  for (const value of ["all", "prestige", "special", "guest",
+                       "other", "interactive", "installed"]) {
+    assert.match(page, new RegExp('data-filter="' + value + '"'));
+  }
+  assert.match(page,/collectionFilter === "special"/);
+  assert.match(page,/collectionFilter === "guest"/);
+  assert.match(page,/collectionFilter === "installed"/);
+  assert.match(page,/const localCount = catalog\.filter\(hasInstalledModel\)\.length/);
+});
+
+test("未下载服装显示可执行的独立安装命令而不是空白播放器",()=>{
+  assert.match(page,/install_prestige\.py --only " \+ skin\.id/);
+  assert.match(page,/skin\.mapping === "candidate"/);
 });

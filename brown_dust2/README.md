@@ -1,8 +1,57 @@
-# 棕色尘埃2 · Prestige Skin 尊爵皮肤首批
+# 棕色尘埃2 · 全服装 Spine 展示柜
 
-本模块接入最高规格的 **Prestige Skin** 外观系列，并非普通五星战斗服装。首批共六款：尤丝缇亚 Hot Summer Dream、泰瑞丝 Milky Bikini、洁尼斯 Stranger Bunny、莉贝尔塔 Hedonist、莎赫拉查德 Deliberate Ace、尤里 Forever Mascot。
+**Prestige Skin 尊爵皮肤共六款**，但这不代表棕色尘埃2只有六套服装。
+本次在原六款基础上，追加第三方动画查看器索引里可映射的 **200 套其它角色服装**，共 **206 套目录记录**：
 
-资源目录来自 myssal/Brown-Dust-2-Asset；前四款角色、技能、互动模型路径有明确映射，后两款角色和技能路径已确认，互动场景尚未建立对应关系，因此不会虚构对应动作。
+- **6 套 Prestige Skin**：全部有角色 / 技能 / 互动目录映射（补齐了莎赫拉查德 `illust_dating18` 和尤里 `illust_dating21`）。
+- **8 套 Special Skin**：特殊外观，来自 BD2DB 的独立分类；通常不包含互动场景。
+- **15 套 Fated Guest**：羁绊访客服装，均可在第三方查看器找到对应互动资源映射。
+- **177 套其它 Costume**：角色服装，含部分联动和限定套装；并非全部都有技能动画。
+
+**目录收录不代表全部已下载或上游每个文件仍有效。** 下载器会逐模型检查，`manifest.json` 只记录本地 skel、atlas 和贴图完整的模型。
+
+上游目录：`Jelosus2/BD2-L2D-Viewer/src/utils/character_list.ts`；原始 Spine 素材：`myssal/Brown-Dust-2-Asset`。目录是来源快照，不保证覆盖后续新增内容。
+
+
+## 扩充目录与分批安装（推荐）
+
+本项目只提交目录元数据、下载脚本、播放器，**不会在 GitHub 上传游戏美术素材**。Windows PowerShell 下：
+
+```powershell
+cd D:\project_python\live2d-game-artifact-gallery
+git pull origin main
+
+# 查看全部206套目录（完全离线，无需 GitHub API）
+python brown_dust2/scripts/install_prestige.py --collection all --list
+
+# 首先补齐8款特殊皮肤
+python brown_dust2/scripts/install_prestige.py --collection special
+
+# 再补齐15款羁绊访客服装（带互动）
+python brown_dust2/scripts/install_prestige.py --collection guest
+
+# 批量下载剩余服装，每20款一批
+python brown_dust2/scripts/install_prestige.py --collection other --offset 0 --limit 20
+python brown_dust2/scripts/install_prestige.py --collection other --offset 20 --limit 20
+python brown_dust2/scripts/install_prestige.py --collection other --offset 40 --limit 20
+
+# 可单独补装某套，如 Eclipse：Nightmare Bunny
+python brown_dust2/scripts/install_prestige.py --only costume-000706
+
+# 根据全部目录重建本地已安装清单
+python brown_dust2/scripts/install_prestige.py --verify
+python -m http.server 8000
+```
+
+打开 `http://127.0.0.1:8000/brown_dust2/viewer/index.html`，可按「全部 / 尊爵 / 特殊皮肤 / 羁绊访客 / 其它服装 / 有互动 / 已安装」筛选。点击未安装服装时会出现单独的 `--only` 安装命令。
+
+注意：`--collection other` 已包含特殊皮肤与羁绊访客；如果之前分别安装了这两组，再运行其它服装集合会利用本地缓存跳过已有文件。数百套资源可能占用大量硬盘，建议使用 `--offset` 与 `--limit` 分批处理；下载失败不会清空已安装内容。
+
+如果希望更新第三方查看器的新增条目，可以执行：
+```powershell
+python brown_dust2/scripts/sync_costume_catalog.py
+```
+同步元数据不会自动下载任何素材；生成的目录变更需要人工核对，尤其是新增特别皮肤的等级。
 
 ## Windows PowerShell 运行
 

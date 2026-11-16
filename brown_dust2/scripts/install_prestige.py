@@ -16,6 +16,7 @@ from urllib.request import Request, urlopen
 BASE = Path(__file__).resolve().parents[1]
 DATA = BASE / "data"
 CATALOG = BASE / "curated_prestige.json"
+ALL_COSTUMES = BASE / "costume_catalog.json"
 MANIFEST = BASE / "viewer" / "manifest.json"
 REPORT = DATA / "install-report.json"
 REPO = "myssal/Brown-Dust-2-Asset"
@@ -238,17 +239,84 @@ def write_json(path, obj):
                     encoding="utf-8")
 
 
+def read_catalog():
+    """合并原六款尊爵与其它服装，保留稳定 ID 和本地缓存。"""
+    prestige = json.loads(CATALOG.read_text(encoding="utf-8"))["skins"]
+    costumes = json.loads(ALL_COSTUMES.read_text(encoding="utf-8"))["skins"]
+    ids = [skin["id"] for skin in prestige + costumes]
+    if len(ids) != len(set(ids)):
+        raise ValueError("服装索引存在重复 ID")
+    return prestige, costumes
+
+
+def select_skins(prestige, costumes, collection, only=None, character=None, limit=None,
+                 offset=0):
+    """默认仍安装六款尊爵；扩大集合需显式指定，防止意外下载数 GB。"""
+    if only:
+        selected = [skin for skin in prestige + costumes if skin["id"] == only]
+        if not selected:
+            raise ValueError("未知服装 ID: " + only)
+    elif collection == "prestige":
+        selected = prestige
+    elif collection == "other":
+        selected = costumes
+    elif collection == "interactive":
+        selected = [skin for skin in prestige + costumes
+                    if "interaction" in skin["roles"]]
+    elif collection == "special":
+        selected = [skin for skin in costumes if skin["tier"] == "Special Skin"]
+    elif collection == "guest":
+        selected = [skin for skin in costumes if skin["tier"] == "Fated Guest"]
+    else:
+        selected = prestige + costumes
+    if character:
+        query = character.casefold().strip()
+        selected = [skin for skin in selected if query in
+                    (skin["character"] + " " + skin["character_en"]).casefold()]
+    if offset < 0:
+        raise ValueError("--offset 不能是负数")
+    selected = selected[offset:]
+    if limit is not None:
+        if limit < 1:
+            raise ValueError("--limit 必须大于零")
+        selected = selected[:limit]
+    return selected
+
+
 def main(argv=None):
-    skins = json.loads(CATALOG.read_text(encoding="utf-8"))["skins"]
-    parser = argparse.ArgumentParser(description="BD2 Prestige Skin 六款首批本地安装")
-    parser.add_argument("--plan", action="store_true", help="列举资源文件，不下载图片或骨骼")
+    prestige, costumes = read_catalog()
+    parser = argparse.ArgumentParser(description="BD2 服装展示柜资源安装器")
+    parser.add_argument("--plan", action="store_true", help="列举上游文件，不下载模型")
+    parser.add_argument("--list", action="store_true", help="离线列出服装、模型数量与安装状态")
+    parser.add_argument("--collection",
+                        choices=("prestige", "special", "guest", "other", "interactive", "all"),
+                        default="prestige", help="默认尊爵；special=特殊；guest=羁绊访客；other=其它服装")
+    parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")
+    parser.add_argument("--limit", type=int, help="本次最多处理的套数，建议批量安装时设置")
+    parser.add_argument("--offset", type=int, default=0,
+                        help="从集合第几套开始安装（0 起），与 --limit 配合分批下载")
     parser.add_argument("--source", choices=("raw", "api"), default="raw",
-                        help="默认 raw 不占用 GitHub API 配额；api 模式需有效 Token")
-    parser.add_argument("--verify", action="store_true", help="离线核验并重建清单")
-    parser.add_argument("--only", choices=[skin["id"] for skin in skins],
-                        help="仅安装指定皮肤")
+                        help="默认 raw 避开 GitHub API 限流")
+    parser.add_argument("--verify", action="store_true", help="离线检查全部模型并重建已安装清单")
+    parser.add_argument("--only", choices=[skin["id"] for skin in prestige + costumes],
+                        help="仅安装指定套装，也支持 costume-xxxxxx")
     args = parser.parse_args(argv)
-    selected = [skin for skin in skins if not args.only or skin["id"] == args.only]
+    skins = prestige + costumes
+    try:
+        selected = select_skins(prestige, costumes, args.collection,
+                                args.only, args.character, args.limit, args.offset)
+    except ValueError as error:
+        parser.error(str(error))
+    if args.list:
+        for skin in selected:
+            complete = [role for role in skin["roles"]
+                        if inspect_model(DATA / skin["id"] / role)]
+            print(f"{skin['id']:32} {skin['character_en'][:18]:18} "
+                  f"{skin['skin_en'][:33]:33} "
+                  f"本地 {len(complete)}/{len(skin['roles'])}")
+        print("本次列表:", len(selected), "套；尊爵:", len(prestige),
+              "其它:", len(costumes))
+        return 0
     if args.verify:
         manifest = build_manifest(skins)
         write_json(MANIFEST, manifest)
@@ -256,6 +324,8 @@ def main(argv=None):
             roles = next((x["roles"] for x in manifest["installed"]
                           if x["id"] == skin["id"]), {})
             print(skin["id"], "有效模型:", ", ".join(roles) or "无")
+        print("本地已安装至少一类资源:", len(manifest["installed"]),
+              "/", len(skins))
         return 0
     failures = []
     summary = []

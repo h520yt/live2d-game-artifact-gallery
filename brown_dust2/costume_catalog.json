@@ -1,0 +1,2792 @@
+{
+  "source": {
+    "repository": "Jelosus2/BD2-L2D-Viewer",
+    "path": "src/utils/character_list.ts",
+    "assets": "myssal/Brown-Dust-2-Asset",
+    "notice": "来源只提供模型目录映射，实际可下载性在安装时检查；游戏素材不存入 Git"
+  },
+  "generated_on": "2026-11-16",
+  "skins": [
+    {
+      "id": "costume-066403",
+      "costume_id": "066403",
+      "character": "Angelica",
+      "character_en": "Angelica",
+      "skin": "Neon Savior",
+      "skin_en": "Neon Savior",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char066403",
+        "cutscene": "spine/cutscenes/cutscene_char066403",
+        "interaction": "spine/illust/illust_dating/illust_dating10"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061302",
+      "costume_id": "061302",
+      "character": "Dalvi",
+      "character_en": "Dalvi",
+      "skin": "Bright Moon",
+      "skin_en": "Bright Moon",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char061302",
+        "cutscene": "spine/cutscenes/cutscene_char061302",
+        "interaction": "spine/illust/illust_dating/illust_dating20"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000706",
+      "costume_id": "000706",
+      "character": "Eclipse",
+      "character_en": "Eclipse",
+      "skin": "Nightmare Bunny",
+      "skin_en": "Nightmare Bunny",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char000706",
+        "cutscene": "spine/cutscenes/cutscene_char000706",
+        "interaction": "spine/illust/illust_dating/illust_dating11"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060802",
+      "costume_id": "060802",
+      "character": "Elise",
+      "character_en": "Elise",
+      "skin": "Code Name O",
+      "skin_en": "Code Name O",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char060802",
+        "cutscene": "spine/cutscenes/cutscene_char060802",
+        "interaction": "spine/illust/illust_dating/illust_dating5"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067104",
+      "costume_id": "067104",
+      "character": "Granhildr",
+      "character_en": "Granhildr",
+      "skin": "Combat Medic",
+      "skin_en": "Combat Medic",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char067104",
+        "cutscene": "spine/cutscenes/cutscene_char067104",
+        "interaction": "spine/illust/illust_dating/illust_dating19"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003203",
+      "costume_id": "003203",
+      "character": "Loen",
+      "character_en": "Loen",
+      "skin": "Celebrity Bunny",
+      "skin_en": "Celebrity Bunny",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char003203",
+        "cutscene": "spine/cutscenes/cutscene_char003203",
+        "interaction": "spine/illust/illust_dating/illust_dating3"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003402",
+      "costume_id": "003402",
+      "character": "Morpeah",
+      "character_en": "Morpeah",
+      "skin": "Daydream Bunny",
+      "skin_en": "Daydream Bunny",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char003402",
+        "cutscene": "spine/cutscenes/cutscene_char003402",
+        "interaction": "spine/illust/illust_dating/illust_dating2"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003303",
+      "costume_id": "003303",
+      "character": "Nebris",
+      "character_en": "Nebris",
+      "skin": "New Hire",
+      "skin_en": "New Hire",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char003303",
+        "cutscene": "spine/cutscenes/cutscene_char003303",
+        "interaction": "spine/illust/illust_dating/illust_dating1"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003604",
+      "costume_id": "003604",
+      "character": "Olivier",
+      "character_en": "Olivier",
+      "skin": "Retired Legend",
+      "skin_en": "Retired Legend",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char003604",
+        "cutscene": "spine/cutscenes/cutscene_char003604",
+        "interaction": "spine/illust/illust_dating/illust_dating16"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004202",
+      "costume_id": "004202",
+      "character": "Palette",
+      "character_en": "Palette",
+      "skin": "Miracle Violet",
+      "skin_en": "Miracle Violet",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char004202",
+        "cutscene": "spine/cutscenes/cutscene_char004202",
+        "interaction": "spine/illust/illust_dating/illust_dating17"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001006",
+      "costume_id": "001006",
+      "character": "Sylvia",
+      "character_en": "Sylvia",
+      "skin": "Bikini Agent",
+      "skin_en": "Bikini Agent",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char001006",
+        "cutscene": "spine/cutscenes/cutscene_char001006",
+        "interaction": "spine/illust/illust_dating/illust_dating8"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001106",
+      "costume_id": "001106",
+      "character": "Teresse",
+      "character_en": "Teresse",
+      "skin": "Medical Club",
+      "skin_en": "Medical Club",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char001106",
+        "cutscene": "spine/cutscenes/cutscene_char001106",
+        "interaction": "spine/illust/illust_dating/illust_dating4"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004102",
+      "costume_id": "004102",
+      "character": "Tyr",
+      "character_en": "Tyr",
+      "skin": "Innocent Bunny",
+      "skin_en": "Innocent Bunny",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char004102",
+        "cutscene": "spine/cutscenes/cutscene_char004102",
+        "interaction": "spine/illust/illust_dating/illust_dating13"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067004",
+      "costume_id": "067004",
+      "character": "Ventana",
+      "character_en": "Ventana",
+      "skin": "Onsen Practitioner",
+      "skin_en": "Onsen Practitioner",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char067004",
+        "cutscene": "spine/cutscenes/cutscene_char067004",
+        "interaction": "spine/illust/illust_dating/illust_dating15"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067603",
+      "costume_id": "067603",
+      "character": "Wilhelmina",
+      "character_en": "Wilhelmina",
+      "skin": "Water Park Queen",
+      "skin_en": "Water Park Queen",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char067603",
+        "cutscene": "spine/cutscenes/cutscene_char067603",
+        "interaction": "spine/illust/illust_dating/illust_dating6"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060501",
+      "costume_id": "060501",
+      "character": "Anastasia",
+      "character_en": "Anastasia",
+      "skin": "Gentle Maid",
+      "skin_en": "Gentle Maid",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060501",
+        "cutscene": "spine/cutscenes/cutscene_char060501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060502",
+      "costume_id": "060502",
+      "character": "Anastasia",
+      "character_en": "Anastasia",
+      "skin": "Fire Graffiti",
+      "skin_en": "Fire Graffiti",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060502",
+        "cutscene": "spine/cutscenes/cutscene_char060502"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066401",
+      "costume_id": "066401",
+      "character": "Angelica",
+      "character_en": "Angelica",
+      "skin": "The Fallen",
+      "skin_en": "The Fallen",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066401",
+        "cutscene": "spine/cutscenes/cutscene_char066401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066402",
+      "costume_id": "066402",
+      "character": "Angelica",
+      "character_en": "Angelica",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066402",
+        "cutscene": "spine/cutscenes/cutscene_char066402"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067901",
+      "costume_id": "067901",
+      "character": "Aquila",
+      "character_en": "Aquila",
+      "skin": "Savage Warrior",
+      "skin_en": "Savage Warrior",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067901",
+        "cutscene": "spine/cutscenes/cutscene_char067901"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067902",
+      "costume_id": "067902",
+      "character": "Aquila",
+      "character_en": "Aquila",
+      "skin": "Sealed Desires",
+      "skin_en": "Sealed Desires",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067902",
+        "cutscene": "spine/cutscenes/cutscene_char067902"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-103501",
+      "costume_id": "103501",
+      "character": "Beatrice",
+      "character_en": "Beatrice",
+      "skin": "The Mighty Warrior of the Tribe",
+      "skin_en": "The Mighty Warrior of the Tribe",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char103501",
+        "cutscene": "spine/cutscenes/cutscene_char103501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003701",
+      "costume_id": "003701",
+      "character": "Blade",
+      "character_en": "Blade",
+      "skin": "Apostle",
+      "skin_en": "Apostle",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003701",
+        "cutscene": "spine/cutscenes/cutscene_char003701"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003702",
+      "costume_id": "003702",
+      "character": "Blade",
+      "character_en": "Blade",
+      "skin": "Onsen Swordfighter",
+      "skin_en": "Onsen Swordfighter",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003702",
+        "cutscene": "spine/cutscenes/cutscene_char003702"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003703",
+      "costume_id": "003703",
+      "character": "Blade",
+      "character_en": "Blade",
+      "skin": "Young Lady",
+      "skin_en": "Young Lady",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003703",
+        "cutscene": "spine/cutscenes/cutscene_char003703"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003793",
+      "costume_id": "003793",
+      "character": "Blade",
+      "character_en": "Blade",
+      "skin": "Tender Dream",
+      "skin_en": "Tender Dream",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char003793",
+        "cutscene": "spine/cutscenes/cutscene_char003793"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-103201",
+      "costume_id": "103201",
+      "character": "Carlson",
+      "character_en": "Carlson",
+      "skin": "The Mercenary Knight",
+      "skin_en": "The Mercenary Knight",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char103201",
+        "cutscene": "spine/cutscenes/cutscene_char103201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060402",
+      "costume_id": "060402",
+      "character": "Celia",
+      "character_en": "Celia",
+      "skin": "Descendant of the Great Witch",
+      "skin_en": "Descendant of the Great Witch",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060402",
+        "cutscene": "spine/cutscenes/cutscene_char060402"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060403",
+      "costume_id": "060403",
+      "character": "Celia",
+      "character_en": "Celia",
+      "skin": "Masquerade Bunny",
+      "skin_en": "Masquerade Bunny",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060403",
+        "cutscene": "spine/cutscenes/cutscene_char060403"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101601",
+      "costume_id": "101601",
+      "character": "Celia",
+      "character_en": "Celia",
+      "skin": "The Curse",
+      "skin_en": "The Curse",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101601",
+        "cutscene": "spine/cutscenes/cutscene_char060401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061305",
+      "costume_id": "061305",
+      "character": "Dalvi",
+      "character_en": "Dalvi",
+      "skin": "Summer Vacation",
+      "skin_en": "Summer Vacation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061305",
+        "cutscene": "spine/cutscenes/cutscene_char061305"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061306",
+      "costume_id": "061306",
+      "character": "Dalvi",
+      "character_en": "Dalvi",
+      "skin": "Tricky Lover",
+      "skin_en": "Tricky Lover",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061306",
+        "cutscene": "spine/cutscenes/cutscene_char061306"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061392",
+      "costume_id": "061392",
+      "character": "Dalvi",
+      "character_en": "Dalvi",
+      "skin": "Butterfly Dream",
+      "skin_en": "Butterfly Dream",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char061392",
+        "cutscene": "spine/cutscenes/cutscene_char061392"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004001",
+      "costume_id": "004001",
+      "character": "Darian",
+      "character_en": "Darian",
+      "skin": "Prophetic Dream",
+      "skin_en": "Prophetic Dream",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004001",
+        "cutscene": "spine/cutscenes/cutscene_char004001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004002",
+      "costume_id": "004002",
+      "character": "Darian",
+      "character_en": "Darian",
+      "skin": "Bittersweet Bunny",
+      "skin_en": "Bittersweet Bunny",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004002",
+        "cutscene": "spine/cutscenes/cutscene_char004002"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004091",
+      "costume_id": "004091",
+      "character": "Darian",
+      "character_en": "Darian",
+      "skin": "Herald of Enlightenment",
+      "skin_en": "Herald of Enlightenment",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char004091",
+        "cutscene": "spine/cutscenes/cutscene_char004091"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-002401",
+      "costume_id": "002401",
+      "character": "Diana",
+      "character_en": "Diana",
+      "skin": "Adventurer of the Unknown",
+      "skin_en": "Adventurer of the Unknown",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char002401",
+        "cutscene": "spine/cutscenes/cutscene_char002401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-002403",
+      "costume_id": "002403",
+      "character": "Diana",
+      "character_en": "Diana",
+      "skin": "Magical Innovator",
+      "skin_en": "Magical Innovator",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char002403",
+        "cutscene": "spine/cutscenes/cutscene_char002403"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-002406",
+      "costume_id": "002406",
+      "character": "Diana",
+      "character_en": "Diana",
+      "skin": "Anti-dystopia",
+      "skin_en": "Anti-dystopia",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char002406",
+        "cutscene": "spine/cutscenes/cutscene_char002406"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000701",
+      "costume_id": "000701",
+      "character": "Eclipse",
+      "character_en": "Eclipse",
+      "skin": "Dimension Witch",
+      "skin_en": "Dimension Witch",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000701",
+        "cutscene": "spine/cutscenes/cutscene_char000701"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000707",
+      "costume_id": "000707",
+      "character": "Eclipse",
+      "character_en": "Eclipse",
+      "skin": "Beach Vacation",
+      "skin_en": "Beach Vacation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000707",
+        "cutscene": "spine/cutscenes/cutscene_char000707"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000708",
+      "costume_id": "000708",
+      "character": "Eclipse",
+      "character_en": "Eclipse",
+      "skin": "Dream Bride",
+      "skin_en": "Dream Bride",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000708",
+        "cutscene": "spine/cutscenes/cutscene_char000708"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061101",
+      "costume_id": "061101",
+      "character": "Eleaneer",
+      "character_en": "Eleaneer",
+      "skin": "Piercing Magic Bow",
+      "skin_en": "Piercing Magic Bow",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061101",
+        "cutscene": "spine/cutscenes/cutscene_char061101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061102",
+      "costume_id": "061102",
+      "character": "Eleaneer",
+      "character_en": "Eleaneer",
+      "skin": "B-Rank Idol",
+      "skin_en": "B-Rank Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061102",
+        "cutscene": "spine/cutscenes/cutscene_char061102"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061103",
+      "costume_id": "061103",
+      "character": "Eleaneer",
+      "character_en": "Eleaneer",
+      "skin": "Shadow Bunny",
+      "skin_en": "Shadow Bunny",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061103",
+        "cutscene": "spine/cutscenes/cutscene_char061103"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060801",
+      "costume_id": "060801",
+      "character": "Elise",
+      "character_en": "Elise",
+      "skin": "Lovely Lady",
+      "skin_en": "Lovely Lady",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060801",
+        "cutscene": "spine/cutscenes/cutscene_char060801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060804",
+      "costume_id": "060804",
+      "character": "Elise",
+      "character_en": "Elise",
+      "skin": "Naive Lady",
+      "skin_en": "Naive Lady",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060804",
+        "cutscene": "spine/cutscenes/cutscene_char060804"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003101",
+      "costume_id": "003101",
+      "character": "Elpis",
+      "character_en": "Elpis",
+      "skin": "Hand of Salvation",
+      "skin_en": "Hand of Salvation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003101",
+        "cutscene": "spine/cutscenes/cutscene_char003101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020001",
+      "costume_id": "020001",
+      "character": "Eris",
+      "character_en": "Eris",
+      "skin": "Esteemed Adventurer",
+      "skin_en": "Esteemed Adventurer",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020001",
+        "cutscene": "spine/cutscenes/cutscene_char020001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020002",
+      "costume_id": "020002",
+      "character": "Eris",
+      "character_en": "Eris",
+      "skin": "Your Very Own Cat",
+      "skin_en": "Your Very Own Cat",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020002",
+        "cutscene": "spine/cutscenes/cutscene_char020002"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066902",
+      "costume_id": "066902",
+      "character": "Glacia",
+      "character_en": "Glacia",
+      "skin": "Alice",
+      "skin_en": "Alice",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066902",
+        "cutscene": "spine/cutscenes/cutscene_char066902"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066906",
+      "costume_id": "066906",
+      "character": "Glacia",
+      "character_en": "Glacia",
+      "skin": "Disciplinary Committee",
+      "skin_en": "Disciplinary Committee",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066906",
+        "cutscene": "spine/cutscenes/cutscene_char066906"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066907",
+      "costume_id": "066907",
+      "character": "Glacia",
+      "character_en": "Glacia",
+      "skin": "Heavenly Guardian Successor",
+      "skin_en": "Heavenly Guardian Successor",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066907",
+        "cutscene": "spine/cutscenes/cutscene_char066907"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020601",
+      "costume_id": "020601",
+      "character": "Goblin Slayer",
+      "character_en": "Goblin Slayer",
+      "skin": "Orcbolg",
+      "skin_en": "Orcbolg",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020601",
+        "cutscene": "spine/cutscenes/cutscene_char020601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067701",
+      "costume_id": "067701",
+      "character": "Granadair",
+      "character_en": "Granadair",
+      "skin": "Shrine Maiden of Purification",
+      "skin_en": "Shrine Maiden of Purification",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067701",
+        "cutscene": "spine/cutscenes/cutscene_char067701"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067702",
+      "costume_id": "067702",
+      "character": "Granadair",
+      "character_en": "Granadair",
+      "skin": "Queen of Gluttis",
+      "skin_en": "Queen of Gluttis",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067702",
+        "cutscene": "spine/cutscenes/cutscene_char067702"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067101",
+      "costume_id": "067101",
+      "character": "Granhildr",
+      "character_en": "Granhildr",
+      "skin": "The Void",
+      "skin_en": "The Void",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067101",
+        "cutscene": "spine/cutscenes/cutscene_char067101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067102",
+      "costume_id": "067102",
+      "character": "Granhildr",
+      "character_en": "Granhildr",
+      "skin": "Comeback Idol",
+      "skin_en": "Comeback Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067102",
+        "cutscene": "spine/cutscenes/cutscene_char067102"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067103",
+      "costume_id": "067103",
+      "character": "Granhildr",
+      "character_en": "Granhildr",
+      "skin": "Boo Ghost",
+      "skin_en": "Boo Ghost",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067103",
+        "cutscene": "spine/cutscenes/cutscene_char067103"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000401",
+      "costume_id": "000401",
+      "character": "Gray",
+      "character_en": "Gray",
+      "skin": "The Sharpshooter of the Mist",
+      "skin_en": "The Sharpshooter of the Mist",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000401",
+        "cutscene": "spine/cutscenes/cutscene_char000401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061001",
+      "costume_id": "061001",
+      "character": "Helena",
+      "character_en": "Helena",
+      "skin": "Top Idol",
+      "skin_en": "Top Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061001",
+        "cutscene": "spine/cutscenes/cutscene_char061001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061002",
+      "costume_id": "061002",
+      "character": "Helena",
+      "character_en": "Helena",
+      "skin": "B-Rank Idol",
+      "skin_en": "B-Rank Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061002",
+        "cutscene": "spine/cutscenes/cutscene_char061002"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061003",
+      "costume_id": "061003",
+      "character": "Helena",
+      "character_en": "Helena",
+      "skin": "Sunny Inn Hand",
+      "skin_en": "Sunny Inn Hand",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061003",
+        "cutscene": "spine/cutscenes/cutscene_char061003"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020801",
+      "costume_id": "020801",
+      "character": "High Elf Archer",
+      "character_en": "High Elf Archer",
+      "skin": "Daughter of Starwind",
+      "skin_en": "Daughter of Starwind",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020801",
+        "cutscene": "spine/cutscenes/cutscene_char020801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020501",
+      "costume_id": "020501",
+      "character": "Hikage",
+      "character_en": "Hikage",
+      "skin": "Kind Ruthlessness",
+      "skin_en": "Kind Ruthlessness",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020501",
+        "cutscene": "spine/cutscenes/cutscene_char020501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-021001",
+      "costume_id": "021001",
+      "character": "Ikaruga",
+      "character_en": "Ikaruga",
+      "skin": "Noble Flame",
+      "skin_en": "Noble Flame",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char021001",
+        "cutscene": "spine/cutscenes/cutscene_char021001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000201",
+      "costume_id": "000201",
+      "character": "Justia",
+      "character_en": "Justia",
+      "skin": "Knight of Blood",
+      "skin_en": "Knight of Blood",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000201",
+        "cutscene": "spine/cutscenes/cutscene_char000201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000202",
+      "costume_id": "000202",
+      "character": "Justia",
+      "character_en": "Justia",
+      "skin": "White Reaper",
+      "skin_en": "White Reaper",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000202",
+        "cutscene": "spine/cutscenes/cutscene_char000202"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000203",
+      "costume_id": "000203",
+      "character": "Justia",
+      "character_en": "Justia",
+      "skin": "Blood Glutton",
+      "skin_en": "Blood Glutton",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000203",
+        "cutscene": "spine/cutscenes/cutscene_char000203"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000204",
+      "costume_id": "000204",
+      "character": "Justia",
+      "character_en": "Justia",
+      "skin": "Kendo Club",
+      "skin_en": "Kendo Club",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000204",
+        "cutscene": "spine/cutscenes/cutscene_char000204"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000206",
+      "costume_id": "000206",
+      "character": "Justia",
+      "character_en": "Justia",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000206",
+        "cutscene": "spine/cutscenes/cutscene_char000206"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-021101",
+      "costume_id": "021101",
+      "character": "Kyouka Uzen",
+      "character_en": "Kyouka Uzen",
+      "skin": "Eternal Chains",
+      "skin_en": "Eternal Chains",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char021101",
+        "cutscene": "spine/cutscenes/cutscene_char021101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000101",
+      "costume_id": "000101",
+      "character": "Lathel",
+      "character_en": "Lathel",
+      "skin": "Herb Tracker",
+      "skin_en": "Herb Tracker",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000101",
+        "cutscene": "spine/cutscenes/cutscene_char000101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000103",
+      "costume_id": "000103",
+      "character": "Lathel",
+      "character_en": "Lathel",
+      "skin": "Homunculus",
+      "skin_en": "Homunculus",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000103",
+        "cutscene": "spine/cutscenes/cutscene_char000103"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060601",
+      "costume_id": "060601",
+      "character": "Lecliss",
+      "character_en": "Lecliss",
+      "skin": "Killer Doll",
+      "skin_en": "Killer Doll",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060601",
+        "cutscene": "spine/cutscenes/cutscene_char060601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060602",
+      "costume_id": "060602",
+      "character": "Lecliss",
+      "character_en": "Lecliss",
+      "skin": "Android Queen",
+      "skin_en": "Android Queen",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060602",
+        "cutscene": "spine/cutscenes/cutscene_char060602"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067301",
+      "costume_id": "067301",
+      "character": "Levia",
+      "character_en": "Levia",
+      "skin": "Track and Field Captain",
+      "skin_en": "Track and Field Captain",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067301",
+        "cutscene": "spine/cutscenes/cutscene_char067301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067302",
+      "costume_id": "067302",
+      "character": "Levia",
+      "character_en": "Levia",
+      "skin": "Night of Jealousy",
+      "skin_en": "Night of Jealousy",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067302",
+        "cutscene": "spine/cutscenes/cutscene_char067302"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067303",
+      "costume_id": "067303",
+      "character": "Levia",
+      "character_en": "Levia",
+      "skin": "Overheat",
+      "skin_en": "Overheat",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067303",
+        "cutscene": "spine/cutscenes/cutscene_char067303"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001201",
+      "costume_id": "001201",
+      "character": "Liatris",
+      "character_en": "Liatris",
+      "skin": "Rodev's Star",
+      "skin_en": "Rodev's Star",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001201",
+        "cutscene": "spine/cutscenes/cutscene_char001201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001206",
+      "costume_id": "001206",
+      "character": "Liatris",
+      "character_en": "Liatris",
+      "skin": "Neon Stalker",
+      "skin_en": "Neon Stalker",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001206",
+        "cutscene": "spine/cutscenes/cutscene_char001206"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001207",
+      "costume_id": "001207",
+      "character": "Liatris",
+      "character_en": "Liatris",
+      "skin": "Maid Name R",
+      "skin_en": "Maid Name R",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001207",
+        "cutscene": "spine/cutscenes/cutscene_char001207"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001297",
+      "costume_id": "001297",
+      "character": "Liatris",
+      "character_en": "Liatris",
+      "skin": "Sweet Temptation",
+      "skin_en": "Sweet Temptation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001297",
+        "cutscene": "spine/cutscenes/cutscene_char001297"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003801",
+      "costume_id": "003801",
+      "character": "Liberta",
+      "character_en": "Liberta",
+      "skin": "Dark Saintess",
+      "skin_en": "Dark Saintess",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003801",
+        "cutscene": "spine/cutscenes/cutscene_char003801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003802",
+      "costume_id": "003802",
+      "character": "Liberta",
+      "character_en": "Liberta",
+      "skin": "Onsen Manager",
+      "skin_en": "Onsen Manager",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003802",
+        "cutscene": "spine/cutscenes/cutscene_char003802"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003803",
+      "costume_id": "003803",
+      "character": "Liberta",
+      "character_en": "Liberta",
+      "skin": "Miracle Rose",
+      "skin_en": "Miracle Rose",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003803",
+        "cutscene": "spine/cutscenes/cutscene_char003803"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003202",
+      "costume_id": "003202",
+      "character": "Loen",
+      "character_en": "Loen",
+      "skin": "Track and Field Team",
+      "skin_en": "Track and Field Team",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003202",
+        "cutscene": "spine/cutscenes/cutscene_char003202"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067502",
+      "costume_id": "067502",
+      "character": "Luvencia",
+      "character_en": "Luvencia",
+      "skin": "Deal Snatcher",
+      "skin_en": "Deal Snatcher",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067502",
+        "cutscene": "spine/cutscenes/cutscene_char067502"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067503",
+      "costume_id": "067503",
+      "character": "Luvencia",
+      "character_en": "Luvencia",
+      "skin": "Wild Dog",
+      "skin_en": "Wild Dog",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067503",
+        "cutscene": "spine/cutscenes/cutscene_char067503"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067504",
+      "costume_id": "067504",
+      "character": "Luvencia",
+      "character_en": "Luvencia",
+      "skin": "Ocean Vanguard",
+      "skin_en": "Ocean Vanguard",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067504",
+        "cutscene": "spine/cutscenes/cutscene_char067504"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-103301",
+      "costume_id": "103301",
+      "character": "Lydia",
+      "character_en": "Lydia",
+      "skin": "Apprentice Spearman",
+      "skin_en": "Apprentice Spearman",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char103301",
+        "cutscene": "spine/cutscenes/cutscene_char103301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067801",
+      "costume_id": "067801",
+      "character": "Mamonir",
+      "character_en": "Mamonir",
+      "skin": "Night of Death",
+      "skin_en": "Night of Death",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067801",
+        "cutscene": "spine/cutscenes/cutscene_char067801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067803",
+      "costume_id": "067803",
+      "character": "Mamonir",
+      "character_en": "Mamonir",
+      "skin": "Miracle Marine",
+      "skin_en": "Miracle Marine",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067803",
+        "cutscene": "spine/cutscenes/cutscene_char067803"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067401",
+      "costume_id": "067401",
+      "character": "Michaela",
+      "character_en": "Michaela",
+      "skin": "Beachside Justice",
+      "skin_en": "Beachside Justice",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067401",
+        "cutscene": "spine/cutscenes/cutscene_char067401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067402",
+      "costume_id": "067402",
+      "character": "Michaela",
+      "character_en": "Michaela",
+      "skin": "Queen of Signatures",
+      "skin_en": "Queen of Signatures",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067402",
+        "cutscene": "spine/cutscenes/cutscene_char067402"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067403",
+      "costume_id": "067403",
+      "character": "Michaela",
+      "character_en": "Michaela",
+      "skin": "Acting Archbishop",
+      "skin_en": "Acting Archbishop",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067403",
+        "cutscene": "spine/cutscenes/cutscene_char067403"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067491",
+      "costume_id": "067491",
+      "character": "Michaela",
+      "character_en": "Michaela",
+      "skin": "True Liberation",
+      "skin_en": "True Liberation",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char067491",
+        "cutscene": "spine/cutscenes/cutscene_char067491"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003401",
+      "costume_id": "003401",
+      "character": "Morpeah",
+      "character_en": "Morpeah",
+      "skin": "Beach Vacation",
+      "skin_en": "Beach Vacation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003401",
+        "cutscene": "spine/cutscenes/cutscene_char003401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003403",
+      "costume_id": "003403",
+      "character": "Morpeah",
+      "character_en": "Morpeah",
+      "skin": "Apostle",
+      "skin_en": "Apostle",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003403",
+        "cutscene": "spine/cutscenes/cutscene_char003403"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-065802",
+      "costume_id": "065802",
+      "character": "Nartas",
+      "character_en": "Nartas",
+      "skin": "Anonymous Sage",
+      "skin_en": "Anonymous Sage",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char065802",
+        "cutscene": "spine/cutscenes/cutscene_char065802"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003301",
+      "costume_id": "003301",
+      "character": "Nebris",
+      "character_en": "Nebris",
+      "skin": "Labyrinth Gatekeeper",
+      "skin_en": "Labyrinth Gatekeeper",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003301",
+        "cutscene": "spine/cutscenes/cutscene_char003301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003302",
+      "costume_id": "003302",
+      "character": "Nebris",
+      "character_en": "Nebris",
+      "skin": "Laid-back Lifeguard",
+      "skin_en": "Laid-back Lifeguard",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003302",
+        "cutscene": "spine/cutscenes/cutscene_char003302"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003392",
+      "costume_id": "003392",
+      "character": "Nebris",
+      "character_en": "Nebris",
+      "skin": "Lucky Bikini",
+      "skin_en": "Lucky Bikini",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char003392",
+        "cutscene": "spine/cutscenes/cutscene_char003392"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004301",
+      "costume_id": "004301",
+      "character": "Nekyndalia",
+      "character_en": "Nekyndalia",
+      "skin": "Deadeye",
+      "skin_en": "Deadeye",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004301",
+        "cutscene": "spine/cutscenes/cutscene_char004301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004302",
+      "costume_id": "004302",
+      "character": "Nekyndalia",
+      "character_en": "Nekyndalia",
+      "skin": "Unraveling Mummy",
+      "skin_en": "Unraveling Mummy",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004302",
+        "cutscene": "spine/cutscenes/cutscene_char004302"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003601",
+      "costume_id": "003601",
+      "character": "Olivier",
+      "character_en": "Olivier",
+      "skin": "Faithful Wings",
+      "skin_en": "Faithful Wings",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003601",
+        "cutscene": "spine/cutscenes/cutscene_char003601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003602",
+      "costume_id": "003602",
+      "character": "Olivier",
+      "character_en": "Olivier",
+      "skin": "Apostle",
+      "skin_en": "Apostle",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003602",
+        "cutscene": "spine/cutscenes/cutscene_char003602"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003603",
+      "costume_id": "003603",
+      "character": "Olivier",
+      "character_en": "Olivier",
+      "skin": "Fallen Wings",
+      "skin_en": "Fallen Wings",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003603",
+        "cutscene": "spine/cutscenes/cutscene_char003603"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000604",
+      "costume_id": "000604",
+      "character": "Olstein",
+      "character_en": "Olstein",
+      "skin": "Sage of Blue Clouds",
+      "skin_en": "Sage of Blue Clouds",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000604",
+        "cutscene": "spine/cutscenes/cutscene_char000604"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004201",
+      "costume_id": "004201",
+      "character": "Palette",
+      "character_en": "Palette",
+      "skin": "Shattered Dream",
+      "skin_en": "Shattered Dream",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004201",
+        "cutscene": "spine/cutscenes/cutscene_char004201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020701",
+      "costume_id": "020701",
+      "character": "Priestess",
+      "character_en": "Priestess",
+      "skin": "Earth Mother Believer",
+      "skin_en": "Earth Mother Believer",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020701",
+        "cutscene": "spine/cutscenes/cutscene_char020701"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060701",
+      "costume_id": "060701",
+      "character": "Rafina",
+      "character_en": "Rafina",
+      "skin": "Steel Engine",
+      "skin_en": "Steel Engine",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060701",
+        "cutscene": "spine/cutscenes/cutscene_char060701"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060702",
+      "costume_id": "060702",
+      "character": "Rafina",
+      "character_en": "Rafina",
+      "skin": "Code Name A",
+      "skin_en": "Code Name A",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060702",
+        "cutscene": "spine/cutscenes/cutscene_char060702"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060706",
+      "costume_id": "060706",
+      "character": "Rafina",
+      "character_en": "Rafina",
+      "skin": "Game Club",
+      "skin_en": "Game Club",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060706",
+        "cutscene": "spine/cutscenes/cutscene_char060706"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066801",
+      "costume_id": "066801",
+      "character": "Refithea",
+      "character_en": "Refithea",
+      "skin": "The Gluttonous",
+      "skin_en": "The Gluttonous",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066801",
+        "cutscene": "spine/cutscenes/cutscene_char066801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066802",
+      "costume_id": "066802",
+      "character": "Refithea",
+      "character_en": "Refithea",
+      "skin": "Pure White Blessing",
+      "skin_en": "Pure White Blessing",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066802",
+        "cutscene": "spine/cutscenes/cutscene_char066802"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-066803",
+      "costume_id": "066803",
+      "character": "Refithea",
+      "character_en": "Refithea",
+      "skin": "Poolside Fairy",
+      "skin_en": "Poolside Fairy",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066803",
+        "cutscene": "spine/cutscenes/cutscene_char066803"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-021301",
+      "costume_id": "021301",
+      "character": "Ren Yamashiro",
+      "character_en": "Ren Yamashiro",
+      "skin": "Lord of the Cosmos",
+      "skin_en": "Lord of the Cosmos",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char021301",
+        "cutscene": "spine/cutscenes/cutscene_char021301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-021391",
+      "costume_id": "021391",
+      "character": "Ren Yamashiro",
+      "character_en": "Ren Yamashiro",
+      "skin": "Role Reversal",
+      "skin_en": "Role Reversal",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char021391",
+        "cutscene": "spine/cutscenes/cutscene_char021391"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-103401",
+      "costume_id": "103401",
+      "character": "Rigenette",
+      "character_en": "Rigenette",
+      "skin": "Little Hunter",
+      "skin_en": "Little Hunter",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char103401",
+        "cutscene": "spine/cutscenes/cutscene_char103401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000501",
+      "costume_id": "000501",
+      "character": "Rou",
+      "character_en": "Rou",
+      "skin": "White Cat",
+      "skin_en": "White Cat",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000501",
+        "cutscene": "spine/cutscenes/cutscene_char000501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000502",
+      "costume_id": "000502",
+      "character": "Rou",
+      "character_en": "Rou",
+      "skin": "Red Riding Hood",
+      "skin_en": "Red Riding Hood",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000502",
+        "cutscene": "spine/cutscenes/cutscene_char000502"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000504",
+      "costume_id": "000504",
+      "character": "Rou",
+      "character_en": "Rou",
+      "skin": "Nature's Claw",
+      "skin_en": "Nature's Claw",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000504",
+        "cutscene": "spine/cutscenes/cutscene_char000504"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000506",
+      "costume_id": "000506",
+      "character": "Rou",
+      "character_en": "Rou",
+      "skin": "Stray Cat",
+      "skin_en": "Stray Cat",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000506",
+        "cutscene": "spine/cutscenes/cutscene_char000506"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020101",
+      "costume_id": "020101",
+      "character": "Roxy",
+      "character_en": "Roxy",
+      "skin": "Respected Master",
+      "skin_en": "Respected Master",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020101",
+        "cutscene": "spine/cutscenes/cutscene_char020101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020102",
+      "costume_id": "020102",
+      "character": "Roxy",
+      "character_en": "Roxy",
+      "skin": "Emerging Desire",
+      "skin_en": "Emerging Desire",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020102",
+        "cutscene": "spine/cutscenes/cutscene_char020102"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000801",
+      "costume_id": "000801",
+      "character": "Rubia",
+      "character_en": "Rubia",
+      "skin": "Thorn of the Desert",
+      "skin_en": "Thorn of the Desert",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000801",
+        "cutscene": "spine/cutscenes/cutscene_char000801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000804",
+      "costume_id": "000804",
+      "character": "Rubia",
+      "character_en": "Rubia",
+      "skin": "The Empress of the Ocean",
+      "skin_en": "The Empress of the Ocean",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000804",
+        "cutscene": "spine/cutscenes/cutscene_char000804"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000806",
+      "costume_id": "000806",
+      "character": "Rubia",
+      "character_en": "Rubia",
+      "skin": "Maid Name C",
+      "skin_en": "Maid Name C",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000806",
+        "cutscene": "spine/cutscenes/cutscene_char000806"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000807",
+      "costume_id": "000807",
+      "character": "Rubia",
+      "character_en": "Rubia",
+      "skin": "Maid Bikini",
+      "skin_en": "Maid Bikini",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000807",
+        "cutscene": "spine/cutscenes/cutscene_char000807"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003501",
+      "costume_id": "003501",
+      "character": "Sacred Justia",
+      "character_en": "Sacred Justia",
+      "skin": "Reclaimed Destiny",
+      "skin_en": "Reclaimed Destiny",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003501",
+        "cutscene": "spine/cutscenes/cutscene_char003501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000301",
+      "costume_id": "000301",
+      "character": "Scheherazade",
+      "character_en": "Scheherazade",
+      "skin": "The Lapis Witch",
+      "skin_en": "The Lapis Witch",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000301",
+        "cutscene": "spine/cutscenes/cutscene_char000301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000303",
+      "costume_id": "000303",
+      "character": "Scheherazade",
+      "character_en": "Scheherazade",
+      "skin": "The Magic School Professor",
+      "skin_en": "The Magic School Professor",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000303",
+        "cutscene": "spine/cutscenes/cutscene_char000303"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000304",
+      "costume_id": "000304",
+      "character": "Scheherazade",
+      "character_en": "Scheherazade",
+      "skin": "Code Name S",
+      "skin_en": "Code Name S",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000304",
+        "cutscene": "spine/cutscenes/cutscene_char000304"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000306",
+      "costume_id": "000306",
+      "character": "Scheherazade",
+      "character_en": "Scheherazade",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000306",
+        "cutscene": "spine/cutscenes/cutscene_char000306"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101101",
+      "costume_id": "101101",
+      "character": "Seir",
+      "character_en": "Seir",
+      "skin": "Demon's Daughter",
+      "skin_en": "Demon's Daughter",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101101",
+        "cutscene": "spine/cutscenes/cutscene_char101101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101102",
+      "costume_id": "101102",
+      "character": "Seir",
+      "character_en": "Seir",
+      "skin": "B-Rank Idol",
+      "skin_en": "B-Rank Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101102",
+        "cutscene": "spine/cutscenes/cutscene_char101102"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101103",
+      "costume_id": "101103",
+      "character": "Seir",
+      "character_en": "Seir",
+      "skin": "New Hire",
+      "skin_en": "New Hire",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101103",
+        "cutscene": "spine/cutscenes/cutscene_char101103"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003901",
+      "costume_id": "003901",
+      "character": "Sonya",
+      "character_en": "Sonya",
+      "skin": "Shadowed Dream",
+      "skin_en": "Shadowed Dream",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003901",
+        "cutscene": "spine/cutscenes/cutscene_char003901"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003902",
+      "costume_id": "003902",
+      "character": "Sonya",
+      "character_en": "Sonya",
+      "skin": "Little Pumpkin Girl",
+      "skin_en": "Little Pumpkin Girl",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003902",
+        "cutscene": "spine/cutscenes/cutscene_char003902"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020901",
+      "costume_id": "020901",
+      "character": "Sword Maiden",
+      "character_en": "Sword Maiden",
+      "skin": "Supreme God Archbishop",
+      "skin_en": "Supreme God Archbishop",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020901",
+        "cutscene": "spine/cutscenes/cutscene_char020901"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001001",
+      "costume_id": "001001",
+      "character": "Sylvia",
+      "character_en": "Sylvia",
+      "skin": "Desert Flower",
+      "skin_en": "Desert Flower",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001001",
+        "cutscene": "spine/cutscenes/cutscene_char001001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001002",
+      "costume_id": "001002",
+      "character": "Sylvia",
+      "character_en": "Sylvia",
+      "skin": "The Sword Queen",
+      "skin_en": "The Sword Queen",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001002",
+        "cutscene": "spine/cutscenes/cutscene_char001002"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001004",
+      "costume_id": "001004",
+      "character": "Sylvia",
+      "character_en": "Sylvia",
+      "skin": "Admiral",
+      "skin_en": "Admiral",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001004",
+        "cutscene": "spine/cutscenes/cutscene_char001004"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001092",
+      "costume_id": "001092",
+      "character": "Sylvia",
+      "character_en": "Sylvia",
+      "skin": "Crimson Lotus",
+      "skin_en": "Crimson Lotus",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char001092",
+        "cutscene": "spine/cutscenes/cutscene_char001092"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-021201",
+      "costume_id": "021201",
+      "character": "Tenka Izumo",
+      "character_en": "Tenka Izumo",
+      "skin": "Ame-no-Mitori",
+      "skin_en": "Ame-no-Mitori",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char021201",
+        "cutscene": "spine/cutscenes/cutscene_char021201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-021291",
+      "costume_id": "021291",
+      "character": "Tenka Izumo",
+      "character_en": "Tenka Izumo",
+      "skin": "Special Date",
+      "skin_en": "Special Date",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char021291",
+        "cutscene": "spine/cutscenes/cutscene_char021291"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001101",
+      "costume_id": "001101",
+      "character": "Teresse",
+      "character_en": "Teresse",
+      "skin": "Angel of Destruction",
+      "skin_en": "Angel of Destruction",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001101",
+        "cutscene": "spine/cutscenes/cutscene_char001101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-001107",
+      "costume_id": "001107",
+      "character": "Teresse",
+      "character_en": "Teresse",
+      "skin": "Beachside Angel",
+      "skin_en": "Beachside Angel",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char001107",
+        "cutscene": "spine/cutscenes/cutscene_char001107"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004101",
+      "costume_id": "004101",
+      "character": "Tyr",
+      "character_en": "Tyr",
+      "skin": "Starlight Guardian",
+      "skin_en": "Starlight Guardian",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004101",
+        "cutscene": "spine/cutscenes/cutscene_char004101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-004192",
+      "costume_id": "004192",
+      "character": "Tyr",
+      "character_en": "Tyr",
+      "skin": "Clumsy Wuff",
+      "skin_en": "Clumsy Wuff",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004192",
+        "cutscene": "spine/cutscenes/cutscene_char004192"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-068001",
+      "costume_id": "068001",
+      "character": "Valze",
+      "character_en": "Valze",
+      "skin": "Night of Betrayal",
+      "skin_en": "Night of Betrayal",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char068001",
+        "cutscene": "spine/cutscenes/cutscene_char068001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067201",
+      "costume_id": "067201",
+      "character": "Venaka",
+      "character_en": "Venaka",
+      "skin": "DJ",
+      "skin_en": "DJ",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067201",
+        "cutscene": "spine/cutscenes/cutscene_char067201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067202",
+      "costume_id": "067202",
+      "character": "Venaka",
+      "character_en": "Venaka",
+      "skin": "Wind Dancer",
+      "skin_en": "Wind Dancer",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067202",
+        "cutscene": "spine/cutscenes/cutscene_char067202"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067002",
+      "costume_id": "067002",
+      "character": "Ventana",
+      "character_en": "Ventana",
+      "skin": "Snow White",
+      "skin_en": "Snow White",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067002",
+        "cutscene": "spine/cutscenes/cutscene_char067002"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067003",
+      "costume_id": "067003",
+      "character": "Ventana",
+      "character_en": "Ventana",
+      "skin": "Comeback Idol",
+      "skin_en": "Comeback Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067003",
+        "cutscene": "spine/cutscenes/cutscene_char067003"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100501",
+      "costume_id": "100501",
+      "character": "Wiggle",
+      "character_en": "Wiggle",
+      "skin": "Bomb Fanatic",
+      "skin_en": "Bomb Fanatic",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100501",
+        "cutscene": "spine/cutscenes/cutscene_char100501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067601",
+      "costume_id": "067601",
+      "character": "Wilhelmina",
+      "character_en": "Wilhelmina",
+      "skin": "Iron Monarch",
+      "skin_en": "Iron Monarch",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067601",
+        "cutscene": "spine/cutscenes/cutscene_char067601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-067604",
+      "costume_id": "067604",
+      "character": "Wilhelmina",
+      "character_en": "Wilhelmina",
+      "skin": "Frozen Queen",
+      "skin_en": "Frozen Queen",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067604",
+        "cutscene": "spine/cutscenes/cutscene_char067604"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020201",
+      "costume_id": "020201",
+      "character": "Yomi",
+      "character_en": "Yomi",
+      "skin": "Gentle Destroyer",
+      "skin_en": "Gentle Destroyer",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020201",
+        "cutscene": "spine/cutscenes/cutscene_char020201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020301",
+      "costume_id": "020301",
+      "character": "Yozakura",
+      "character_en": "Yozakura",
+      "skin": "Fist of Conviction",
+      "skin_en": "Fist of Conviction",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020301",
+        "cutscene": "spine/cutscenes/cutscene_char020301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-020401",
+      "costume_id": "020401",
+      "character": "Yumi",
+      "character_en": "Yumi",
+      "skin": "Dancing Snowflake",
+      "skin_en": "Dancing Snowflake",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char020401",
+        "cutscene": "spine/cutscenes/cutscene_char020401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-065102",
+      "costume_id": "065102",
+      "character": "Yuri",
+      "character_en": "Yuri",
+      "skin": "Whitebolt",
+      "skin_en": "Whitebolt",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char065102",
+        "cutscene": "spine/cutscenes/cutscene_char065102"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-065103",
+      "costume_id": "065103",
+      "character": "Yuri",
+      "character_en": "Yuri",
+      "skin": "Comeback Idol",
+      "skin_en": "Comeback Idol",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char065103",
+        "cutscene": "spine/cutscenes/cutscene_char065103"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061402",
+      "costume_id": "061402",
+      "character": "Zenith",
+      "character_en": "Zenith",
+      "skin": "Robin Hood",
+      "skin_en": "Robin Hood",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061402",
+        "cutscene": "spine/cutscenes/cutscene_char061402"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061404",
+      "costume_id": "061404",
+      "character": "Zenith",
+      "character_en": "Zenith",
+      "skin": "Poolside Guardian",
+      "skin_en": "Poolside Guardian",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061404",
+        "cutscene": "spine/cutscenes/cutscene_char061404"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060301",
+      "costume_id": "060301",
+      "character": "Alec",
+      "character_en": "Alec",
+      "skin": "The Destruction",
+      "skin_en": "The Destruction",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-060302",
+      "costume_id": "060302",
+      "character": "Alec",
+      "character_en": "Alec",
+      "skin": "Sword Breaker",
+      "skin_en": "Sword Breaker",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char060302"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-062001",
+      "costume_id": "062001",
+      "character": "Andrew",
+      "character_en": "Andrew",
+      "skin": "Loyal Butler",
+      "skin_en": "Loyal Butler",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char062001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-062002",
+      "costume_id": "062002",
+      "character": "Andrew",
+      "character_en": "Andrew",
+      "skin": "Specialist",
+      "skin_en": "Specialist",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char062002"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-103701",
+      "costume_id": "103701",
+      "character": "Arines",
+      "character_en": "Arines",
+      "skin": "Priest of Vitality",
+      "skin_en": "Priest of Vitality",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char103701"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100801",
+      "costume_id": "100801",
+      "character": "Bernie",
+      "character_en": "Bernie",
+      "skin": "Righteous Raider Girl",
+      "skin_en": "Righteous Raider Girl",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100801"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-063301",
+      "costume_id": "063301",
+      "character": "Cynthia",
+      "character_en": "Cynthia",
+      "skin": "Warmth within the Severe Cold",
+      "skin_en": "Warmth within the Severe Cold",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char063301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101301",
+      "costume_id": "101301",
+      "character": "Emma",
+      "character_en": "Emma",
+      "skin": "Haggard Delinquent",
+      "skin_en": "Haggard Delinquent",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101302",
+      "costume_id": "101302",
+      "character": "Emma",
+      "character_en": "Emma",
+      "skin": "School Queen",
+      "skin_en": "School Queen",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101302"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100201",
+      "costume_id": "100201",
+      "character": "Fred",
+      "character_en": "Fred",
+      "skin": "Lugo Defense Force",
+      "skin_en": "Lugo Defense Force",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000402",
+      "costume_id": "000402",
+      "character": "Gray",
+      "character_en": "Gray",
+      "skin": "B-Rank Manager",
+      "skin_en": "B-Rank Manager",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000402"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000403",
+      "costume_id": "000403",
+      "character": "Gray",
+      "character_en": "Gray",
+      "skin": "Vanguard",
+      "skin_en": "Vanguard",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000403"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000406",
+      "costume_id": "000406",
+      "character": "Gray",
+      "character_en": "Gray",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000406"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100101",
+      "costume_id": "100101",
+      "character": "Gynt",
+      "character_en": "Gynt",
+      "skin": "Lugo Hunter",
+      "skin_en": "Lugo Hunter",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100101"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-061092",
+      "costume_id": "061092",
+      "character": "Helena",
+      "character_en": "Helena",
+      "skin": "Rising Star",
+      "skin_en": "Rising Star",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char061092"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-063001",
+      "costume_id": "063001",
+      "character": "Ingrid",
+      "character_en": "Ingrid",
+      "skin": "Kardis' Bullet",
+      "skin_en": "Kardis' Bullet",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char063001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101201",
+      "costume_id": "101201",
+      "character": "Jayden",
+      "character_en": "Jayden",
+      "skin": "Beautiful Girl Devotee",
+      "skin_en": "Beautiful Girl Devotee",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101201"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101202",
+      "costume_id": "101202",
+      "character": "Jayden",
+      "character_en": "Jayden",
+      "skin": "Manga Research Club",
+      "skin_en": "Manga Research Club",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101202"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-063401",
+      "costume_id": "063401",
+      "character": "Julie",
+      "character_en": "Julie",
+      "skin": "Healer",
+      "skin_en": "Healer",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char063401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101501",
+      "costume_id": "101501",
+      "character": "Kry",
+      "character_en": "Kry",
+      "skin": "Liberated Marauder",
+      "skin_en": "Liberated Marauder",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101501"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101502",
+      "costume_id": "101502",
+      "character": "Kry",
+      "character_en": "Kry",
+      "skin": "Violent Student",
+      "skin_en": "Violent Student",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101502"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000102",
+      "costume_id": "000102",
+      "character": "Lathel",
+      "character_en": "Lathel",
+      "skin": "Lonely Survivor",
+      "skin_en": "Lonely Survivor",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000102"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000104",
+      "costume_id": "000104",
+      "character": "Lathel",
+      "character_en": "Lathel",
+      "skin": "Dark Knight",
+      "skin_en": "Dark Knight",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000104"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000105",
+      "costume_id": "000105",
+      "character": "Lathel",
+      "character_en": "Lathel",
+      "skin": "Promise of Vengeance",
+      "skin_en": "Promise of Vengeance",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000105"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000106",
+      "costume_id": "000106",
+      "character": "Lathel",
+      "character_en": "Lathel",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000106"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-003001",
+      "costume_id": "003001",
+      "character": "Layla",
+      "character_en": "Layla",
+      "skin": "Anvil of Creation",
+      "skin_en": "Anvil of Creation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003001"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100301",
+      "costume_id": "100301",
+      "character": "Lisianne",
+      "character_en": "Lisianne",
+      "skin": "Wandering Priest",
+      "skin_en": "Wandering Priest",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100301"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100601",
+      "costume_id": "100601",
+      "character": "Lucrezia",
+      "character_en": "Lucrezia",
+      "skin": "Seductive Wings",
+      "skin_en": "Seductive Wings",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-103601",
+      "costume_id": "103601",
+      "character": "Maria",
+      "character_en": "Maria",
+      "skin": "Archmage",
+      "skin_en": "Archmage",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char103601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-000601",
+      "costume_id": "000601",
+      "character": "Olstein",
+      "character_en": "Olstein",
+      "skin": "The Fiend Scholar",
+      "skin_en": "The Fiend Scholar",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000601"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100401",
+      "costume_id": "100401",
+      "character": "Remnunt",
+      "character_en": "Remnunt",
+      "skin": "Combat Doctor",
+      "skin_en": "Combat Doctor",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101401",
+      "costume_id": "101401",
+      "character": "Samay",
+      "character_en": "Samay",
+      "skin": "Kind Liberator",
+      "skin_en": "Kind Liberator",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101401"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-101402",
+      "costume_id": "101402",
+      "character": "Samay",
+      "character_en": "Samay",
+      "skin": "Kind Student",
+      "skin_en": "Kind Student",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char101402"
+      },
+      "mapping": "upstream_index"
+    },
+    {
+      "id": "costume-100502",
+      "costume_id": "100502",
+      "character": "Wiggle",
+      "character_en": "Wiggle",
+      "skin": "Bomb in the Hoodie",
+      "skin_en": "Bomb in the Hoodie",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char100502"
+      },
+      "mapping": "upstream_index"
+    }
+  ]
+}

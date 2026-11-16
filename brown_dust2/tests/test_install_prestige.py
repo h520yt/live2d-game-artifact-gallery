@@ -124,5 +124,66 @@ class PrestigeInstallTests(unittest.TestCase):
         self.assertEqual(Path("skin/cutscene/bg/back.png"), target.relative_to(installer.DATA))
 
 
+    def test_full_catalog_has_200_additional_costumes_without_prestige_duplicates(self):
+        prestige, other = installer.read_catalog()
+        self.assertEqual(6, len(prestige))
+        self.assertEqual(200, len(other))
+        self.assertEqual(206, len(prestige + other))
+        self.assertEqual(206, len({x["id"] for x in prestige + other}))
+        self.assertEqual(8, sum(x["tier"] == "Special Skin" for x in other))
+        self.assertEqual(15, sum(x["tier"] == "Fated Guest" for x in other))
+        self.assertEqual(177, sum(x["tier"] == "Costume" for x in other))
+        self.assertEqual(15, sum("interaction" in x["roles"] for x in other))
+
+    def test_collection_selection_and_character_filter(self):
+        prestige, other = installer.read_catalog()
+        self.assertEqual(6, len(installer.select_skins(prestige, other, "prestige")))
+        self.assertEqual(8, len(installer.select_skins(prestige, other, "special")))
+        self.assertEqual(15, len(installer.select_skins(prestige, other, "guest")))
+        self.assertEqual(21, len(installer.select_skins(prestige, other, "interactive")))
+        self.assertEqual(20, len(installer.select_skins(prestige, other, "other", limit=20)))
+        target = installer.select_skins(prestige, other, "all",
+                                        only="costume-000706")
+        self.assertEqual(1, len(target))
+        self.assertEqual("Eclipse", target[0]["character_en"])
+        group = installer.select_skins(prestige, other, "all", character="Teresse")
+        self.assertGreaterEqual(len(group), 2)
+        with self.assertRaises(ValueError):
+            installer.select_skins(prestige, other, "other", limit=0)
+
+    def test_scheherazade_interaction_directory_added(self):
+        prestige, _ = installer.read_catalog()
+        item = next(skin for skin in prestige
+                    if skin["id"] == "scheherazade-deliberate-ace")
+        self.assertEqual("spine/illust/illust_dating/illust_dating18",
+                         item["roles"]["interaction"])
+
+    def test_catalog_sync_parser_filters_npc_and_preserves_tiers(self):
+        script = MODULE.with_name("sync_costume_catalog.py")
+        spec_sync = importlib.util.spec_from_file_location("catalog_sync", script)
+        catalog_sync = importlib.util.module_from_spec(spec_sync)
+        spec_sync.loader.exec_module(catalog_sync)
+        source = (
+            '"003392": {\n"charName": "Nebris",\n'
+            '"costumeName": "Lucky Bikini",\n"spine": "char003392",\n'
+            '"cutscene": "cutscene_char003392",\n"dating": "",\n  },\n'
+            '"400001": {\n"charName": "Young Liberta (Npc)",\n'
+            '"costumeName": "???",\n"spine": "npc400001",\n  },\n'
+            '"000296": {\n"charName": "Justia",\n'
+            '"costumeName": "Hot Summer Dream",\n"spine": "char000296",\n  },\n'
+            '"003303": {\n"charName": "Nebris",\n'
+            '"costumeName": "New Hire",\n"spine": "char003303",\n'
+            '"dating": "illust_dating1",\n  },\n'
+        )
+        prestige, _ = installer.read_catalog()
+        result = catalog_sync.parse_index(source, prestige)
+        self.assertEqual(["costume-003303", "costume-003392"],
+                         [entry["id"] for entry in result])
+        self.assertEqual("Special Skin", result[1]["tier"])
+        self.assertEqual("Fated Guest", result[0]["tier"])
+        self.assertEqual("spine/illust/illust_dating/illust_dating1",
+                         result[0]["roles"]["interaction"])
+
+
 if __name__ == "__main__":
     unittest.main()

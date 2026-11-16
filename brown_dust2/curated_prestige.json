@@ -65,10 +65,10 @@
       "skin_en": "Deliberate Ace",
       "roles": {
         "character": "spine/char/char000396",
-        "cutscene": "spine/cutscenes/cutscene_char000396"
+        "cutscene": "spine/cutscenes/cutscene_char000396",
+        "interaction": "spine/illust/illust_dating/illust_dating18"
       },
-      "mapping": "candidate",
-      "note": "角色与技能演出目录已确认；互动资源未核实"
+      "mapping": "confirmed"
     },
     {
       "id": "yuri-forever-mascot",

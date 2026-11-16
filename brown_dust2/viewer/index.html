@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>棕色尘埃2 · 尊爵皮肤展示柜</title>
+<title>棕色尘埃2 · 服装与动态皮肤展示柜</title>
 <link rel="stylesheet" href="../../shared/vendor/spine-player.css">
 <style>
 :root{--bg:#100d19;--panel:#1b1829;--line:#40354e;--gold:#e8c58b;--text:#f4ecf6;--muted:#ab9cae}
@@ -19,6 +19,10 @@ a{color:var(--gold)}
 .sidebar{padding:15px;overflow:hidden}
 .sidebar-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .sidebar h2{font-size:16px;margin:0}
+.collection-filters{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px}
+.collection-filters button{font-size:11px;padding:4px 8px}
+.collection-filters button.active{border-color:var(--gold);color:var(--gold);background:#382b3a}
+.collection-info{font-size:11px;color:var(--muted);margin:8px 0}
 .counter{color:var(--muted);font-size:12px}
 .search{width:100%;background:#120e1e;border:1px solid #4c3c55;padding:12px;color:var(--text);margin:16px 0;border-radius:8px;outline:none}
 .search:focus{border-color:var(--gold)}
@@ -77,13 +81,23 @@ code{font-family:Consolas,monospace;color:#eace9b}
 </head>
 <body>
 <header>
- <div><div class="subtitle">GAME ARTIFACT GALLERY · PRESTIGE COLLECTION</div><h1>棕色尘埃2 · 尊爵皮肤</h1></div>
+ <div><div class="subtitle">GAME ARTIFACT GALLERY · PRESTIGE COLLECTION</div><h1>棕色尘埃2 · 服装展示柜</h1></div>
  <a class="back" href="../../index.html">← 返回游戏展柜</a>
 </header>
 <main class="layout">
  <section class="sidebar">
-  <div class="sidebar-top"><h2>首批 Prestige Skin</h2><span class="counter" id="count">读取中</span></div>
+  <div class="sidebar-top"><h2>服装目录</h2><span class="counter" id="count">读取中</span></div>
+  <div class="collection-filters" id="filters">
+    <button type="button" data-filter="all" class="active">全部</button>
+    <button type="button" data-filter="prestige">尊爵</button>
+    <button type="button" data-filter="special">特殊皮肤</button>
+    <button type="button" data-filter="guest">羁绊访客</button>
+    <button type="button" data-filter="other">其它服装</button>
+    <button type="button" data-filter="interactive">有互动</button>
+    <button type="button" data-filter="installed">已安装</button>
+  </div>
   <input class="search" id="search" placeholder="搜索角色或皮肤名称" aria-label="搜索皮肤">
+  <div class="collection-info" id="collection-info">目录可预览，素材按需下载到本地</div>
   <div class="cards" id="cards"></div>
   <p class="status" id="list-status"></p>
  </section>
@@ -128,6 +142,7 @@ code{font-family:Consolas,monospace;color:#eace9b}
 const ROLE_NAME = {character:"人物动态",cutscene:"技能演出",interaction:"互动动画"};
 const $ = id => document.getElementById(id);
 let catalog = [];
+let collectionFilter = "all";
 let installed = new Map();
 let selected = null;
 let player = null;
@@ -442,41 +457,75 @@ function disposePlayer() {
   activeSpine = null;
 }
 
+function isPrestige(skin) {
+  return skin.tier === "Prestige Skin" || !skin.id.startsWith("costume-");
+}
+
+function hasInstalledModel(skin) {
+  return Boolean(installed.get(skin.id) && Object.keys(installed.get(skin.id).roles).length);
+}
+
 function renderCards(filter) {
   $("cards").replaceChildren();
   const q = (filter || "").trim().toLowerCase();
-  const matches = catalog.filter(skin =>
-    [skin.character,skin.character_en,skin.skin,skin.skin_en,skin.id]
-    .some(value => String(value).toLowerCase().includes(q)));
+  const matches = catalog.filter(skin => {
+    const keyword = [skin.character,skin.character_en,skin.skin,
+      skin.skin_en,skin.id,skin.costume_id || ""]
+      .some(value => String(value).toLowerCase().includes(q));
+    if (!keyword) return false;
+    if (collectionFilter === "prestige") return isPrestige(skin);
+    if (collectionFilter === "special") return skin.tier === "Special Skin";
+    if (collectionFilter === "guest") return skin.tier === "Fated Guest";
+    if (collectionFilter === "other") return !isPrestige(skin);
+    if (collectionFilter === "installed") return hasInstalledModel(skin);
+    if (collectionFilter === "interactive") return Boolean(skin.roles.interaction);
+    return true;
+  });
   for (const skin of matches) {
     const present = installed.get(skin.id);
     const roles = present ? Object.keys(present.roles) : [];
     const card = el("button", "card" + (selected && selected.id === skin.id ? " active" : ""));
     card.appendChild(el("div","card-title",skin.character + " · " + skin.skin));
-    card.appendChild(el("div","card-sub",skin.character_en + " / " + skin.skin_en));
+    card.appendChild(el("div","card-sub",skin.character_en + " / " +
+      skin.skin_en + (skin.costume_id ? " · " + skin.costume_id : "")));
     const tags = el("div","tags");
-    tags.appendChild(badge("Prestige"));
-    tags.appendChild(badge(roles.length ? "本地 " + roles.length + " 类" : "待安装", roles.length ? "ready":"wait"));
-    if (skin.mapping !== "confirmed") tags.appendChild(badge("互动待核实"));
+    const tierLabel = isPrestige(skin) ? "Prestige"
+      : skin.tier === "Special Skin" ? "Special Skin"
+      : skin.tier === "Fated Guest" ? "羁绊访客" : "角色服装";
+    tags.appendChild(badge(tierLabel));
+    tags.appendChild(badge(roles.length ? "本地 " + roles.length +
+      "/" + Object.keys(skin.roles).length + " 类" : "待安装", roles.length ? "ready" : "wait"));
+    if (skin.roles.interaction) tags.appendChild(badge("互动"));
+    if (skin.mapping === "candidate") tags.appendChild(badge("映射待核实"));
     card.appendChild(tags);
     card.onclick = () => selectSkin(skin);
     $("cards").appendChild(card);
   }
-  $("count").textContent = installed.size + " 款本地有资源 / " + catalog.length + " 款计划";
-  $("list-status").textContent = matches.length ? "" : "没有符合条件的皮肤";
+  const localCount = catalog.filter(hasInstalledModel).length;
+  $("count").textContent = localCount + " 已安装 / " + catalog.length + " 收录";
+  $("collection-info").textContent = "本页显示 " + matches.length +
+    " 套 · 尊爵 " + catalog.filter(isPrestige).length +
+    " · 特殊 " + catalog.filter(skin => skin.tier === "Special Skin").length +
+    " · 羁绊 " + catalog.filter(skin => skin.tier === "Fated Guest").length +
+    " · 未安装的资源需要本地下载";
+  $("list-status").textContent = matches.length ? "" : "该条件下暂无皮肤";
+  for (const button of $("filters").querySelectorAll("button")) {
+    button.classList.toggle("active", button.dataset.filter === collectionFilter);
+  }
 }
 
 function selectSkin(skin) {
   selected = skin;
   disposePlayer();
   $("title").textContent = skin.character + " · " + skin.skin;
-  $("description").textContent = skin.character_en + " / " + skin.skin_en + " · Prestige Skin";
+  $("description").textContent = skin.character_en + " / " + skin.skin_en +
+    (isPrestige(skin) ? " · Prestige Skin" : " · Costume");
   const item = installed.get(skin.id);
   $("roles").replaceChildren();
   if (!item || !Object.keys(item.roles).length) {
     $("empty").hidden = false;
-    $("empty").textContent = "资源未安装；运行安装脚本后刷新页面。";
-    setStatus("此皮肤属于首批收藏计划，尚未检测到有效本地资源。");
+    $("empty").textContent = "资源尚未下载。执行 python brown_dust2/scripts/install_prestige.py --only " + skin.id;
+    setStatus("本条仅为来源目录映射，暂未核实本机素材；安装后刷新页面。");
   } else {
     Object.keys(ROLE_NAME).forEach(role => {
       const info = item.roles[role];
@@ -718,20 +767,29 @@ $("save").onclick = () => {
   } catch(error) {setStatus("PNG 导出失败：" + error.message);}
 };
 $("search").oninput = event => renderCards(event.target.value);
+for (const button of $("filters").querySelectorAll("button")) {
+  button.onclick = () => {
+    collectionFilter = button.dataset.filter;
+    renderCards($("search").value);
+  };
+}
 (async () => {
   try {
-    const [a,b] = await Promise.all([
+    const [a,b,c] = await Promise.all([
       fetch("../curated_prestige.json", {cache:"no-store"}),
-      fetch("manifest.json", {cache:"no-store"})
+      fetch("manifest.json", {cache:"no-store"}),
+      fetch("../costume_catalog.json", {cache:"no-store"})
     ]);
-    if(!a.ok || !b.ok) throw new Error("资源索引不存在，请确认从项目根目录启动 HTTP 服务");
-    catalog = (await a.json()).skins || [];
+    if(!a.ok || !b.ok || !c.ok) throw new Error("资源索引不存在，请从项目根目录启动 HTTP 服务，并更新最新代码");
+    const original = (await a.json()).skins || [];
+    const regular = (await c.json()).skins || [];
+    catalog = [...original.map(skin => ({...skin,tier:"Prestige Skin"})), ...regular];
     const manifest = await b.json();
     installed = new Map((manifest.installed || []).map(item => [item.id,item]));
     renderCards("");
-    $("install-hint").textContent = installed.size
-      ? "已识别 " + installed.size + " 款本地模型。可切换人物、技能与互动动作；若画面仍为空，请打开浏览器控制台查看具体错误。"
-      : "尚未安装本地模型。请在项目根目录执行 python brown_dust2/scripts/install_prestige.py，再刷新网页。";
+    $("install-hint").textContent = "共收录 " + catalog.length + " 套角色服装。"
+      + " 未安装条目仅提供目录索引，默认安装器仍只处理六款尊爵；"
+      + " 下载其它服装请使用 --collection other --limit 20 分批执行。";
     setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
     if(catalog.length) selectSkin(catalog[0]);
   } catch(error) {
