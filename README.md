@@ -21,13 +21,13 @@
 - **外观风格筛选**：新增「御姐 / 腿部重点 / 运动系」标签与一键安装脚本 `python nikke/scripts/install_style.py 运动系`，自动识别并下载选中风格的 NIKKE 角色、皮肤。详见 [`nikke/SPORTS.md`](nikke/SPORTS.md)。
 - **四批收藏一键补齐**：新增 35 个黑丝、网袜、长筒袜、成熟御姐与兔女郎候选 ID，并提供分批下载、文件完整性核验、缺失资源报告。`python nikke/scripts/install_batches.py --all`，详见 [`nikke/CURATED_BATCHES.md`](nikke/CURATED_BATCHES.md)。
 
-## 棕色尘埃2 · 精选皮肤展示柜（22 套）
+## 棕色尘埃2 · 精选皮肤展示柜（26 套）
 
-- **只展示 14 款高规格特殊皮肤**（Prestige 6 + Special Skin 8），以及 **8 款符合成熟御姐、黑丝/网袜或腿部重点展示的动态服装**；其它普通服装不会进入展示列表或默认下载范围。
-- 原始 200 条角色服装索引仅保留为后台资料，筛选依据和每个入选 ID 见 [curated_style.json](brown_dust2/curated_style.json)。
-- 查看精选目录：`python brown_dust2/scripts/install_prestige.py --list`；下载安装精选：`python brown_dust2/scripts/install_prestige.py --collection all`。
-- 支持按「特殊皮肤 / 成熟御姐 / 黑丝网袜 / 腿部重点 / 已安装」筛选、Spine 动画和大屏预览。详见 [详细说明](brown_dust2/README.md)。
-- 游戏素材只存放在本地 `brown_dust2/data/`（Git 忽略），此前已下载的非精选素材不会被删除。
+- **14 套高规格特殊皮肤**（Prestige 6 + Special Skin 8）及 **12 套御姐、黑丝或腿部重点服装**，共 26 套精选；其它普通服装不展示或默认下载。
+- **13 套找到专属互动骨骼映射**，其中新补 Sylvia Bikini Agent、Wilhelmina Water Park Queen、Dalvi Bright Moon、Olivier Retired Legend。Special Skin 官方不含独立互动，不能伪造。
+- 查看互动缺失原因：`python brown_dust2/scripts/install_prestige.py --audit-interactions`；只补真实互动：`python brown_dust2/scripts/install_prestige.py --collection interactive --role interaction`。
+- 展示柜支持「有互动」筛选及明确的官方无互动、待下载、已安装状态。详见 [完整说明](brown_dust2/README.md)。
+- 200 条上游完整索引仅为后台资料。已下载的素材不会被删除，游戏素材只保留在本地 `brown_dust2/data/`。
 
 ---
 

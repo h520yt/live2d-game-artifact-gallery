@@ -251,7 +251,30 @@ test("风格偏好标签展示与已安装状态彼此独立",()=>{
   assert.match(page,/skin\.tier === "Special Skin"/);
   assert.match(page,/id="collection-info"/);
   assert.match(page,/已排除普通无关服装/);
-  assert.match(page,/当前只保留尊爵、特殊皮肤及明确匹配/);
+  assert.match(page,/已核实独立互动/);
+});
+
+test("互动状态区分官方没有互动、资源待下载、真实已安装",()=>{
+  const section = extract("function interactionLabel(skin) {",
+                          "\nfunction roleHint(skin, role, model) {");
+  const scope = {installed:new Map()};
+  const label = vm.runInNewContext(section + "\ninteractionLabel;",scope);
+  const special = {id:"special",tier:"Special Skin",roles:{character:"ch"}};
+  const ordinary = {id:"ordinary",tier:"Costume",roles:{character:"ch"}};
+  const fated = {id:"fated",tier:"Fated Guest",roles:{interaction:"dating8"}};
+  assert.equal(label(special), "官方无独立互动");
+  assert.equal(label(ordinary), "未找到对应互动");
+  assert.equal(label(fated), "互动待下载");
+  scope.installed.set("fated",{roles:{interaction:{skel:"model.skel"}}});
+  assert.equal(label(fated), "独立互动已安装");
+});
+
+test("没有独立互动的条目不会创建可点击的伪互动按钮",()=>{
+  assert.match(page,/button\.disabled = !info/);
+  assert.match(page,/button\.title = label/);
+  assert.match(page,/const label = roleHint\(skin, role, info\)/);
+  assert.match(page,/if \(skin\.roles\.interaction\) return "互动待下载"/);
+  assert.match(page,/--role interaction/);
 });
 
 test("未下载服装显示可执行的独立安装命令而不是空白播放器",()=>{

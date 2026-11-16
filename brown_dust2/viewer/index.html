@@ -474,6 +474,20 @@ function hasInstalledModel(skin) {
   return Boolean(installed.get(skin.id) && Object.keys(installed.get(skin.id).roles).length);
 }
 
+function interactionLabel(skin) {
+  const installedRoles = installed.get(skin.id)?.roles || {};
+  if (installedRoles.interaction) return "独立互动已安装";
+  if (skin.roles.interaction) return "互动待下载";
+  if (skin.tier === "Special Skin") return "官方无独立互动";
+  return "未找到对应互动";
+}
+
+function roleHint(skin, role, model) {
+  if (model) return ROLE_NAME[role];
+  if (role === "interaction") return interactionLabel(skin);
+  return skin.roles[role] ? ROLE_NAME[role] + "（待下载）" : ROLE_NAME[role] + "（无资源）";
+}
+
 function renderCards(filter) {
   $("cards").replaceChildren();
   const q = (filter || "").trim().toLowerCase();
@@ -506,7 +520,8 @@ function renderCards(filter) {
       "/" + Object.keys(skin.roles).length + " 类" : "待安装",
       roles.length ? "ready" : "wait"));
     for (const name of skin.preference_tags || []) tags.appendChild(badge(name));
-    if (skin.roles.interaction) tags.appendChild(badge("互动"));
+    tags.appendChild(badge(interactionLabel(skin),
+      roles.includes("interaction") ? "ready" : "wait"));
     if (skin.mapping === "candidate") tags.appendChild(badge("映射待核实"));
     card.appendChild(tags);
     card.onclick = () => selectSkin(skin);
@@ -529,21 +544,30 @@ function selectSkin(skin) {
   disposePlayer();
   $("title").textContent = skin.character + " · " + skin.skin;
   $("description").textContent = skin.character_en + " / " + skin.skin_en +
-    (isPrestige(skin) ? " · Prestige Skin" : " · Costume");
+    (isPrestige(skin) ? " · Prestige Skin" : " · " + skin.tier)
+    + " · " + interactionLabel(skin);
   const item = installed.get(skin.id);
+  const downloadedRoles = item?.roles || {};
   $("roles").replaceChildren();
+  for (const role of Object.keys(ROLE_NAME)) {
+    const info = downloadedRoles[role];
+    const label = roleHint(skin, role, info);
+    const button = el("button", "", label);
+    button.disabled = !info;
+    button.title = label;
+    button.onclick = () => loadRole(role);
+    $("roles").appendChild(button);
+  }
   if (!item || !Object.keys(item.roles).length) {
     $("empty").hidden = false;
     $("empty").textContent = "资源尚未下载。执行 python brown_dust2/scripts/install_prestige.py --only " + skin.id;
-    setStatus("本条仅为来源目录映射，暂未核实本机素材；安装后刷新页面。");
+    const label = interactionLabel(skin);
+    setStatus("本地资源尚未安装 · " + label
+      + (skin.roles.interaction
+        ? " · 只补互动：python brown_dust2/scripts/install_prestige.py --only "
+          + skin.id + " --role interaction"
+        : ""));
   } else {
-    Object.keys(ROLE_NAME).forEach(role => {
-      const info = item.roles[role];
-      const button = el("button","",ROLE_NAME[role] + (info ? "" : "（未就绪）"));
-      button.disabled = !info;
-      button.onclick = () => loadRole(role);
-      $("roles").appendChild(button);
-    });
     loadRole(item.roles.character ? "character" : Object.keys(item.roles)[0]);
   }
   renderCards($("search").value);
@@ -813,9 +837,12 @@ for (const button of $("filters").querySelectorAll("button")) {
     const manifest = await b.json();
     installed = new Map((manifest.installed || []).map(item => [item.id,item]));
     renderCards("");
-    $("install-hint").textContent = "当前只保留尊爵、特殊皮肤及明确匹配的御姐/黑丝/腿部精选。"
-      + " 本地已下载但未入选的服装不会删除，只是不再展示；"
-      + " 使用 --collection all 安装精选，或 --collection style 仅安装风格精选。";
+    $("install-hint").textContent = "已核实独立互动 " +
+      catalog.filter(skin => Boolean(skin.roles.interaction)).length + "/" +
+      catalog.length + " 套。Special Skin 官方不含独立互动；" +
+      " 只补充真正有互动的皮肤请运行 " +
+      "python brown_dust2/scripts/install_prestige.py --collection interactive --role interaction。" +
+      " 其他旧素材仍保存在本地，不会删除。";
     setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
     if(catalog.length) selectSkin(catalog[0]);
   } catch(error) {

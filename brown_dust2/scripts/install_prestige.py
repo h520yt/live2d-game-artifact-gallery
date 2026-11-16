@@ -309,11 +309,26 @@ def select_skins(prestige, costumes, collection, only=None, character=None, limi
     return selected
 
 
+def interaction_state(skin):
+    """来源目录和本地安装状态分别报告；不冒充真正的互动场景。"""
+    path = skin.get("roles", {}).get("interaction")
+    if path:
+        model = inspect_model(DATA / skin["id"] / "interaction")
+        return "已安装独立互动" if model else "有独立互动，待本地下载"
+    if skin.get("tier") == "Special Skin":
+        return "官方 Special Skin 不含独立互动"
+    return "尚未发现该服装的独立互动资源"
+
+
 def main(argv=None):
     prestige, costumes = read_catalog()
     parser = argparse.ArgumentParser(description="BD2 精选服装展示柜资源安装器")
     parser.add_argument("--plan", action="store_true", help="列举上游文件，不下载模型")
     parser.add_argument("--list", action="store_true", help="离线列出服装、模型数量与安装状态")
+    parser.add_argument("--audit-interactions", action="store_true",
+                        help="离线核对所有精选服装的真实独立互动情况")
+    parser.add_argument("--role", choices=("character", "cutscene", "interaction"),
+                        help="仅下载指定类别，例如 --role interaction 只补互动")
     parser.add_argument("--collection",
                         choices=("all", "special", "prestige", "style", "guest", "other", "interactive"),
                         default="all", help="默认全部精选；special=尊爵+特殊；style=御姐黑丝腿部；other=style别名")
@@ -333,6 +348,13 @@ def main(argv=None):
                                 args.only, args.character, args.limit, args.offset)
     except ValueError as error:
         parser.error(str(error))
+    if args.audit_interactions:
+        for skin in selected:
+            print(f"{skin['id']:34} {skin['character_en'][:14]:14} "
+                  f"{skin['skin_en'][:24]:24} {interaction_state(skin)}")
+        print("独立互动索引:", sum("interaction" in x["roles"] for x in selected),
+              "/", len(selected), "套")
+        return 0
     if args.list:
         for skin in selected:
             complete = [role for role in skin["roles"]
@@ -358,6 +380,8 @@ def main(argv=None):
     for skin in selected:
         print(f"\n[{skin['id']}] {skin['character']} · {skin['skin']}")
         for role, folder in skin["roles"].items():
+            if args.role is not None and role != args.role:
+                continue
             try:
                 extras = skin.get("extra_files", {}).get(role, [])
                 files = remote_files(folder, args.source, extras)

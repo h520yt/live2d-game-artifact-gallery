@@ -1,7 +1,7 @@
 {
-  "description": "用户指定的筛选偏好：成熟御姐、黑丝/网袜、腿部重点；只保留 Prestige/Special Skin 及核对过造型的精选服装。Live2D/Spine可播性依赖本地下载验证。",
-  "selection_policy": "所有 Prestige Skin 和 Special Skin 自动保留；其它服装仅保留 styles 中显式列出的 ID。Fated Guest 不再整组接入。",
-  "evidence_note": "标签为外观检索与人工筛选结果；非官方游戏稀有度/属性。来源图片可能与骨骼动画表现有所区别。",
+  "description": "精选标准：高规格特殊皮肤自动保留；其余只保留成熟御姐、黑丝/网袜或腿部重点，优先真实含独立互动的造型。",
+  "selection_policy": "Prestige / Special 保留；Fated Guest 只以 curated_style 白名单为准，不整批加入，普通服装不符合外观条件的排除。",
+  "evidence_note": "外观标签非官方等级。新增条目的 dating 骨骼已核查上游 atlas，但未在用户本机实际下载或渲染。Special Skin 官方不包含独立互动，不得伪装为已补齐。",
   "styles": [
     {
       "id": "costume-000706",
@@ -14,6 +14,14 @@
       "evidence": "https://x.com/BROWNDUST2_EN/status/1998920757657702527"
     },
     {
+      "id": "costume-001006",
+      "tags": [
+        "腿部重点"
+      ],
+      "reason": "Sylvia · Bikini Agent：夏日比基尼造型，腿部线条明显；上游存在独立互动 illust_dating8",
+      "evidence": "https://dotgg.gg/brown-dust-2/35th-developer-notes-2nd-summer-update/"
+    },
+    {
       "id": "costume-001207",
       "tags": [
         "黑丝/网袜",
@@ -23,14 +31,29 @@
       "evidence": "https://www.browndust2.com/uploads/EN_2_b2548419bb.png"
     },
     {
-      "id": "costume-101601",
+      "id": "costume-003303",
       "tags": [
         "成熟御姐",
-        "黑丝/网袜",
         "腿部重点"
       ],
-      "reason": "Celia The Curse：深色蕾丝长袜与成熟暗黑系造型",
-      "evidence": "https://game.naver.com/lounge/BrownDust2/board/detail/5347923"
+      "reason": "Nebris New Hire：短裙及黑色过膝靴突出腿部；不是黑丝",
+      "evidence": "https://game.naver.com/lounge/BrownDust2/board/detail/5607004"
+    },
+    {
+      "id": "costume-003402",
+      "tags": [
+        "腿部重点"
+      ],
+      "reason": "Morpeah Daydream Bunny：兔女郎与蕾丝长袜，腿部设计明显",
+      "evidence": "https://www.browndust2.com/en-us/news/view?id=4690"
+    },
+    {
+      "id": "costume-003604",
+      "tags": [
+        "成熟御姐"
+      ],
+      "reason": "Olivier · Retired Legend：官方明确设定为已退休的成熟主妇型角色，独立互动 illust_dating16；不额外臆断黑丝",
+      "evidence": "https://dotgg.gg/brown-dust-2/44th-developer-notes-february-update-2/"
     },
     {
       "id": "costume-060403",
@@ -52,6 +75,15 @@
       "evidence": "https://www.browndust2.com/en-us/news/view?id=4115"
     },
     {
+      "id": "costume-061302",
+      "tags": [
+        "成熟御姐",
+        "腿部重点"
+      ],
+      "reason": "Dalvi · Bright Moon：斜坐的成熟造型，腿部是立绘构图重点；上游存在独立互动 illust_dating20",
+      "evidence": "https://dotgg.gg/brown-dust-2/%F0%9F%93%9Ccharacter-profile-bright-moon-dalvi/"
+    },
+    {
       "id": "costume-067301",
       "tags": [
         "成熟御姐",
@@ -61,21 +93,23 @@
       "evidence": "https://www.browndust2.com/uploads/EN_4_4fcabc75e7.png"
     },
     {
-      "id": "costume-003303",
+      "id": "costume-067603",
       "tags": [
         "成熟御姐",
         "腿部重点"
       ],
-      "reason": "Nebris New Hire：短裙及黑色过膝靴突出腿部；不是黑丝",
-      "evidence": "https://game.naver.com/lounge/BrownDust2/board/detail/5607004"
+      "reason": "Wilhelmina · Water Park Queen：蓝色泳装与露腿站姿；上游存在独立互动 illust_dating6",
+      "evidence": "https://dotgg.gg/brown-dust-2/%F0%9F%93%A2new-pickup-water-park-queen-wilhelmina/"
     },
     {
-      "id": "costume-003402",
+      "id": "costume-101601",
       "tags": [
+        "成熟御姐",
+        "黑丝/网袜",
         "腿部重点"
       ],
-      "reason": "Morpeah Daydream Bunny：兔女郎与蕾丝长袜，腿部设计明显",
-      "evidence": "https://www.browndust2.com/en-us/news/view?id=4690"
+      "reason": "Celia The Curse：深色蕾丝长袜与成熟暗黑系造型",
+      "evidence": "https://game.naver.com/lounge/BrownDust2/board/detail/5347923"
     }
   ]
 }

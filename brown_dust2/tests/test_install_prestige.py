@@ -127,13 +127,13 @@ class PrestigeInstallTests(unittest.TestCase):
     def test_curated_catalog_only_exposes_special_and_style_matches(self):
         prestige, chosen = installer.read_catalog()
         self.assertEqual(6, len(prestige))
-        self.assertEqual(16, len(chosen))
-        self.assertEqual(22, len(prestige + chosen))
-        self.assertEqual(22, len({item["id"] for item in prestige + chosen}))
+        self.assertEqual(20, len(chosen))
+        self.assertEqual(26, len(prestige + chosen))
+        self.assertEqual(26, len({item["id"] for item in prestige + chosen}))
         self.assertEqual(8, sum(item["tier"] == "Special Skin" for item in chosen))
-        self.assertEqual(8, sum(bool(item.get("preference_tags")) for item in chosen))
-        self.assertEqual(3, sum(item["tier"] == "Fated Guest" for item in chosen))
-        self.assertEqual(3, sum("interaction" in item["roles"] for item in chosen))
+        self.assertEqual(12, sum(bool(item.get("preference_tags")) for item in chosen))
+        self.assertEqual(7, sum(item["tier"] == "Fated Guest" for item in chosen))
+        self.assertEqual(7, sum("interaction" in item["roles"] for item in chosen))
 
         full_catalog = json.loads(installer.ALL_COSTUMES.read_text(encoding="utf-8"))
         self.assertEqual(200, len(full_catalog["skins"]))
@@ -145,11 +145,11 @@ class PrestigeInstallTests(unittest.TestCase):
         select = installer.select_skins
         self.assertEqual(6, len(select(prestige, chosen, "prestige")))
         self.assertEqual(14, len(select(prestige, chosen, "special")))
-        self.assertEqual(8, len(select(prestige, chosen, "style")))
-        self.assertEqual(8, len(select(prestige, chosen, "other")))
-        self.assertEqual(3, len(select(prestige, chosen, "guest")))
-        self.assertEqual(9, len(select(prestige, chosen, "interactive")))
-        self.assertEqual(22, len(select(prestige, chosen, "all")))
+        self.assertEqual(12, len(select(prestige, chosen, "style")))
+        self.assertEqual(12, len(select(prestige, chosen, "other")))
+        self.assertEqual(7, len(select(prestige, chosen, "guest")))
+        self.assertEqual(13, len(select(prestige, chosen, "interactive")))
+        self.assertEqual(26, len(select(prestige, chosen, "all")))
         self.assertEqual(3, len(select(prestige, chosen, "all", limit=3)))
         self.assertEqual(3, len(select(prestige, chosen, "all", limit=3, offset=3)))
         selected = select(prestige, chosen, "all", only="costume-000706")
@@ -168,7 +168,7 @@ class PrestigeInstallTests(unittest.TestCase):
         selections = json.loads(installer.CURATED_STYLE.read_text(encoding="utf-8"))
         all_ids = {item["id"] for item in full["skins"]}
         styles = selections["styles"]
-        self.assertEqual(8, len(styles))
+        self.assertEqual(12, len(styles))
         self.assertEqual(len(styles), len({item["id"] for item in styles}))
         for item in styles:
             self.assertIn(item["id"], all_ids)
@@ -179,6 +179,57 @@ class PrestigeInstallTests(unittest.TestCase):
         eclipse = next(item for item in chosen if item["id"] == "costume-000706")
         self.assertIn("黑丝/网袜", eclipse["preference_tags"])
         self.assertEqual("Fated Guest", eclipse["tier"])
+
+    def test_four_added_fated_guest_interactions_have_unique_real_mappings(self):
+        _, curated = installer.read_catalog()
+        expected = {
+            "costume-001006": "illust_dating8",
+            "costume-067603": "illust_dating6",
+            "costume-061302": "illust_dating20",
+            "costume-003604": "illust_dating16",
+        }
+        for skin_id, folder in expected.items():
+            with self.subTest(skin=skin_id):
+                skin = next(item for item in curated if item["id"] == skin_id)
+                self.assertEqual(
+                    "spine/illust/illust_dating/" + folder,
+                    skin["roles"]["interaction"])
+                self.assertTrue(skin.get("preference_tags"))
+                self.assertEqual("Fated Guest", skin["tier"])
+        seen = [skin["roles"]["interaction"] for skin in curated
+                if "interaction" in skin["roles"]]
+        self.assertEqual(len(seen), len(set(seen)))
+
+    def test_official_special_skin_is_distinguished_from_missing_download(self):
+        _, curated = installer.read_catalog()
+        special = next(item for item in curated if item["tier"] == "Special Skin")
+        self.assertNotIn("interaction", special["roles"])
+        self.assertEqual("官方 Special Skin 不含独立互动",
+                         installer.interaction_state(special))
+        fated = next(item for item in curated if item["id"] == "costume-001006")
+        with patch.object(installer, "inspect_model", return_value=None):
+            self.assertEqual("有独立互动，待本地下载",
+                             installer.interaction_state(fated))
+        with patch.object(installer, "inspect_model", return_value={"skel":"model.skel"}):
+            self.assertEqual("已安装独立互动", installer.interaction_state(fated))
+        celia = next(item for item in curated if item["id"] == "costume-060403")
+        self.assertEqual("尚未发现该服装的独立互动资源",
+                         installer.interaction_state(celia))
+
+    def test_role_interaction_limits_plan_to_interaction_only(self):
+        from contextlib import redirect_stdout
+        from io import StringIO
+        _, curated = installer.read_catalog()
+        skin = next(item for item in curated if item["id"] == "costume-001006")
+        fake = [{"path":skin["roles"]["interaction"] + "/test.skel",
+                 "size":100, "url":"https://raw.githubusercontent.com/test"}]
+        out = StringIO()
+        with patch.object(installer, "remote_files", return_value=fake) as mocked:
+            with redirect_stdout(out):
+                code = installer.main(
+                    ["--plan", "--only", skin["id"], "--role", "interaction"])
+        self.assertEqual(0, code)
+        mocked.assert_called_once_with(skin["roles"]["interaction"], "raw", [])
 
     def test_scheherazade_interaction_directory_added(self):
         prestige, _ = installer.read_catalog()

@@ -1,59 +1,66 @@
 # 棕色尘埃2 · 精选动态皮肤展示柜
 
-本展示柜**只展示用户需要的两类皮肤**：高规格特殊皮肤，以及符合「成熟御姐、黑丝/网袜、腿部重点」偏好的其他动态服装。普通无关服装不进入页面，也不进入默认下载任务。
+只展示 Prestige 尊爵、Special Skin 特殊皮肤，以及符合成熟御姐、黑丝/网袜或腿部重点偏好的其它服装。原始 200 套目录仍作为后台资源索引，不会自动安装。
 
-## 精选范围
+## 独立互动核查结果
 
-| 范围 | 数量 | 依据 |
-| --- | ---: | --- |
-| Prestige Skin（尊爵皮肤） | 6 | 已接入的完整尊爵系列 |
-| Special Skin（特殊皮肤） | 8 | 上游特别皮肤目录分类 |
-| 视觉风格精选 | 8 | 对照宣传原画检查过的外观；详见 `curated_style.json` |
-| **总计** | **22** | 去重后 22 套 |
+| 类型 | 收录 | 找到专属互动 |
+| --- | ---: | ---: |
+| Prestige Skin | 6 | 6 |
+| Special Skin | 8 | 0（官方设计不含独立互动） |
+| 外观风格精选 | 12 | 7 |
+| **合计** | **26** | **13** |
 
-风格精选包括 Eclipse · Nightmare Bunny、Liatris · Maid Name R、Celia · The Curse、Celia · Masquerade Bunny、Eleaneer · Piercing Magic Bow、Levia · Track and Field Captain、Nebris · New Hire、Morpeah · Daydream Bunny。每条都附有筛选原因与来源链接。**“过膝靴”不会误标成“黑丝”，“运动系”仅在确实突出腿部时保留。** 标签是个人外观筛选，不是游戏官方等级；Spine 动画实际还原度需本机检验。
+官方明确：Special Skin 只有新立绘、技能演出和新角色动作，不包括 Fated Guest / Prestige 的独立互动功能。**不能为它们冒用别的衣装的 illust_dating 资源。**
 
-> 原始 `costume_catalog.json` 仍保存 200 条第三方资源索引，方便以后核对和追加，但该文件只是**后台资料**。展示柜和下载器都会与 `curated_style.json` 白名单相交，只允许 6 款 Prestige、8 款 Special Skin 和 8 套风格精选；不会重新展示或默认下载全部 206 套。
+仍未找到独立互动对应目录的五套精选为：Celia · Masquerade Bunny、Celia · The Curse、Eleaneer · Piercing Magic Bow、Levia · Track and Field Captain、Liatris · Maid Name R。它们已有的人物和技能 Spine 动画仍可播放，只是不应该假装有互动场景。
 
-## 本地安装（Windows PowerShell）
+开发者公告：
+- https://dotgg.gg/brown-dust-2/45th-developer-notes-1000th-day-update-2/
+- https://dotgg.gg/brown-dust-2/%F0%9F%93%A2march-25th-utc-routine-maintenance-and-update/
+
+## 本次真实补齐四套互动索引
+
+| 角色服装 | 互动资源 ID | 外观 |
+| --- | --- | --- |
+| Sylvia · Bikini Agent | `illust_dating8` | 比基尼、腿部重点 |
+| Wilhelmina · Water Park Queen | `illust_dating6` | 成熟御姐、泳装腿部 |
+| Dalvi · Bright Moon | `illust_dating20` | 成熟御姐、坐姿腿部 |
+| Olivier · Retired Legend | `illust_dating16` | 成熟御姐 |
+
+已分别检查四套上游 atlas 存在，含 6、9、8、8 张贴图页。映射来自同一衣装的模型，不跨角色借用。**这些是资源索引核验，尚未在你的本机下载或渲染。** 每条依据和美术参考链接收录在 `curated_style.json` 中。
+
+## 本地命令（Windows PowerShell）
 
 ```powershell
 cd D:\project_python\live2d-game-artifact-gallery
 git pull origin main
 
-# 先查看全部精选与本地已安装状态（完全离线）
-python brown_dust2/scripts/install_prestige.py --list
+# 离线核对所有精选服装互动状态
+python brown_dust2/scripts/install_prestige.py --audit-interactions
 
-# 下载全部22套精选，不会下载其它178套未入选的服装
-python brown_dust2/scripts/install_prestige.py --collection all
+# 只下载真正有独立互动索引的13套互动资源（增量跳过已有）
+python brown_dust2/scripts/install_prestige.py --collection interactive --role interaction
 
-# 或者分开安装：14款特殊皮肤、8套风格精选
-python brown_dust2/scripts/install_prestige.py --collection special
-python brown_dust2/scripts/install_prestige.py --collection style
+# 如需把四套新增服装的人物/技能模型也安装完整
+python brown_dust2/scripts/install_prestige.py --only costume-001006
+python brown_dust2/scripts/install_prestige.py --only costume-067603
+python brown_dust2/scripts/install_prestige.py --only costume-061302
+python brown_dust2/scripts/install_prestige.py --only costume-003604
 
-# 可选：只同步已核对的黑丝兔女郎 Eclipse
-python brown_dust2/scripts/install_prestige.py --only costume-000706
-
-# 离线检查完整性，刷新网页
+# 生成真实安装清单，再启动展示柜
 python brown_dust2/scripts/install_prestige.py --verify
 python -m http.server 8000
 ```
 
-页面：`http://127.0.0.1:8000/brown_dust2/viewer/index.html`。
+访问 `http://127.0.0.1:8000/brown_dust2/viewer/index.html` 后强制刷新浏览器。使用「有互动」筛选可查看 13 套独立互动来源。卡片区分：**独立互动已安装、互动待下载、官方无独立互动、未找到对应互动**。
 
-筛选项：**全部精选 / 特殊皮肤 / 御姐·腿部 / 成熟御姐 / 黑丝·网袜 / 腿部重点 / 有互动 / 已安装**。支持搜索、角色/技能/互动切换、大屏模式、完整人物适配、PNG 截图。
+## 索引与版权
 
-安装器会在每次下载时检查 .atlas、.skel、atlas 引用贴图。仅完整的本地资源才加入 `manifest.json`。已有资源会跳过，不需要重新下载。当前脚本不会删除此前已下载但不再展示的资源，避免破坏其他收藏。
+- `curated_prestige.json`：六款尊爵和真实互动映射
+- `curated_style.json`：12 套审过造型的风格精选与来源
+- `costume_catalog.json`：原始 200 条后台索引（不直接展示、不批量下载）
+- `scripts/install_prestige.py`：提供 `--role interaction`、`--audit-interactions`、`--collection interactive`、`--verify`
+- `data/`：游戏素材只存本地且 Git 忽略；不删除之前已下载的素材
 
-如果某些上游目录不存在、存在分层背景或 Spine 版本差异，会报告下载或播放失败；**目录选中不等于资源已安装或画面已验证**。
-
-## 管理与扩展
-
-- `curated_prestige.json`：六款尊爵配置，包含补全的互动资源目录。
-- `curated_style.json`：只有八套风格精选的 ID、偏好标签、筛选依据和参考链接。
-- `costume_catalog.json`：完整原始索引（不直接展示、不自动安装）。
-- `scripts/sync_costume_catalog.py`：更新后台原始资源索引，不会自动扩大精选名单。
-- `scripts/install_prestige.py`：保留原命令名以兼容旧操作，现默认安装 **全部精选**。支持 `--collection special`、`style`、`prestige`、`interactive`、`--only`、`--character`、`--offset`、`--limit`、`--list` 和 `--verify`。
-- `data/`：只在本地保存游戏素材，已在 Git 中忽略；游戏资源版权属于原权利人。
-
-以后如需增加新的御姐/黑丝/腿部重点套装，应先核对外观，再在 `curated_style.json` 添加稳定服装 ID 与外观依据，不能因为角色名字相同就把她的所有服装都混进来。
+只有本地的 skel、atlas 和全部所需贴图通过完整性检查后，才标记为已安装。原始美术与动画素材版权归游戏权利人所有。
