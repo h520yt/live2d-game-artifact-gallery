@@ -36,6 +36,11 @@ a{color:var(--gold)}
 .heading h2{margin:0;font-size:19px}
 .heading p{margin:4px 0 0;font-size:12px;color:var(--muted)}
 .actions,.roles,.motions{display:flex;gap:8px;flex-wrap:wrap}
+.render-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:4px 0}
+.render-tools label{font-size:12px;color:var(--muted)}
+.render-tools select{background:#2e253c;color:var(--text);border:1px solid #594a63;border-radius:7px;padding:7px}
+.render-tools #skin-choice{max-width:240px}
+.render-tools #alpha-mode{max-width:150px}
 button{cursor:pointer;border-radius:7px;background:#2e253c;color:var(--text);border:1px solid #594a63;padding:8px 12px}
 button:hover:not(:disabled),button.active{border-color:var(--gold);color:var(--gold)}
 button:disabled{opacity:.45;cursor:not-allowed}
@@ -70,6 +75,18 @@ code{font-family:Consolas,monospace;color:#eace9b}
    <button id="save" disabled>导出当前帧 PNG</button>
   </div>
   <div class="roles" id="roles"></div>
+  <div class="render-tools">
+    <label for="skin-choice">模型部件</label>
+    <select id="skin-choice" disabled title="选择 Spine Skin，用于恢复默认未显示的模型部件">
+      <option>等待加载</option>
+    </select>
+    <label for="alpha-mode">透明边缘</label>
+    <select id="alpha-mode" title="光边异常时可切换普通 Alpha 与预乘 Alpha">
+      <option value="pma">预乘 Alpha（默认）</option>
+      <option value="straight">普通 Alpha（对比）</option>
+    </select>
+    <button id="reset-camera" disabled title="使模型重新适合展示区域">重置视图</button>
+  </div>
   <div class="stage">
    <div id="spine-root"></div>
    <div class="empty" id="empty"><strong>Prestige Skin</strong><p>选择已安装皮肤，预览 Spine 4.1 动画</p></div>
@@ -91,6 +108,103 @@ let selected = null;
 let player = null;
 let currentRole = "";
 let loadId = 0;
+let alphaMode = localStorage.getItem("bd2.alphaMode") === "straight" ? "straight" : "pma";
+let chosenSkin = null;
+let activeSpine = null;
+$("alpha-mode").value = alphaMode;
+
+// 官方播放器按 premultipliedAlpha 绘制时，上传 WebGL 贴图也必须预乘。
+// 仅对当前展柜自己的 canvas 生效，避免影响页面上的其它 WebGL 程序。
+function patchTextureUpload() {
+  for (const api of [window.WebGLRenderingContext, window.WebGL2RenderingContext]) {
+    if (!api || !api.prototype || api.prototype.__bd2PmaTextureUpload) continue;
+    const proto = api.prototype;
+    const originalUpload = proto.texImage2D;
+    proto.texImage2D = function (...args) {
+      const canvas = this.canvas;
+      if (canvas && typeof canvas.closest === "function" &&
+          canvas.closest("#spine-root")) {
+        this.pixelStorei(this.UNPACK_PREMULTIPLY_ALPHA_WEBGL, alphaMode === "pma");
+      }
+      return originalUpload.apply(this, args);
+    };
+    proto.__bd2PmaTextureUpload = true;
+  }
+}
+patchTextureUpload();
+
+function isIdleAnimation(name) {
+  return /^(?:idle\d*|loop\d*|stand(?:by)?\d*|wait\d*)(?:[_-]|$)/i.test(name);
+}
+
+function getAnimationGroup(name) {
+  const match = /^mix(\d+)(?:[_-]|$)/i.exec(name);
+  return match ? Number(match[1]) : null;
+}
+
+function countSkinAttachments(skin) {
+  try {
+    return typeof skin.getAttachments === "function" ? skin.getAttachments().length : 0;
+  } catch (error) {
+    return 0;
+  }
+}
+
+function bestSkin(skins) {
+  const ranked = (skins || []).slice().sort((a, b) => {
+    const delta = countSkinAttachments(b) - countSkinAttachments(a);
+    if (delta) return delta;
+    return a.name === "default" ? -1 : b.name === "default" ? 1 : 0;
+  });
+  return ranked[0] || null;
+}
+
+function applySkin(pl, name) {
+  const skeleton = pl.skeleton;
+  if (!skeleton || !skeleton.data || !skeleton.data.skins) return false;
+  const skin = skeleton.data.skins.find(item => item.name === name);
+  if (!skin) return false;
+  skeleton.setSkin(skin);
+  skeleton.setSlotsToSetupPose();
+  skeleton.updateWorldTransform();
+  chosenSkin = name;
+  resetCamera(pl);
+  return true;
+}
+
+// 使用当前 Skin 的世界坐标边界计算取景，不采用会让人物缩成一点的默认动作边界。
+function resetCamera(pl) {
+  const skeleton = pl && pl.skeleton;
+  const camera = pl && pl.sceneRenderer && pl.sceneRenderer.camera;
+  const canvas = pl && pl.canvas;
+  if (!skeleton || !camera || !canvas) return false;
+  const offset = {x:0,y:0,set(x,y){this.x=x;this.y=y;}};
+  const size = {x:0,y:0,set(x,y){this.x=x;this.y=y;}};
+  try {
+    skeleton.updateWorldTransform();
+    skeleton.getBounds(offset, size);
+    if (!(size.x > 1 && size.y > 1 && size.x < 50000 && size.y < 50000)) return false;
+    const paddedWidth = size.x * 1.08;
+    const paddedHeight = size.y * 1.08;
+    camera.position.x = offset.x + size.x / 2;
+    camera.position.y = offset.y + size.y / 2;
+    camera.zoom = Math.max(paddedWidth / Math.max(canvas.width, 1),
+                           paddedHeight / Math.max(canvas.height, 1));
+    camera.update();
+    // 禁止根据 mix 动画重算镜头，互动轨道会在 idle 与 mix 之间来回切换。
+    if (pl.config) {
+      pl.config.viewport = {
+        x:offset.x, y:offset.y, width:size.x, height:size.y,
+        padLeft:"4%", padRight:"4%", padTop:"4%", padBottom:"4%",
+        transitionTime:0
+      };
+    }
+    return true;
+  } catch (error) {
+    console.warn("BD2 模型取景计算失败，使用自动取景", error);
+    return false;
+  }
+}
 
 function el(tag, cls, text) {
   const node = document.createElement(tag);
@@ -114,6 +228,11 @@ function disposePlayer() {
   $("spine-root").replaceChildren();
   $("save").disabled = true;
   $("motions").replaceChildren();
+  $("skin-choice").replaceChildren();
+  $("skin-choice").disabled = true;
+  $("reset-camera").disabled = true;
+  chosenSkin = null;
+  activeSpine = null;
 }
 
 function renderCards(filter) {
@@ -177,13 +296,27 @@ async function blobDataUrl(blob) {
 // 不循环的技能/触摸演出结束后自动回到待机，避免停在空白帧。
 function selectAnimation(pl, name) {
   const names = pl.animationState.data.skeletonData.animations.map(item => item.name);
-  const loop = /(^|[_ -])(idle|stand|wait|loop)([_ -]|$)/i.test(name);
-  const fallback = names.find(item => /(^|[_ -])idle([_ -]|$)/i.test(item))
-    || names.find(item => /(^|[_ -])(stand|wait|loop)([_ -]|$)/i.test(item));
+  const group = currentRole === "interaction" ? getAnimationGroup(name) : null;
+  const idle = group !== null && names.includes("idle" + group) ? "idle" + group : null;
+  const loop = isIdleAnimation(name);
+  const fallback = names.find(item => /^idle\d*$/i.test(item))
+    || names.find(item => /^(stand|wait|loop)/i.test(item));
   try {
-    pl.setAnimation(name, loop);
-    if (!loop && fallback && fallback !== name) {
-      pl.addAnimation(fallback, true, 0);
+    if (idle) {
+      // BD2 互动动作 mixN_* 必须叠在第 0 轨 idleN 之上。
+      // 否则互动的角色部件不会出现在只有轨道 1 的动作中。
+      const state = pl.animationState;
+      state.clearTracks();
+      if (pl.skeleton) pl.skeleton.setToSetupPose();
+      state.setAnimation(0, idle, true);
+      const entry = state.setAnimation(1, name, false);
+      if (entry) entry.mixDuration = 0;
+    } else {
+      pl.animationState.clearTracks();
+      pl.setAnimation(name, loop);
+      if (!loop && fallback && fallback !== name) {
+        pl.addAnimation(fallback, true, 0);
+      }
     }
     pl.play();
     for (const button of $("motions").children) {
@@ -237,16 +370,44 @@ async function loadRole(role) {
       skelUrl:key,
       rawDataURIs:{[key]:uri},
       atlasUrl:atlasUrl,
-      premultipliedAlpha:true,
+      // 预乘混合须与像素上传 UNPACK_PREMULTIPLY_ALPHA_WEBGL 保持一致。
+      premultipliedAlpha:alphaMode === "pma",
       alpha:true,
       backgroundColor:"#00000000",
       preserveDrawingBuffer:true,
       showControls:false,
-      defaultMix:0.18,
+      defaultMix:role === "interaction" ? 0 : 0.18,
+      // 互动场景由多轨动作组成，避免自动摄像机跟着单轨的小部件漂移。
+      viewport:{x:0,y:0,width:1,height:1,padLeft:0,padRight:0,padTop:0,padBottom:0,transitionTime:0},
       success:pl => {
         if(ownLoad !== loadId) return;
         $("empty").hidden = true;
         $("save").disabled = false;
+        activeSpine = pl;
+        const skinOptions = pl.skeleton && pl.skeleton.data ? pl.skeleton.data.skins || [] : [];
+        const orderedSkins = skinOptions.slice().sort((a,b) => countSkinAttachments(b)-countSkinAttachments(a));
+        const select = $("skin-choice");
+        select.replaceChildren();
+        for(const skin of orderedSkins) {
+          const option = document.createElement("option");
+          option.value = skin.name;
+          option.textContent = skin.name + " (" + countSkinAttachments(skin) + " 部件)";
+          select.appendChild(option);
+        }
+        const best = bestSkin(skinOptions);
+        select.disabled = !best;
+        if(best) {
+          select.value = best.name;
+          applySkin(pl, best.name);
+          select.onchange = () => {
+            if(ownLoad !== loadId) return;
+            applySkin(pl, select.value);
+            const first = $("motions").querySelector("button.active");
+            if(first) selectAnimation(pl, first.textContent);
+          };
+        }
+        $("reset-camera").disabled = false;
+        $("reset-camera").onclick = () => resetCamera(pl);
         const anims = pl.animationState.data.skeletonData.animations.map(a => a.name);
         $("motions").replaceChildren();
         for(const name of anims) {
@@ -254,10 +415,13 @@ async function loadRole(role) {
           button.onclick = () => selectAnimation(pl,name);
           $("motions").appendChild(button);
         }
-        const first = anims.find(name => /idle|stand|wait|loop/i.test(name)) || anims[0];
+        const first = anims.find(name => /^idle1$/i.test(name))
+          || anims.find(name => isIdleAnimation(name))
+          || anims[0];
         const started = first ? selectAnimation(pl, first) : false;
         if (started) {
-          setStatus(ROLE_NAME[role] + " · " + anims.length + " 个可选动作 · 正在播放 · 拖拽平移 / 滚轮缩放");
+          setStatus(ROLE_NAME[role] + " · " + anims.length + " 个动作 · Skin: " +
+            (chosenSkin || "默认") + " · Alpha: " + alphaMode + " · 正在播放");
         } else {
           $("empty").hidden = false;
           $("empty").textContent = "骨骼已读取，但动作播放没有成功。请查看下方错误或浏览器控制台。";
@@ -280,6 +444,12 @@ async function loadRole(role) {
     setStatus(String(error));
   }
 }
+
+$("alpha-mode").onchange = () => {
+  alphaMode = $("alpha-mode").value;
+  localStorage.setItem("bd2.alphaMode", alphaMode);
+  if (selected && currentRole) loadRole(currentRole);
+};
 
 $("save").onclick = () => {
   if(!selected || !player) return;
