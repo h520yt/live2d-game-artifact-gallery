@@ -355,7 +355,7 @@ def main(argv=None):
     parser.add_argument("--collection",
                         choices=("interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
                         default="interaction-batch",
-                        help="默认只补本批8套独立互动；interactive=全部互动；all=全部精选"))
+                        help="默认只补本批8套独立互动；interactive=全部互动；all=全部精选")
     parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")
     parser.add_argument("--limit", type=int, help="本次最多处理的套数，建议批量安装时设置")
     parser.add_argument("--offset", type=int, default=0,
