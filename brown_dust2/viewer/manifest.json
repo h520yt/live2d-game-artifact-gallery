@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T14:04:51.396791+00:00",
+  "generated_at": "2026-11-16T14:26:16.062074+00:00",
   "installed": [
     {
       "id": "justia-hot-summer-dream",
@@ -515,6 +515,27 @@
       }
     },
     {
+      "id": "costume-061302",
+      "roles": {
+        "interaction": {
+          "skel": "illust_dating20.skel",
+          "atlas": "illust_dating20.atlas",
+          "pages": [
+            "illust_dating20.png",
+            "illust_dating20_2.png",
+            "illust_dating20_3.png",
+            "illust_dating20_4.png",
+            "illust_dating20_5.png",
+            "illust_dating20_6.png",
+            "illust_dating20_7.png",
+            "illust_dating20_8.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-061302/interaction"
+        }
+      }
+    },
+    {
       "id": "costume-000706",
       "roles": {
         "character": {
@@ -701,6 +722,68 @@
           ],
           "version": "4.1",
           "dir": "../data/costume-003303/interaction"
+        }
+      }
+    },
+    {
+      "id": "costume-003604",
+      "roles": {
+        "interaction": {
+          "skel": "illust_dating16.skel",
+          "atlas": "illust_dating16.atlas",
+          "pages": [
+            "illust_dating16.png",
+            "illust_dating16_2.png",
+            "illust_dating16_3.png",
+            "illust_dating16_4.png",
+            "illust_dating16_5.png",
+            "illust_dating16_6.png",
+            "illust_dating16_7.png",
+            "illust_dating16_8.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003604/interaction"
+        }
+      }
+    },
+    {
+      "id": "costume-001006",
+      "roles": {
+        "interaction": {
+          "skel": "illust_dating8.skel",
+          "atlas": "illust_dating8.atlas",
+          "pages": [
+            "illust_dating8.png",
+            "illust_dating8_2.png",
+            "illust_dating8_3.png",
+            "illust_dating8_4.png",
+            "illust_dating8_5.png",
+            "illust_dating8_6.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-001006/interaction"
+        }
+      }
+    },
+    {
+      "id": "costume-067603",
+      "roles": {
+        "interaction": {
+          "skel": "illust_dating6.skel",
+          "atlas": "illust_dating6.atlas",
+          "pages": [
+            "illust_dating6.png",
+            "illust_dating6_2.png",
+            "illust_dating6_3.png",
+            "illust_dating6_4.png",
+            "illust_dating6_5.png",
+            "illust_dating6_6.png",
+            "illust_dating6_7.png",
+            "illust_dating6_8.png",
+            "illust_dating6_9.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067603/interaction"
         }
       }
     }
