@@ -113,6 +113,24 @@ python -m http.server 8000
 
 ---
 
+## 碧蓝航线第四批：12 款 Live2D 定向安装
+
+第四批包含腓特烈大帝、金鹿号、斯特拉斯堡、天狼星等 **12 款皮肤、13 个模型资源包**（斯特拉斯堡额外含 `_hx` 模型变体），并安装 50 个立绘/背景分层包，按 hash 清单估算约 289.5 MiB。
+
+```powershell
+git pull origin main
+python azur_lane/scripts/install_batch4.py --plan
+python azur_lane/scripts/install_batch4.py
+python -m http.server 8000
+```
+
+第三批和第二批的入口不变。第四批独立预览：<http://127.0.0.1:8000/azur_lane/viewer/batch4.html>；完成情况：`azur_lane/data/batch4-install-report.json`。
+已缓存文件按 MD5 校验后跳过；缺失任何预期模型变体会标记 `incomplete` 并返回失败。文件完整不代表双形态/特效完整复现。
+
+完整名单、分层资源及测试说明见 [第四批安装文档](azur_lane/docs/2026-11-16-第四批安装说明.md)。
+
+---
+
 ## 安装依赖（需要更新资源时）
 
 ```bash

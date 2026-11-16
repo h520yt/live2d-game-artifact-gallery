@@ -44,3 +44,5 @@ jobs:
         run: node azur_lane/tests/test_scene_gallery.cjs
       - name: Third batch dry-run
         run: python azur_lane/scripts/install_batch3.py --plan
+      - name: Fourth batch dry-run
+        run: python azur_lane/scripts/install_batch4.py --plan
