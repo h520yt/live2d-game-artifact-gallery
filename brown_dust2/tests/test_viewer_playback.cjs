@@ -123,10 +123,41 @@ test("不覆盖 SpinePlayer viewport.animations 导致 <empty> 过渡崩溃",()=
   assert.match(page,/function resetCamera\(pl\)/);
 });
 
-test("模型摄像机支持按世界坐标重置",()=>{
+test("相机按骨骼边界取景，并在每一帧维持用户缩放",()=>{
   assert.match(page,/skeleton\.getBounds\(offset, size\)/);
-  assert.match(page,/camera\.zoom = Math\.max\(/);
+  assert.match(page,/baseZoom:Math\.max\(/);
+  assert.match(page,/camera\.zoom = cameraView\.baseZoom \/ cameraView\.factor/);
+  assert.match(page,/update:\(\) => \{/);
   assert.match(page,/id="reset-camera"/);
+});
+
+test("互动动画自动识别实际可见内容并忽略黑色像素",()=>{
+  const section = extract("function findContentBounds(width, height, pixels) {",
+                          "\nfunction sampleVisibleContent(canvas) {");
+  const detect = vm.runInNewContext(section + "\nfindContentBounds;");
+  const w = 64, h = 40;
+  const rgba = new Uint8ClampedArray(w*h*4);
+  for(let y=0;y<h;y++)for(let x=0;x<w;x++){
+    const i=(y*w+x)*4;
+    rgba[i+3]=255; // 黑色帧全部不计入边界
+    if(x>=22&&x<42&&y>=10&&y<27){
+      rgba[i]=130; rgba[i+1]=170; rgba[i+2]=210;
+    }
+  }
+  const box=detect(w,h,rgba);
+  assert.deepEqual({x:box.left,y:box.top,w:box.width,h:box.height},
+                   {x:22,y:10,w:20,h:17});
+  assert.equal(detect(w,h,new Uint8ClampedArray(w*h*4)),null);
+});
+
+test("智能取景只对互动动画生效，支持手动放大和重试",()=>{
+  assert.match(page,/currentRole !== "interaction"/);
+  assert.match(page,/0\.82\/content\.width/);
+  assert.match(page,/0\.78\/content\.height/);
+  assert.match(page,/id="auto-focus"/);
+  assert.match(page,/id="zoom"/);
+  assert.match(page,/scheduleAutoFocus\(pl\)/);
+  assert.match(page,/setZoomFactor\(pl,/);
 });
 
 test("索引与本地安装状态仍分离",()=>{

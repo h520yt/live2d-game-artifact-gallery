@@ -41,6 +41,10 @@ a{color:var(--gold)}
 .render-tools select{background:#2e253c;color:var(--text);border:1px solid #594a63;border-radius:7px;padding:7px}
 .render-tools #skin-choice{max-width:240px}
 .render-tools #alpha-mode{max-width:150px}
+.render-tools #zoom{accent-color:var(--gold);width:130px;vertical-align:middle}
+.render-tools #zoom-label{font-size:12px;color:var(--gold);min-width:35px}
+.render-tools #auto-focus{color:var(--gold)}
+#spine-root canvas{touch-action:none}
 button{cursor:pointer;border-radius:7px;background:#2e253c;color:var(--text);border:1px solid #594a63;padding:8px 12px}
 button:hover:not(:disabled),button.active{border-color:var(--gold);color:var(--gold)}
 button:disabled{opacity:.45;cursor:not-allowed}
@@ -85,7 +89,11 @@ code{font-family:Consolas,monospace;color:#eace9b}
       <option value="pma">预乘 Alpha（默认）</option>
       <option value="straight">普通 Alpha（对比）</option>
     </select>
-    <button id="reset-camera" disabled title="使模型重新适合展示区域">重置视图</button>
+    <button id="auto-focus" disabled title="识别实际可见内容，忽略大片黑色区域">智能铺满</button>
+    <label for="zoom">缩放</label>
+    <input id="zoom" type="range" min="100" max="800" step="10" value="100" disabled>
+    <span id="zoom-label">1.0×</span>
+    <button id="reset-camera" disabled title="重新分析当前动画取景">重置视图</button>
   </div>
   <div class="stage">
    <div id="spine-root"></div>
@@ -112,6 +120,140 @@ let alphaMode = localStorage.getItem("bd2.alphaMode") === "straight" ? "straight
 let chosenSkin = null;
 let activeSpine = null;
 $("alpha-mode").value = alphaMode;
+
+
+// Spine 背景/遮罩会撑大骨骼边界，以下只分析画布上的真实彩色内容。
+// 对有大量黑边的互动动画智能放大；其他类别仍保留原来的取景。
+let cameraView = null;
+let focusTimer = null;
+let focusSerial = 0;
+
+function clearFocus() {
+  focusSerial++;
+  if (focusTimer !== null) clearTimeout(focusTimer);
+  focusTimer = null;
+  cameraView = null;
+  $("zoom").disabled = true;
+  $("auto-focus").disabled = true;
+  $("zoom").value = 100;
+  $("zoom-label").textContent = "1.0×";
+}
+
+function applyCameraView(pl) {
+  if (pl !== activeSpine || !cameraView || cameraView.token !== loadId) return false;
+  const camera = pl.sceneRenderer && pl.sceneRenderer.camera;
+  if (!camera) return false;
+  camera.position.x = cameraView.x;
+  camera.position.y = cameraView.y;
+  camera.zoom = cameraView.baseZoom / cameraView.factor;
+  camera.update();
+  return true;
+}
+
+function setZoomFactor(pl, factor) {
+  if (!cameraView || !Number.isFinite(factor)) return false;
+  cameraView.factor = Math.min(8, Math.max(1, factor));
+  $("zoom").value = Math.round(cameraView.factor * 10) * 10;
+  $("zoom-label").textContent = cameraView.factor.toFixed(1) + "×";
+  return applyCameraView(pl);
+}
+
+// 小尺寸像素采样，忽略纯黑/近黑背景和透明区域。
+function findContentBounds(width, height, pixels) {
+  let minX = width, minY = height, maxX = -1, maxY = -1, count = 0;
+  if (!pixels || pixels.length < width * height * 4) return null;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      const i = 4 * (y * width + x);
+      const r = pixels[i], g = pixels[i + 1], b = pixels[i + 2];
+      if (pixels[i + 3] < 50 || Math.max(r,g,b) < 58 || r+g+b < 118) continue;
+      count++;
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+  }
+  if (count < Math.max(24, width * height / 1200)) return null;
+  return {left:minX, top:minY, width:maxX-minX+1, height:maxY-minY+1,
+    centerX:(minX+maxX+1)/2, centerY:(minY+maxY+1)/2};
+}
+
+function sampleVisibleContent(canvas) {
+  if (!canvas || canvas.width < 2 || canvas.height < 2) return null;
+  const width = Math.min(320, canvas.width);
+  const height = Math.max(1, Math.round(canvas.height * width / canvas.width));
+  const buffer = document.createElement("canvas");
+  buffer.width = width; buffer.height = height;
+  const ctx = buffer.getContext("2d", {willReadFrequently:true});
+  if (!ctx) return null;
+  ctx.drawImage(canvas, 0, 0, width, height);
+  const rect = findContentBounds(width, height, ctx.getImageData(0,0,width,height).data);
+  if (!rect) return null;
+  return {x:rect.centerX/width, y:rect.centerY/height,
+    width:rect.width/width, height:rect.height/height};
+}
+
+function autoFocusInteraction(pl, serial=focusSerial) {
+  if (pl !== activeSpine || currentRole !== "interaction" ||
+      !cameraView || serial !== focusSerial) return false;
+  try {
+    const content = sampleVisibleContent(pl.canvas);
+    if (!content) return false;
+    const ratio = Math.min(7, 0.82/content.width, 0.78/content.height);
+    if (!Number.isFinite(ratio) || ratio < 1.15) return false;
+    const unitsPerPixel = cameraView.baseZoom / cameraView.factor;
+    cameraView.x += (content.x - 0.5) * pl.canvas.width * unitsPerPixel;
+    cameraView.y -= (content.y - 0.5) * pl.canvas.height * unitsPerPixel;
+    cameraView.baseZoom /= ratio;
+    cameraView.factor = 1;
+    setZoomFactor(pl, 1);
+    setStatus("互动动画已智能放大 " + ratio.toFixed(1) + " 倍 · 可通过缩放微调");
+    return true;
+  } catch (error) {
+    console.warn("BD2 自动取景异常", error);
+    return false;
+  }
+}
+
+function scheduleAutoFocus(pl, delay=300) {
+  if (currentRole !== "interaction" || pl !== activeSpine) return;
+  if (focusTimer !== null) clearTimeout(focusTimer);
+  const serial = ++focusSerial;
+  focusTimer = setTimeout(() => {
+    focusTimer = null;
+    if (serial === focusSerial) autoFocusInteraction(pl, serial);
+  }, delay);
+}
+
+// 与播放器帧循环中的相机更新同步，避免刚放大下一帧又被自动视口覆盖。
+function bindCameraControls(pl) {
+  const canvas = pl.canvas;
+  if (!canvas) return;
+  let last = null;
+  canvas.addEventListener("pointerdown", event => {
+    if (event.button !== 0 || !cameraView) return;
+    last = {id:event.pointerId,x:event.clientX,y:event.clientY};
+    canvas.setPointerCapture?.(event.pointerId);
+  });
+  canvas.addEventListener("pointermove", event => {
+    if (!last || event.pointerId !== last.id || !cameraView) return;
+    const rect = canvas.getBoundingClientRect();
+    const zoom = cameraView.baseZoom / cameraView.factor;
+    cameraView.x -= (event.clientX - last.x) * canvas.width / Math.max(rect.width,1) * zoom;
+    cameraView.y += (event.clientY - last.y) * canvas.height / Math.max(rect.height,1) * zoom;
+    last.x = event.clientX; last.y = event.clientY;
+    applyCameraView(pl);
+  });
+  const end = () => {last=null;};
+  canvas.addEventListener("pointerup",end);
+  canvas.addEventListener("pointercancel",end);
+  canvas.addEventListener("wheel",event => {
+    if (!cameraView) return;
+    event.preventDefault();
+    setZoomFactor(pl, cameraView.factor * (event.deltaY < 0 ? 1.1 : 1/1.1));
+  },{passive:false});
+}
 
 // 官方播放器按 premultipliedAlpha 绘制时，上传 WebGL 贴图也必须预乘。
 // 仅对当前展柜自己的 canvas 生效，避免影响页面上的其它 WebGL 程序。
@@ -186,11 +328,17 @@ function resetCamera(pl) {
     if (!(size.x > 1 && size.y > 1 && size.x < 50000 && size.y < 50000)) return false;
     const paddedWidth = size.x * 1.08;
     const paddedHeight = size.y * 1.08;
-    camera.position.x = offset.x + size.x / 2;
-    camera.position.y = offset.y + size.y / 2;
-    camera.zoom = Math.max(paddedWidth / Math.max(canvas.width, 1),
-                           paddedHeight / Math.max(canvas.height, 1));
-    camera.update();
+    cameraView = {
+      x:offset.x + size.x / 2,
+      y:offset.y + size.y / 2,
+      baseZoom:Math.max(paddedWidth / Math.max(canvas.width,1),
+                         paddedHeight / Math.max(canvas.height,1)),
+      factor:1,
+      token:loadId
+    };
+    $("zoom").disabled = false;
+    $("auto-focus").disabled = currentRole !== "interaction";
+    setZoomFactor(pl, 1);
     // 保留 SpinePlayer 原生 viewport 配置，不覆盖内部 animations 字典。
     // 动画的 <empty> 过渡可能在下一帧才调用 setViewport()。
     return true;
@@ -215,6 +363,7 @@ function setStatus(text) {$("status").textContent = text;}
 
 function disposePlayer() {
   loadId += 1;
+  clearFocus();
   if (player) {
     try {player.dispose();} catch(error) {console.warn(error);}
     player = null;
@@ -374,11 +523,15 @@ async function loadRole(role) {
       // 不注入不完整的 viewport 配置；SpinePlayer 会为动画过渡生成 <empty>，
       // 缺少 viewport.animations 字典会导致渲染时读取 undefined['<empty>']。
       // 取景由 resetCamera() 使用 Spine 相机单独控制。
+      update:() => {
+        if (activeSpine) applyCameraView(activeSpine);
+      },
       success:pl => {
         if(ownLoad !== loadId) return;
         $("empty").hidden = true;
         $("save").disabled = false;
         activeSpine = pl;
+        bindCameraControls(pl);
         const skinOptions = pl.skeleton && pl.skeleton.data ? pl.skeleton.data.skins || [] : [];
         const orderedSkins = skinOptions.slice().sort((a,b) => countSkinAttachments(b)-countSkinAttachments(a));
         const select = $("skin-choice");
@@ -399,10 +552,19 @@ async function loadRole(role) {
             applySkin(pl, select.value);
             const first = $("motions").querySelector("button.active");
             if(first) selectAnimation(pl, first.textContent);
+          scheduleAutoFocus(pl, 180);
           };
         }
         $("reset-camera").disabled = false;
-        $("reset-camera").onclick = () => resetCamera(pl);
+        $("reset-camera").onclick = () => {
+          resetCamera(pl);
+          scheduleAutoFocus(pl, 160);
+        };
+        $("auto-focus").onclick = () => {
+          resetCamera(pl);
+          scheduleAutoFocus(pl, 160);
+        };
+        $("zoom").oninput = () => setZoomFactor(pl, Number($("zoom").value)/100);
         const anims = pl.animationState.data.skeletonData.animations.map(a => a.name);
         $("motions").replaceChildren();
         for(const name of anims) {
@@ -415,6 +577,9 @@ async function loadRole(role) {
           || anims[0];
         const started = first ? selectAnimation(pl, first) : false;
         if (started) {
+          // 先应用 idle / mix，再自动检测实际画面；不修改 SpinePlayer 内部 viewport。
+          resetCamera(pl);
+          scheduleAutoFocus(pl);
           setStatus(ROLE_NAME[role] + " · " + anims.length + " 个动作 · Skin: " +
             (chosenSkin || "默认") + " · Alpha: " + alphaMode + " · 正在播放");
         } else {
