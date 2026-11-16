@@ -161,6 +161,33 @@ def load_style_tags():
     }
 
 
+def load_curated_batches():
+    """建立角色 ID 到收藏批次的映射；不创建不存在的角色资源。"""
+    config_path = os.path.join(C.BASE, "curated_batches.json")
+    if not os.path.isfile(config_path):
+        return {}
+
+    try:
+        with open(config_path, encoding="utf-8") as file:
+            config = json.load(file)
+    except (ValueError, OSError) as err:
+        print(f"收藏批次读取失败: {err}")
+        return {}
+
+    mapping = {}
+    for batch in config.get("batches", []):
+        key = str(batch.get("key", ""))
+        if not key:
+            continue
+        for item in batch.get("items", []):
+            cid = item.get("id") if isinstance(item, dict) else None
+            if cid:
+                batches = mapping.setdefault(cid, [])
+                if key not in batches:
+                    batches.append(key)
+    return mapping
+
+
 def categorize(cid):
     """给条目打分类标签，用于前端导航/筛选。
 
@@ -242,6 +269,7 @@ def cover_url(cid, pose_info):
 def main():
     names = load_name_map()
     style_tags = load_style_tags()
+    curated_batches = load_curated_batches()
     chars = []
     if not os.path.isdir(C.DATA_DIR):
         print("无 data 目录")
@@ -274,6 +302,7 @@ def main():
             "dir": f"../data/{cid}",
             "category": categorize(cid),
             "tags": style_tags.get(cid, []),
+            "batches": curated_batches.get(cid, []),
             "poses": poses,
             "version": fb["version"],
             "cover": cover_url(cid, fb),
