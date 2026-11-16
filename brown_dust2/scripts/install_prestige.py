@@ -8,7 +8,7 @@ import sys
 import tempfile
 import time
 from datetime import datetime, timezone
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode, urlparse
 from urllib.request import Request, urlopen
@@ -51,13 +51,49 @@ def request(url, binary=False):
     raise RuntimeError(f"{url}: {last_error}")
 
 
-def remote_files(folder, root=None):
-    """递归取得上游目录文件，包含 cutscene/bg，且不能越过指定根目录。"""
+def validate_folder(folder):
+    """只允许首批配置中的三类模型根目录，不接受任意路径或路径穿越。"""
+    allowed = (
+        r"spine/char/char[0-9]+",
+        r"spine/cutscenes/cutscene_char[0-9]+",
+        r"spine/illust/illust_dating/illust_dating[0-9]+",
+    )
+    if not any(re.fullmatch(pattern, folder) for pattern in allowed):
+        raise ValueError("目录不在白名单: " + folder)
+
+
+def raw_files(folder):
+    """不调用 GitHub API：直接读取 atlas，再按贴图页名称组装下载清单。"""
+    validate_folder(folder)
+    stem = folder.rsplit("/", 1)[-1]
+    atlas_name = stem + ".atlas"
+    atlas_path = folder + "/" + atlas_name
+    atlas_url = "https://raw.githubusercontent.com/" + REPO + "/" + BRANCH + "/" + atlas_path
+    atlas_data = request(atlas_url, binary=True)
+    if not atlas_data:
+        raise RuntimeError("上游 atlas 文件为空: " + atlas_path)
+    pages = atlas_pages(atlas_data.decode("utf-8-sig"))
+    if not pages:
+        raise RuntimeError("无法从 atlas 中获取贴图页: " + atlas_path)
+
+    filenames = [stem + ".skel", atlas_name, *pages]
+    records = []
+    for filename in dict.fromkeys(filenames):
+        path = folder + "/" + filename
+        url = "https://raw.githubusercontent.com/" + REPO + "/" + BRANCH + "/" + quote(path, safe="/")
+        record = {"path": path, "size": None, "url": url}
+        if filename == atlas_name:
+            record["payload"] = atlas_data
+            record["size"] = len(atlas_data)
+        records.append(record)
+    return records
+
+
+def api_files(folder, root=None):
+    """可选 API 模式：需要 GitHub Token，可额外取得子目录中的附加文件。"""
     root = folder if root is None else root
-    if not root.startswith(("spine/char/", "spine/cutscenes/",
-                            "spine/illust/illust_dating/")):
-        raise ValueError("目录不在白名单: " + root)
-    if folder != root and not folder.startswith(root.rstrip("/") + "/"):
+    validate_folder(root)
+    if folder != root and not folder.startswith(root + "/"):
         raise ValueError("超出下载目录: " + folder)
     url = ("https://api.github.com/repos/" + REPO +
            "/contents/" + quote(folder, safe="/") +
@@ -68,10 +104,10 @@ def remote_files(folder, root=None):
     found = []
     for item in result:
         path = item.get("path", "")
-        if not path.startswith(folder.rstrip("/") + "/"):
+        if not path.startswith(folder + "/"):
             continue
         if item.get("type") == "dir":
-            found.extend(remote_files(path, root))
+            found.extend(api_files(path, root))
         elif item.get("type") == "file":
             if Path(path).suffix.lower() not in ALLOWED_EXT:
                 continue
@@ -83,13 +119,24 @@ def remote_files(folder, root=None):
     return found
 
 
+def remote_files(folder, source="raw"):
+    """默认 raw 模式不占用 API 配额，需附加目录时可显式切换 API 模式。"""
+    validate_folder(folder)
+    if source == "raw":
+        return raw_files(folder)
+    if source == "api":
+        return api_files(folder)
+    raise ValueError("未知资源来源: " + str(source))
+
+
 def atlas_pages(text):
     """从 atlas 中读取 PNG 等贴图页面（区域行不会以图片扩展名结尾）。"""
     pages = []
     for line in text.splitlines():
         name = line.strip().lstrip("\ufeff")
         if name.lower().endswith((".png", ".jpg", ".jpeg", ".webp")):
-            if name != Path(name).name or name in (".", ".."):
+            if (name != Path(name).name or name in (".", "..") or
+                    "/" in name or "\\" in name or ":" in name):
                 raise ValueError("不安全的图片页名称: " + name)
             if name not in pages:
                 pages.append(name)
@@ -124,25 +171,30 @@ def inspect_model(folder):
     return None
 
 
-def target_path(skin_id, role, remote_path):
-    """上游文件名映射到隔离的本地目录。"""
+def target_path(skin_id, role, remote_path, source_folder=None):
+    """保留上游相对子目录，拒绝越权路径和跨角色覆盖。"""
     if role not in VALID_ROLE:
         raise ValueError("非法资源类型: " + role)
-    filename = Path(remote_path).name
-    if filename in ("", ".", ".."):
-        raise ValueError("非法文件名")
-    return DATA / skin_id / role / filename
+    source_folder = source_folder or str(PurePosixPath(remote_path).parent)
+    validate_folder(source_folder)
+    relative = PurePosixPath(remote_path).relative_to(PurePosixPath(source_folder))
+    if not relative.parts or any(part in ("", ".", "..") for part in relative.parts):
+        raise ValueError("非法文件路径: " + remote_path)
+    return DATA / skin_id / role / Path(*relative.parts)
 
 
 def download_one(record, dest):
-    """相同大小文件直接缓存命中；临时文件写入后原子替换。"""
-    expected = record["size"]
-    if expected > 0 and dest.is_file() and dest.stat().st_size == expected:
-        return "cached"
+    """下载原子落盘，raw 模式不依赖上游 Content-Length 或 GitHub API。"""
+    expected = record.get("size")
+    if dest.is_file() and dest.stat().st_size > 0:
+        if expected is None or dest.stat().st_size == expected:
+            return "cached"
     dest.parent.mkdir(parents=True, exist_ok=True)
-    payload = request(record["url"], binary=True)
-    if expected <= 0 or len(payload) != expected:
-        raise RuntimeError("资源大小不匹配: " + record["path"])
+    payload = record.get("payload")
+    if payload is None:
+        payload = request(record["url"], binary=True)
+    if not payload or (expected is not None and len(payload) != expected):
+        raise RuntimeError("资源内容为空或大小不匹配: " + record["path"])
     tmp_name = None
     try:
         with tempfile.NamedTemporaryFile(dir=dest.parent, delete=False) as handle:
@@ -180,7 +232,9 @@ def write_json(path, obj):
 def main(argv=None):
     skins = json.loads(CATALOG.read_text(encoding="utf-8"))["skins"]
     parser = argparse.ArgumentParser(description="BD2 Prestige Skin 六款首批本地安装")
-    parser.add_argument("--plan", action="store_true", help="列举文件与大小，不下载")
+    parser.add_argument("--plan", action="store_true", help="列举资源文件，不下载图片或骨骼")
+    parser.add_argument("--source", choices=("raw", "api"), default="raw",
+                        help="默认 raw 不占用 GitHub API 配额；api 模式需有效 Token")
     parser.add_argument("--verify", action="store_true", help="离线核验并重建清单")
     parser.add_argument("--only", choices=[skin["id"] for skin in skins],
                         help="仅安装指定皮肤")
@@ -200,26 +254,31 @@ def main(argv=None):
         print(f"\n[{skin['id']}] {skin['character']} · {skin['skin']}")
         for role, folder in skin["roles"].items():
             try:
-                files = remote_files(folder)
+                files = remote_files(folder, args.source)
                 if not files or not any(record["path"].endswith(".skel") for record in files):
                     raise RuntimeError("上游未找到可用的 Spine 骨骼")
-                total = sum(record["size"] for record in files)
-                print(f"  {role}: {len(files)} 个文件, {total / 1024 / 1024:.1f} MiB")
+                known_bytes = sum(record["size"] or 0 for record in files)
+                size_complete = all(record["size"] is not None for record in files)
+                size_note = f"{known_bytes / 1024 / 1024:.1f} MiB" if size_complete else "大小未预估（raw 模式）"
+                print(f"  {role}: {len(files)} 个文件, {size_note}")
                 if not args.plan:
                     for record in files:
-                        dest = target_path(skin["id"], role, record["path"])
+                        dest = target_path(skin["id"], role, record["path"], folder)
                         print("    ", download_one(record, dest), dest.name)
                     if not inspect_model(DATA / skin["id"] / role):
                         raise RuntimeError("atlas 引用贴图不完整，模型未通过核验")
                 summary.append({"id": skin["id"], "role": role,
-                                "files": len(files), "bytes": total,
+                                "files": len(files), "bytes": known_bytes if size_complete else None,
                                 "status": "planned" if args.plan else "installed"})
             except Exception as err:
                 print("  [失败]", role, err, file=sys.stderr)
                 failures.append({"id": skin["id"], "role": role, "error": str(err)})
     if args.plan:
-        print("\n预计总量: %.1f MiB" % (
-            sum(item["bytes"] for item in summary) / 1024 / 1024))
+        if all(item["bytes"] is not None for item in summary):
+            print("\n预计总量: %.1f MiB" % (
+                sum(item["bytes"] for item in summary) / 1024 / 1024))
+        else:
+            print("\nraw 模式不依赖 API 文件大小信息；实际下载量请以安装结果为准。")
     else:
         write_json(MANIFEST, build_manifest(skins))
         write_json(REPORT, {"summary": summary, "failures": failures})
