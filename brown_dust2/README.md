@@ -44,3 +44,8 @@
 4. 点击「重置视图」。如果图片仍存在黑色遮挡或显示不全，请收集 F12 控制台报错和对应 Skin 名称；这时需要进一步核验图集图片本身、插槽、或更复杂的动画轨道组合。
 
 > 目前已覆盖 WebGL 混合、Skin 选择、双轨播放与摄像机配置的代码及自动测试；由于游戏原始素材不存储在 GitHub，此次提交不能替代你的本机真实模型视觉验收。若源图集本身异常，单纯切换 Alpha 无法完全修复。
+
+### 2026-11-16：修复 `Unable to render skeleton` / `<empty>`
+
+若上版更新后出现黑屏，并报 `Cannot read properties of undefined (reading '<empty>')`，原因是新添加的 `viewport` 配置缺失动画映射。现在撤销了初始化时的 1×1 占位 `viewport` 和重置镜头时对 `player.config.viewport` 的覆盖，继续使用 SpinePlayer 原生动画视口与独立相机取景；不需重新下载资源。
+

@@ -115,6 +115,14 @@ test("预乘 Alpha 的纹理上传和播放器混合开关联动",()=>{
   assert.match(page,/id="alpha-mode"/);
 });
 
+test("不覆盖 SpinePlayer viewport.animations 导致 <empty> 过渡崩溃",()=>{
+  // SpinePlayer 在空动画混合阶段会查询 viewport.animations['<empty>']。
+  // 未配置 viewport 比注入缺少 animations 字典的 1x1 viewport 更安全。
+  assert.doesNotMatch(page,/\bviewport\s*:\s*\{\s*x\s*:\s*0\s*,\s*y\s*:\s*0\s*,\s*width\s*:\s*1/);
+  assert.doesNotMatch(page,/pl\.config\.viewport\s*=\s*\{/);
+  assert.match(page,/function resetCamera\(pl\)/);
+});
+
 test("模型摄像机支持按世界坐标重置",()=>{
   assert.match(page,/skeleton\.getBounds\(offset, size\)/);
   assert.match(page,/camera\.zoom = Math\.max\(/);

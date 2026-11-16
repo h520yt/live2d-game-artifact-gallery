@@ -191,14 +191,8 @@ function resetCamera(pl) {
     camera.zoom = Math.max(paddedWidth / Math.max(canvas.width, 1),
                            paddedHeight / Math.max(canvas.height, 1));
     camera.update();
-    // 禁止根据 mix 动画重算镜头，互动轨道会在 idle 与 mix 之间来回切换。
-    if (pl.config) {
-      pl.config.viewport = {
-        x:offset.x, y:offset.y, width:size.x, height:size.y,
-        padLeft:"4%", padRight:"4%", padTop:"4%", padBottom:"4%",
-        transitionTime:0
-      };
-    }
+    // 保留 SpinePlayer 原生 viewport 配置，不覆盖内部 animations 字典。
+    // 动画的 <empty> 过渡可能在下一帧才调用 setViewport()。
     return true;
   } catch (error) {
     console.warn("BD2 模型取景计算失败，使用自动取景", error);
@@ -377,8 +371,9 @@ async function loadRole(role) {
       preserveDrawingBuffer:true,
       showControls:false,
       defaultMix:role === "interaction" ? 0 : 0.18,
-      // 互动场景由多轨动作组成，避免自动摄像机跟着单轨的小部件漂移。
-      viewport:{x:0,y:0,width:1,height:1,padLeft:0,padRight:0,padTop:0,padBottom:0,transitionTime:0},
+      // 不注入不完整的 viewport 配置；SpinePlayer 会为动画过渡生成 <empty>，
+      // 缺少 viewport.animations 字典会导致渲染时读取 undefined['<empty>']。
+      // 取景由 resetCamera() 使用 Spine 相机单独控制。
       success:pl => {
         if(ownLoad !== loadId) return;
         $("empty").hidden = true;
