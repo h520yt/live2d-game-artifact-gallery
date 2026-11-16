@@ -81,24 +81,25 @@ code{font-family:Consolas,monospace;color:#eace9b}
 </head>
 <body>
 <header>
- <div><div class="subtitle">GAME ARTIFACT GALLERY · PRESTIGE COLLECTION</div><h1>棕色尘埃2 · 精选皮肤展示柜</h1></div>
+ <div><div class="subtitle">GAME ARTIFACT GALLERY · INTERACTION FIRST</div><h1>棕色尘埃2 · 独立互动优先展示柜</h1></div>
  <a class="back" href="../../index.html">← 返回游戏展柜</a>
 </header>
 <main class="layout">
  <section class="sidebar">
   <div class="sidebar-top"><h2>服装目录</h2><span class="counter" id="count">读取中</span></div>
   <div class="collection-filters" id="filters">
-    <button type="button" data-filter="all" class="active">全部精选</button>
+    <button type="button" data-filter="interactive" class="active">有互动</button>
+    <button type="button" data-filter="batch">本批新增8套</button>
+    <button type="button" data-filter="all">全部精选</button>
     <button type="button" data-filter="special">特殊皮肤</button>
     <button type="button" data-filter="style">御姐/腿部</button>
     <button type="button" data-filter="mature">成熟御姐</button>
     <button type="button" data-filter="stockings">黑丝/网袜</button>
     <button type="button" data-filter="legs">腿部重点</button>
-    <button type="button" data-filter="interactive">有互动</button>
     <button type="button" data-filter="installed">已安装</button>
   </div>
   <input class="search" id="search" placeholder="搜索角色或皮肤名称" aria-label="搜索皮肤">
-  <div class="collection-info" id="collection-info">仅显示高规格特殊皮肤和符合偏好的精选造型</div>
+  <div class="collection-info" id="collection-info">独立互动优先；允许只安装互动骨骼</div>
   <div class="cards" id="cards"></div>
   <p class="status" id="list-status"></p>
  </section>
@@ -143,7 +144,7 @@ code{font-family:Consolas,monospace;color:#eace9b}
 const ROLE_NAME = {character:"人物动态",cutscene:"技能演出",interaction:"互动动画"};
 const $ = id => document.getElementById(id);
 let catalog = [];
-let collectionFilter = "all";
+let collectionFilter = "interactive";
 let installed = new Map();
 let selected = null;
 let player = null;
@@ -496,6 +497,7 @@ function renderCards(filter) {
       skin.skin_en,skin.id,skin.costume_id || ""]
       .some(value => String(value).toLowerCase().includes(q));
     if (!keyword) return false;
+    if (collectionFilter === "batch") return skin.interaction_batch === "interaction-02";
     if (collectionFilter === "special") return isSpecial(skin);
     if (collectionFilter === "style") return Boolean(skin.preference_tags?.length);
     if (collectionFilter === "mature") return hasStyleTag(skin, "成熟御姐");
@@ -513,13 +515,18 @@ function renderCards(filter) {
     card.appendChild(el("div", "card-sub", skin.character_en + " / " +
       skin.skin_en + (skin.costume_id ? " · " + skin.costume_id : "")));
     const tags = el("div","tags");
-    const tierLabel = isPrestige(skin) ? "Prestige"
+    const tierLabel = skin.interaction_only ? "独立互动专辑"
+      : isPrestige(skin) ? "Prestige"
       : skin.tier === "Special Skin" ? "Special Skin" : "风格精选";
     tags.appendChild(badge(tierLabel));
     tags.appendChild(badge(roles.length ? "本地 " + roles.length +
       "/" + Object.keys(skin.roles).length + " 类" : "待安装",
       roles.length ? "ready" : "wait"));
     for (const name of skin.preference_tags || []) tags.appendChild(badge(name));
+    if (skin.interaction_only) {
+      tags.appendChild(badge("仅互动，无需人物/技能"));
+      for (const name of skin.interaction_tags || []) tags.appendChild(badge(name));
+    }
     tags.appendChild(badge(interactionLabel(skin),
       roles.includes("interaction") ? "ready" : "wait"));
     if (skin.mapping === "candidate") tags.appendChild(badge("映射待核实"));
@@ -531,8 +538,9 @@ function renderCards(filter) {
   $("count").textContent = localCount + " 已安装 / " + catalog.length + " 精选";
   $("collection-info").textContent = "本页显示 " + matches.length
     + " 套 · 特殊 " + catalog.filter(isSpecial).length
-    + " · 风格精选 " + catalog.filter(skin => skin.preference_tags?.length).length
-    + " · 已排除普通无关服装";
+    + " · 独立互动 " + catalog.filter(skin => skin.roles.interaction).length
+    + " · 本批新增 " + catalog.filter(skin => skin.interaction_batch).length
+    + " · 互动优先";
   $("list-status").textContent = matches.length ? "" : "当前条件没有符合要求的皮肤";
   for (const button of $("filters").querySelectorAll("button")) {
     button.classList.toggle("active", button.dataset.filter === collectionFilter);
@@ -544,7 +552,8 @@ function selectSkin(skin) {
   disposePlayer();
   $("title").textContent = skin.character + " · " + skin.skin;
   $("description").textContent = skin.character_en + " / " + skin.skin_en +
-    (isPrestige(skin) ? " · Prestige Skin" : " · " + skin.tier)
+    (skin.interaction_only ? " · 互动专辑（仅独立互动模型）"
+      : isPrestige(skin) ? " · Prestige Skin" : " · " + skin.tier)
     + " · " + interactionLabel(skin);
   const item = installed.get(skin.id);
   const downloadedRoles = item?.roles || {};
@@ -809,18 +818,20 @@ for (const button of $("filters").querySelectorAll("button")) {
 }
 (async () => {
   try {
-    const [a,b,c,d] = await Promise.all([
+    const [a,b,c,d,e] = await Promise.all([
       fetch("../curated_prestige.json", {cache:"no-store"}),
       fetch("manifest.json", {cache:"no-store"}),
       fetch("../costume_catalog.json", {cache:"no-store"}),
-      fetch("../curated_style.json", {cache:"no-store"})
+      fetch("../curated_style.json", {cache:"no-store"}),
+      fetch("../curated_interactions.json", {cache:"no-store"})
     ]);
-    if(!a.ok || !b.ok || !c.ok || !d.ok) {
-      throw new Error("精选资源索引不存在，请从项目根目录启动 HTTP 服务并更新代码");
+    if(!a.ok || !b.ok || !c.ok || !d.ok || !e.ok) {
+      throw new Error("互动资源索引不存在，请从项目根目录启动 HTTP 服务并更新代码");
     }
     const original = (await a.json()).skins || [];
     const allRegular = (await c.json()).skins || [];
     const styles = (await d.json()).styles || [];
+    const interactionBatch = (await e.json()).skins || [];
     const styleMap = new Map(styles.map(style => [style.id, style]));
     const regular = allRegular.filter(skin => skin.tier === "Special Skin"
       || styleMap.has(skin.id)).map(skin => {
@@ -832,19 +843,30 @@ for (const button of $("filters").querySelectorAll("button")) {
         };
       }).sort((a,b) => (a.tier === "Special Skin" ? 0 : 1)
         - (b.tier === "Special Skin" ? 0 : 1));
-    catalog = [...original.map(skin => ({...skin,tier:"Prestige Skin"})),
+    catalog = [...interactionBatch,
+      ...original.map(skin => ({...skin,tier:"Prestige Skin"})),
       ...regular];
+    const ids = catalog.map(skin => skin.id);
+    if (new Set(ids).size !== ids.length) {
+      throw new Error("互动专辑与现有精选服装 ID 重复，请核对索引");
+    }
+    const priority = skin => skin.interaction_batch ? 0
+      : skin.roles.interaction ? 1
+      : isSpecial(skin) ? 2 : 3;
+    catalog.sort((left,right) => priority(left)-priority(right));
     const manifest = await b.json();
     installed = new Map((manifest.installed || []).map(item => [item.id,item]));
     renderCards("");
-    $("install-hint").textContent = "已核实独立互动 " +
-      catalog.filter(skin => Boolean(skin.roles.interaction)).length + "/" +
-      catalog.length + " 套。Special Skin 官方不含独立互动；" +
-      " 只补充真正有互动的皮肤请运行 " +
-      "python brown_dust2/scripts/install_prestige.py --collection interactive --role interaction。" +
-      " 其他旧素材仍保存在本地，不会删除。";
+    $("install-hint").textContent = "互动优先：本批新增 " + interactionBatch.length
+      + " 套独立互动专辑（可只有互动模型）。"
+      + " 命令：python brown_dust2/scripts/install_prestige.py --collection interaction-batch。"
+      + " 补全部互动：--collection interactive --role interaction。"
+      + " 无关旧素材继续留在本地。";
     setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
-    if(catalog.length) selectSkin(catalog[0]);
+    if(catalog.length) {
+      const ready = catalog.find(skin => installed.get(skin.id)?.roles.interaction);
+      selectSkin(ready || catalog[0]);
+    }
   } catch(error) {
     $("cards").appendChild(el("p","status",String(error)));
     setStatus("请用 python -m http.server 8000 启动网页，而不是直接双击 HTML");

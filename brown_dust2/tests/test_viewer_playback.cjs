@@ -232,9 +232,9 @@ test("前端严格筛选特殊皮肤和风格白名单，不显示200套原始�
   assert.match(page,/const styleMap = new Map\(styles\.map/);
   assert.match(page,/allRegular\.filter\(skin => skin\.tier === "Special Skin"/);
   assert.match(page,/styleMap\.has\(skin\.id\)/);
-  assert.match(page,/catalog = \[\.\.\.original\.map/);
+  assert.match(page,/catalog = \[\.\.\.interactionBatch,/);
   assert.match(page,/\.\.\.regular\]/);
-  for (const value of ["all", "special", "style", "mature",
+  for (const value of ["all", "batch", "special", "style", "mature",
                        "stockings", "legs", "interactive", "installed"]) {
     assert.match(page, new RegExp('data-filter="' + value + '"'));
   }
@@ -250,8 +250,23 @@ test("风格偏好标签展示与已安装状态彼此独立",()=>{
   assert.match(page,/skin\.preference_tags \|\| \[\]/);
   assert.match(page,/skin\.tier === "Special Skin"/);
   assert.match(page,/id="collection-info"/);
-  assert.match(page,/已排除普通无关服装/);
-  assert.match(page,/已核实独立互动/);
+  assert.match(page,/互动优先/);
+  assert.match(page,/互动优先：本批新增/);
+});
+
+test("新一批独立互动即使没有人物/技能模型也可单独展示",()=>{
+  assert.match(page,/fetch\("\.\.\/curated_interactions\.json"/);
+  assert.match(page,/let collectionFilter = "interactive"/);
+  assert.match(page,/data-filter="interactive" class="active"/);
+  assert.match(page,/data-filter="batch"/);
+  assert.match(page,/collectionFilter === "batch"/);
+  assert.match(page,/skin\.interaction_only \? "独立互动专辑"/);
+  assert.match(page,/仅互动，无需人物\/技能/);
+  assert.match(page,/skin\.interaction_only \? " · 互动专辑/);
+  assert.match(page,/catalog\.sort\(\(left,right\) => priority\(left\)-priority\(right\)\)/);
+  assert.match(page,/const ready = catalog\.find\(skin => installed\.get\(skin\.id\)\?\.roles\.interaction\)/);
+  assert.match(page,/loadRole\(item\.roles\.character \? "character" : Object\.keys\(item\.roles\)\[0\]\)/);
+  assert.match(page,/new Set\(ids\)\.size !== ids\.length/);
 });
 
 test("互动状态区分官方没有互动、资源待下载、真实已安装",()=>{

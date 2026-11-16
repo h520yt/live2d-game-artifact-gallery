@@ -21,13 +21,14 @@
 - **外观风格筛选**：新增「御姐 / 腿部重点 / 运动系」标签与一键安装脚本 `python nikke/scripts/install_style.py 运动系`，自动识别并下载选中风格的 NIKKE 角色、皮肤。详见 [`nikke/SPORTS.md`](nikke/SPORTS.md)。
 - **四批收藏一键补齐**：新增 35 个黑丝、网袜、长筒袜、成熟御姐与兔女郎候选 ID，并提供分批下载、文件完整性核验、缺失资源报告。`python nikke/scripts/install_batches.py --all`，详见 [`nikke/CURATED_BATCHES.md`](nikke/CURATED_BATCHES.md)。
 
-## 棕色尘埃2 · 精选皮肤展示柜（26 套）
+## 棕色尘埃2 · 互动动画优先（34 套，21 套独立互动）
 
-- **14 套高规格特殊皮肤**（Prestige 6 + Special Skin 8）及 **12 套御姐、黑丝或腿部重点服装**，共 26 套精选；其它普通服装不展示或默认下载。
-- **13 套找到专属互动骨骼映射**，其中新补 Sylvia Bikini Agent、Wilhelmina Water Park Queen、Dalvi Bright Moon、Olivier Retired Legend。Special Skin 官方不含独立互动，不能伪造。
-- 查看互动缺失原因：`python brown_dust2/scripts/install_prestige.py --audit-interactions`；只补真实互动：`python brown_dust2/scripts/install_prestige.py --collection interactive --role interaction`。
-- 展示柜支持「有互动」筛选及明确的官方无互动、待下载、已安装状态。详见 [完整说明](brown_dust2/README.md)。
-- 200 条上游完整索引仅为后台资料。已下载的素材不会被删除，游戏素材只保留在本地 `brown_dust2/data/`。
+- 优先收集类似 Sylvia · Bikini Agent 的完整互动场景。**第2批新增8套互动专辑，仅要求独立互动模型，不强制具备人物动态或技能演出。**
+- 全部精选目前是 6 尊爵 + 8 Special Skin + 12 风格精选 + 8 互动专辑，共 **34 套**；其中 **21 套有独立互动映射**。
+- 本次 8 套互动专辑：Loen Celebrity Bunny、Ventana Onsen Practitioner、Angelica Neon Savior、Elise Code Name O、Granhildr Combat Medic、Teresse Medical Club、Palette Miracle Violet、Tyr Innocent Bunny。
+- 更新后运行 `python brown_dust2/scripts/install_prestige.py` 默认只下载这批8套互动骨骼；要补齐所有互动用 `--collection interactive --role interaction`。
+- 展示柜默认「有互动」，可按「本批新增8套」筛选；已安装的互动优先预览，未下载的素材不会虚报已安装。详见 [完整说明](brown_dust2/README.md)。
+- 游戏素材只在本地 `brown_dust2/data/`，此前已下载的模型不会删除。
 
 ---
 

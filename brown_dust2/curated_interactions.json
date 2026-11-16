@@ -1,0 +1,210 @@
+{
+  "title": "互动动画精选第2批",
+  "version": 1,
+  "note": "此目录只接入独立互动Spine，禁止自动扩展到未验证的人物和技能资源；.skel/.atlas/全部PNG均已核查存在，实际渲染需用户本地验证。",
+  "skins": [
+    {
+      "id": "costume-003203",
+      "costume_id": "003203",
+      "character": "Loen",
+      "character_en": "Loen",
+      "skin": "Celebrity Bunny",
+      "skin_en": "Celebrity Bunny",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating3"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 1,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating3",
+        "atlas_pages": 8,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先",
+        "兔女郎"
+      ]
+    },
+    {
+      "id": "costume-067004",
+      "costume_id": "067004",
+      "character": "Ventana",
+      "character_en": "Ventana",
+      "skin": "Onsen Practitioner",
+      "skin_en": "Onsen Practitioner",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating15"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 2,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating15",
+        "atlas_pages": 7,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先",
+        "温泉"
+      ]
+    },
+    {
+      "id": "costume-066403",
+      "costume_id": "066403",
+      "character": "Angelica",
+      "character_en": "Angelica",
+      "skin": "Neon Savior",
+      "skin_en": "Neon Savior",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating10"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 3,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating10",
+        "atlas_pages": 8,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先"
+      ]
+    },
+    {
+      "id": "costume-060802",
+      "costume_id": "060802",
+      "character": "Elise",
+      "character_en": "Elise",
+      "skin": "Code Name O",
+      "skin_en": "Code Name O",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating5"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 4,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating5",
+        "atlas_pages": 7,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先"
+      ]
+    },
+    {
+      "id": "costume-067104",
+      "costume_id": "067104",
+      "character": "Granhildr",
+      "character_en": "Granhildr",
+      "skin": "Combat Medic",
+      "skin_en": "Combat Medic",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating19"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 5,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating19",
+        "atlas_pages": 8,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先"
+      ]
+    },
+    {
+      "id": "costume-001106",
+      "costume_id": "001106",
+      "character": "Teresse",
+      "character_en": "Teresse",
+      "skin": "Medical Club",
+      "skin_en": "Medical Club",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating4"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 6,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating4",
+        "atlas_pages": 6,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先"
+      ]
+    },
+    {
+      "id": "costume-004202",
+      "costume_id": "004202",
+      "character": "Palette",
+      "character_en": "Palette",
+      "skin": "Miracle Violet",
+      "skin_en": "Miracle Violet",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating17"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 7,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating17",
+        "atlas_pages": 8,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先"
+      ]
+    },
+    {
+      "id": "costume-004102",
+      "costume_id": "004102",
+      "character": "Tyr",
+      "character_en": "Tyr",
+      "skin": "Innocent Bunny",
+      "skin_en": "Innocent Bunny",
+      "tier": "Fated Guest",
+      "roles": {
+        "interaction": "spine/illust/illust_dating/illust_dating13"
+      },
+      "interaction_only": true,
+      "interaction_batch": "interaction-02",
+      "priority": 8,
+      "mapping": "spine_files_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "folder": "spine/illust/illust_dating/illust_dating13",
+        "atlas_pages": 6,
+        "character_index": "Jelosus2/BD2-L2D-Viewer"
+      },
+      "interaction_tags": [
+        "互动优先",
+        "兔女郎"
+      ]
+    }
+  ]
+}

@@ -127,13 +127,13 @@ class PrestigeInstallTests(unittest.TestCase):
     def test_curated_catalog_only_exposes_special_and_style_matches(self):
         prestige, chosen = installer.read_catalog()
         self.assertEqual(6, len(prestige))
-        self.assertEqual(20, len(chosen))
-        self.assertEqual(26, len(prestige + chosen))
-        self.assertEqual(26, len({item["id"] for item in prestige + chosen}))
+        self.assertEqual(28, len(chosen))
+        self.assertEqual(34, len(prestige + chosen))
+        self.assertEqual(34, len({item["id"] for item in prestige + chosen}))
         self.assertEqual(8, sum(item["tier"] == "Special Skin" for item in chosen))
         self.assertEqual(12, sum(bool(item.get("preference_tags")) for item in chosen))
-        self.assertEqual(7, sum(item["tier"] == "Fated Guest" for item in chosen))
-        self.assertEqual(7, sum("interaction" in item["roles"] for item in chosen))
+        self.assertEqual(15, sum(item["tier"] == "Fated Guest" for item in chosen))
+        self.assertEqual(15, sum("interaction" in item["roles"] for item in chosen))
 
         full_catalog = json.loads(installer.ALL_COSTUMES.read_text(encoding="utf-8"))
         self.assertEqual(200, len(full_catalog["skins"]))
@@ -147,9 +147,10 @@ class PrestigeInstallTests(unittest.TestCase):
         self.assertEqual(14, len(select(prestige, chosen, "special")))
         self.assertEqual(12, len(select(prestige, chosen, "style")))
         self.assertEqual(12, len(select(prestige, chosen, "other")))
-        self.assertEqual(7, len(select(prestige, chosen, "guest")))
-        self.assertEqual(13, len(select(prestige, chosen, "interactive")))
-        self.assertEqual(26, len(select(prestige, chosen, "all")))
+        self.assertEqual(8, len(select(prestige, chosen, "interaction-batch")))
+        self.assertEqual(15, len(select(prestige, chosen, "guest")))
+        self.assertEqual(21, len(select(prestige, chosen, "interactive")))
+        self.assertEqual(34, len(select(prestige, chosen, "all")))
         self.assertEqual(3, len(select(prestige, chosen, "all", limit=3)))
         self.assertEqual(3, len(select(prestige, chosen, "all", limit=3, offset=3)))
         selected = select(prestige, chosen, "all", only="costume-000706")
@@ -179,6 +180,67 @@ class PrestigeInstallTests(unittest.TestCase):
         eclipse = next(item for item in chosen if item["id"] == "costume-000706")
         self.assertIn("黑丝/网袜", eclipse["preference_tags"])
         self.assertEqual("Fated Guest", eclipse["tier"])
+
+    def test_next_eight_interactions_are_verified_and_do_not_require_char_or_skill(self):
+        _, chosen = installer.read_catalog()
+        batch = [item for item in chosen
+                 if item.get("interaction_batch") == "interaction-02"]
+        self.assertEqual(8, len(batch))
+        expected = {
+            "costume-003203": "illust_dating3",
+            "costume-067004": "illust_dating15",
+            "costume-066403": "illust_dating10",
+            "costume-060802": "illust_dating5",
+            "costume-067104": "illust_dating19",
+            "costume-001106": "illust_dating4",
+            "costume-004202": "illust_dating17",
+            "costume-004102": "illust_dating13",
+        }
+        self.assertEqual(set(expected), {item["id"] for item in batch})
+        for item in batch:
+            with self.subTest(skin=item["id"]):
+                self.assertTrue(item["interaction_only"])
+                self.assertEqual({"interaction"}, set(item["roles"]))
+                self.assertEqual(
+                    "spine/illust/illust_dating/" + expected[item["id"]],
+                    item["roles"]["interaction"])
+                self.assertGreaterEqual(item["source"]["atlas_pages"], 6)
+        all_interactions = [item["roles"]["interaction"]
+                            for item in chosen if "interaction" in item["roles"]]
+        self.assertEqual(len(all_interactions), len(set(all_interactions)))
+
+    def test_interaction_batch_plan_does_not_request_other_roles(self):
+        from contextlib import redirect_stdout
+        from io import StringIO
+        prestige, chosen = installer.read_catalog()
+        batch = installer.select_skins(prestige, chosen, "interaction-batch")
+        with patch.object(installer, "remote_files",
+                          return_value=[{"path":"spine/illust/illust_dating/illust_dating3/test.skel",
+                                         "size":100,
+                                         "url":"https://raw.githubusercontent.com/mock"}]) as mocked:
+            with redirect_stdout(StringIO()):
+                result = installer.main(["--plan", "--collection", "interaction-batch"])
+        self.assertEqual(0, result)
+        self.assertEqual(8, mocked.call_count)
+        called_folders = [call.args[0] for call in mocked.call_args_list]
+        self.assertEqual({item["roles"]["interaction"] for item in batch},
+                         set(called_folders))
+
+    def test_batch_only_manifest_and_interaction_state(self):
+        batch = json.loads(installer.INTERACTION_BATCH.read_text(encoding="utf-8"))["skins"]
+        first = batch[0]
+        example = {"skel":"illust_dating3.skel","atlas":"illust_dating3.atlas",
+                   "pages":["illust_dating3.png"],"version":"4.1"}
+        with patch.object(installer, "inspect_model", return_value=example):
+            manifest = installer.build_manifest([first])
+            self.assertEqual(1, len(manifest["installed"]))
+            self.assertEqual({"interaction"},
+                             set(manifest["installed"][0]["roles"]))
+            self.assertEqual("已安装独立互动",
+                             installer.interaction_state(first))
+        with patch.object(installer, "inspect_model", return_value=None):
+            self.assertEqual("有独立互动，待本地下载",
+                             installer.interaction_state(first))
 
     def test_four_added_fated_guest_interactions_have_unique_real_mappings(self):
         _, curated = installer.read_catalog()

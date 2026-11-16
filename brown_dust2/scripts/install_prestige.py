@@ -18,6 +18,7 @@ DATA = BASE / "data"
 CATALOG = BASE / "curated_prestige.json"
 ALL_COSTUMES = BASE / "costume_catalog.json"
 CURATED_STYLE = BASE / "curated_style.json"
+INTERACTION_BATCH = BASE / "curated_interactions.json"
 MANIFEST = BASE / "viewer" / "manifest.json"
 REPORT = DATA / "install-report.json"
 REPO = "myssal/Brown-Dust-2-Asset"
@@ -268,6 +269,26 @@ def read_catalog():
         item["character_en"].casefold(),
         item["skin_en"].casefold(),
     ))
+    # 独立互动第 2 批：只登记交互骨骼，不要求人物、技能演出同时存在。
+    batch = json.loads(INTERACTION_BATCH.read_text(encoding="utf-8"))["skins"]
+    known = {item["id"]: item for item in all_costumes}
+    existing = {item["id"] for item in prestige + selected}
+    batch_ids = set()
+    for item in batch:
+        identifier = item["id"]
+        if identifier in existing or identifier in batch_ids:
+            raise ValueError("独立互动精选与现有条目重复: " + identifier)
+        source = known.get(identifier)
+        if not source:
+            raise ValueError("互动条目不在原始服装索引中: " + identifier)
+        if set(item.get("roles", {})) != {"interaction"}:
+            raise ValueError("互动专辑只能包含 interaction 资源: " + identifier)
+        if item["roles"]["interaction"] != source["roles"].get("interaction"):
+            raise ValueError("互动模型关联与来源索引不一致: " + identifier)
+        if not item.get("interaction_only") or not item.get("interaction_batch"):
+            raise ValueError("互动专辑缺少独立模型标记: " + identifier)
+        batch_ids.add(identifier)
+    selected = batch + selected
     ids = [item["id"] for item in prestige + selected]
     if len(ids) != len(set(ids)):
         raise ValueError("精选目录存在重复 ID")
@@ -282,6 +303,8 @@ def select_skins(prestige, costumes, collection, only=None, character=None, limi
         selected = [skin for skin in all_selected if skin["id"] == only]
         if not selected:
             raise ValueError("不在当前精选范围的服装 ID: " + only)
+    elif collection == "interaction-batch":
+        selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-02"]
     elif collection == "prestige":
         selected = prestige
     elif collection == "special":
@@ -322,7 +345,7 @@ def interaction_state(skin):
 
 def main(argv=None):
     prestige, costumes = read_catalog()
-    parser = argparse.ArgumentParser(description="BD2 精选服装展示柜资源安装器")
+    parser = argparse.ArgumentParser(description="BD2 独立互动优先资源安装器")
     parser.add_argument("--plan", action="store_true", help="列举上游文件，不下载模型")
     parser.add_argument("--list", action="store_true", help="离线列出服装、模型数量与安装状态")
     parser.add_argument("--audit-interactions", action="store_true",
@@ -330,8 +353,9 @@ def main(argv=None):
     parser.add_argument("--role", choices=("character", "cutscene", "interaction"),
                         help="仅下载指定类别，例如 --role interaction 只补互动")
     parser.add_argument("--collection",
-                        choices=("all", "special", "prestige", "style", "guest", "other", "interactive"),
-                        default="all", help="默认全部精选；special=尊爵+特殊；style=御姐黑丝腿部；other=style别名")
+                        choices=("interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
+                        default="interaction-batch",
+                        help="默认只补本批8套独立互动；interactive=全部互动；all=全部精选"))
     parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")
     parser.add_argument("--limit", type=int, help="本次最多处理的套数，建议批量安装时设置")
     parser.add_argument("--offset", type=int, default=0,
