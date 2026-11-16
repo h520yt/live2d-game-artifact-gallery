@@ -11,6 +11,8 @@ on:
       - 'azur_lane/scripts/gen_manifest.py'
       - 'azur_lane/viewer/scene_gallery.js'
       - 'azur_lane/viewer/index.html'
+      - 'azur_lane/viewer/artmesh_visibility.js'
+      - 'azur_lane/tests/test_artmesh_visibility.cjs'
       - 'azur_lane/config/hashes/PAINTING.csv'
       - 'azur_lane/config/hashes/L2D.csv'
       - '.github/workflows/azur-lane-batch-tests.yml'
@@ -24,6 +26,8 @@ on:
       - 'azur_lane/scripts/gen_manifest.py'
       - 'azur_lane/viewer/scene_gallery.js'
       - 'azur_lane/viewer/index.html'
+      - 'azur_lane/viewer/artmesh_visibility.js'
+      - 'azur_lane/tests/test_artmesh_visibility.cjs'
       - 'azur_lane/config/hashes/PAINTING.csv'
       - 'azur_lane/config/hashes/L2D.csv'
       - '.github/workflows/azur-lane-batch-tests.yml'
@@ -42,6 +46,8 @@ jobs:
         run: python -m unittest discover -s azur_lane/tests -p 'test_scene_gallery.py' -v
       - name: Browser-side scene matcher
         run: node azur_lane/tests/test_scene_gallery.cjs
+      - name: ArtMesh overlay visibility tests
+        run: node azur_lane/tests/test_artmesh_visibility.cjs
       - name: Third batch dry-run
         run: python azur_lane/scripts/install_batch3.py --plan
       - name: Fourth batch dry-run
