@@ -9,14 +9,14 @@
 :root{--bg:#100d19;--panel:#1b1829;--line:#40354e;--gold:#e8c58b;--text:#f4ecf6;--muted:#ab9cae}
 *{box-sizing:border-box}
 body{background:radial-gradient(ellipse at 65% 0%,#32203f 0%,var(--bg) 55%);color:var(--text);font:15px/1.6 "Segoe UI","Microsoft YaHei",sans-serif;margin:0;min-height:100vh}
-header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 3vw;border-bottom:1px solid var(--line)}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 1.6vw;border-bottom:1px solid var(--line)}
 header h1{font-size:22px;letter-spacing:.06em;margin:4px 0}
 .subtitle{color:var(--muted);font-size:12px;letter-spacing:.08em}
 a{color:var(--gold)}
 .back{font-size:13px;text-decoration:none;white-space:nowrap}
-.layout{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:20px;padding:20px 3vw}
-.sidebar,.viewer{border:1px solid var(--line);background:rgba(23,18,36,.92);border-radius:16px;min-height:640px}
-.sidebar{padding:22px;overflow:hidden}
+.layout{display:grid;grid-template-columns:clamp(240px,19vw,300px) minmax(0,1fr);gap:14px;padding:14px 1.6vw;align-items:start}
+.sidebar,.viewer{border:1px solid var(--line);background:rgba(23,18,36,.92);border-radius:16px;min-height:0}
+.sidebar{padding:15px;overflow:hidden}
 .sidebar-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
 .sidebar h2{font-size:16px;margin:0}
 .counter{color:var(--muted);font-size:12px}
@@ -31,7 +31,7 @@ a{color:var(--gold)}
 .tag{font-size:11px;border:1px solid #66546c;padding:1px 7px;border-radius:12px;color:#d7c5d9}
 .tag.ready{color:#a6dfb8;border-color:#5f966b}
 .tag.wait{color:#ecc48b;border-color:#927143}
-.viewer{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.viewer{padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0}
 .heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
 .heading h2{margin:0;font-size:19px}
 .heading p{margin:4px 0 0;font-size:12px;color:var(--muted)}
@@ -48,17 +48,31 @@ a{color:var(--gold)}
 button{cursor:pointer;border-radius:7px;background:#2e253c;color:var(--text);border:1px solid #594a63;padding:8px 12px}
 button:hover:not(:disabled),button.active{border-color:var(--gold);color:var(--gold)}
 button:disabled{opacity:.45;cursor:not-allowed}
-.stage{position:relative;min-height:480px;flex:1;border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#352b41 0%,#13101e 70%)}
+.stage{position:relative;height:clamp(560px,73dvh,1300px);min-height:0;flex:0 0 auto;border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#352b41 0%,#13101e 70%)}
+body.theater-mode{overflow:hidden}
+.viewer.theater{position:fixed;inset:0;z-index:1000;width:100vw;height:100dvh;max-width:none;margin:0;border:0;border-radius:0;box-shadow:none;padding:12px clamp(10px,2vw,32px);background:#151021;overflow:hidden}
+.viewer.theater .stage{height:auto;flex:1 1 auto;min-height:0;max-height:none}
+.viewer.theater .heading{flex-shrink:0}
+.viewer.theater .roles,.viewer.theater .render-tools{flex-shrink:0}
+.viewer.theater .motions{max-height:min(11dvh,100px);flex-shrink:0}
+.viewer.theater .hint{display:none}
+.viewer.theater .status{flex-shrink:0}
+.viewer.theater #theater-toggle{color:var(--gold);border-color:var(--gold)}
+.viewer.theater .stage:fullscreen{height:100%}
+@media(max-height:700px){.viewer.theater{gap:5px;padding:6px 12px}.viewer.theater .motions{max-height:66px}.viewer.theater .render-tools{gap:5px}}
+
 #spine-root{position:absolute;inset:0}
 #spine-root .spine-player,#spine-root .spine-player-canvas,#spine-root canvas{width:100%!important;height:100%!important;display:block}
 .empty{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);color:var(--muted);text-align:center;width:80%;pointer-events:none}
 .empty strong{color:var(--gold)}
 .status{color:var(--muted);font-size:12px;min-height:18px}
-.motions{max-height:118px;overflow:auto}
+.motions{max-height:96px;overflow:auto}
 .motions button{font-size:12px;padding:6px 9px}
 .hint{border-left:2px solid #8d734f;background:#2a2330;padding:10px 13px;color:#c9b9c8;font-size:12px}
 code{font-family:Consolas,monospace;color:#eace9b}
-@media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar,.viewer{min-height:0}.cards{max-height:none;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.stage{min-height:500px}}
+@media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar,.viewer{min-height:0}.cards{max-height:230px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.stage{height:max(530px,68dvh)}.viewer.theater .stage{height:auto}}
+@media(max-width:600px){.heading h2{font-size:16px}.render-tools{gap:5px}.render-tools #skin-choice{max-width:160px}.render-tools #zoom{width:95px}.stage{height:70dvh;min-height:460px}.viewer.theater .stage{min-height:0}}
+
 </style>
 </head>
 <body>
@@ -73,10 +87,13 @@ code{font-family:Consolas,monospace;color:#eace9b}
   <div class="cards" id="cards"></div>
   <p class="status" id="list-status"></p>
  </section>
- <section class="viewer">
+ <section class="viewer" id="viewer">
   <div class="heading">
    <div><h2 id="title">请选择左侧皮肤</h2><p id="description">角色模型 / 技能演出 / 互动场景</p></div>
-   <button id="save" disabled>导出当前帧 PNG</button>
+   <div class="actions">
+     <button id="theater-toggle" type="button" aria-pressed="false" title="沉浸式大屏预览，按 Esc 退出">大屏预览 ⛶</button>
+     <button id="save" disabled>导出当前帧 PNG</button>
+   </div>
   </div>
   <div class="roles" id="roles"></div>
   <div class="render-tools">
@@ -91,9 +108,9 @@ code{font-family:Consolas,monospace;color:#eace9b}
     </select>
     <button id="auto-focus" disabled title="识别实际可见内容，忽略大片黑色区域">智能铺满</button>
     <label for="zoom">缩放</label>
-    <input id="zoom" type="range" min="100" max="800" step="10" value="100" disabled>
+    <input id="zoom" type="range" min="50" max="500" step="10" value="100" disabled>
     <span id="zoom-label">1.0×</span>
-    <button id="reset-camera" disabled title="重新分析当前动画取景">重置视图</button>
+    <button id="reset-camera" disabled title="完整显示当前模型，不裁剪人物">完整适配</button>
   </div>
   <div class="stage">
    <div id="spine-root"></div>
@@ -152,7 +169,7 @@ function applyCameraView(pl) {
 
 function setZoomFactor(pl, factor) {
   if (!cameraView || !Number.isFinite(factor)) return false;
-  cameraView.factor = Math.min(8, Math.max(1, factor));
+  cameraView.factor = Math.min(5, Math.max(0.5, factor));
   $("zoom").value = Math.round(cameraView.factor * 10) * 10;
   $("zoom-label").textContent = cameraView.factor.toFixed(1) + "×";
   return applyCameraView(pl);
@@ -315,6 +332,43 @@ function applySkin(pl, name) {
 }
 
 // 使用当前 Skin 的世界坐标边界计算取景，不采用会让人物缩成一点的默认动作边界。
+// 优先统计实际可见的角色部件，忽略背景槽位，避免背景导致人物缩得过小。
+// mesh 与 region 的世界顶点方法参数不同，按 worldVerticesLength 区分，失败时退回整个骨骼。
+function getCharacterBounds(skeleton) {
+  if (!skeleton || !Array.isArray(skeleton.drawOrder)) return null;
+  let left = Infinity, right = -Infinity, bottom = Infinity, top = -Infinity;
+  let count = 0;
+  for (const slot of skeleton.drawOrder) {
+    const name = slot.data?.name || "";
+    if (/^(?:bg|bk)(?:[_0-9]|$)|(?:^|[_ ])background(?:[_ ]|$)/i.test(name)) continue;
+    const attachment = slot.getAttachment?.();
+    if (!attachment || typeof attachment.computeWorldVertices !== "function") continue;
+    try {
+      let vertices;
+      if (Number.isInteger(attachment.worldVerticesLength) && attachment.worldVerticesLength > 0) {
+        if (attachment.worldVerticesLength > 100000) continue;
+        vertices = new Float32Array(attachment.worldVerticesLength);
+        attachment.computeWorldVertices(slot, 0, vertices.length, vertices, 0, 2);
+      } else {
+        vertices = new Float32Array(8);
+        attachment.computeWorldVertices(slot.bone, vertices, 0, 2);
+      }
+      for (let i=0;i<vertices.length;i+=2) {
+        const x=vertices[i], y=vertices[i+1];
+        if(!Number.isFinite(x) || !Number.isFinite(y)) continue;
+        left=Math.min(left,x);right=Math.max(right,x);
+        bottom=Math.min(bottom,y);top=Math.max(top,y);
+        count++;
+      }
+    } catch (error) {
+      // 部分 attachment 并非可渲染几何体，跳过即可。
+    }
+  }
+  if(count < 4 || !(right > left && top > bottom) ||
+      right-left > 50000 || top-bottom > 50000) return null;
+  return {x:left,y:bottom,width:right-left,height:top-bottom};
+}
+
 function resetCamera(pl) {
   const skeleton = pl && pl.skeleton;
   const camera = pl && pl.sceneRenderer && pl.sceneRenderer.camera;
@@ -325,9 +379,19 @@ function resetCamera(pl) {
   try {
     skeleton.updateWorldTransform();
     skeleton.getBounds(offset, size);
+    if (currentRole === "character") {
+      const trimmed = getCharacterBounds(skeleton);
+      if (trimmed && (size.x > trimmed.width * 1.4 || size.y > trimmed.height * 1.4)) {
+        offset.x = trimmed.x;
+        offset.y = trimmed.y;
+        size.x = trimmed.width;
+        size.y = trimmed.height;
+      }
+    }
     if (!(size.x > 1 && size.y > 1 && size.x < 50000 && size.y < 50000)) return false;
-    const paddedWidth = size.x * 1.08;
-    const paddedHeight = size.y * 1.08;
+    // 完整适配保留约 8% 留白；取 max 表示 contain，不会因为放大而裁掉身体。
+    const paddedWidth = size.x * 1.12;
+    const paddedHeight = size.y * 1.12;
     cameraView = {
       x:offset.x + size.x / 2,
       y:offset.y + size.y / 2,
@@ -473,7 +537,7 @@ function selectAnimation(pl, name) {
   }
 }
 
-async function loadRole(role) {
+async function loadRole(role, restore=null) {
   if (!selected) return;
   const item = installed.get(selected.id);
   if(!item || !item.roles[role]) return;
@@ -542,7 +606,8 @@ async function loadRole(role) {
           option.textContent = skin.name + " (" + countSkinAttachments(skin) + " 部件)";
           select.appendChild(option);
         }
-        const best = bestSkin(skinOptions);
+        const best = (restore?.skin && skinOptions.find(skin => skin.name === restore.skin))
+          || bestSkin(skinOptions);
         select.disabled = !best;
         if(best) {
           select.value = best.name;
@@ -557,8 +622,8 @@ async function loadRole(role) {
         }
         $("reset-camera").disabled = false;
         $("reset-camera").onclick = () => {
+          // 完整人物模式不运行内容裁边。只有点击「智能铺满」才进行可能裁边的聚焦。
           resetCamera(pl);
-          scheduleAutoFocus(pl, 160);
         };
         $("auto-focus").onclick = () => {
           resetCamera(pl);
@@ -572,7 +637,8 @@ async function loadRole(role) {
           button.onclick = () => selectAnimation(pl,name);
           $("motions").appendChild(button);
         }
-        const first = anims.find(name => /^idle1$/i.test(name))
+        const first = (restore?.animation && anims.includes(restore.animation) ? restore.animation : null)
+          || anims.find(name => /^idle1$/i.test(name))
           || anims.find(name => isIdleAnimation(name))
           || anims[0];
         const started = first ? selectAnimation(pl, first) : false;
@@ -604,6 +670,35 @@ async function loadRole(role) {
     setStatus(String(error));
   }
 }
+
+// 切换舞台布局后重建播放器，保证 WebGL 帧缓冲与新舞台尺寸一致。
+// 仅重建展示，不重新下载素材；保持角色、Skin 与当前动作。
+function setTheaterMode(enabled) {
+  const stage = $("viewer");
+  if (stage.classList.contains("theater") === enabled) return;
+  const savedRole = currentRole;
+  const savedSkin = chosenSkin;
+  const selectedMotion = $("motions").querySelector("button.active");
+  const savedAnimation = selectedMotion ? selectedMotion.textContent : null;
+  stage.classList.toggle("theater", enabled);
+  document.body.classList.toggle("theater-mode", enabled);
+  $("theater-toggle").textContent = enabled ? "退出大屏（Esc）" : "大屏预览 ⛶";
+  $("theater-toggle").setAttribute("aria-pressed", String(enabled));
+  if (selected && savedRole && installed.get(selected.id)?.roles[savedRole]) {
+    requestAnimationFrame(() => {
+      loadRole(savedRole, {skin:savedSkin, animation:savedAnimation});
+    });
+  }
+}
+
+$("theater-toggle").onclick = () => {
+  setTheaterMode(!$("viewer").classList.contains("theater"));
+};
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape" && $("viewer").classList.contains("theater")) {
+    setTheaterMode(false);
+  }
+});
 
 $("alpha-mode").onchange = () => {
   alphaMode = $("alpha-mode").value;

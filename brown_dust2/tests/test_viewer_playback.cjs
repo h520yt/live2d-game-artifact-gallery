@@ -160,6 +160,65 @@ test("智能取景只对互动动画生效，支持手动放大和重试",()=>{
   assert.match(page,/setZoomFactor\(pl,/);
 });
 
+test("预览舞台默认随屏幕增高，沉浸式预览可占满可视窗口",()=>{
+  assert.match(page,/height:clamp\(560px,73dvh,1300px\)/);
+  assert.match(page,/grid-template-columns:clamp\(240px,19vw,300px\)/);
+  assert.match(page,/\.viewer\.theater\{position:fixed;inset:0;z-index:1000/);
+  assert.match(page,/height:100dvh/);
+  assert.match(page,/\.viewer\.theater \.stage\{height:auto;flex:1 1 auto/);
+  assert.match(page,/id="theater-toggle"/);
+  assert.match(page,/event\.key === "Escape"/);
+});
+
+test("切换大屏保留当前资源分类、Skin 和动画，重建播放器以匹配新尺寸",()=>{
+  assert.match(page,/function setTheaterMode\(enabled\)/);
+  assert.match(page,/const savedRole = currentRole/);
+  assert.match(page,/const savedSkin = chosenSkin/);
+  assert.match(page,/savedAnimation = selectedMotion \? selectedMotion\.textContent : null/);
+  assert.match(page,/loadRole\(savedRole, \{skin:savedSkin, animation:savedAnimation\}\)/);
+  assert.match(page,/async function loadRole\(role, restore=null\)/);
+  assert.match(page,/restore\?\.skin && skinOptions\.find/);
+  assert.match(page,/restore\?\.animation && anims\.includes/);
+});
+
+test("完整适配与智能铺满独立，手动缩放允许缩小到50%",()=>{
+  assert.match(page,/id="zoom"[^>]*min="50" max="500"/);
+  assert.match(page,/Math\.min\(5, Math\.max\(0\.5, factor\)\)/);
+  const wholeFit = page.slice(page.indexOf('$("reset-camera").onclick ='),
+                             page.indexOf('$("auto-focus").onclick ='));
+  assert.match(wholeFit,/resetCamera\(pl\)/);
+  assert.doesNotMatch(wholeFit,/scheduleAutoFocus/);
+  const focus = page.slice(page.indexOf('$("auto-focus").onclick ='),
+                           page.indexOf('$("zoom").oninput ='));
+  assert.match(focus,/scheduleAutoFocus\(pl, 160\)/);
+});
+
+test("完整人物优先根据可见部件计算世界边界，忽略巨型背景槽位",()=>{
+  const source = extract("function getCharacterBounds(skeleton) {",
+                         "\nfunction resetCamera(pl) {");
+  const bounds = vm.runInNewContext(source + "\ngetCharacterBounds;");
+  const region = (name, left, bottom, right, top) => ({
+    data:{name}, bone:{},
+    getAttachment:() => ({
+      computeWorldVertices:(_bone,vertices) => {
+        vertices.set([left,bottom,right,bottom,right,top,left,top]);
+      }
+    })
+  });
+  const skeleton = {drawOrder:[
+    region("bg_large", -5000,-5000,5000,5000),
+    region("body", 10,20,100,200),
+    region("hair", 20,180,90,240)
+  ]};
+  const value = bounds(skeleton);
+  assert.deepEqual({x:value.x,y:value.y,width:value.width,height:value.height},
+                   {x:10,y:20,width:90,height:220});
+  assert.equal(bounds({drawOrder:[region("background",0,0,5000,5000)]}), null);
+  assert.match(page,/const paddedWidth = size\.x \* 1\.12/);
+  assert.match(page,/Math\.max\(paddedWidth \/ Math\.max\(canvas\.width,1\)/);
+  assert.doesNotMatch(page,/pl\.config\.viewport\s*=/);
+});
+
 test("索引与本地安装状态仍分离",()=>{
   assert.match(page,/installed\.size\s*\?/);
   assert.match(page,/id="install-hint"/);
