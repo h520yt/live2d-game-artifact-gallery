@@ -44,6 +44,7 @@ a{color:var(--gold)}
 .render-tools label{font-size:12px;color:var(--muted)}
 .render-tools select{background:#2e253c;color:var(--text);border:1px solid #594a63;border-radius:7px;padding:7px}
 .render-tools #skin-choice{max-width:240px}
+.render-tools #scene-choice{max-width:170px}
 .render-tools #alpha-mode{max-width:150px}
 .render-tools #zoom{accent-color:var(--gold);width:130px;vertical-align:middle}
 .render-tools #zoom-label{font-size:12px;color:var(--gold);min-width:35px}
@@ -113,6 +114,10 @@ code{font-family:Consolas,monospace;color:#eace9b}
   </div>
   <div class="roles" id="roles"></div>
   <div class="render-tools">
+    <label for="scene-choice">互动场景</label>
+    <select id="scene-choice" disabled title="切换完整场景，自动配对该场景的 Skin 和待机动作">
+      <option>等待加载</option>
+    </select>
     <label for="skin-choice">模型部件</label>
     <select id="skin-choice" disabled title="选择 Spine Skin，用于恢复默认未显示的模型部件">
       <option>等待加载</option>
@@ -152,6 +157,7 @@ let currentRole = "";
 let loadId = 0;
 let alphaMode = localStorage.getItem("bd2.alphaMode") === "straight" ? "straight" : "pma";
 let chosenSkin = null;
+let manualSkinSelection = false;
 let activeSpine = null;
 $("alpha-mode").value = alphaMode;
 
@@ -338,6 +344,68 @@ function bestSkin(skins) {
   return ranked[0] || null;
 }
 
+// 互动文件的 Skin 名（如 idle3_1）往往就是场景/动作分组，不能按部件数最多选。
+// 例如 Skin=idle3_1 + 动画=idle1 会造成背景正常、人物缺失。
+function idleSceneKey(name) {
+  const match = /^idle(\d+)(?:[_-](\d+))?$/i.exec(name || "");
+  return match ? {group:Number(match[1]),variant:match[2] || ""} : null;
+}
+
+function skinForAnimation(skins, animation) {
+  if (!skins || !skins.length || !animation) return null;
+  const byName = new Map(skins.map(skin => [skin.name.toLowerCase(),skin]));
+  const direct = byName.get(animation.toLowerCase());
+  if (direct) return direct;
+  const idle = idleSceneKey(animation);
+  const mix = /^mix(\d+)(?:[_-](\d+))?/i.exec(animation);
+  const group = idle ? idle.group : mix ? Number(mix[1]) : null;
+  if (group !== null) {
+    // 优先当前分组对应的 Skin，不跨到其它故事场景。
+    const variant = idle ? idle.variant : mix[2] || "";
+    if (variant && byName.has("idle" + group + "_" + variant)) {
+      return byName.get("idle" + group + "_" + variant);
+    }
+    if (chosenSkin && byName.has(chosenSkin.toLowerCase())) {
+      const previous = idleSceneKey(chosenSkin);
+      if (previous && previous.group === group) return byName.get(chosenSkin.toLowerCase());
+    }
+    return byName.get("idle" + group)
+      || skins.find(skin => idleSceneKey(skin.name)?.group === group)
+      || byName.get("default") || null;
+  }
+  return byName.get("default") || null;
+}
+
+function pickInitialScene(animations, skins, restoredAnimation=null, restoredSkin=null) {
+  if (restoredAnimation && animations.includes(restoredAnimation)) {
+    const skin = skins.find(item => item.name === restoredSkin)
+      || skinForAnimation(skins, restoredAnimation)
+      || bestSkin(skins);
+    return {animation:restoredAnimation,skin};
+  }
+  const idles = animations.filter(name => isIdleAnimation(name));
+  const pairs = idles.map(name => ({
+    animation:name,
+    skin:skinForAnimation(skins,name)
+  })).filter(item => item.skin);
+  // 优先同名的完整场景，避免错配。按最小 idle 组号打开最早场景。
+  const matchRank = item => {
+    if (item.skin.name.toLowerCase() === item.animation.toLowerCase()) return 0;
+    const animationScene = idleSceneKey(item.animation);
+    const skinScene = idleSceneKey(item.skin.name);
+    if (animationScene && skinScene && animationScene.group === skinScene.group) return 1;
+    return item.skin.name === "default" ? 2 : 3;
+  };
+  const sceneRank = item => {
+    const id = idleSceneKey(item.animation);
+    return id ? id.group * 100 + (id.variant ? Number(id.variant) || 1 : 0) : 50000;
+  };
+  const good = pairs.sort((a,b) => matchRank(a)-matchRank(b) || sceneRank(a)-sceneRank(b))[0];
+  if (good) return good;
+  const animation = idles[0] || animations[0] || null;
+  return {animation,skin:skinForAnimation(skins,animation) || bestSkin(skins)};
+}
+
 function applySkin(pl, name) {
   const skeleton = pl.skeleton;
   if (!skeleton || !skeleton.data || !skeleton.data.skins) return false;
@@ -347,7 +415,6 @@ function applySkin(pl, name) {
   skeleton.setSlotsToSetupPose();
   skeleton.updateWorldTransform();
   chosenSkin = name;
-  resetCamera(pl);
   return true;
 }
 
@@ -542,8 +609,11 @@ function disposePlayer() {
   $("motions").replaceChildren();
   $("skin-choice").replaceChildren();
   $("skin-choice").disabled = true;
+  $("scene-choice").replaceChildren();
+  $("scene-choice").disabled = true;
   $("reset-camera").disabled = true;
   chosenSkin = null;
+  manualSkinSelection = false;
   activeSpine = null;
 }
 
@@ -684,30 +754,69 @@ async function blobDataUrl(blob) {
 function selectAnimation(pl, name) {
   const names = pl.animationState.data.skeletonData.animations.map(item => item.name);
   const group = currentRole === "interaction" ? getAnimationGroup(name) : null;
-  const idle = group !== null && names.includes("idle" + group) ? "idle" + group : null;
+  const baseIdle = group !== null
+    ? names.find(item => item.toLowerCase() === "idle" + group)
+      || names.find(item => idleSceneKey(item)?.group === group)
+    : null;
   const loop = isIdleAnimation(name);
   const fallback = names.find(item => /^idle\d*$/i.test(item))
     || names.find(item => /^(stand|wait|loop)/i.test(item));
   try {
-    if (idle) {
-      // BD2 互动动作 mixN_* 必须叠在第 0 轨 idleN 之上。
-      // 否则互动的角色部件不会出现在只有轨道 1 的动作中。
+    let changedSkin = false;
+    if (currentRole === "interaction" && !manualSkinSelection) {
+      const candidate = skinForAnimation(pl.skeleton?.data?.skins || [], name);
+      if (candidate && candidate.name !== chosenSkin) {
+        changedSkin = applySkin(pl, candidate.name);
+        const menu = $("skin-choice");
+        if (menu) menu.value = candidate.name;
+      }
+    }
+
+    if (baseIdle) {
       const state = pl.animationState;
       state.clearTracks();
       if (pl.skeleton) pl.skeleton.setToSetupPose();
-      state.setAnimation(0, idle, true);
+      const base = state.setAnimation(0, baseIdle, true);
+      if (base) {
+        base.trackEnd = Number.MAX_VALUE;
+        base.mixDuration = 0;
+        base.mixTime = 0;
+      }
       const entry = state.setAnimation(1, name, false);
-      if (entry) entry.mixDuration = 0;
+      if (entry) {
+        entry.mixDuration = 0;
+        entry.mixTime = 0;
+      }
     } else {
       pl.animationState.clearTracks();
+      // 使用 SpinePlayer API 确保内部动画视口的映射仍然有效。
       pl.setAnimation(name, loop);
       if (!loop && fallback && fallback !== name) {
         pl.addAnimation(fallback, true, 0);
       }
     }
+    // 重新应用当前动画才能让 Skin 里的角色附件获得正确姿态。
+    if (pl.skeleton) {
+      pl.animationState.apply?.(pl.skeleton);
+      pl.skeleton.updateWorldTransform?.();
+    }
     pl.play();
+    if (changedSkin) {
+      resetCamera(pl);
+      scheduleAutoFocus(pl, 260);
+    }
     for (const button of $("motions").children) {
       button.classList.toggle("active", button.textContent === name);
+    }
+    if (currentRole === "interaction") {
+      const menu = $("scene-choice");
+      const idleName = baseIdle || (isIdleAnimation(name) ? name : null);
+      if (menu && idleName && [...menu.options].some(opt => opt.value === idleName)) {
+        menu.value = idleName;
+      }
+      setStatus("互动场景 · Skin: " + (chosenSkin || "默认") +
+        " · 动作: " + name +
+        (manualSkinSelection ? " · 手动锁定Skin" : " · 自动配对"));
     }
     return true;
   } catch (error) {
@@ -786,18 +895,27 @@ async function loadRole(role, restore=null) {
           option.textContent = skin.name + " (" + countSkinAttachments(skin) + " 部件)";
           select.appendChild(option);
         }
-        const best = (restore?.skin && skinOptions.find(skin => skin.name === restore.skin))
-          || bestSkin(skinOptions);
+        const anims = pl.animationState.data.skeletonData.animations.map(a => a.name);
+        const initial = currentRole === "interaction"
+          ? pickInitialScene(anims,skinOptions,restore?.animation,restore?.skin)
+          : {animation:(restore?.animation && anims.includes(restore.animation)
+                ? restore.animation : anims.find(name => isIdleAnimation(name)) || anims[0]),
+             skin:(restore?.skin && skinOptions.find(skin => skin.name === restore.skin))
+               || bestSkin(skinOptions)};
+        const best = initial.skin;
         select.disabled = !best;
-        if(best) {
+        manualSkinSelection = Boolean(restore?.skinLocked);
+        if (best) {
           select.value = best.name;
-          applySkin(pl, best.name);
+          applySkin(pl,best.name);
           select.onchange = () => {
             if(ownLoad !== loadId) return;
+            manualSkinSelection = true;
             applySkin(pl, select.value);
-            const first = $("motions").querySelector("button.active");
-            if(first) selectAnimation(pl, first.textContent);
-          scheduleAutoFocus(pl, 180);
+            const current = $("motions").querySelector("button.active");
+            if(current) selectAnimation(pl,current.textContent);
+            resetCamera(pl);
+            scheduleAutoFocus(pl,180);
           };
         }
         $("reset-camera").disabled = false;
@@ -810,17 +928,32 @@ async function loadRole(role, restore=null) {
           scheduleAutoFocus(pl, 160);
         };
         $("zoom").oninput = () => setZoomFactor(pl, Number($("zoom").value)/100);
-        const anims = pl.animationState.data.skeletonData.animations.map(a => a.name);
+        const scene = $("scene-choice");
+        scene.replaceChildren();
+        const idles = anims.filter(name => /^idle\d*(?:[_-]\d+)?$/i.test(name));
+        scene.disabled = currentRole !== "interaction" || !idles.length;
+        for(const name of idles) {
+          const option = document.createElement("option");
+          const matched = skinForAnimation(skinOptions,name);
+          option.value = name;
+          option.textContent = name + (matched ? " / " + matched.name : " / 默认");
+          scene.appendChild(option);
+        }
+        scene.onchange = () => {
+          if(ownLoad !== loadId) return;
+          manualSkinSelection = false;
+          if(selectAnimation(pl,scene.value)) {
+            resetCamera(pl);
+            scheduleAutoFocus(pl,280);
+          }
+        };
         $("motions").replaceChildren();
         for(const name of anims) {
           const button = el("button","",name);
           button.onclick = () => selectAnimation(pl,name);
           $("motions").appendChild(button);
         }
-        const first = (restore?.animation && anims.includes(restore.animation) ? restore.animation : null)
-          || anims.find(name => /^idle1$/i.test(name))
-          || anims.find(name => isIdleAnimation(name))
-          || anims[0];
+        const first = initial.animation;
         const started = first ? selectAnimation(pl, first) : false;
         if (started) {
           // 先应用 idle / mix，再自动检测实际画面；不修改 SpinePlayer 内部 viewport。
@@ -858,6 +991,7 @@ function setTheaterMode(enabled) {
   if (stage.classList.contains("theater") === enabled) return;
   const savedRole = currentRole;
   const savedSkin = chosenSkin;
+  const savedSkinLocked = manualSkinSelection;
   const selectedMotion = $("motions").querySelector("button.active");
   const savedAnimation = selectedMotion ? selectedMotion.textContent : null;
   stage.classList.toggle("theater", enabled);
@@ -866,7 +1000,7 @@ function setTheaterMode(enabled) {
   $("theater-toggle").setAttribute("aria-pressed", String(enabled));
   if (selected && savedRole && installed.get(selected.id)?.roles[savedRole]) {
     requestAnimationFrame(() => {
-      loadRole(savedRole, {skin:savedSkin, animation:savedAnimation});
+      loadRole(savedRole, {skin:savedSkin, skinLocked:savedSkinLocked, animation:savedAnimation});
     });
   }
 }

@@ -108,6 +108,52 @@ test("选择实际部件最多的 Skin 而不是固定 default",()=>{
   assert.equal(chosen.name,"prestige");
 });
 
+test("初始互动动画必须与 Skin 场景同组，不能单纯挑选部件最多的 Skin",()=>{
+  const scope={chosenSkin:null};
+  const helpersFn=vm.runInNewContext(helpers + skinHelpers +
+    "\n({skinForAnimation,pickInitialScene});",scope);
+  const mk=(name,n)=>({name,getAttachments:()=>Array.from({length:n},(_,i)=>i)});
+  const skins=[mk("default",900),mk("idle3_1",465)];
+  const anims=["idle1","idle2","idle3_1","mix3_1"];
+  const first=helpersFn.pickInitialScene(anims,skins);
+  assert.equal(first.skin.name,"idle3_1");
+  assert.equal(first.animation,"idle3_1");
+  assert.equal(helpersFn.skinForAnimation(skins,"mix3_1").name,"idle3_1");
+  // 如果上游只提供 idle3 而不是 idle3_1 动画，也必须选择同组 Skin。
+  const groupOnly=helpersFn.pickInitialScene(["idle1","idle3"],skins);
+  assert.equal(groupOnly.skin.name,"idle3_1");
+  assert.equal(groupOnly.animation,"idle3");
+});
+
+test("相同编号的 Skin/idle 必须优先于部件数，动画手动切换时自动切换 Skin",()=>{
+  const scope={chosenSkin:null};
+  const f=vm.runInNewContext(helpers + skinHelpers +
+    "\n({skinForAnimation,pickInitialScene});",scope);
+  const mk=(name,n)=>({name,getAttachments:()=>Array.from({length:n},(_,i)=>i)});
+  const skins=[mk("idle3_1",800),mk("idle1",200),mk("default",30)];
+  const first=f.pickInitialScene(["idle1","idle3_1"],skins);
+  assert.equal(first.skin.name,"idle1");
+  assert.equal(first.animation,"idle1");
+  assert.equal(f.skinForAnimation(skins,"idle3_1").name,"idle3_1");
+  assert.equal(f.skinForAnimation(skins,"mix3_2").name,"idle3_1");
+  assert.match(page,/currentRole === "interaction" && !manualSkinSelection/);
+  assert.match(page,/const candidate = skinForAnimation\(pl\.skeleton\?\.data\?\.skins \|\| \[\], name\)/);
+  assert.match(page,/changedSkin = applySkin\(pl, candidate\.name\)/);
+  assert.match(page,/pl\.animationState\.apply\?\.\(pl\.skeleton\)/);
+});
+
+test("互动场景下拉菜单可一键更换配对的动画和 Skin，手动 Skin 锁定仍可解除",()=>{
+  assert.match(page,/id="scene-choice"/);
+  assert.match(page,/scene\.disabled = currentRole !== "interaction"/);
+  assert.match(page,/const matched = skinForAnimation\(skinOptions,name\)/);
+  assert.match(page,/scene\.onchange = \(\) => \{/);
+  assert.match(page,/manualSkinSelection = false;/);
+  assert.match(page,/selectAnimation\(pl,scene\.value\)/);
+  assert.match(page,/manualSkinSelection = true;/);
+  assert.match(page,/savedSkinLocked = manualSkinSelection/);
+  assert.match(page,/skinLocked:savedSkinLocked/);
+});
+
 test("预乘 Alpha 的纹理上传和播放器混合开关联动",()=>{
   assert.match(page,/UNPACK_PREMULTIPLY_ALPHA_WEBGL/);
   assert.match(page,/premultipliedAlpha:alphaMode === "pma"/);
