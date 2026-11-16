@@ -1,4 +1,240 @@
 {
-  "generated_at": null,
-  "installed": []
+  "generated_at": "2026-11-16T11:33:17.263199+00:00",
+  "installed": [
+    {
+      "id": "justia-hot-summer-dream",
+      "roles": {
+        "character": {
+          "skel": "char000296.skel",
+          "atlas": "char000296.atlas",
+          "pages": [
+            "char000296.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/justia-hot-summer-dream/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char000296.skel",
+          "atlas": "cutscene_char000296.atlas",
+          "pages": [
+            "cutscene_char000296.png",
+            "cutscene_char000296_2.png",
+            "cutscene_char000296_3.png",
+            "cutscene_char000296_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/justia-hot-summer-dream/cutscene"
+        },
+        "interaction": {
+          "skel": "illust_dating7.skel",
+          "atlas": "illust_dating7.atlas",
+          "pages": [
+            "illust_dating7.png",
+            "illust_dating7_2.png",
+            "illust_dating7_3.png",
+            "illust_dating7_4.png",
+            "illust_dating7_5.png",
+            "illust_dating7_6.png",
+            "illust_dating7_7.png",
+            "illust_dating7_8.png",
+            "illust_dating7_9.png",
+            "illust_dating7_10.png",
+            "illust_dating7_11.png",
+            "illust_dating7_12.png",
+            "illust_dating7_13.png",
+            "illust_dating7_14.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/justia-hot-summer-dream/interaction"
+        }
+      }
+    },
+    {
+      "id": "teresse-milky-bikini",
+      "roles": {
+        "character": {
+          "skel": "char001197.skel",
+          "atlas": "char001197.atlas",
+          "pages": [
+            "char001197.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/teresse-milky-bikini/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char001197.skel",
+          "atlas": "cutscene_char001197.atlas",
+          "pages": [
+            "cutscene_char001197.png",
+            "cutscene_char001197_2.png",
+            "cutscene_char001197_3.png",
+            "cutscene_char001197_4.png",
+            "cutscene_char001197_5.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/teresse-milky-bikini/cutscene"
+        },
+        "interaction": {
+          "skel": "illust_dating9.skel",
+          "atlas": "illust_dating9.atlas",
+          "pages": [
+            "illust_dating9.png",
+            "illust_dating9_2.png",
+            "illust_dating9_3.png",
+            "illust_dating9_4.png",
+            "illust_dating9_5.png",
+            "illust_dating9_6.png",
+            "illust_dating9_7.png",
+            "illust_dating9_8.png",
+            "illust_dating9_9.png",
+            "illust_dating9_10.png",
+            "illust_dating9_11.png",
+            "illust_dating9_12.png",
+            "illust_dating9_13.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/teresse-milky-bikini/interaction"
+        }
+      }
+    },
+    {
+      "id": "zenith-stranger-bunny",
+      "roles": {
+        "character": {
+          "skel": "char061492.skel",
+          "atlas": "char061492.atlas",
+          "pages": [
+            "char061492.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/zenith-stranger-bunny/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char061492.skel",
+          "atlas": "cutscene_char061492.atlas",
+          "pages": [
+            "cutscene_char061492.png",
+            "cutscene_char061492_2.png",
+            "cutscene_char061492_3.png",
+            "cutscene_char061492_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/zenith-stranger-bunny/cutscene"
+        },
+        "interaction": {
+          "skel": "illust_dating12.skel",
+          "atlas": "illust_dating12.atlas",
+          "pages": [
+            "illust_dating12.png",
+            "illust_dating12_2.png",
+            "illust_dating12_3.png",
+            "illust_dating12_4.png",
+            "illust_dating12_5.png",
+            "illust_dating12_6.png",
+            "illust_dating12_7.png",
+            "illust_dating12_8.png",
+            "illust_dating12_9.png",
+            "illust_dating12_10.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/zenith-stranger-bunny/interaction"
+        }
+      }
+    },
+    {
+      "id": "liberta-hedonist",
+      "roles": {
+        "character": {
+          "skel": "char003892.skel",
+          "atlas": "char003892.atlas",
+          "pages": [
+            "char003892.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/liberta-hedonist/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char003892.skel",
+          "atlas": "cutscene_char003892.atlas",
+          "pages": [
+            "cutscene_char003892.png",
+            "cutscene_char003892_2.png",
+            "cutscene_char003892_3.png",
+            "cutscene_char003892_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/liberta-hedonist/cutscene"
+        },
+        "interaction": {
+          "skel": "illust_dating14.skel",
+          "atlas": "illust_dating14.atlas",
+          "pages": [
+            "illust_dating14.png",
+            "illust_dating14_2.png",
+            "illust_dating14_3.png",
+            "illust_dating14_4.png",
+            "illust_dating14_5.png",
+            "illust_dating14_6.png",
+            "illust_dating14_7.png",
+            "illust_dating14_8.png",
+            "illust_dating14_9.png",
+            "illust_dating14_10.png",
+            "illust_dating14_11.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/liberta-hedonist/interaction"
+        }
+      }
+    },
+    {
+      "id": "scheherazade-deliberate-ace",
+      "roles": {
+        "character": {
+          "skel": "char000396.skel",
+          "atlas": "char000396.atlas",
+          "pages": [
+            "char000396.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/scheherazade-deliberate-ace/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char000396.skel",
+          "atlas": "cutscene_char000396.atlas",
+          "pages": [
+            "cutscene_char000396.png",
+            "cutscene_char000396_2.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/scheherazade-deliberate-ace/cutscene"
+        }
+      }
+    },
+    {
+      "id": "yuri-forever-mascot",
+      "roles": {
+        "character": {
+          "skel": "char065193.skel",
+          "atlas": "char065193.atlas",
+          "pages": [
+            "char065193.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/yuri-forever-mascot/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char065193.skel",
+          "atlas": "cutscene_char065193.atlas",
+          "pages": [
+            "cutscene_char065193.png",
+            "cutscene_char065193_2.png",
+            "cutscene_char065193_3.png",
+            "cutscene_char065193_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/yuri-forever-mascot/cutscene"
+        }
+      }
+    }
+  ]
 }
