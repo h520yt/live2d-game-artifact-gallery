@@ -1,0 +1,87 @@
+{
+  "source": {
+    "repository": "myssal/Brown-Dust-2-Asset",
+    "branch": "master"
+  },
+  "tier": "Prestige Skin",
+  "skins": [
+    {
+      "id": "justia-hot-summer-dream",
+      "character": "尤丝缇亚",
+      "character_en": "Justia",
+      "skin": "盛夏之梦",
+      "skin_en": "Hot Summer Dream",
+      "roles": {
+        "character": "spine/char/char000296",
+        "cutscene": "spine/cutscenes/cutscene_char000296",
+        "interaction": "spine/illust/illust_dating/illust_dating7"
+      },
+      "mapping": "confirmed"
+    },
+    {
+      "id": "teresse-milky-bikini",
+      "character": "泰瑞丝",
+      "character_en": "Teresse",
+      "skin": "牛奶比基尼",
+      "skin_en": "Milky Bikini",
+      "roles": {
+        "character": "spine/char/char001197",
+        "cutscene": "spine/cutscenes/cutscene_char001197",
+        "interaction": "spine/illust/illust_dating/illust_dating9"
+      },
+      "mapping": "confirmed"
+    },
+    {
+      "id": "zenith-stranger-bunny",
+      "character": "洁尼斯",
+      "character_en": "Zenith",
+      "skin": "陌生兔女郎",
+      "skin_en": "Stranger Bunny",
+      "roles": {
+        "character": "spine/char/char061492",
+        "cutscene": "spine/cutscenes/cutscene_char061492",
+        "interaction": "spine/illust/illust_dating/illust_dating12"
+      },
+      "mapping": "confirmed"
+    },
+    {
+      "id": "liberta-hedonist",
+      "character": "莉贝尔塔",
+      "character_en": "Liberta",
+      "skin": "享乐主义者",
+      "skin_en": "Hedonist",
+      "roles": {
+        "character": "spine/char/char003892",
+        "cutscene": "spine/cutscenes/cutscene_char003892",
+        "interaction": "spine/illust/illust_dating/illust_dating14"
+      },
+      "mapping": "confirmed"
+    },
+    {
+      "id": "scheherazade-deliberate-ace",
+      "character": "莎赫拉查德",
+      "character_en": "Scheherazade",
+      "skin": "谋定王牌",
+      "skin_en": "Deliberate Ace",
+      "roles": {
+        "character": "spine/char/char000396",
+        "cutscene": "spine/cutscenes/cutscene_char000396"
+      },
+      "mapping": "candidate",
+      "note": "角色与技能演出目录已确认；互动资源未核实"
+    },
+    {
+      "id": "yuri-forever-mascot",
+      "character": "尤里",
+      "character_en": "Yuri",
+      "skin": "永恒吉祥物",
+      "skin_en": "Forever Mascot",
+      "roles": {
+        "character": "spine/char/char065193",
+        "cutscene": "spine/cutscenes/cutscene_char065193"
+      },
+      "mapping": "candidate",
+      "note": "角色与技能演出目录已确认；互动资源未核实"
+    }
+  ]
+}

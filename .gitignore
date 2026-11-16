@@ -30,3 +30,6 @@ reverse1999/config/
 
 # 1999 Spine 官方运行时仅在本机安装，不提交
 reverse1999/vendor/
+
+# BD2 游戏版权资源只存本地
+brown_dust2/data/

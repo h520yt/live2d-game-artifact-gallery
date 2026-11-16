@@ -21,6 +21,13 @@
 - **外观风格筛选**：新增「御姐 / 腿部重点 / 运动系」标签与一键安装脚本 `python nikke/scripts/install_style.py 运动系`，自动识别并下载选中风格的 NIKKE 角色、皮肤。详见 [`nikke/SPORTS.md`](nikke/SPORTS.md)。
 - **四批收藏一键补齐**：新增 35 个黑丝、网袜、长筒袜、成熟御姐与兔女郎候选 ID，并提供分批下载、文件完整性核验、缺失资源报告。`python nikke/scripts/install_batches.py --all`，详见 [`nikke/CURATED_BATCHES.md`](nikke/CURATED_BATCHES.md)。
 
+## 棕色尘埃2 · 尊爵皮肤首批
+
+- 已新增 Prestige Skin 六款收藏计划、本地增量下载脚本和 Spine 预览入口；未实际下载的皮肤不会误报为已安装。
+- 安装：`python brown_dust2/scripts/install_prestige.py --plan` 查看容量，随后执行 `python brown_dust2/scripts/install_prestige.py`。
+- 查看：`http://127.0.0.1:8000/brown_dust2/viewer/index.html`，详见 [棕色尘埃2说明](brown_dust2/README.md)。
+- 游戏素材放在 `brown_dust2/data/`（Git 忽略），代码仓库只保存管理逻辑。
+
 ---
 
 ## 目录结构

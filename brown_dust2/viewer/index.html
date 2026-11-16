@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>棕色尘埃2 · 尊爵皮肤展示柜</title>
+<link rel="stylesheet" href="../../shared/vendor/spine-player.css">
+<style>
+:root{--bg:#100d19;--panel:#1b1829;--line:#40354e;--gold:#e8c58b;--text:#f4ecf6;--muted:#ab9cae}
+*{box-sizing:border-box}
+body{background:radial-gradient(ellipse at 65% 0%,#32203f 0%,var(--bg) 55%);color:var(--text);font:15px/1.6 "Segoe UI","Microsoft YaHei",sans-serif;margin:0;min-height:100vh}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:22px 3vw;border-bottom:1px solid var(--line)}
+header h1{font-size:22px;letter-spacing:.06em;margin:4px 0}
+.subtitle{color:var(--muted);font-size:12px;letter-spacing:.08em}
+a{color:var(--gold)}
+.back{font-size:13px;text-decoration:none;white-space:nowrap}
+.layout{display:grid;grid-template-columns:minmax(300px,420px) minmax(0,1fr);gap:20px;padding:20px 3vw}
+.sidebar,.viewer{border:1px solid var(--line);background:rgba(23,18,36,.92);border-radius:16px;min-height:640px}
+.sidebar{padding:22px;overflow:hidden}
+.sidebar-top{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.sidebar h2{font-size:16px;margin:0}
+.counter{color:var(--muted);font-size:12px}
+.search{width:100%;background:#120e1e;border:1px solid #4c3c55;padding:12px;color:var(--text);margin:16px 0;border-radius:8px;outline:none}
+.search:focus{border-color:var(--gold)}
+.cards{display:grid;gap:10px;max-height:66vh;overflow:auto;padding:2px}
+.card{width:100%;text-align:left;border:1px solid #41364b;background:linear-gradient(120deg,#292036,#1a1728);border-radius:10px;padding:14px;color:var(--text);cursor:pointer}
+.card:hover,.card.active{border-color:var(--gold);background:linear-gradient(120deg,#423044,#231d31)}
+.card-title{font-size:15px;font-weight:600}
+.card-sub{font-size:12px;color:var(--muted);margin:3px 0 10px}
+.tags{display:flex;gap:6px;flex-wrap:wrap}
+.tag{font-size:11px;border:1px solid #66546c;padding:1px 7px;border-radius:12px;color:#d7c5d9}
+.tag.ready{color:#a6dfb8;border-color:#5f966b}
+.tag.wait{color:#ecc48b;border-color:#927143}
+.viewer{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.heading h2{margin:0;font-size:19px}
+.heading p{margin:4px 0 0;font-size:12px;color:var(--muted)}
+.actions,.roles,.motions{display:flex;gap:8px;flex-wrap:wrap}
+button{cursor:pointer;border-radius:7px;background:#2e253c;color:var(--text);border:1px solid #594a63;padding:8px 12px}
+button:hover:not(:disabled),button.active{border-color:var(--gold);color:var(--gold)}
+button:disabled{opacity:.45;cursor:not-allowed}
+.stage{position:relative;min-height:480px;flex:1;border-radius:12px;overflow:hidden;background:radial-gradient(ellipse at 50% 50%,#352b41 0%,#13101e 70%)}
+#spine-root{position:absolute;inset:0}
+#spine-root .spine-player,#spine-root .spine-player-canvas,#spine-root canvas{width:100%!important;height:100%!important;display:block}
+.empty{position:absolute;top:48%;left:50%;transform:translate(-50%,-50%);color:var(--muted);text-align:center;width:80%;pointer-events:none}
+.empty strong{color:var(--gold)}
+.status{color:var(--muted);font-size:12px;min-height:18px}
+.motions{max-height:118px;overflow:auto}
+.motions button{font-size:12px;padding:6px 9px}
+.hint{border-left:2px solid #8d734f;background:#2a2330;padding:10px 13px;color:#c9b9c8;font-size:12px}
+code{font-family:Consolas,monospace;color:#eace9b}
+@media(max-width:960px){.layout{grid-template-columns:1fr}.sidebar,.viewer{min-height:0}.cards{max-height:none;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}.stage{min-height:500px}}
+</style>
+</head>
+<body>
+<header>
+ <div><div class="subtitle">GAME ARTIFACT GALLERY · PRESTIGE COLLECTION</div><h1>棕色尘埃2 · 尊爵皮肤</h1></div>
+ <a class="back" href="../../index.html">← 返回游戏展柜</a>
+</header>
+<main class="layout">
+ <section class="sidebar">
+  <div class="sidebar-top"><h2>首批 Prestige Skin</h2><span class="counter" id="count">读取中</span></div>
+  <input class="search" id="search" placeholder="搜索角色或皮肤名称" aria-label="搜索皮肤">
+  <div class="cards" id="cards"></div>
+  <p class="status" id="list-status"></p>
+ </section>
+ <section class="viewer">
+  <div class="heading">
+   <div><h2 id="title">请选择左侧皮肤</h2><p id="description">角色模型 / 技能演出 / 互动场景</p></div>
+   <button id="save" disabled>导出当前帧 PNG</button>
+  </div>
+  <div class="roles" id="roles"></div>
+  <div class="stage">
+   <div id="spine-root"></div>
+   <div class="empty" id="empty"><strong>Prestige Skin</strong><p>选择已安装皮肤，预览 Spine 4.1 动画</p></div>
+  </div>
+  <div class="status" id="status"></div>
+  <div class="motions" id="motions"></div>
+  <div class="hint">未下载的皮肤只显示收藏计划，不会假装已安装。先在项目根目录运行 <code>python brown_dust2/scripts/install_prestige.py</code>，再刷新网页。</div>
+ </section>
+</main>
+<script src="../../shared/vendor/spine-player4.0.js"></script>
+<script src="../../shared/vendor/spine-player4.1.js"></script>
+<script>
+"use strict";
+const ROLE_NAME = {character:"人物动态",cutscene:"技能演出",interaction:"互动动画"};
+const $ = id => document.getElementById(id);
+let catalog = [];
+let installed = new Map();
+let selected = null;
+let player = null;
+let currentRole = "";
+let loadId = 0;
+
+function el(tag, cls, text) {
+  const node = document.createElement(tag);
+  if(cls) node.className = cls;
+  if(text !== undefined) node.textContent = text;
+  return node;
+}
+
+function badge(text, kind) {
+  return el("span", "tag " + (kind || ""), text);
+}
+
+function setStatus(text) {$("status").textContent = text;}
+
+function disposePlayer() {
+  loadId += 1;
+  if (player) {
+    try {player.dispose();} catch(error) {console.warn(error);}
+    player = null;
+  }
+  $("spine-root").replaceChildren();
+  $("save").disabled = true;
+  $("motions").replaceChildren();
+}
+
+function renderCards(filter) {
+  $("cards").replaceChildren();
+  const q = (filter || "").trim().toLowerCase();
+  const matches = catalog.filter(skin =>
+    [skin.character,skin.character_en,skin.skin,skin.skin_en,skin.id]
+    .some(value => String(value).toLowerCase().includes(q)));
+  for (const skin of matches) {
+    const present = installed.get(skin.id);
+    const roles = present ? Object.keys(present.roles) : [];
+    const card = el("button", "card" + (selected && selected.id === skin.id ? " active" : ""));
+    card.appendChild(el("div","card-title",skin.character + " · " + skin.skin));
+    card.appendChild(el("div","card-sub",skin.character_en + " / " + skin.skin_en));
+    const tags = el("div","tags");
+    tags.appendChild(badge("Prestige"));
+    tags.appendChild(badge(roles.length ? "本地 " + roles.length + " 类" : "待安装", roles.length ? "ready":"wait"));
+    if (skin.mapping !== "confirmed") tags.appendChild(badge("互动待核实"));
+    card.appendChild(tags);
+    card.onclick = () => selectSkin(skin);
+    $("cards").appendChild(card);
+  }
+  $("count").textContent = installed.size + " 款本地有资源 / " + catalog.length + " 款计划";
+  $("list-status").textContent = matches.length ? "" : "没有符合条件的皮肤";
+}
+
+function selectSkin(skin) {
+  selected = skin;
+  disposePlayer();
+  $("title").textContent = skin.character + " · " + skin.skin;
+  $("description").textContent = skin.character_en + " / " + skin.skin_en + " · Prestige Skin";
+  const item = installed.get(skin.id);
+  $("roles").replaceChildren();
+  if (!item || !Object.keys(item.roles).length) {
+    $("empty").hidden = false;
+    $("empty").textContent = "资源未安装；运行安装脚本后刷新页面。";
+    setStatus("此皮肤属于首批收藏计划，尚未检测到有效本地资源。");
+  } else {
+    Object.keys(ROLE_NAME).forEach(role => {
+      const info = item.roles[role];
+      const button = el("button","",ROLE_NAME[role] + (info ? "" : "（未就绪）"));
+      button.disabled = !info;
+      button.onclick = () => loadRole(role);
+      $("roles").appendChild(button);
+    });
+    loadRole(item.roles.character ? "character" : Object.keys(item.roles)[0]);
+  }
+  renderCards($("search").value);
+}
+
+async function blobDataUrl(blob) {
+  return new Promise((resolve,reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsDataURL(blob);
+  });
+}
+
+function selectAnimation(pl, name) {
+  const loop = /(^|[_ -])(idle|stand|wait|loop)([_ -]|$)/i.test(name);
+  pl.animationState.setAnimation(0, name, loop);
+  for(const b of $("motions").children) b.classList.toggle("active",b.textContent === name);
+}
+
+async function loadRole(role) {
+  if (!selected) return;
+  const item = installed.get(selected.id);
+  if(!item || !item.roles[role]) return;
+  disposePlayer();
+  const ownLoad = loadId;
+  currentRole = role;
+  const model = item.roles[role];
+  $("roles").querySelectorAll("button").forEach((button,index) => {
+    const key = Object.keys(ROLE_NAME)[index];
+    button.classList.toggle("active",key === role);
+  });
+  $("empty").hidden = false;
+  $("empty").textContent = "加载 Spine 骨骼与贴图中...";
+  setStatus(ROLE_NAME[role] + " · Spine " + model.version);
+  const base = model.dir.replace(/\/$/,"") + "/";
+  const skeletonUrl = base + encodeURIComponent(model.skel);
+  const atlasUrl = base + encodeURIComponent(model.atlas);
+  try {
+    const response = await fetch(skeletonUrl);
+    if(!response.ok) throw new Error("骨骼请求失败 HTTP " + response.status);
+    const buffer = await response.arrayBuffer();
+    if(ownLoad !== loadId) return;
+    const prefix = new TextDecoder().decode(new Uint8Array(buffer).slice(0,64));
+    let version = model.version;
+    if (/4\.0\.\d+/.test(prefix)) version = "4.0";
+    if (/4\.1\.\d+/.test(prefix)) version = "4.1";
+    if (!["4.0","4.1"].includes(version)) throw new Error("当前共享播放器不支持 Spine " + version);
+    const runtime = version === "4.0" ? window.spine40 : window.spine41;
+    if(!runtime || !runtime.SpinePlayer) throw new Error("Spine runtime 未加载");
+    const uri = await blobDataUrl(new Blob([buffer]));
+    if(ownLoad !== loadId) return;
+    // 保证舞台具有实际尺寸，避免 player 初始化为 300x150。
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    if(ownLoad !== loadId) return;
+    const key = selected.id + "-" + role;
+    player = new runtime.SpinePlayer("spine-root",{
+      skelUrl:key,
+      rawDataURIs:{[key]:uri},
+      atlasUrl:atlasUrl,
+      premultipliedAlpha:true,
+      alpha:true,
+      backgroundColor:"#00000000",
+      preserveDrawingBuffer:true,
+      showControls:false,
+      defaultMix:0.18,
+      success:pl => {
+        if(ownLoad !== loadId) return;
+        $("empty").hidden = true;
+        $("save").disabled = false;
+        const anims = pl.animationState.data.skeletonData.animations.map(a => a.name);
+        $("motions").replaceChildren();
+        for(const name of anims) {
+          const button = el("button","",name);
+          button.onclick = () => selectAnimation(pl,name);
+          $("motions").appendChild(button);
+        }
+        const first = anims.find(name => /idle|stand|wait|loop/i.test(name)) || anims[0];
+        if(first) selectAnimation(pl,first);
+        setStatus(ROLE_NAME[role] + " · " + anims.length + " 个可选动作 · 拖动调整位置 / 滚轮缩放");
+      },
+      error:err => {
+        if(ownLoad !== loadId) return;
+        $("empty").hidden = false;
+        $("empty").textContent = "动画加载失败，请核验资源版本和 atlas 图片页";
+        setStatus(String(err));
+      }
+    });
+  } catch(error) {
+    if(ownLoad !== loadId) return;
+    $("empty").hidden = false;
+    $("empty").textContent = "本地文件读取失败";
+    setStatus(String(error));
+  }
+}
+
+$("save").onclick = () => {
+  if(!selected || !player) return;
+  const canvas = $("spine-root").querySelector("canvas");
+  if(!canvas) return;
+  try {
+    const link = document.createElement("a");
+    link.href = canvas.toDataURL("image/png");
+    link.download = selected.id + "-" + currentRole + ".png";
+    link.click();
+  } catch(error) {setStatus("PNG 导出失败：" + error.message);}
+};
+$("search").oninput = event => renderCards(event.target.value);
+(async () => {
+  try {
+    const [a,b] = await Promise.all([
+      fetch("../curated_prestige.json", {cache:"no-store"}),
+      fetch("manifest.json", {cache:"no-store"})
+    ]);
+    if(!a.ok || !b.ok) throw new Error("资源索引不存在，请确认从项目根目录启动 HTTP 服务");
+    catalog = (await a.json()).skins || [];
+    const manifest = await b.json();
+    installed = new Map((manifest.installed || []).map(item => [item.id,item]));
+    renderCards("");
+    setStatus("模型文件存放于本地 data/；未安装资源不会出现在播放器里。");
+    if(catalog.length) selectSkin(catalog[0]);
+  } catch(error) {
+    $("cards").appendChild(el("p","status",String(error)));
+    setStatus("请用 python -m http.server 8000 启动网页，而不是直接双击 HTML");
+  }
+})();
+</script>
+</body>
+</html>
