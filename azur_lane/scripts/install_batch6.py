@@ -68,7 +68,8 @@ def load_catalog() -> tuple[Skin, ...]:
             chosen_id = ids[0]
         else:
             # 900xxx 常用于剧情共享立绘，不能凭资源名随机取值。
-            playable = [skin_id for skin_id in ids if skin_id < 900000]
+            # 900000-999999 为常见特殊剧情别名区间；960xxxx 等活动船 ID 仍可用。
+            playable = [skin_id for skin_id in ids if not 900000 <= skin_id < 1000000]
             if len(playable) != 1:
                 issues.append(f"{asset}: 无法唯一确定皮肤 ID，候选 {ids}")
                 continue
@@ -85,28 +86,6 @@ def load_catalog() -> tuple[Skin, ...]:
     if len(result) != 20 or len({s.skin_id for s in result}) != 20:
         raise ValueError("第六批要求20款不同皮肤；请检查皮肤 ID 是否意外重复")
     return tuple(result)
-
-
-def review_report(report: dict) -> list[str]:
-    """全部模型变体与立绘都下载完整，才能标记文件就绪。"""
-    if report.get("batch") != "azur_lane_batch6":
-        raise ValueError("安装报告批次号不匹配")
-    if len(report.get("skins", [])) != 20:
-        raise ValueError("安装报告没有20款，可能是 --only；按需安装不做全量数量校验")
-    incomplete = []
-    for skin in report["skins"]:
-        p_have = int(skin.get("paintings_built", 0))
-        p_need = int(skin.get("paintings_expected", 0))
-        m_have = int(skin.get("models_built", 0))
-        m_need = int(skin.get("models_expected", 0))
-        complete = p_need > 0 and m_need > 0 and p_have == p_need and m_have == m_need
-        if not complete:
-            skin["status"] = "incomplete"
-            incomplete.append(skin["asset"])
-        # 动态交互与鞋履视觉审查需在浏览器手工完成，不自动宣布合格。
-        skin["footwear_verified"] = False
-        skin["all_motions_verified"] = False
-    return incomplete
 
 
 def main(argv: list[str] | None = None) -> int:
