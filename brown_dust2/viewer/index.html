@@ -200,6 +200,42 @@ let loadId = 0;
 let visibleCatalog = [];
 let catalogScroll = 0;
 const previewImages = new Map();
+let thumbnailIndex = new Map();
+const THUMBNAIL_CDN =
+  "https://raw.githubusercontent.com/myssal/Brown-Dust-2-Asset/master/ui/illust/illust_inven_char/";
+
+// 游戏库存图是各套服装真实的256×256立绘，比离开舞台时的 WebGL 截屏可靠。
+// 首次打开画廊即加载；下载到 data/_thumbnails 后网络不通时也可离线回退。
+function createCardArtwork(skin) {
+  const filename = thumbnailIndex.get(skin.id);
+  const saved = previewImages.get(skin.id);
+  if (!filename && !saved) return null;
+  const img = document.createElement("img");
+  img.alt = skin.character_en + " · " + skin.skin_en + " 立绘";
+  img.loading = "lazy";
+  img.decoding = "async";
+  img.referrerPolicy = "no-referrer";
+  if (filename && /^illust_inven_char\d{6}_\d+\.png$/.test(filename)) {
+    const remote = THUMBNAIL_CDN + encodeURIComponent(filename);
+    const offline = "../data/_thumbnails/" + encodeURIComponent(skin.id) + ".png";
+    img.src = remote;
+    img.onerror = () => {
+      if (img.dataset.fallback !== "local") {
+        img.dataset.fallback = "local";
+        img.src = offline;
+      } else if (saved) {
+        img.onerror = null;
+        img.src = saved;
+      } else {
+        img.onerror = null;
+        img.replaceWith(el("div","card-fallback","封面暂不可用"));
+      }
+    };
+  } else {
+    img.src = saved;
+  }
+  return img;
+}
 let alphaMode = localStorage.getItem("bd2.alphaMode") === "straight" ? "straight" : "pma";
 let chosenSkin = null;
 let manualSkinSelection = false;
@@ -764,15 +800,11 @@ function renderCards(filter) {
     const preview = el("div", "card-preview");
     preview.classList.add(skin.roles.interaction ? "interactive" :
       isSpecial(skin) ? "special" : "ordinary");
-    if (previewImages.has(skin.id)) {
-      const image = document.createElement("img");
-      image.src = previewImages.get(skin.id);
-      image.alt = skin.character_en + " 预览截图";
-      image.loading = "lazy";
-      preview.appendChild(image);
+    const artwork = createCardArtwork(skin);
+    if (artwork) {
+      preview.appendChild(artwork);
     } else {
-      preview.appendChild(el("div","card-graphic",
-        (skin.character_en || "B").slice(0,1).toUpperCase()));
+      preview.appendChild(el("div","card-fallback","封面待补充"));
     }
     preview.appendChild(el("div","card-overline",
       skin.roles.interaction ? "INTERACTIVE" : isSpecial(skin) ? "PREMIUM" : "SPINE"));
@@ -829,7 +861,7 @@ function openStage() {
 }
 
 function snapshotCardPreview() {
-  if (!selected || !player) return;
+  if (!selected || !player || thumbnailIndex.has(selected.id)) return;
   const source = $("spine-root").querySelector("canvas");
   if (!source || source.width < 2 || source.height < 2) return;
   try {
@@ -1316,13 +1348,14 @@ for (const button of $("filters").querySelectorAll("button")) {
 }
 (async () => {
   try {
-    const [a,b,c,d,e,f] = await Promise.all([
+    const [a,b,c,d,e,f,g] = await Promise.all([
       fetch("../curated_prestige.json", {cache:"no-store"}),
       fetch("manifest.json", {cache:"no-store"}),
       fetch("../costume_catalog.json", {cache:"no-store"}),
       fetch("../curated_style.json", {cache:"no-store"}),
       fetch("../curated_interactions.json", {cache:"no-store"}),
-      fetch("../curated_batch_20.json", {cache:"no-store"})
+      fetch("../curated_batch_20.json", {cache:"no-store"}),
+      fetch("../thumbnail_catalog.json", {cache:"no-store"})
     ]);
     if(!a.ok || !b.ok || !c.ok || !d.ok || !e.ok || !f.ok) {
       throw new Error("互动资源索引不存在，请从项目根目录启动 HTTP 服务并更新代码");
@@ -1332,6 +1365,12 @@ for (const button of $("filters").querySelectorAll("button")) {
     const styles = (await d.json()).styles || [];
     const interactionBatch = (await e.json()).skins || [];
     const batch20 = (await f.json()).skins || [];
+    if (g.ok) {
+      const thumbnails = await g.json();
+      thumbnailIndex = new Map(Object.entries(thumbnails.images || {}));
+    } else {
+      console.warn("BD2 静态封面目录尚未更新，回退到已访问的动画预览");
+    }
     const styleMap = new Map(styles.map(style => [style.id, style]));
     const regular = allRegular.filter(skin => skin.tier === "Special Skin"
       || styleMap.has(skin.id)).map(skin => {

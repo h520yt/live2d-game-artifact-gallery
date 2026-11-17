@@ -205,3 +205,37 @@ python -m http.server 8000
 \`\`\`
 
 打开 \`http://127.0.0.1:8000/brown_dust2/viewer/index.html\`，按 \`Ctrl+Shift+R\` 强制更新样式。**只修改前端页面，无需重新下载已有皮肤资源。**
+
+
+## 2026-11-17 修复：54 套真实封面、动作列表溢出
+
+### 真实皮肤卡片
+
+上一版网格首次加载只显示 A/L/T 等英文首字母，因为缩略图仅在「从舞台返回列表」时尝试从 WebGL 画布截图，尚未打开的皮肤没有预览来源。
+
+现改为从上游 `myssal/Brown-Dust-2-Asset/ui/illust/illust_inven_char` 读取各套皮肤真实的库存立绘 PNG，通过 `thumbnail_catalog.json` 建立 **54 套精选皮肤一对一的准确资源映射**。这是一张静态立绘小封面，不是完整互动动画截图；卡片打开后仍播放本地 Spine 模型。
+
+- 联网时使用 GitHub Raw CDN 加载缩略图，**更新代码并刷新即可看到，不需要重新下载 Spine 素材**。
+- 如果访问 Raw 失败，自动回退到本地 `brown_dust2/data/_thumbnails/{skin_id}.png`；两者都不可用时显示「封面暂不可用」，不再用单个字母冒充立绘。
+- 想离线浏览或减少远端请求，可提前缓存 54 张角色封面：
+
+```powershell
+cd D:\project_python\live2d-game-artifact-gallery
+git pull origin main
+python brown_dust2/scripts/download_thumbnails.py
+# 本地检查缓存情况（不联网）
+python brown_dust2/scripts/download_thumbnails.py --list
+# 单独更新一款
+python brown_dust2/scripts/download_thumbnails.py --only costume-067902 --force
+```
+
+缓存脚本直接使用原始图片 URL，不消耗 GitHub Contents API 额度；校验 PNG 签名及尺寸后原子写入。图片不提交 Git，已有 Spine 模型文件不会更改。
+
+### 动作抽屉布局
+
+动作抽屉改为与舞台高度绑定的浮层，最多约 535px；输入框高度固定为 40px，按钮统一 36px 行高，连续动作按钮横跨两列，**动作列表自己滚动**，不会把上百个按钮挤出抽屉或导致文字堆叠。
+
+仍可在抽屉搜索 `mix`、`idle` 和具体动作编号，按 Esc 或再次点击「动作」收起。
+
+如果仍看到旧版，请从项目根目录启动 `python -m http.server 8000` 并按 `Ctrl+Shift+R` 强制刷新页面与 CSS。
+

@@ -438,6 +438,72 @@ test("第三批20款目录按需读取，Aquila 双互动场景都遵循相同�
   assert.match(page,/roles\.some\(isInteractionRole\)/);
 });
 
+test("54套精选都有真实库存立绘缩略图映射，首次进入不再显示字母占位",()=>{
+  const base = path.join(__dirname,"..");
+  const map = JSON.parse(fs.readFileSync(path.join(base,"thumbnail_catalog.json"),"utf8"));
+  const source = JSON.parse(fs.readFileSync(path.join(base,"costume_catalog.json"),"utf8"));
+  const original = JSON.parse(fs.readFileSync(path.join(base,"curated_prestige.json"),"utf8"));
+  const styles = JSON.parse(fs.readFileSync(path.join(base,"curated_style.json"),"utf8"));
+  const interactions = JSON.parse(fs.readFileSync(path.join(base,"curated_interactions.json"),"utf8"));
+  const batch20 = JSON.parse(fs.readFileSync(path.join(base,"curated_batch_20.json"),"utf8"));
+  const expected = new Set([
+    ...original.skins.map(x=>x.id),
+    ...interactions.skins.map(x=>x.id),
+    ...batch20.skins.map(x=>x.id),
+    ...styles.styles.map(x=>x.id),
+    ...source.skins.filter(x=>x.tier==="Special Skin").map(x=>x.id)
+  ]);
+  assert.equal(expected.size,54);
+  assert.equal(Object.keys(map.images).length,54);
+  for (const id of expected) {
+    assert.match(map.images[id] || "",
+      /^illust_inven_char\d{6}_\d+\.png$/, "未映射: "+id);
+  }
+  assert.match(page,/fetch\("\.\.\/thumbnail_catalog\.json"/);
+  assert.match(page,/function createCardArtwork\(skin\)/);
+  assert.match(page,/THUMBNAIL_CDN \+ encodeURIComponent\(filename\)/);
+  assert.match(page,/thumbnailIndex = new Map\(Object\.entries\(thumbnails\.images \|\| \{\}\)\)/);
+  assert.match(page,/preview\.appendChild\(artwork\)/);
+  assert.doesNotMatch(page,/preview\.appendChild\(el\("div","card-graphic"/);
+});
+
+test("立绘失败时安全退回本地离线文件，双重失败才显示占位文案",()=>{
+  const section = extract("function createCardArtwork(skin) {",
+                          "\nlet alphaMode");
+  const image={dataset:{},replaceWith(value){this.replacement=value;}};
+  const scope={
+    thumbnailIndex:new Map([["costume-003203","illust_inven_char003203_153.png"]]),
+    previewImages:new Map(),
+    THUMBNAIL_CDN:"https://raw.githubusercontent.com/test/",
+    document:{createElement:name=>{assert.equal(name,"img");return image;}},
+    el:(_tag,_css,message)=>({message}),
+    encodeURIComponent
+  };
+  const render=vm.runInNewContext(section+"\ncreateCardArtwork;",scope);
+  const result=render({id:"costume-003203",character_en:"Loen",skin_en:"Celebrity Bunny"});
+  assert.equal(result,image);
+  assert.equal(image.loading,"lazy");
+  assert.match(image.src,/illust_inven_char003203_153\.png$/);
+  image.onerror();
+  assert.equal(image.dataset.fallback,"local");
+  assert.equal(image.src,"../data/_thumbnails/costume-003203.png");
+  image.onerror();
+  assert.equal(image.replacement.message,"封面暂不可用");
+  assert.equal(image.onerror,null);
+});
+
+test("动作抽屉内固定行高并独立滚动，不再向舞台下方溢出堆叠",()=>{
+  const css=fs.readFileSync(path.join(__dirname,"../viewer/layout.css"),"utf8");
+  assert.match(css,/\.motion-panel\{\s*top:12px;right:12px;bottom:12px/);
+  assert.match(css,/\.motion-panel \.motion-body\{[\s\S]*?height:min\(535px,calc\(100% - 47px\)\)/);
+  assert.match(css,/\.motion-panel \.motions\{[\s\S]*?min-height:0;max-height:100%;height:auto/);
+  assert.match(css,/grid-auto-rows:36px;align-items:stretch;align-content:start/);
+  assert.match(css,/flex:1 1 0;min-height:0/);
+  assert.match(css,/overflow-y:auto;overflow-x:hidden/);
+  assert.match(css,/\.motion-panel \.motions button\{[\s\S]*?height:36px;max-height:36px/);
+  assert.match(css,/\.motion-panel \.motions button\.sequence-action\{grid-column:1 \/ -1\}/);
+});
+
 test("卡片预览、批次筛选、列数和排序控件不修改原始资源",()=>{
   assert.match(page,/id="catalog-sort"/);
   assert.match(page,/id="catalog-columns"/);
