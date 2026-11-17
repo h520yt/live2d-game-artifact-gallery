@@ -338,7 +338,7 @@ test("前端严格筛选特殊皮肤和风格白名单，不显示200套原始�
   assert.match(page,/const styleMap = new Map\(styles\.map/);
   assert.match(page,/allRegular\.filter\(skin => skin\.tier === "Special Skin"/);
   assert.match(page,/styleMap\.has\(skin\.id\)/);
-  assert.match(page,/catalog = \[\.\.\.interactionBatch,/);
+  assert.match(page,/catalog = \[\.\.\.batch20,\.\.\.interactionBatch,/);
   assert.match(page,/\.\.\.regular\]/);
   for (const value of ["all", "batch", "special", "style", "mature",
                        "stockings", "legs", "interactive", "installed"]) {
@@ -357,7 +357,7 @@ test("风格偏好标签展示与已安装状态彼此独立",()=>{
   assert.match(page,/skin\.tier === "Special Skin"/);
   assert.match(page,/id="collection-info"/);
   assert.match(page,/互动优先/);
-  assert.match(page,/互动优先：本批新增/);
+  assert.match(page,/第三批收录/);
 });
 
 test("巨大异常黑色遮罩不再主导互动相机边界",()=>{
