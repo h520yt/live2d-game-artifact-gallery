@@ -266,13 +266,18 @@ test("智能取景只对互动动画生效，支持手动放大和重试",()=>{
   assert.match(page,/setZoomFactor\(pl,/);
 });
 
-test("预览舞台默认随屏幕增高，沉浸式预览可占满可视窗口",()=>{
-  assert.match(page,/height:clamp\(560px,73dvh,1300px\)/);
-  assert.match(page,/grid-template-columns:clamp\(240px,19vw,300px\)/);
-  assert.match(page,/\.viewer\.theater\{position:fixed;inset:0;z-index:1000/);
-  assert.match(page,/height:100dvh/);
-  assert.match(page,/\.viewer\.theater \.stage\{height:auto;flex:1 1 auto/);
+test("碧蓝航线式布局：卡片网格与独立舞台分开、预览优先占满窗口",()=>{
+  const css = fs.readFileSync(path.join(__dirname,"../viewer/layout.css"),"utf8");
+  assert.match(page,/href="layout.css"/);
+  assert.match(page,/id="catalog-view"/);
+  assert.match(page,/id="viewer" hidden/);
+  assert.match(page,/id="back-to-catalog"/);
   assert.match(page,/id="theater-toggle"/);
+  assert.match(css,/\.cards\{display:grid;grid-template-columns:repeat\(var\(--catalog-columns,5\)/);
+  assert.match(css,/\.viewer\{border:0;border-radius:0;background:transparent/);
+  assert.match(css,/\.stage\{height:auto;min-height:0;max-height:none;flex:1 1 auto/);
+  assert.match(css,/\.viewer\.theater\{z-index:1000/);
+  assert.match(css,/\.motion-panel\.open \.motion-body\{display:flex\}/);
   assert.match(page,/event\.key === "Escape"/);
 });
 
@@ -415,7 +420,7 @@ test("新一批独立互动即使没有人物/技能模型也可单独展示",()
   assert.match(page,/仅互动，无需人物\/技能/);
   assert.match(page,/skin\.interaction_only \? " · 互动专辑/);
   assert.match(page,/catalog\.sort\(\(left,right\) => priority\(left\)-priority\(right\)\)/);
-  assert.match(page,/const ready = catalog\.find\(skin => installed\.get\(skin\.id\)\?\.roles\.interaction\)/);
+  assert.match(page,/if\(catalog\.length\) \{\s*\$\("catalog-view"\)\.hidden = false;/);
   assert.match(page,/loadRole\(item\.roles\.interaction \? "interaction" : item\.roles\.interaction2/);
   assert.match(page,/new Set\(ids\)\.size !== ids\.length/);
 });
@@ -431,6 +436,77 @@ test("第三批20款目录按需读取，Aquila 双互动场景都遵循相同�
   assert.match(page,/if \(isInteractionRole\(role\)\) return interactionLabel\(skin\)/);
   assert.match(page,/isInteractionRole\(currentRole\) && !manualSkinSelection/);
   assert.match(page,/roles\.some\(isInteractionRole\)/);
+});
+
+test("卡片预览、批次筛选、列数和排序控件不修改原始资源",()=>{
+  assert.match(page,/id="catalog-sort"/);
+  assert.match(page,/id="catalog-columns"/);
+  assert.match(page,/id="prev-skin"/);
+  assert.match(page,/id="next-skin"/);
+  assert.match(page,/let visibleCatalog = \[\]/);
+  assert.match(page,/visibleCatalog = matches\.slice\(\)/);
+  assert.match(page,/if \(order === "installed"\)/);
+  assert.match(page,/previewImages\.set\(selected\.id,preview\.toDataURL\("image\/webp",0\.68\)\)/);
+  assert.match(page,/function openStage\(\)/);
+  assert.match(page,/function closeStage\(\)/);
+  assert.match(page,/\$\("catalog-view"\)\.hidden = true/);
+  assert.match(page,/\$\("viewer"\)\.hidden = false/);
+  assert.match(page,/\$\("viewer"\)\.hidden = true/);
+  assert.match(page,/window\.scrollTo\(0,catalogScroll\)/);
+  assert.match(page,/localStorage\.setItem\("bd2\.gridColumns",String\(n\)\)/);
+  assert.match(page,/loadRole\(item\.roles\.interaction \? "interaction"/);
+});
+
+test("折叠动作抽屉搜索可用，避免几百个动作压缩舞台",()=>{
+  const section = extract("function updateMotionCount() {",
+                          "\nfunction selectSkin(skin) {");
+  const buttons = [
+    {dataset:{animation:"idle3_1"},textContent:"idle3_1",hidden:false},
+    {dataset:{animation:"mix2_1_1"},textContent:"mix2_1_1",hidden:false},
+    {dataset:{animation:"mix2_1_2"},textContent:"▶ mix2_1 连播",hidden:false}
+  ];
+  const panelClasses = new Set();
+  const controls = {
+    "motions": {querySelectorAll:()=>buttons},
+    "motion-count": {textContent:""},
+    "motion-panel": {classList:{toggle:(name,on)=>on?panelClasses.add(name):panelClasses.delete(name)}},
+    "motion-toggle": {setAttribute:(key,value)=>{controls.expanded=value}},
+    "motion-search": {value:"",focus:()=>{}}
+  };
+  const scope = {$:id=>controls[id],console};
+  const f=vm.runInNewContext(section+"\n({updateMotionCount,filterMotionButtons,toggleMotionDrawer});",scope);
+  f.updateMotionCount();
+  assert.equal(controls["motion-count"].textContent,"3");
+  f.filterMotionButtons("mix2_1_1");
+  assert.equal(controls["motion-count"].textContent,"1/3");
+  assert.equal(buttons[0].hidden,true);
+  assert.equal(buttons[1].hidden,false);
+  assert.equal(buttons[2].hidden,true);
+  f.toggleMotionDrawer(true);
+  assert.equal(controls.expanded,"true");
+  assert.equal(panelClasses.has("open"),true);
+  f.toggleMotionDrawer(false);
+  assert.equal(controls["motion-count"].textContent,"3");
+  assert.equal(controls.expanded,"false");
+  assert.equal(panelClasses.has("open"),false);
+  assert.match(page,/id="motion-search"/);
+  assert.match(page,/id="motion-count"/);
+  assert.match(page,/id="motion-toggle"[^>]*aria-expanded="false"/);
+});
+
+test("原有互动多轨、Skin、视口和 PNG 导出仍保留",()=>{
+  assert.match(page,/function selectAnimation\(pl, name\)/);
+  assert.match(page,/function getMixSequence\(names, name\)/);
+  assert.match(page,/function skinForAnimation\(skins, animation\)/);
+  assert.match(page,/id="skin-choice"/);
+  assert.match(page,/id="scene-choice"/);
+  assert.match(page,/id="alpha-mode"/);
+  assert.match(page,/id="auto-focus"/);
+  assert.match(page,/id="zoom"/);
+  assert.match(page,/id="reset-camera"/);
+  assert.match(page,/id="spine-root"/);
+  assert.match(page,/id="save"/);
+  assert.match(page,/canvas\.toDataURL\("image\/png"\)/);
 });
 
 test("互动状态区分官方没有互动、资源待下载、真实已安装",()=>{
