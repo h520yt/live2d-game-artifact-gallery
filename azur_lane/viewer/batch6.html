@@ -1,0 +1,47 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>第六批 · 包脚鞋履 Live2D</title>
+<style>:root{color-scheme:dark;--bg:#0c1625;--surface:#162738;--line:#2c465a;--txt:#f1f6fa;--muted:#a2b4c6;--gold:#dab47c}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 45% -20%,#233c58,#0c1625 66%);color:var(--txt);font:15px/1.55 "Microsoft YaHei",system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:28px 22px 70px}a{color:var(--gold);text-decoration:none}nav{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:24px}h1{font-size:clamp(25px,3.5vw,38px);margin:0}p{color:var(--muted);line-height:1.8;max-width:1050px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}input,select,button{color:var(--txt);background:#1a354a;padding:9px 13px;border:1px solid var(--line);border-radius:9px;font:inherit}input{flex:1;min-width:210px}button{cursor:pointer}button:hover{border-color:var(--gold)}button.selected{border-color:#87c4a1;background:#215543}.summary{color:var(--muted);margin:14px 0}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(248px,1fr));gap:15px}.card{overflow:hidden;background:linear-gradient(135deg,#20374a,#122231);border-radius:14px;border:1px solid var(--line)}.visual{position:relative;height:310px;display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse,#293f52,#0a1522)}.visual img{width:100%;height:100%;object-fit:contain}.empty{font-size:13px;color:#b9c8d2;padding:20px;text-align:center}.tag{position:absolute;left:10px;top:10px;font-size:11px;border-radius:24px;background:#071423d9;border:1px solid #536979;padding:5px 10px}.body{padding:15px}.body h2{margin:0 0 7px;font-size:19px}.small{font-size:12px;color:var(--muted);margin:4px 0}.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.actions button{font-size:12px;padding:7px 9px}.review{display:flex;flex-wrap:wrap;gap:7px;margin-top:12px}.review button{font-size:12px;padding:6px 9px}small{color:var(--muted)}@media(max-width:600px){main{padding:16px 12px}}</style></head>
+<body><main><nav><a href="../../index.html">展示柜首页</a><a href="index.html">完整模型工作台</a><a href="../docs/2026-11-17-第六批包脚鞋履筛选.md">安装说明</a></nav>
+<h1>第六批 · 包脚鞋履 Live2D</h1>
+<p>20 个不重复的 Live2D 资源候选，目标是遮住脚趾和脚背的鞋：长靴、短靴、运动鞋、包脚皮鞋。赛车主题 2 款已做立绘初筛；其他 18 款必须经过本地全身立绘和动作检查，不合格就标记“排除”。<strong>文件齐全不等于鞋履合格</strong>。</p>
+<div class="controls"><input id="query" placeholder="搜索角色、皮肤或资源名"><select id="filter"><option value="all">全部20款候选</option><option value="initial">立绘初筛符合</option><option value="pending">尚未审核</option><option value="pass">人工审核通过</option><option value="reject">已排除</option></select></div>
+<div class="summary" id="summary">读取本地清单...</div><div class="grid" id="grid"></div><p>本地审核状态仅保存在当前浏览器。请播放包括触摸在内的动作后再标记通过；任一动作露脚即应标记排除。</p></main>
+<script>
+"use strict";
+const SKINS=[{"idx":1,"character":"信浓","asset":"xinnong_3","shoe":"赛车长靴","hint":"Moonlit Chrome","stage":"初筛符合"},{"idx":2,"character":"大凤","asset":"dafeng_2","shoe":"赛车长靴","hint":"Enraptured Companion","stage":"初筛符合"},{"idx":3,"character":"布雷默顿","asset":"bulaimodun_4","shoe":"休闲/运动鞋候选","hint":"","stage":"待复核"},{"idx":4,"character":"布雷默顿","asset":"bulaimodun_5","shoe":"休闲/运动鞋候选","hint":"","stage":"待复核"},{"idx":5,"character":"埃吉尔","asset":"aijier_3","shoe":"冬装鞋候选","hint":"One-on-One Leisure Time","stage":"待复核"},{"idx":6,"character":"七省","asset":"qisheng_2","shoe":"制服/礼装候选","hint":"","stage":"待复核"},{"idx":7,"character":"安妮女王复仇号","asset":"anninvwang_2","shoe":"海盗风鞋候选","hint":"Call of the Creeping Embrace","stage":"待复核"},{"idx":8,"character":"皇家方舟","asset":"huangjiafangzhou_3","shoe":"制服鞋候选","hint":"","stage":"待复核"},{"idx":9,"character":"金鹿号","asset":"jinluhao_2","shoe":"礼装鞋候选","hint":"Forlorn Femme Fatale","stage":"待复核"},{"idx":10,"character":"德意志","asset":"deyizhi_3","shoe":"制服鞋候选","hint":"","stage":"待复核"},{"idx":11,"character":"格奈森瑙","asset":"genaisennao_2","shoe":"制服鞋候选","hint":"","stage":"待复核"},{"idx":12,"character":"列克星敦II","asset":"liekexingdunii_2","shoe":"女仆鞋候选","hint":"The Fluffiest of Maids","stage":"待复核"},{"idx":13,"character":"光辉","asset":"guanghui_7","shoe":"礼装鞋候选","hint":"","stage":"待复核"},{"idx":14,"character":"威悉","asset":"weixi_2","shoe":"礼装鞋候选","hint":"","stage":"待复核"},{"idx":15,"character":"圣路易斯","asset":"shengluyisi_3","shoe":"礼装鞋候选","hint":"","stage":"待复核"},{"idx":16,"character":"路易九世","asset":"luyijiushi_4","shoe":"礼装鞋候选","hint":"","stage":"待复核"},{"idx":17,"character":"克利夫兰","asset":"kelifulan_8","shoe":"制服鞋候选","hint":"","stage":"待复核"},{"idx":18,"character":"北卡罗来纳","asset":"beikaluolaina_2","shoe":"礼装鞋候选","hint":"","stage":"待复核"},{"idx":19,"character":"埃米尔·贝尔汀","asset":"aimierbeierding_3","shoe":"礼装鞋候选","hint":"","stage":"待复核"},{"idx":20,"character":"俾斯麦","asset":"bisimai_4","shoe":"节庆鞋候选","hint":"Unpacked Surprise","stage":"待复核"}];
+const $=id=>document.getElementById(id);
+const safe=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const KEY="azurlane_batch6_footwear_review_v1";
+let manifest={models:[],characters:[]},reports=new Map(),reviews={};
+try{reviews=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){reviews={}}
+const state=x=>reviews[x.asset]||"pending";
+function buildCard(item){
+const group=manifest.characters.find(x=>x.asset===item.asset);
+const imgs=(group?.items||[]).filter(x=>x.kind!=="part").map(x=>x.path);
+if(group?.rep_path&&imgs.includes(group.rep_path)){imgs.splice(imgs.indexOf(group.rep_path),1);imgs.unshift(group.rep_path)}
+const report=reports.get(item.asset);
+const complete=report&&report.status==="live2d_files_ready"&&report.models_expected>0&&report.models_built===report.models_expected&&report.paintings_expected>0&&report.paintings_built===report.paintings_expected;
+const modelCount=manifest.models.filter(x=>x.name===item.asset||x.name.startsWith(item.asset+"_")).length;
+const e=document.createElement("article");e.className="card";
+e.innerHTML='<div class="visual"><span class="tag">'+safe(item.stage)+'</span><div class="empty">待下载本地立绘</div></div><div class="body"><h2>'+safe(item.idx+". "+item.character)+'</h2><div>'+safe(item.hint||"以本地游戏元数据名称为准")+'</div><div class="small">'+safe(item.asset+" · "+item.shoe)+'</div><div class="small">'+(complete?"文件完整·未验证动作":"待安装/未完整")+" · 模型入口 "+modelCount+'</div><div class="actions"><button type="button" class="prev">上一张</button><small class="counter">0 / 0</small><button type="button" class="next">下一张</button><a href="index.html">模型工作台</a></div><div class="review"><button type="button" class="pass">✓ 全动作包脚</button><button type="button" class="reject">✕ 存在露脚</button><button type="button" class="reset">清除审核</button></div></div>';
+const visual=e.querySelector(".visual"),empty=e.querySelector(".empty"),counter=e.querySelector(".counter");let pos=0;
+function preview(){visual.querySelector("img")?.remove();counter.textContent=imgs.length?(pos+1)+" / "+imgs.length:"0 / 0";if(!imgs.length){empty.hidden=false;return}const img=new Image();img.alt=item.character+" "+(item.hint||item.asset);img.loading="lazy";img.src=imgs[pos];img.onload=()=>{empty.hidden=true};img.onerror=()=>{empty.textContent="立绘未安装或重建失败";empty.hidden=false;img.remove()};visual.appendChild(img)}
+e.querySelector(".prev").disabled=imgs.length<2;e.querySelector(".next").disabled=imgs.length<2;
+e.querySelector(".prev").onclick=()=>{pos=(pos-1+imgs.length)%imgs.length;preview()};
+e.querySelector(".next").onclick=()=>{pos=(pos+1)%imgs.length;preview()};
+e.querySelector(".pass").onclick=()=>setReview(item.asset,"pass");
+e.querySelector(".reject").onclick=()=>setReview(item.asset,"reject");
+e.querySelector(".reset").onclick=()=>setReview(item.asset,"pending");
+e.querySelector(".pass").classList.toggle("selected",state(item)==="pass");
+e.querySelector(".reject").classList.toggle("selected",state(item)==="reject");
+preview();return e
+}
+function setReview(asset,v){if(v==="pending")delete reviews[asset];else reviews[asset]=v;try{localStorage.setItem(KEY,JSON.stringify(reviews))}catch(e){}render()}
+function render(){const q=$("query").value.trim().toLowerCase(),f=$("filter").value;
+const show=SKINS.filter(x=>(!q||(x.character+" "+x.asset+" "+x.hint).toLowerCase().includes(q))&&(f==="all"||(f==="initial"&&x.stage==="初筛符合")||(f==="pending"&&state(x)==="pending")||f===state(x)));
+$("grid").replaceChildren(...show.map(buildCard));
+const passed=SKINS.filter(x=>state(x)==="pass").length,rejected=SKINS.filter(x=>state(x)==="reject").length;
+$("summary").textContent="当前显示 "+show.length+"/20 · 立绘初筛2款 · 人工通过 "+passed+" · 已排除 "+rejected+" · 待审核 "+(20-passed-rejected);
+}
+$("query").addEventListener("input",render);$("filter").addEventListener("change",render);
+Promise.all([fetch("manifest.json").then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).catch(()=>({models:[],characters:[]})),fetch("../data/batch6-install-report.json").then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).catch(()=>({skins:[]}))]).then(([m,r])=>{manifest=m;reports=new Map((r.skins||[]).map(x=>[x.asset,x]));render()});
+</script></body></html>

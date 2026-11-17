@@ -122,6 +122,21 @@ python -m http.server 8000
 
 ---
 
+## 碧蓝航线第六批：包脚鞋履 Live2D 候选20款
+
+新增闭合鞋头且遮住脚背的主题初筛池。20个模型已在现有资源 hash 清单找到对应 L2D 与立绘包，其中 2 款赛车长靴已做外观初筛，其余 18 款必须浏览器审核，不保证全部合格。按需安装，审核后标记通过/排除：
+
+```powershell
+git pull origin main
+python azur_lane/scripts/install_batch6.py --plan
+python azur_lane/scripts/install_batch6.py
+python -m http.server 8000
+```
+
+展示页：<http://127.0.0.1:8000/azur_lane/viewer/batch6.html>；[安装和审核明细](azur_lane/docs/2026-11-17-第六批包脚鞋履筛选.md)。
+
+---
+
 ## 碧蓝航线第五批：鞋履主题 Live2D 20 款
 
 新增 20 款鞋履主题候选（黑靴、长靴、兔女郎高跟鞋、女仆鞋等），独立入口不覆盖旧批次。本批在资源 hash 清单中可定位到 Live2D 包；需你本地下载并人工验收鞋履、动作与交互。运行：
