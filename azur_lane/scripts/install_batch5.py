@@ -97,7 +97,7 @@ def catalog() -> tuple[Skin, ...]:
             continue
         result.append(Skin(character, title, asset, skin_id, "live2d"))
     if errors:
-        raise ValueError("第五批存在以下元数据映射问题：\\n" + "\\n".join(errors))
+        raise ValueError("第五批存在以下元数据映射问题：\n" + "\n".join(errors))
     if len(result) != 20 or len({s.asset for s in result}) != 20:
         raise ValueError("第五批应当包含 20 个不同模型名称")
     return tuple(result)
