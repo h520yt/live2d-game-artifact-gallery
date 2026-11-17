@@ -1,0 +1,317 @@
+{
+  "environment": "Playwright / installed Chrome / file:// / offline:true / 3840x2160",
+  "initial": {
+    "ready": true,
+    "frames": 2,
+    "loops": 0,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle2",
+    "track": 0,
+    "errors": [],
+    "excludedSlots": [
+      "FR"
+    ],
+    "camera": {
+      "x": 1.61212158203125,
+      "y": 19.31591796875,
+      "zoom": 1.2122199096679687,
+      "bounds": {
+        "left": -1600.867919921875,
+        "right": 1604.0921630859375,
+        "bottom": -1283.3681640625,
+        "top": 1322
+      }
+    },
+    "duration": 5.333333492279053,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle2",
+        "loop": true,
+        "time": 0.128
+      }
+    ],
+    "textureCount": 7,
+    "renderer": "WebKit WebGL"
+  },
+  "final": {
+    "ready": true,
+    "frames": 9098,
+    "loops": 57,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle2",
+    "track": 0,
+    "errors": [],
+    "excludedSlots": [
+      "FR"
+    ],
+    "camera": {
+      "x": 1.61212158203125,
+      "y": 19.31591796875,
+      "zoom": 1.2122199096679687,
+      "bounds": {
+        "left": -1600.867919921875,
+        "right": 1604.0921630859375,
+        "bottom": -1283.3681640625,
+        "top": 1322
+      }
+    },
+    "duration": 5.333333492279053,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle2",
+        "loop": true,
+        "time": 304.08400029373223
+      }
+    ],
+    "textureCount": 7,
+    "renderer": "WebKit WebGL"
+  },
+  "elapsedMs": 304243,
+  "samples": [
+    {
+      "elapsedMs": 10003,
+      "frames": 368,
+      "loops": 2,
+      "trackTime": 12.320000150680542
+    },
+    {
+      "elapsedMs": 20005,
+      "frames": 668,
+      "loops": 4,
+      "trackTime": 22.322999933242798
+    },
+    {
+      "elapsedMs": 30007,
+      "frames": 968,
+      "loops": 6,
+      "trackTime": 32.32000015068054
+    },
+    {
+      "elapsedMs": 40009,
+      "frames": 1268,
+      "loops": 7,
+      "trackTime": 42.3229999332428
+    },
+    {
+      "elapsedMs": 50013,
+      "frames": 1568,
+      "loops": 9,
+      "trackTime": 52.32000015068054
+    },
+    {
+      "elapsedMs": 60015,
+      "frames": 1868,
+      "loops": 11,
+      "trackTime": 62.3229999332428
+    },
+    {
+      "elapsedMs": 70018,
+      "frames": 2168,
+      "loops": 13,
+      "trackTime": 72.32000015068054
+    },
+    {
+      "elapsedMs": 80021,
+      "frames": 2468,
+      "loops": 15,
+      "trackTime": 82.3229999332428
+    },
+    {
+      "elapsedMs": 90024,
+      "frames": 2768,
+      "loops": 17,
+      "trackTime": 92.32000015068054
+    },
+    {
+      "elapsedMs": 100026,
+      "frames": 3068,
+      "loops": 19,
+      "trackTime": 102.3229999332428
+    },
+    {
+      "elapsedMs": 110028,
+      "frames": 3368,
+      "loops": 21,
+      "trackTime": 112.31899998474121
+    },
+    {
+      "elapsedMs": 120033,
+      "frames": 3669,
+      "loops": 22,
+      "trackTime": 122.35100004959106
+    },
+    {
+      "elapsedMs": 130036,
+      "frames": 3969,
+      "loops": 24,
+      "trackTime": 132.35400007057189
+    },
+    {
+      "elapsedMs": 140041,
+      "frames": 4269,
+      "loops": 26,
+      "trackTime": 142.35100004959105
+    },
+    {
+      "elapsedMs": 150043,
+      "frames": 4569,
+      "loops": 28,
+      "trackTime": 152.35400007057189
+    },
+    {
+      "elapsedMs": 160045,
+      "frames": 4869,
+      "loops": 30,
+      "trackTime": 162.35700009155272
+    },
+    {
+      "elapsedMs": 170048,
+      "frames": 5169,
+      "loops": 32,
+      "trackTime": 172.35400007057189
+    },
+    {
+      "elapsedMs": 180050,
+      "frames": 5469,
+      "loops": 34,
+      "trackTime": 182.35700009155272
+    },
+    {
+      "elapsedMs": 190055,
+      "frames": 5769,
+      "loops": 36,
+      "trackTime": 192.35400007057189
+    },
+    {
+      "elapsedMs": 200057,
+      "frames": 6069,
+      "loops": 37,
+      "trackTime": 202.35700009155272
+    },
+    {
+      "elapsedMs": 210059,
+      "frames": 6369,
+      "loops": 39,
+      "trackTime": 212.35300014305113
+    },
+    {
+      "elapsedMs": 220062,
+      "frames": 6669,
+      "loops": 41,
+      "trackTime": 222.35700009155272
+    },
+    {
+      "elapsedMs": 230064,
+      "frames": 6969,
+      "loops": 43,
+      "trackTime": 232.35300014305113
+    },
+    {
+      "elapsedMs": 240067,
+      "frames": 7270,
+      "loops": 45,
+      "trackTime": 242.38600013542174
+    },
+    {
+      "elapsedMs": 250070,
+      "frames": 7570,
+      "loops": 47,
+      "trackTime": 252.38799999046324
+    },
+    {
+      "elapsedMs": 260073,
+      "frames": 7870,
+      "loops": 49,
+      "trackTime": 262.38400004196166
+    },
+    {
+      "elapsedMs": 270076,
+      "frames": 8170,
+      "loops": 51,
+      "trackTime": 272.38799999046324
+    },
+    {
+      "elapsedMs": 280079,
+      "frames": 8470,
+      "loops": 52,
+      "trackTime": 282.38400004196166
+    },
+    {
+      "elapsedMs": 290081,
+      "frames": 8770,
+      "loops": 54,
+      "trackTime": 292.38799999046324
+    },
+    {
+      "elapsedMs": 300083,
+      "frames": 9070,
+      "loops": 56,
+      "trackTime": 302.38400004196166
+    }
+  ],
+  "pausePassed": true,
+  "fpsLimitPassed": true,
+  "noInteractiveControls": true,
+  "errors": [],
+  "network": [],
+  "dpi2": {
+    "ready": true,
+    "frames": 2,
+    "loops": 0,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle2",
+    "track": 0,
+    "errors": [],
+    "excludedSlots": [
+      "FR"
+    ],
+    "camera": {
+      "x": 1.61212158203125,
+      "y": 19.31591796875,
+      "zoom": 1.2122199096679687,
+      "bounds": {
+        "left": -1600.867919921875,
+        "right": 1604.0921630859375,
+        "bottom": -1283.3681640625,
+        "top": 1322
+      }
+    },
+    "duration": 5.333333492279053,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle2",
+        "loop": true,
+        "time": 0.128
+      }
+    ],
+    "textureCount": 7,
+    "renderer": "WebKit WebGL"
+  }
+}

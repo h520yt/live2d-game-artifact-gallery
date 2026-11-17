@@ -1,0 +1,7 @@
+# Local game artwork and generated payloads are not for source-control distribution.
+/assets/
+/assets.bundle.js
+/preview.png
+/preview.jpg
+/scene-backdrop.jpg
+/verification/*.png

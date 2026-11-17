@@ -1,0 +1,24 @@
+{
+  "resolution": [
+    3840,
+    2160
+  ],
+  "mirrorPixelExact": true,
+  "mirrorMaxChannelError": 0,
+  "mirrored.png": {
+    "meanRGB": [
+      137.39396834008488,
+      107.47030611014661,
+      87.8887703751929
+    ],
+    "nearBlackFraction": 0.0
+  },
+  "after-soak.png": {
+    "meanRGB": [
+      137.40516975308643,
+      107.48357265142747,
+      87.90030213155865
+    ],
+    "nearBlackFraction": 0.0
+  }
+}

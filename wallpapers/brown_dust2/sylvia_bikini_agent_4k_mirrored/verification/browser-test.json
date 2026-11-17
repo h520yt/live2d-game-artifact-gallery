@@ -1,0 +1,353 @@
+{
+  "environment": "Installed Chrome / headless / file:// / offline:true / 3840x2160",
+  "browserVersion": "157.0.8103.79",
+  "initial": {
+    "ready": true,
+    "frames": 35,
+    "loops": 0,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle1",
+    "track": 0,
+    "framing": "cover",
+    "mirrored": true,
+    "errors": [],
+    "camera": {
+      "x": -79.39544677734375,
+      "y": -64.49116516113281,
+      "zoom": 1.0430609524905026,
+      "bounds": {
+        "left": -3276.054443359375,
+        "right": 3276.7451171875,
+        "bottom": -2934.066650390625,
+        "top": 2934.153076171875
+      },
+      "characterBounds": {
+        "left": -1901.83154296875,
+        "right": 1743.0406494140625,
+        "bottom": -418.6617431640625,
+        "top": 289.6794128417969
+      }
+    },
+    "duration": 2,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "playbackSpeed": 1,
+    "loopSeconds": 2,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle1",
+        "loop": true,
+        "time": 1.2649999752044678
+      }
+    ],
+    "textureCount": 6,
+    "renderer": "WebKit WebGL"
+  },
+  "final": {
+    "ready": true,
+    "frames": 9090,
+    "loops": 152,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle1",
+    "track": 0,
+    "framing": "cover",
+    "mirrored": true,
+    "errors": [],
+    "camera": {
+      "x": -79.39544677734375,
+      "y": -64.49116516113281,
+      "zoom": 1.0430609524905026,
+      "bounds": {
+        "left": -3276.054443359375,
+        "right": 3276.7451171875,
+        "bottom": -2934.066650390625,
+        "top": 2934.153076171875
+      },
+      "characterBounds": {
+        "left": -1901.83154296875,
+        "right": 1743.0406494140625,
+        "bottom": -418.6617431640625,
+        "top": 289.6794128417969
+      }
+    },
+    "duration": 2,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "playbackSpeed": 1,
+    "loopSeconds": 2,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle1",
+        "loop": true,
+        "time": 304.38999997520443
+      }
+    ],
+    "textureCount": 6,
+    "renderer": "WebKit WebGL"
+  },
+  "elapsedMs": 303134,
+  "samples": [
+    {
+      "elapsedMs": 10005,
+      "frames": 360,
+      "loops": 6,
+      "trackTime": 12.06999980354309
+    },
+    {
+      "elapsedMs": 20011,
+      "frames": 661,
+      "loops": 11,
+      "trackTime": 22.100999940872192
+    },
+    {
+      "elapsedMs": 30013,
+      "frames": 961,
+      "loops": 16,
+      "trackTime": 32.10499988937378
+    },
+    {
+      "elapsedMs": 40017,
+      "frames": 1261,
+      "loops": 21,
+      "trackTime": 42.107999910354614
+    },
+    {
+      "elapsedMs": 50020,
+      "frames": 1561,
+      "loops": 26,
+      "trackTime": 52.10499988937378
+    },
+    {
+      "elapsedMs": 60023,
+      "frames": 1861,
+      "loops": 31,
+      "trackTime": 62.107999910354614
+    },
+    {
+      "elapsedMs": 70025,
+      "frames": 2161,
+      "loops": 36,
+      "trackTime": 72.10499988937377
+    },
+    {
+      "elapsedMs": 80028,
+      "frames": 2461,
+      "loops": 41,
+      "trackTime": 82.10799991035461
+    },
+    {
+      "elapsedMs": 90030,
+      "frames": 2761,
+      "loops": 46,
+      "trackTime": 92.10399996185302
+    },
+    {
+      "elapsedMs": 100034,
+      "frames": 3061,
+      "loops": 51,
+      "trackTime": 102.10799991035461
+    },
+    {
+      "elapsedMs": 110037,
+      "frames": 3361,
+      "loops": 56,
+      "trackTime": 112.10399996185302
+    },
+    {
+      "elapsedMs": 120040,
+      "frames": 3662,
+      "loops": 61,
+      "trackTime": 122.13499986076354
+    },
+    {
+      "elapsedMs": 130042,
+      "frames": 3962,
+      "loops": 66,
+      "trackTime": 132.13899980926513
+    },
+    {
+      "elapsedMs": 140044,
+      "frames": 4262,
+      "loops": 71,
+      "trackTime": 142.13499986076354
+    },
+    {
+      "elapsedMs": 150048,
+      "frames": 4562,
+      "loops": 76,
+      "trackTime": 152.13899980926513
+    },
+    {
+      "elapsedMs": 160050,
+      "frames": 4862,
+      "loops": 81,
+      "trackTime": 162.13499986076354
+    },
+    {
+      "elapsedMs": 170052,
+      "frames": 5162,
+      "loops": 86,
+      "trackTime": 172.13899980926513
+    },
+    {
+      "elapsedMs": 180054,
+      "frames": 5462,
+      "loops": 91,
+      "trackTime": 182.13499986076354
+    },
+    {
+      "elapsedMs": 190056,
+      "frames": 5762,
+      "loops": 96,
+      "trackTime": 192.13899980926513
+    },
+    {
+      "elapsedMs": 200059,
+      "frames": 6062,
+      "loops": 101,
+      "trackTime": 202.13499986076354
+    },
+    {
+      "elapsedMs": 210061,
+      "frames": 6362,
+      "loops": 106,
+      "trackTime": 212.13799988174438
+    },
+    {
+      "elapsedMs": 220064,
+      "frames": 6662,
+      "loops": 111,
+      "trackTime": 222.13499986076354
+    },
+    {
+      "elapsedMs": 230065,
+      "frames": 6962,
+      "loops": 116,
+      "trackTime": 232.13799988174438
+    },
+    {
+      "elapsedMs": 240066,
+      "frames": 7262,
+      "loops": 121,
+      "trackTime": 242.13499986076354
+    },
+    {
+      "elapsedMs": 250069,
+      "frames": 7562,
+      "loops": 126,
+      "trackTime": 252.13799988174438
+    },
+    {
+      "elapsedMs": 260072,
+      "frames": 7863,
+      "loops": 131,
+      "trackTime": 262.16900001907345
+    },
+    {
+      "elapsedMs": 270075,
+      "frames": 8162,
+      "loops": 136,
+      "trackTime": 272.13799988174435
+    },
+    {
+      "elapsedMs": 280077,
+      "frames": 8463,
+      "loops": 141,
+      "trackTime": 282.16900001907345
+    },
+    {
+      "elapsedMs": 290078,
+      "frames": 8763,
+      "loops": 146,
+      "trackTime": 292.1719998016357
+    },
+    {
+      "elapsedMs": 300081,
+      "frames": 9063,
+      "loops": 151,
+      "trackTime": 302.16900001907345
+    }
+  ],
+  "pauseResumePassed": true,
+  "fpsLimitPassed": true,
+  "lowFpsAnimationSeconds": 2.1659998893737793,
+  "fullyOpaqueAt4k": true,
+  "characterFitsEntireCycle": true,
+  "textureUploadsAtStart": 6,
+  "textureUploadsAtEnd": 6,
+  "webglContexts": 1,
+  "noInteractiveControls": true,
+  "errors": [],
+  "network": [],
+  "requestedFiles": [
+    "file:///D:/project_python/live2d-game-artifact-gallery/wallpapers/brown_dust2/sylvia_bikini_agent_4k_mirrored/index.html",
+    "file:///D:/project_python/live2d-game-artifact-gallery/wallpapers/brown_dust2/sylvia_bikini_agent_4k_mirrored/css/wallpaper.css",
+    "file:///D:/project_python/live2d-game-artifact-gallery/wallpapers/brown_dust2/sylvia_bikini_agent_4k_mirrored/js/spine-player4.1.js",
+    "file:///D:/project_python/live2d-game-artifact-gallery/wallpapers/brown_dust2/sylvia_bikini_agent_4k_mirrored/js/assets.bundle.js",
+    "file:///D:/project_python/live2d-game-artifact-gallery/wallpapers/brown_dust2/sylvia_bikini_agent_4k_mirrored/js/wallpaper.js"
+  ],
+  "relocatedDpi2": {
+    "ready": true,
+    "frames": 2,
+    "loops": 0,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle1",
+    "track": 0,
+    "framing": "cover",
+    "mirrored": true,
+    "errors": [],
+    "camera": {
+      "x": -79.39544677734375,
+      "y": -64.49116516113281,
+      "zoom": 1.0430609524905026,
+      "bounds": {
+        "left": -3276.054443359375,
+        "right": 3276.7451171875,
+        "bottom": -2934.066650390625,
+        "top": 2934.153076171875
+      },
+      "characterBounds": {
+        "left": -1901.83154296875,
+        "right": 1743.0406494140625,
+        "bottom": -418.6617431640625,
+        "top": 289.6794128417969
+      }
+    },
+    "duration": 2,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "playbackSpeed": 1,
+    "loopSeconds": 2,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle1",
+        "loop": true,
+        "time": 0.13700008392333984
+      }
+    ],
+    "textureCount": 6,
+    "renderer": "WebKit WebGL"
+  },
+  "relocatedOfflinePassed": true
+}

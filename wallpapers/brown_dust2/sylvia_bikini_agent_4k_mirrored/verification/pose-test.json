@@ -1,0 +1,13 @@
+{
+  "version": "4.1.11",
+  "skin": "default",
+  "animation": "idle1",
+  "duration": 2,
+  "samples": 241,
+  "minVisibleAttachments": 103,
+  "maxVisibleAttachments": 103,
+  "exactLoopPoseMatches": true,
+  "maxSeamVertexDelta": 0.00311279296875,
+  "allVerticesFinite": true,
+  "headLegsBackgroundPresentAllSamples": true
+}

@@ -1,0 +1,55 @@
+{
+  "costume": "costume-067004",
+  "source": "spine/illust/illust_dating/illust_dating15",
+  "spine": "4.1.11",
+  "skin": "default",
+  "animation": "idle2",
+  "track": 0,
+  "files": [
+    {
+      "file": "assets/illust_dating15.skel",
+      "bytes": 2572507,
+      "sha256": "ec75c377b90032cdd9d8160719083e61827d531f418ddd24d3c6b73ed9303729"
+    },
+    {
+      "file": "assets/illust_dating15.atlas",
+      "bytes": 28101,
+      "sha256": "157d38e878ae8f5022970ee79f7a6d688a0990f2a7ed80dd4084fd082b44e90f"
+    },
+    {
+      "file": "assets/illust_dating15.png",
+      "bytes": 2626673,
+      "sha256": "158bd841392fbf333c2aa2e58740f31c95e79d1cff3118a9803b86b45d6bae98"
+    },
+    {
+      "file": "assets/illust_dating15_2.png",
+      "bytes": 2808750,
+      "sha256": "a798220b1787b5cbba7c25ccbe6ae956cf2a6ebb078c8f1446ad2ed26ad56662"
+    },
+    {
+      "file": "assets/illust_dating15_3.png",
+      "bytes": 2160463,
+      "sha256": "ed8c920579956605ba712c6613bb7ca42806aae74d345f3321f427ddac6a810d"
+    },
+    {
+      "file": "assets/illust_dating15_4.png",
+      "bytes": 2678831,
+      "sha256": "a852f2682064ae4e3b302b620d369f8f806f0bc2a98b010052ce2a5ede223533"
+    },
+    {
+      "file": "assets/illust_dating15_5.png",
+      "bytes": 2411164,
+      "sha256": "6eece37c73a467d014e8c156b54ff4afb03aa493e3b2316b163b832f3a3ddccf"
+    },
+    {
+      "file": "assets/illust_dating15_6.png",
+      "bytes": 2360769,
+      "sha256": "943310faf09ebc49732b016df329240eeba2ec5592df0764a14edb17014025b1"
+    },
+    {
+      "file": "assets/illust_dating15_7.png",
+      "bytes": 1394237,
+      "sha256": "131f17e677fc3d5f8c750ea763c2514fb957eef1547c72ac1142132b9c0f43b6"
+    }
+  ]
+}

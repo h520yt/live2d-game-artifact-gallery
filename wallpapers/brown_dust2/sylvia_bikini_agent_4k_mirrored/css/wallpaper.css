@@ -1,0 +1,11 @@
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: #17121c; }
+body { cursor: none; user-select: none; }
+#backdrop { position: fixed; inset: 0; background: #17121c; }
+#spine-root { position: fixed; inset: 0; pointer-events: none; }
+.spine-player { width: 100%; height: 100%; overflow: hidden; }
+.spine-player-canvas { display: block; width: 100%; height: 100%; }
+/* The bundled runtime's error box is never an on-desktop UI. Errors go to the console. */
+.spine-player > :not(canvas) { display: none !important; }
+
+/* Mirror the completed image; keep Spine bones, clipping and UVs unchanged. */
+#spine-root { transform: scaleX(-1); transform-origin: center; }

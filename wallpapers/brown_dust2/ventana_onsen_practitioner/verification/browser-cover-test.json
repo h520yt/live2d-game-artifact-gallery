@@ -1,0 +1,166 @@
+{
+  "environment": "Playwright / installed Chrome / file:// / offline:true / 3840x2160",
+  "initial": {
+    "ready": true,
+    "frames": 2,
+    "loops": 0,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle2",
+    "track": 0,
+    "framing": "cover",
+    "errors": [],
+    "excludedSlots": [
+      "FR"
+    ],
+    "camera": {
+      "x": 1.61212158203125,
+      "y": 150,
+      "zoom": 0.8296172714869182,
+      "bounds": {
+        "left": -1600.867919921875,
+        "right": 1604.0921630859375,
+        "bottom": -1283.3681640625,
+        "top": 1322
+      },
+      "characterBounds": {
+        "left": -1600.867919921875,
+        "right": 1443.2408447265625,
+        "bottom": -634.7545166015625,
+        "top": 824.57958984375
+      }
+    },
+    "duration": 5.333333492279053,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle2",
+        "loop": true,
+        "time": 0.15400015258789063
+      }
+    ],
+    "textureCount": 7,
+    "renderer": "WebKit WebGL"
+  },
+  "final": {
+    "ready": true,
+    "frames": 408,
+    "loops": 2,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle2",
+    "track": 0,
+    "framing": "cover",
+    "errors": [],
+    "excludedSlots": [
+      "FR"
+    ],
+    "camera": {
+      "x": 1.61212158203125,
+      "y": 150,
+      "zoom": 0.8296172714869182,
+      "bounds": {
+        "left": -1600.867919921875,
+        "right": 1604.0921630859375,
+        "bottom": -1283.3681640625,
+        "top": 1322
+      },
+      "characterBounds": {
+        "left": -1600.867919921875,
+        "right": 1443.2408447265625,
+        "bottom": -634.7545166015625,
+        "top": 824.57958984375
+      }
+    },
+    "duration": 5.333333492279053,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle2",
+        "loop": true,
+        "time": 14.94500004196167
+      }
+    ],
+    "textureCount": 7,
+    "renderer": "WebKit WebGL"
+  },
+  "elapsedMs": 15793,
+  "samples": [
+    {
+      "elapsedMs": 10003,
+      "frames": 380,
+      "loops": 2,
+      "trackTime": 12.736000169754028
+    }
+  ],
+  "pausePassed": true,
+  "fpsLimitPassed": true,
+  "fullyOpaqueAt4k": true,
+  "lowFpsAnimationSeconds": 2.173999786376953,
+  "noInteractiveControls": true,
+  "errors": [],
+  "network": [],
+  "dpi2": {
+    "ready": true,
+    "frames": 2,
+    "loops": 0,
+    "width": 3840,
+    "height": 2160,
+    "skin": "default",
+    "animation": "idle2",
+    "track": 0,
+    "framing": "cover",
+    "errors": [],
+    "excludedSlots": [
+      "FR"
+    ],
+    "camera": {
+      "x": 1.61212158203125,
+      "y": 150,
+      "zoom": 0.8296172714869182,
+      "bounds": {
+        "left": -1600.867919921875,
+        "right": 1604.0921630859375,
+        "bottom": -1283.3681640625,
+        "top": 1322
+      },
+      "characterBounds": {
+        "left": -1600.867919921875,
+        "right": 1443.2408447265625,
+        "bottom": -634.7545166015625,
+        "top": 824.57958984375
+      }
+    },
+    "duration": 5.333333492279053,
+    "canvas": [
+      3840,
+      2160
+    ],
+    "fpsLimit": 30,
+    "paused": false,
+    "tracks": [
+      {
+        "index": 0,
+        "animation": "idle2",
+        "loop": true,
+        "time": 0.1479998722076416
+      }
+    ],
+    "textureCount": 7,
+    "renderer": "WebKit WebGL"
+  }
+}
