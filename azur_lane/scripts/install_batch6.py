@@ -60,31 +60,30 @@ def load_catalog() -> tuple[Skin, ...]:
             matches.setdefault(asset.lower(), []).append(entry)
 
     result = []
-    issues = []
     for character, asset, _, title_hint, _ in CANDIDATES:
         entries = matches.get(asset, [])
         ids = sorted({e["id"] for e in entries})
         if len(ids) == 1:
             chosen_id = ids[0]
         else:
-            # 900xxx 常用于剧情共享立绘，不能凭资源名随机取值。
-            # 900000-999999 为常见特殊剧情别名区间；960xxxx 等活动船 ID 仍可用。
-            playable = [skin_id for skin_id in ids if not 900000 <= skin_id < 1000000]
-            if len(playable) != 1:
-                issues.append(f"{asset}: 无法唯一确定皮肤 ID，候选 {ids}")
-                continue
-            chosen_id = playable[0]
-            print(f"[映射] {asset}: {ids} => {chosen_id}（非剧情记录，仍须人工检查）")
-        chosen_entry = next(e for e in entries if e["id"] == chosen_id)
-        title = chosen_entry.get("name")
+            # 900000-999999 通常为剧情别名；960xxxx 等七位数仍属于正常船。
+            playable = [sid for sid in ids if not 900000 <= sid < 1000000]
+            if len(playable) == 1:
+                chosen_id = playable[0]
+                print(f"[映射] {asset}: {ids} => {chosen_id}")
+            else:
+                # 下载只依赖 asset/hash；无法可靠判断皮肤 ID 时用 -1 标识未知，
+                # 不编造 ID，也不阻断 --plan / --only / 资源提取。
+                chosen_id = -1
+                print(f"[警告] {asset}: 元数据皮肤 ID 不明确 {ids}；保留未知 ID，不影响资源下载")
+        chosen_entry = next((e for e in entries if e["id"] == chosen_id), {})
+        title = chosen_entry.get("name") if chosen_entry else None
         if not isinstance(title, str) or not title.strip():
             title = title_hint or asset
         result.append(Skin(character, title, asset, chosen_id, "live2d"))
 
-    if issues:
-        raise ValueError("候选元数据映射存在问题：\n" + "\n".join(issues))
-    if len(result) != 20 or len({s.skin_id for s in result}) != 20:
-        raise ValueError("第六批要求20款不同皮肤；请检查皮肤 ID 是否意外重复")
+    if len(result) != 20 or len({skin.asset for skin in result}) != 20:
+        raise ValueError("第六批要求20个不同的资源名称")
     return tuple(result)
 
 
@@ -92,8 +91,15 @@ def main(argv: list[str] | None = None) -> int:
     """继承已有 download/MD5/UnityPy/manifest 逻辑，并生成严格报告。"""
     args = list(sys.argv[1:] if argv is None else argv)
     if "--refresh" in args:
-        from fetch_metadata import fetch
-        fetch()
+        if "--plan" in args:
+            print("--plan 不能和 --refresh 同时使用", file=sys.stderr)
+            return 2
+        from fetch_metadata import fetch as fetch_metadata
+        from fetch_manifests import fetch as fetch_manifests
+        fetch_metadata()
+        fetch_manifests()
+        # 已刷新过元数据与资源 hash，不再让公共安装器重复刷新。
+        args = [arg for arg in args if arg != "--refresh"]
     try:
         batch = load_catalog()
     except (OSError, TypeError, ValueError) as exc:
