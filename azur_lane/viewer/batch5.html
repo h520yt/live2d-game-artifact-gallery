@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>碧蓝航线 · 鞋履 Live2D 20 款</title>
+<style>
+:root{color-scheme:dark;--bg:#091421;--card:#102639;--line:#28445b;--txt:#edf6fa;--muted:#a1b8c7;--gold:#e5bb75}
+*{box-sizing:border-box}
+body{margin:0;color:var(--txt);font:15px/1.6 "Microsoft YaHei",system-ui,sans-serif;background:radial-gradient(ellipse at 70% -20%,#213a53,var(--bg) 65%)}
+main{max-width:1500px;margin:auto;padding:28px 22px 80px}
+a{color:var(--gold);text-decoration:none}a:hover{text-decoration:underline}
+nav{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:28px}
+h1{font-size:clamp(26px,3vw,40px);margin:0 0 6px}
+.lead{color:var(--muted);max-width:900px;line-height:1.8;margin-bottom:24px}
+.filters{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+input,select{background:#112a3d;color:var(--txt);padding:10px 12px;border:1px solid var(--line);border-radius:8px;font:inherit}
+input{min-width:230px;flex:1}
+#summary{color:var(--muted);margin:14px 0 22px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px}
+.card{overflow:hidden;background:linear-gradient(145deg,#152f43,#102131);border:1px solid var(--line);border-radius:14px}
+.art{height:300px;background:radial-gradient(ellipse,#2f4760,#081421);position:relative;display:grid;place-items:center;overflow:hidden}
+.art img{height:100%;width:100%;object-fit:contain}
+.empty{color:#b7cad6;text-align:center;padding:20px;font-size:13px}
+.pill{position:absolute;left:12px;top:12px;background:#081522cc;border:1px solid #49617b;border-radius:20px;padding:4px 10px;font-size:12px}
+.info{padding:16px}
+.name{font-weight:750;font-size:19px;margin:0 0 5px}
+.title{font-size:13px;color:#c9dce7;min-height:40px}
+.meta{font-size:12px;color:var(--muted);margin-top:7px}
+.actions{display:flex;gap:10px;align-items:center;margin-top:14px;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;border:1px solid #396d89;background:#183c55;color:var(--txt);padding:7px 12px;border-radius:8px}
+button:disabled{opacity:.4;cursor:not-allowed}
+.actions a{border:1px solid #bd9757;border-radius:8px;padding:7px 11px}
+footer{margin-top:26px;color:var(--muted);font-size:13px}
+</style>
+</head>
+<body>
+<main>
+<nav><a href="../../index.html">展示柜首页</a><a href="index.html">碧蓝航线完整展厅</a><a href="../docs/2026-11-17-第五批鞋履Live2D.md">安装说明</a></nav>
+<h1>鞋履主题 · 20 款 Live2D</h1>
+<p class="lead">本批优先黑靴、长靴、赛车服、兔女郎高跟鞋和成熟风格，排除已确认的赤脚造型。含鞋履待复核候选；候选不代表已经完成外观人工验收。模型与立绘仅在你本地执行安装脚本后出现，动作完整性另行验证。</p>
+<div class="filters">
+<input id="query" placeholder="搜索角色、皮肤、模型名">
+<select id="shoe"><option value="">所有鞋履</option><option value="长靴">长靴</option><option value="高跟鞋">高跟鞋</option><option value="女仆鞋">女仆鞋</option><option value="靴子">其他靴</option><option value="鞋履待复核">待复核</option></select>
+<select id="status"><option value="">全部状态</option><option value="ready">资源就绪</option><option value="pending">待安装/不完整</option></select>
+</div>
+<div id="summary" role="status">正在读取展示柜清单…</div>
+<div id="grid" class="grid"></div>
+<footer>文件就绪 ≠ Live2D 全部触摸动画还原完成。版权素材保持在本地 data/cache，不随 Git 提交。</footer>
+</main>
+<script>
+"use strict";
+const items=[{"n":1,"c":"欧根亲王","t":"Final Lap","a":"ougen_5","shoe":"长靴","tier":"优先"},{"n":2,"c":"企业","t":"Wind Catcher","a":"qiye_7","shoe":"长靴","tier":"优先"},{"n":3,"c":"乌尔里希·冯·胡滕","t":"Ignition Matrician","a":"wuerlixi_2","shoe":"长靴","tier":"优先"},{"n":4,"c":"巴尔的摩","t":"Finish Line Flagbearer","a":"baerdimo_5","shoe":"长靴","tier":"优先"},{"n":5,"c":"圣路易斯","t":"Luxurious Wheels","a":"shengluyisi_2","shoe":"长靴","tier":"优先"},{"n":6,"c":"维托里奥·维内托","t":"The Flower of La Spezia","a":"weineituo_2","shoe":"高跟鞋","tier":"优先"},{"n":7,"c":"乌尔里希·冯·胡滕","t":"Mayhem Maid","a":"wuerlixi_3","shoe":"女仆鞋","tier":"优先"},{"n":8,"c":"埃吉尔","t":"Iron Blood's Dragon Maid","a":"aijier_2","shoe":"女仆鞋","tier":"优先"},{"n":9,"c":"兴登堡","t":"Delirious Duel","a":"xingdengbao_2","shoe":"高跟鞋","tier":"优先"},{"n":10,"c":"基尔萨治","t":"All-Night Charge","a":"jialisuoniye_3","shoe":"高跟鞋","tier":"优先"},{"n":11,"c":"武藏","t":"The Purple Rabbit's Marksmanship","a":"wuzang_3","shoe":"高跟鞋","tier":"优先"},{"n":12,"c":"大凤","t":"Fun on the Baize","a":"dafeng_7","shoe":"高跟鞋","tier":"优先"},{"n":13,"c":"欧根亲王","t":"Kindred Evening Spirits","a":"ougen_6","shoe":"高跟鞋","tier":"候选"},{"n":14,"c":"企业","t":"Diving Under Blue Skies","a":"qiye_9","shoe":"高跟鞋","tier":"候选"},{"n":15,"c":"圣路易斯","t":"Holiness to Haziness","a":"shengluyisi_4","shoe":"鞋履待复核","tier":"候选"},{"n":16,"c":"柴郡","t":"Cheshire Cat's Fairytale Maze","a":"chaijun_4","shoe":"鞋履待复核","tier":"候选"},{"n":17,"c":"贝尔法斯特","t":"Iridescent Rosa","a":"beierfasite_2","shoe":"高跟鞋","tier":"候选"},{"n":18,"c":"罗马","t":"White Heron of Darkest Night","a":"luoma_2","shoe":"高跟鞋","tier":"候选"},{"n":19,"c":"纳希莫夫海军上将","t":"First Time in the Limelight","a":"naximofu_2","shoe":"鞋履待复核","tier":"候选"},{"n":20,"c":"匹兹堡","t":"The Bartender's Gambit","a":"pizibao_2","shoe":"靴子","tier":"候选"}];
+const $=id=>document.getElementById(id);
+const escaped=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+let manifest={models:[],characters:[]}, report=new Map();
+let query="",shoe="",status="";
+function cardFor(item){
+  const modelList=manifest.models.filter(m=>m.name===item.a||m.name.startsWith(item.a+"_"));
+  const skin=manifest.characters.find(x=>x.asset===item.a);
+  const imgs=(skin?.items||[]).filter(x=>x.kind!=="part").map(x=>x.path);
+  if(skin?.rep_path&&imgs.includes(skin.rep_path)){imgs.splice(imgs.indexOf(skin.rep_path),1);imgs.unshift(skin.rep_path)}
+  const rec=report.get(item.a);
+  const ready=rec?.status==="live2d_files_ready"&&
+    rec.models_expected>0&&rec.models_built===rec.models_expected&&
+    rec.paintings_expected>0&&rec.paintings_built===rec.paintings_expected;
+  const label=ready?"文件齐全 · 未验动态":rec?.status==="incomplete"?"安装不完整":"待安装/待验收";
+  const node=document.createElement("article");node.className="card";
+  node.innerHTML='<div class="art"><span class="pill">'+escaped(item.shoe)+'</span><div class="empty">预览图需本地安装后生成</div></div>'+
+    '<div class="info"><div class="name">'+escaped(item.n+". "+item.c)+'</div><div class="title">'+escaped(item.t)+'</div>'+
+    '<div class="meta">'+escaped(item.a)+" · "+escaped(label)+'</div><div class="meta">'+escaped(item.tier)+" · "+modelList.length+" 个模型入口"+'</div>'+
+    '<div class="actions"><button class="prev" type="button">上一张</button><span class="counter">0 / 0</span><button class="next" type="button">下一张</button><a href="index.html">模型工作台</a></div></div>';
+  const art=node.querySelector(".art"),empty=node.querySelector(".empty"),counter=node.querySelector(".counter");
+  let current=0;
+  const show=()=>{
+    art.querySelector("img")?.remove();counter.textContent=imgs.length?(current+1)+" / "+imgs.length:"0 / 0";
+    if(!imgs.length){empty.textContent="缺少本地立绘，请先安装";empty.hidden=false;return}
+    const image=new Image();image.loading="lazy";image.alt=item.c+" · "+item.t;image.src=imgs[current];
+    image.onload=()=>{empty.hidden=true};image.onerror=()=>{empty.textContent="立绘资源尚未下载或还原失败";empty.hidden=false;image.remove()};
+    art.appendChild(image);
+  };
+  node.querySelector(".prev").disabled=imgs.length<2;node.querySelector(".next").disabled=imgs.length<2;
+  node.querySelector(".prev").onclick=()=>{current=(current-1+imgs.length)%imgs.length;show()};
+  node.querySelector(".next").onclick=()=>{current=(current+1)%imgs.length;show()};
+  show();return node;
+}
+function render(){
+  const selection=items.filter(x=>(!query||(x.c+" "+x.t+" "+x.a).toLowerCase().includes(query))&&(!shoe||x.shoe===shoe)&&
+    (!status||(status==="ready"?(report.get(x.a)?.status==="live2d_files_ready"):
+      (report.get(x.a)?.status!=="live2d_files_ready"))));
+  $("grid").replaceChildren(...selection.map(cardFor));
+  const ready=items.filter(x=>{const r=report.get(x.a);return r?.status==="live2d_files_ready"&&r.models_expected>0&&r.models_built===r.models_expected&&r.paintings_expected>0&&r.paintings_built===r.paintings_expected}).length;
+  $("summary").textContent="显示 "+selection.length+" / 20 款 · 安装报告文件齐全 "+ready+" 款 · 视觉及高级交互仍待人工验证";
+}
+$("query").addEventListener("input",e=>{query=e.target.value.trim().toLowerCase();render()});
+$("shoe").addEventListener("change",e=>{shoe=e.target.value;render()});
+$("status").addEventListener("change",e=>{status=e.target.value;render()});
+Promise.all([
+ fetch("manifest.json").then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).catch(()=>({models:[],characters:[]})),
+ fetch("../data/batch5-install-report.json").then(r=>{if(!r.ok)throw Error(r.status);return r.json()}).catch(()=>({skins:[]}))
+]).then(([m,r])=>{manifest=m;report=new Map((r.skins||[]).map(s=>[s.asset,s]));render()});
+</script>
+</body></html>

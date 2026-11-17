@@ -122,6 +122,21 @@ python -m http.server 8000
 
 ---
 
+## 碧蓝航线第五批：鞋履主题 Live2D 20 款
+
+新增 20 款鞋履主题候选（黑靴、长靴、兔女郎高跟鞋、女仆鞋等），独立入口不覆盖旧批次。本批在资源 hash 清单中可定位到 Live2D 包；需你本地下载并人工验收鞋履、动作与交互。运行：
+
+```powershell
+git pull origin main
+python azur_lane/scripts/install_batch5.py --plan
+python azur_lane/scripts/install_batch5.py
+python -m http.server 8000
+```
+
+浏览 <http://127.0.0.1:8000/azur_lane/viewer/batch5.html>，查看 [完整20款清单与安装说明](azur_lane/docs/2026-11-17-第五批鞋履Live2D.md)。
+
+---
+
 ## 碧蓝航线第四批：12 款 Live2D 定向安装
 
 第四批包含腓特烈大帝、金鹿号、斯特拉斯堡、天狼星等 **12 款皮肤、13 个模型资源包**（斯特拉斯堡额外含 `_hx` 模型变体），并安装 50 个立绘/背景分层包，按 hash 清单估算约 289.5 MiB。
