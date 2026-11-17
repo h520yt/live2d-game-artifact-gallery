@@ -46,6 +46,13 @@ CANDIDATES = (
 )
 
 
+# 一些剧情/NPC 记录会复用玩家换装的 painting 资源名。
+# 显式绑定可游玩舰船皮肤 ID，不用取列表第一项或随机选择。
+PREFERRED_SKIN_IDS = {
+    "wuzang_3": 305102,  # 武藏·The Purple Rabbit's Marksmanship（900458 为共用画面的其它记录）
+}
+
+
 def catalog() -> tuple[Skin, ...]:
     """用社区元数据确定皮肤 ID，避免手写猜测造成错配。"""
     from config import CFG_JSON_DIR
@@ -62,11 +69,35 @@ def catalog() -> tuple[Skin, ...]:
         if isinstance(asset, str) and isinstance(skin_id, int) and skin_id > 0:
             by_asset.setdefault(asset.lower(), []).append(skin_id)
     result = []
+    errors = []
     for character, title, asset, _, _ in CANDIDATES:
         ids = sorted(set(by_asset.get(asset, [])))
-        if len(ids) != 1:
-            raise ValueError(f"{asset} 对应皮肤 ID 不唯一或不存在: {ids}，请更新元数据")
-        result.append(Skin(character, title, asset, ids[0], "live2d"))
+        preferred = PREFERRED_SKIN_IDS.get(asset)
+        if preferred is not None:
+            # 防止元数据版本变化后，显式绑定失效却悄悄映射到错误皮肤。
+            if preferred not in ids:
+                errors.append(f"{asset}: 指定皮肤 ID {preferred} 未出现在元数据中；可选 {ids}")
+                continue
+            skin_id = preferred
+            if len(ids) > 1:
+                print(f"[映射] {asset}: 元数据重复 {ids}，选择玩家换装 ID {skin_id}")
+        elif len(ids) == 1:
+            skin_id = ids[0]
+        elif len(ids) > 1:
+            # 仅在存在唯一非 900xxx 记录时安全回退；若仍模糊则报错，
+            # 不能任意取第一个 ID，否则可能展示错款或错误分组。
+            playable = [skin_id for skin_id in ids if not str(skin_id).startswith("900")]
+            if len(playable) != 1:
+                errors.append(f"{asset}: 多个候选皮肤 ID {ids}，需明确指定")
+                continue
+            skin_id = playable[0]
+            print(f"[映射] {asset}: 元数据重复 {ids}，选择非 NPC 候选 {skin_id}")
+        else:
+            errors.append(f"{asset}: 元数据缺少皮肤 ID，请更新元数据")
+            continue
+        result.append(Skin(character, title, asset, skin_id, "live2d"))
+    if errors:
+        raise ValueError("第五批存在以下元数据映射问题：\\n" + "\\n".join(errors))
     if len(result) != 20 or len({s.asset for s in result}) != 20:
         raise ValueError("第五批应当包含 20 个不同模型名称")
     return tuple(result)
