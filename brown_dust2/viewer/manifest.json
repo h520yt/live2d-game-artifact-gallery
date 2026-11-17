@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T14:52:33.971084+00:00",
+  "generated_at": "2026-11-17T07:42:17.578523+00:00",
   "installed": [
     {
       "id": "justia-hot-summer-dream",
@@ -273,6 +273,531 @@
           ],
           "version": "4.1",
           "dir": "../data/yuri-forever-mascot/interaction"
+        }
+      }
+    },
+    {
+      "id": "costume-067902",
+      "roles": {
+        "character": {
+          "skel": "char067902.skel",
+          "atlas": "char067902.atlas",
+          "pages": [
+            "char067902.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067902/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067902.skel",
+          "atlas": "cutscene_char067902.atlas",
+          "pages": [
+            "cutscene_char067902.png",
+            "cutscene_char067902_2.png",
+            "cutscene_char067902_3.png",
+            "cutscene_char067902_4.png",
+            "cutscene_char067902_5.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067902/cutscene"
+        },
+        "interaction": {
+          "skel": "illust_dating22_1.skel",
+          "atlas": "illust_dating22_1.atlas",
+          "pages": [
+            "illust_dating22_1.png",
+            "illust_dating22_1_2.png",
+            "illust_dating22_1_3.png",
+            "illust_dating22_1_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067902/interaction"
+        },
+        "interaction2": {
+          "skel": "illust_dating22_2.skel",
+          "atlas": "illust_dating22_2.atlas",
+          "pages": [
+            "illust_dating22_2.png",
+            "illust_dating22_2_2.png",
+            "illust_dating22_2_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067902/interaction2"
+        }
+      }
+    },
+    {
+      "id": "costume-001297",
+      "roles": {
+        "character": {
+          "skel": "char001297.skel",
+          "atlas": "char001297.atlas",
+          "pages": [
+            "char001297.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-001297/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char001297.skel",
+          "atlas": "cutscene_char001297.atlas",
+          "pages": [
+            "cutscene_char001297.png",
+            "cutscene_char001297_2.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-001297/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-061103",
+      "roles": {
+        "character": {
+          "skel": "char061103.skel",
+          "atlas": "char061103.atlas",
+          "pages": [
+            "char061103.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-061103/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char061103.skel",
+          "atlas": "cutscene_char061103.atlas",
+          "pages": [
+            "cutscene_char061103.png",
+            "cutscene_char061103_2.png",
+            "cutscene_char061103_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-061103/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-004002",
+      "roles": {
+        "character": {
+          "skel": "char004002.skel",
+          "atlas": "char004002.atlas",
+          "pages": [
+            "char004002.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-004002/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char004002.skel",
+          "atlas": "cutscene_char004002.atlas",
+          "pages": [
+            "cutscene_char004002.png",
+            "cutscene_char004002_2.png",
+            "cutscene_char004002_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-004002/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-000707",
+      "roles": {
+        "character": {
+          "skel": "char000707.skel",
+          "atlas": "char000707.atlas",
+          "pages": [
+            "char000707.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-000707/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char000707.skel",
+          "atlas": "cutscene_char000707.atlas",
+          "pages": [
+            "cutscene_char000707.png",
+            "cutscene_char000707_2.png",
+            "cutscene_char000707_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-000707/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-061305",
+      "roles": {
+        "character": {
+          "skel": "char061305.skel",
+          "atlas": "char061305.atlas",
+          "pages": [
+            "char061305.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-061305/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char061305.skel",
+          "atlas": "cutscene_char061305.atlas",
+          "pages": [
+            "cutscene_char061305.png",
+            "cutscene_char061305_2.png",
+            "cutscene_char061305_3.png",
+            "cutscene_char061305_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-061305/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-003802",
+      "roles": {
+        "character": {
+          "skel": "char003802.skel",
+          "atlas": "char003802.atlas",
+          "pages": [
+            "char003802.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003802/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char003802.skel",
+          "atlas": "cutscene_char003802.atlas",
+          "pages": [
+            "cutscene_char003802.png",
+            "cutscene_char003802_2.png",
+            "cutscene_char003802_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003802/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-003401",
+      "roles": {
+        "character": {
+          "skel": "char003401.skel",
+          "atlas": "char003401.atlas",
+          "pages": [
+            "char003401.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003401/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char003401.skel",
+          "atlas": "cutscene_char003401.atlas",
+          "pages": [
+            "cutscene_char003401.png",
+            "cutscene_char003401_2.png",
+            "cutscene_char003401_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003401/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-003302",
+      "roles": {
+        "character": {
+          "skel": "char003302.skel",
+          "atlas": "char003302.atlas",
+          "pages": [
+            "char003302.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003302/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char003302.skel",
+          "atlas": "cutscene_char003302.atlas",
+          "pages": [
+            "cutscene_char003302.png",
+            "cutscene_char003302_2.png",
+            "cutscene_char003302_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003302/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-066402",
+      "roles": {
+        "character": {
+          "skel": "char066402.skel",
+          "atlas": "char066402.atlas",
+          "pages": [
+            "char066402.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-066402/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char066402.skel",
+          "atlas": "cutscene_char066402.atlas",
+          "pages": [
+            "cutscene_char066402.png",
+            "cutscene_char066402_2.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-066402/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-000306",
+      "roles": {
+        "character": {
+          "skel": "char000306.skel",
+          "atlas": "char000306.atlas",
+          "pages": [
+            "char000306.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-000306/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char000306.skel",
+          "atlas": "cutscene_char000306.atlas",
+          "pages": [
+            "cutscene_char000306.png",
+            "cutscene_char000306_2.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-000306/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-000807",
+      "roles": {
+        "character": {
+          "skel": "char000807.skel",
+          "atlas": "char000807.atlas",
+          "pages": [
+            "char000807.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-000807/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char000807.skel",
+          "atlas": "cutscene_char000807.atlas",
+          "pages": [
+            "cutscene_char000807.png",
+            "cutscene_char000807_2.png",
+            "cutscene_char000807_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-000807/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-067504",
+      "roles": {
+        "character": {
+          "skel": "char067504.skel",
+          "atlas": "char067504.atlas",
+          "pages": [
+            "char067504.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067504/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067504.skel",
+          "atlas": "cutscene_char067504.atlas",
+          "pages": [
+            "cutscene_char067504.png",
+            "cutscene_char067504_2.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067504/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-003202",
+      "roles": {
+        "character": {
+          "skel": "char003202.skel",
+          "atlas": "char003202.atlas",
+          "pages": [
+            "char003202.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003202/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char003202.skel",
+          "atlas": "cutscene_char003202.atlas",
+          "pages": [
+            "cutscene_char003202.png",
+            "cutscene_char003202_2.png",
+            "cutscene_char003202_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-003202/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-067303",
+      "roles": {
+        "character": {
+          "skel": "char067303.skel",
+          "atlas": "char067303.atlas",
+          "pages": [
+            "char067303.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067303/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067303.skel",
+          "atlas": "cutscene_char067303.atlas",
+          "pages": [
+            "cutscene_char067303.png",
+            "cutscene_char067303_2.png",
+            "cutscene_char067303_3.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067303/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-067401",
+      "roles": {
+        "character": {
+          "skel": "char067401.skel",
+          "atlas": "char067401.atlas",
+          "pages": [
+            "char067401.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067401/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067401.skel",
+          "atlas": "cutscene_char067401.atlas",
+          "pages": [
+            "cutscene_char067401.png",
+            "cutscene_char067401_2.png",
+            "cutscene_char067401_3.png",
+            "cutscene_char067401_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067401/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-067803",
+      "roles": {
+        "character": {
+          "skel": "char067803.skel",
+          "atlas": "char067803.atlas",
+          "pages": [
+            "char067803.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067803/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067803.skel",
+          "atlas": "cutscene_char067803.atlas",
+          "pages": [
+            "cutscene_char067803.png",
+            "cutscene_char067803_2.png",
+            "cutscene_char067803_3.png",
+            "cutscene_char067803_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067803/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-067202",
+      "roles": {
+        "character": {
+          "skel": "char067202.skel",
+          "atlas": "char067202.atlas",
+          "pages": [
+            "char067202.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067202/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067202.skel",
+          "atlas": "cutscene_char067202.atlas",
+          "pages": [
+            "cutscene_char067202.png",
+            "cutscene_char067202_2.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067202/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-068001",
+      "roles": {
+        "character": {
+          "skel": "char068001.skel",
+          "atlas": "char068001.atlas",
+          "pages": [
+            "char068001.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-068001/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char068001.skel",
+          "atlas": "cutscene_char068001.atlas",
+          "pages": [
+            "cutscene_char068001.png",
+            "cutscene_char068001_2.png",
+            "cutscene_char068001_3.png",
+            "cutscene_char068001_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-068001/cutscene"
+        }
+      }
+    },
+    {
+      "id": "costume-067604",
+      "roles": {
+        "character": {
+          "skel": "char067604.skel",
+          "atlas": "char067604.atlas",
+          "pages": [
+            "char067604.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067604/character"
+        },
+        "cutscene": {
+          "skel": "cutscene_char067604.skel",
+          "atlas": "cutscene_char067604.atlas",
+          "pages": [
+            "cutscene_char067604.png",
+            "cutscene_char067604_2.png",
+            "cutscene_char067604_3.png",
+            "cutscene_char067604_4.png"
+          ],
+          "version": "4.1",
+          "dir": "../data/costume-067604/cutscene"
         }
       }
     },
