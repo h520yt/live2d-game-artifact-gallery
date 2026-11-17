@@ -91,7 +91,8 @@ code{font-family:Consolas,monospace;color:#eace9b}
   <div class="sidebar-top"><h2>服装目录</h2><span class="counter" id="count">读取中</span></div>
   <div class="collection-filters" id="filters">
     <button type="button" data-filter="interactive" class="active">有互动</button>
-    <button type="button" data-filter="batch">本批新增8套</button>
+    <button type="button" data-filter="batch20">第三批20套</button>
+    <button type="button" data-filter="batch">第二批8套</button>
     <button type="button" data-filter="all">全部精选</button>
     <button type="button" data-filter="special">特殊皮肤</button>
     <button type="button" data-filter="style">御姐/腿部</button>
@@ -147,7 +148,9 @@ code{font-family:Consolas,monospace;color:#eace9b}
 <script src="../../shared/vendor/spine-player4.1.js"></script>
 <script>
 "use strict";
-const ROLE_NAME = {character:"人物动态",cutscene:"技能演出",interaction:"互动动画"};
+const ROLE_NAME = {character:"人物动态",cutscene:"技能演出",
+  interaction:"互动动画①",interaction2:"互动动画②"};
+const isInteractionRole = role => role === "interaction" || role === "interaction2";
 const $ = id => document.getElementById(id);
 let catalog = [];
 let collectionFilter = "interactive";
@@ -236,7 +239,7 @@ function sampleVisibleContent(canvas) {
 }
 
 function autoFocusInteraction(pl, serial=focusSerial) {
-  if (pl !== activeSpine || currentRole !== "interaction" ||
+  if (pl !== activeSpine || !isInteractionRole(currentRole) ||
       !cameraView || serial !== focusSerial) return false;
   try {
     const content = sampleVisibleContent(pl.canvas);
@@ -261,7 +264,7 @@ function autoFocusInteraction(pl, serial=focusSerial) {
 }
 
 function scheduleAutoFocus(pl, delay=300) {
-  if (currentRole !== "interaction" || pl !== activeSpine) return;
+  if (!isInteractionRole(currentRole) || pl !== activeSpine) return;
   if (focusTimer !== null) clearTimeout(focusTimer);
   const serial = ++focusSerial;
   focusTimer = setTimeout(() => {
@@ -561,14 +564,14 @@ function resetCamera(pl) {
     skeleton.getBounds(offset, size);
     const originalSize = {width:size.x, height:size.y};
     const fallbackValid = boundsUsable(size.x, size.y);
-    const trimmed = currentRole === "interaction"
+    const trimmed = isInteractionRole(currentRole)
       ? getInteractionBounds(skeleton)
       : currentRole === "character" ? getCharacterBounds(skeleton) : null;
     if (trimmed && boundsUsable(trimmed.width, trimmed.height)) {
       // 人物背景轻微超出时可裁掉；互动必须确认存在严重的背景异常才切换，
       // 保持原有完整场景，不随意截断人物或正常大小的室内背景。
       const ratio = Math.max(size.x / trimmed.width, size.y / trimmed.height);
-      const limit = currentRole === "interaction" ? 4 : 1.4;
+      const limit = isInteractionRole(currentRole) ? 4 : 1.4;
       if (!fallbackValid || ratio >= limit) {
         offset.x=trimmed.x; offset.y=trimmed.y;
         size.x=trimmed.width; size.y=trimmed.height;
@@ -585,7 +588,7 @@ function resetCamera(pl) {
         baseZoom:camera.zoom, factor:1, token:loadId
       };
       $("zoom").disabled=false;
-      $("auto-focus").disabled=currentRole !== "interaction";
+      $("auto-focus").disabled=!isInteractionRole(currentRole);
       setZoomFactor(pl,1);
       return false;
     }
@@ -601,7 +604,7 @@ function resetCamera(pl) {
       token:loadId
     };
     $("zoom").disabled = false;
-    $("auto-focus").disabled = currentRole !== "interaction";
+    $("auto-focus").disabled = !isInteractionRole(currentRole);
     setZoomFactor(pl, 1);
     // 保留 SpinePlayer 原生 viewport 配置，不覆盖内部 animations 字典。
     // 动画的 <empty> 过渡可能在下一帧才调用 setViewport()。
@@ -614,7 +617,7 @@ function resetCamera(pl) {
       factor:1,token:loadId
     };
     $("zoom").disabled=false;
-    $("auto-focus").disabled=currentRole !== "interaction";
+    $("auto-focus").disabled=!isInteractionRole(currentRole);
     setZoomFactor(pl,1);
     return false;
   }
@@ -671,7 +674,7 @@ function hasInstalledModel(skin) {
 
 function interactionLabel(skin) {
   const installedRoles = installed.get(skin.id)?.roles || {};
-  if (installedRoles.interaction) return "独立互动已安装";
+  if (installedRoles.interaction || installedRoles.interaction2) return "独立互动已安装";
   if (skin.roles.interaction) return "互动待下载";
   if (skin.tier === "Special Skin") return "官方无独立互动";
   return "未找到对应互动";
@@ -679,7 +682,7 @@ function interactionLabel(skin) {
 
 function roleHint(skin, role, model) {
   if (model) return ROLE_NAME[role];
-  if (role === "interaction") return interactionLabel(skin);
+  if (isInteractionRole(role)) return interactionLabel(skin);
   return skin.roles[role] ? ROLE_NAME[role] + "（待下载）" : ROLE_NAME[role] + "（无资源）";
 }
 
@@ -691,6 +694,7 @@ function renderCards(filter) {
       skin.skin_en,skin.id,skin.costume_id || ""]
       .some(value => String(value).toLowerCase().includes(q));
     if (!keyword) return false;
+    if (collectionFilter === "batch20") return skin.interaction_batch === "interaction-03";
     if (collectionFilter === "batch") return skin.interaction_batch === "interaction-02";
     if (collectionFilter === "special") return isSpecial(skin);
     if (collectionFilter === "style") return Boolean(skin.preference_tags?.length);
@@ -722,7 +726,7 @@ function renderCards(filter) {
       for (const name of skin.interaction_tags || []) tags.appendChild(badge(name));
     }
     tags.appendChild(badge(interactionLabel(skin),
-      roles.includes("interaction") ? "ready" : "wait"));
+      roles.some(isInteractionRole) ? "ready" : "wait"));
     if (skin.mapping === "candidate") tags.appendChild(badge("映射待核实"));
     card.appendChild(tags);
     card.onclick = () => selectSkin(skin);
@@ -733,7 +737,7 @@ function renderCards(filter) {
   $("collection-info").textContent = "本页显示 " + matches.length
     + " 套 · 特殊 " + catalog.filter(isSpecial).length
     + " · 独立互动 " + catalog.filter(skin => skin.roles.interaction).length
-    + " · 本批新增 " + catalog.filter(skin => skin.interaction_batch).length
+    + " · 第三批 " + catalog.filter(skin => skin.interaction_batch === "interaction-03").length
     + " · 互动优先";
   $("list-status").textContent = matches.length ? "" : "当前条件没有符合要求的皮肤";
   for (const button of $("filters").querySelectorAll("button")) {
@@ -771,7 +775,8 @@ function selectSkin(skin) {
           + skin.id + " --role interaction"
         : ""));
   } else {
-    loadRole(item.roles.character ? "character" : Object.keys(item.roles)[0]);
+    loadRole(item.roles.interaction ? "interaction" : item.roles.interaction2 ? "interaction2"
+      : item.roles.character ? "character" : Object.keys(item.roles)[0]);
   }
   renderCards($("search").value);
 }
@@ -789,19 +794,19 @@ async function blobDataUrl(blob) {
 // 不循环的技能/触摸演出结束后自动回到待机，避免停在空白帧。
 function selectAnimation(pl, name) {
   const names = pl.animationState.data.skeletonData.animations.map(item => item.name);
-  const group = currentRole === "interaction" ? getAnimationGroup(name) : null;
+  const group = isInteractionRole(currentRole) ? getAnimationGroup(name) : null;
   const baseIdle = group !== null
     ? names.find(item => item.toLowerCase() === "idle" + group)
       || names.find(item => idleSceneKey(item)?.group === group)
     : null;
-  const sequence = currentRole === "interaction" && baseIdle
+  const sequence = isInteractionRole(currentRole) && baseIdle
     ? getMixSequence(names,name) : null;
-  const loop = isIdleAnimation(name) || (currentRole === "interaction" && group !== null && !sequence);
+  const loop = isIdleAnimation(name) || (isInteractionRole(currentRole) && group !== null && !sequence);
   const fallback = names.find(item => /^idle\d*$/i.test(item))
     || names.find(item => /^(stand|wait|loop)/i.test(item));
   try {
     let changedSkin = false;
-    if (currentRole === "interaction" && !manualSkinSelection) {
+    if (isInteractionRole(currentRole) && !manualSkinSelection) {
       const candidate = skinForAnimation(pl.skeleton?.data?.skins || [], name);
       if (candidate && candidate.name !== chosenSkin) {
         changedSkin = applySkin(pl, candidate.name);
@@ -850,7 +855,7 @@ function selectAnimation(pl, name) {
     }
     pl.play();
     if (changedSkin) resetCamera(pl);
-    if (currentRole === "interaction" && (changedSkin || sequence)) {
+    if (isInteractionRole(currentRole) && (changedSkin || sequence)) {
       scheduleAutoFocus(pl, 380);
     }
     for (const button of $("motions").children) {
@@ -858,7 +863,7 @@ function selectAnimation(pl, name) {
         button.dataset?.animation === name || button.textContent === name ||
         (sequence && button.dataset?.sequence === sequence.key));
     }
-    if (currentRole === "interaction") {
+    if (isInteractionRole(currentRole)) {
       const menu = $("scene-choice");
       const idleName = baseIdle || (isIdleAnimation(name) ? name : null);
       if (menu && idleName && [...menu.options].some(opt => opt.value === idleName)) {
@@ -923,7 +928,7 @@ async function loadRole(role, restore=null) {
       backgroundColor:"#00000000",
       preserveDrawingBuffer:true,
       showControls:false,
-      defaultMix:role === "interaction" ? 0 : 0.18,
+      defaultMix:isInteractionRole(role) ? 0 : 0.18,
       // 不注入不完整的 viewport 配置；SpinePlayer 会为动画过渡生成 <empty>，
       // 缺少 viewport.animations 字典会导致渲染时读取 undefined['<empty>']。
       // 取景由 resetCamera() 使用 Spine 相机单独控制。
@@ -947,7 +952,7 @@ async function loadRole(role, restore=null) {
           select.appendChild(option);
         }
         const anims = pl.animationState.data.skeletonData.animations.map(a => a.name);
-        const initial = currentRole === "interaction"
+        const initial = isInteractionRole(currentRole)
           ? pickInitialScene(anims,skinOptions,restore?.animation,restore?.skin)
           : {animation:(restore?.animation && anims.includes(restore.animation)
                 ? restore.animation : anims.find(name => isIdleAnimation(name)) || anims[0]),
@@ -982,7 +987,7 @@ async function loadRole(role, restore=null) {
         const scene = $("scene-choice");
         scene.replaceChildren();
         const idles = anims.filter(name => /^idle\d*(?:[_-]\d+)?$/i.test(name));
-        scene.disabled = currentRole !== "interaction" || !idles.length;
+        scene.disabled = !isInteractionRole(currentRole) || !idles.length;
         for(const name of idles) {
           const option = document.createElement("option");
           const matched = skinForAnimation(skinOptions,name);
@@ -999,7 +1004,7 @@ async function loadRole(role, restore=null) {
           }
         };
         $("motions").replaceChildren();
-        if (currentRole === "interaction") {
+        if (isInteractionRole(currentRole)) {
           for (const group of getMixSequences(anims)) {
             const button = el("button","sequence-action",
               "▶ " + group.key + " 连播（" + group.clips.length + "段）");
@@ -1013,7 +1018,7 @@ async function loadRole(role, restore=null) {
         for(const name of anims) {
           const button = el("button","",name);
           button.dataset.animation = name;
-          if (currentRole === "interaction" && getMixSequence(anims,name)) {
+          if (isInteractionRole(currentRole) && getMixSequence(anims,name)) {
             button.title = "此动作是连续片段；点击后将完整连播同组动作";
           }
           button.onclick = () => selectAnimation(pl,name);
@@ -1106,20 +1111,22 @@ for (const button of $("filters").querySelectorAll("button")) {
 }
 (async () => {
   try {
-    const [a,b,c,d,e] = await Promise.all([
+    const [a,b,c,d,e,f] = await Promise.all([
       fetch("../curated_prestige.json", {cache:"no-store"}),
       fetch("manifest.json", {cache:"no-store"}),
       fetch("../costume_catalog.json", {cache:"no-store"}),
       fetch("../curated_style.json", {cache:"no-store"}),
-      fetch("../curated_interactions.json", {cache:"no-store"})
+      fetch("../curated_interactions.json", {cache:"no-store"}),
+      fetch("../curated_batch_20.json", {cache:"no-store"})
     ]);
-    if(!a.ok || !b.ok || !c.ok || !d.ok || !e.ok) {
+    if(!a.ok || !b.ok || !c.ok || !d.ok || !e.ok || !f.ok) {
       throw new Error("互动资源索引不存在，请从项目根目录启动 HTTP 服务并更新代码");
     }
     const original = (await a.json()).skins || [];
     const allRegular = (await c.json()).skins || [];
     const styles = (await d.json()).styles || [];
     const interactionBatch = (await e.json()).skins || [];
+    const batch20 = (await f.json()).skins || [];
     const styleMap = new Map(styles.map(style => [style.id, style]));
     const regular = allRegular.filter(skin => skin.tier === "Special Skin"
       || styleMap.has(skin.id)).map(skin => {
@@ -1131,25 +1138,25 @@ for (const button of $("filters").querySelectorAll("button")) {
         };
       }).sort((a,b) => (a.tier === "Special Skin" ? 0 : 1)
         - (b.tier === "Special Skin" ? 0 : 1));
-    catalog = [...interactionBatch,
+    catalog = [...batch20,...interactionBatch,
       ...original.map(skin => ({...skin,tier:"Prestige Skin"})),
       ...regular];
     const ids = catalog.map(skin => skin.id);
     if (new Set(ids).size !== ids.length) {
       throw new Error("互动专辑与现有精选服装 ID 重复，请核对索引");
     }
-    const priority = skin => skin.interaction_batch ? 0
+    const priority = skin => skin.interaction_batch === "interaction-03" && skin.roles.interaction ? 0
       : skin.roles.interaction ? 1
-      : isSpecial(skin) ? 2 : 3;
+      : skin.interaction_batch === "interaction-03" ? 2
+      : isSpecial(skin) ? 3 : 4;
     catalog.sort((left,right) => priority(left)-priority(right));
     const manifest = await b.json();
     installed = new Map((manifest.installed || []).map(item => [item.id,item]));
     renderCards("");
-    $("install-hint").textContent = "互动优先：本批新增 " + interactionBatch.length
-      + " 套独立互动专辑（可只有互动模型）。"
-      + " 命令：python brown_dust2/scripts/install_prestige.py --collection interaction-batch。"
-      + " 补全部互动：--collection interactive --role interaction。"
-      + " 无关旧素材继续留在本地。";
+    $("install-hint").textContent = "第三批收录 " + batch20.length
+      + " 款；其中 Aquila 两组独立互动，其他款以角色与技能动态为主。"
+      + " 先下载互动：python brown_dust2/scripts/install_prestige.py --only costume-067902 --interaction-only。"
+      + " 其余：--collection batch-20。以前的素材不会删除。";
     setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
     if(catalog.length) {
       const ready = catalog.find(skin => installed.get(skin.id)?.roles.interaction);

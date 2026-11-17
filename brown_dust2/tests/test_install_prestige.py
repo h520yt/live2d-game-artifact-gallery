@@ -127,13 +127,13 @@ class PrestigeInstallTests(unittest.TestCase):
     def test_curated_catalog_only_exposes_special_and_style_matches(self):
         prestige, chosen = installer.read_catalog()
         self.assertEqual(6, len(prestige))
-        self.assertEqual(28, len(chosen))
-        self.assertEqual(34, len(prestige + chosen))
-        self.assertEqual(34, len({item["id"] for item in prestige + chosen}))
-        self.assertEqual(8, sum(item["tier"] == "Special Skin" for item in chosen))
-        self.assertEqual(12, sum(bool(item.get("preference_tags")) for item in chosen))
-        self.assertEqual(15, sum(item["tier"] == "Fated Guest" for item in chosen))
-        self.assertEqual(15, sum("interaction" in item["roles"] for item in chosen))
+        self.assertEqual(48, len(chosen))
+        self.assertEqual(54, len(prestige + chosen))
+        self.assertEqual(54, len({item["id"] for item in prestige + chosen}))
+        self.assertEqual(9, sum(item["tier"] == "Special Skin" for item in chosen))
+        self.assertEqual(32, sum(bool(item.get("preference_tags")) for item in chosen))
+        self.assertEqual(16, sum(item["tier"] == "Fated Guest" for item in chosen))
+        self.assertEqual(16, sum("interaction" in item["roles"] for item in chosen))
 
         full_catalog = json.loads(installer.ALL_COSTUMES.read_text(encoding="utf-8"))
         self.assertEqual(200, len(full_catalog["skins"]))
@@ -144,13 +144,13 @@ class PrestigeInstallTests(unittest.TestCase):
         prestige, chosen = installer.read_catalog()
         select = installer.select_skins
         self.assertEqual(6, len(select(prestige, chosen, "prestige")))
-        self.assertEqual(14, len(select(prestige, chosen, "special")))
-        self.assertEqual(12, len(select(prestige, chosen, "style")))
-        self.assertEqual(12, len(select(prestige, chosen, "other")))
+        self.assertEqual(15, len(select(prestige, chosen, "special")))
+        self.assertEqual(32, len(select(prestige, chosen, "style")))
+        self.assertEqual(32, len(select(prestige, chosen, "other")))
         self.assertEqual(8, len(select(prestige, chosen, "interaction-batch")))
-        self.assertEqual(15, len(select(prestige, chosen, "guest")))
-        self.assertEqual(21, len(select(prestige, chosen, "interactive")))
-        self.assertEqual(34, len(select(prestige, chosen, "all")))
+        self.assertEqual(16, len(select(prestige, chosen, "guest")))
+        self.assertEqual(22, len(select(prestige, chosen, "interactive")))
+        self.assertEqual(54, len(select(prestige, chosen, "all")))
         self.assertEqual(3, len(select(prestige, chosen, "all", limit=3)))
         self.assertEqual(3, len(select(prestige, chosen, "all", limit=3, offset=3)))
         selected = select(prestige, chosen, "all", only="costume-000706")
@@ -180,6 +180,64 @@ class PrestigeInstallTests(unittest.TestCase):
         eclipse = next(item for item in chosen if item["id"] == "costume-000706")
         self.assertIn("黑丝/网袜", eclipse["preference_tags"])
         self.assertEqual("Fated Guest", eclipse["tier"])
+
+    def test_third_batch_contains_20_unique_styles_and_aquila_two_interactions(self):
+        prestige, chosen = installer.read_catalog()
+        batch = installer.select_skins(prestige, chosen, "batch-20")
+        self.assertEqual(20, len(batch))
+        self.assertEqual(20, len({item["id"] for item in batch}))
+        self.assertEqual(1, sum("interaction" in item["roles"] for item in batch))
+        aquila = next(item for item in batch if item["id"] == "costume-067902")
+        self.assertEqual("Fated Guest", aquila["tier"])
+        self.assertEqual("spine/illust/illust_dating/illust_dating22_1",
+                         aquila["roles"]["interaction"])
+        self.assertEqual("spine/illust/illust_dating/illust_dating22_2",
+                         aquila["roles"]["interaction2"])
+        liatris = next(item for item in batch if item["id"] == "costume-001297")
+        self.assertEqual("Special Skin", liatris["tier"])
+        for item in batch:
+            with self.subTest(skin=item["id"]):
+                self.assertTrue(item["preference_tags"])
+                self.assertEqual("interaction-03", item["interaction_batch"])
+                self.assertIn("character", item["roles"])
+                self.assertIn("cutscene", item["roles"])
+
+    def test_aquila_alternate_interaction_paths_and_manifest(self):
+        folder1 = "spine/illust/illust_dating/illust_dating22_1"
+        folder2 = "spine/illust/illust_dating/illust_dating22_2"
+        installer.validate_folder(folder1)
+        installer.validate_folder(folder2)
+        installer.validate_folder("spine/illust/illust_dating/illust_dating22")
+        self.assertEqual(
+            installer.DATA / "costume-067902" / "interaction2" /
+            "illust_dating22_2.skel",
+            installer.target_path("costume-067902", "interaction2",
+                                  folder2 + "/illust_dating22_2.skel", folder2))
+        aquila = next(s for s in installer.read_catalog()[1]
+                      if s["id"] == "costume-067902")
+        example = {"skel":"sample.skel", "atlas":"sample.atlas",
+                   "pages":["sample.png"], "version":"4.1"}
+        with patch.object(installer,"inspect_model",return_value=example):
+            manifest = installer.build_manifest([aquila])
+        self.assertEqual({"character","cutscene","interaction","interaction2"},
+                         set(manifest["installed"][0]["roles"]))
+
+    def test_interaction_only_downloads_both_aquila_scenes(self):
+        from contextlib import redirect_stdout
+        from io import StringIO
+        folder="spine/illust/illust_dating/"
+        with patch.object(installer, "remote_files", return_value=[
+            {"path":folder + "sample.skel","size":1,
+             "url":"https://raw.githubusercontent.com/mock"}
+        ]) as mocked:
+            with redirect_stdout(StringIO()):
+                code=installer.main(["--plan","--only","costume-067902",
+                                     "--interaction-only"])
+        self.assertEqual(0,code)
+        self.assertEqual([
+            "spine/illust/illust_dating/illust_dating22_1",
+            "spine/illust/illust_dating/illust_dating22_2",
+        ],[call.args[0] for call in mocked.call_args_list])
 
     def test_next_eight_interactions_are_verified_and_do_not_require_char_or_skill(self):
         _, chosen = installer.read_catalog()

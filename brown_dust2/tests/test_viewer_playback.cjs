@@ -38,6 +38,7 @@ function harness(animations, role="character") {
     currentRole: role,
     chosenSkin: null,
     manualSkinSelection: false,
+    isInteractionRole: role => role === "interaction" || role === "interaction2",
     console: {error: () => {}}
   };
   const run = vm.runInNewContext(helpers + skinHelpers + playback + "\nselectAnimation;", scope);
@@ -195,7 +196,7 @@ test("相同编号的 Skin/idle 必须优先于部件数，动画手动切换时
   assert.equal(first.animation,"idle1");
   assert.equal(f.skinForAnimation(skins,"idle3_1").name,"idle3_1");
   assert.equal(f.skinForAnimation(skins,"mix3_2").name,"idle3_1");
-  assert.match(page,/currentRole === "interaction" && !manualSkinSelection/);
+  assert.match(page,/isInteractionRole\(currentRole\) && !manualSkinSelection/);
   assert.match(page,/const candidate = skinForAnimation\(pl\.skeleton\?\.data\?\.skins \|\| \[\], name\)/);
   assert.match(page,/changedSkin = applySkin\(pl, candidate\.name\)/);
   assert.match(page,/pl\.animationState\.apply\?\.\(pl\.skeleton\)/);
@@ -203,7 +204,7 @@ test("相同编号的 Skin/idle 必须优先于部件数，动画手动切换时
 
 test("互动场景下拉菜单可一键更换配对的动画和 Skin，手动 Skin 锁定仍可解除",()=>{
   assert.match(page,/id="scene-choice"/);
-  assert.match(page,/scene\.disabled = currentRole !== "interaction"/);
+  assert.match(page,/scene\.disabled = !isInteractionRole\(currentRole\)/);
   assert.match(page,/const matched = skinForAnimation\(skinOptions,name\)/);
   assert.match(page,/scene\.onchange = \(\) => \{/);
   assert.match(page,/manualSkinSelection = false;/);
@@ -256,7 +257,7 @@ test("互动动画自动识别实际可见内容并忽略黑色像素",()=>{
 });
 
 test("智能取景只对互动动画生效，支持手动放大和重试",()=>{
-  assert.match(page,/currentRole !== "interaction"/);
+  assert.match(page,/!isInteractionRole\(currentRole\)/);
   assert.match(page,/0\.86\/content\.width/);
   assert.match(page,/0\.84\/content\.height/);
   assert.match(page,/id="auto-focus"/);
@@ -389,12 +390,12 @@ test("互动相机遇到骨骼边界远大于有效内容时会切换，不再�
   const start=page.indexOf("function resetCamera(pl) {");
   const end=page.indexOf("\nfunction el(tag, cls, text)",start);
   const section=page.slice(start,end);
-  assert.match(section,/currentRole === "interaction"\s*\?\s*getInteractionBounds\(skeleton\)/);
-  assert.match(section,/const limit = currentRole === "interaction" \? 4 : 1\.4/);
+  assert.match(section,/isInteractionRole\(currentRole\)\s*\?\s*getInteractionBounds\(skeleton\)/);
+  assert.match(section,/const limit = isInteractionRole\(currentRole\) \? 4 : 1\.4/);
   assert.match(section,/if \(!fallbackValid \|\| ratio >= limit\)/);
   assert.match(section,/if \(!boundsUsable\(size\.x, size\.y\)\)/);
   assert.match(section,/baseZoom:camera\.zoom, factor:1, token:loadId/);
-  assert.match(section,/\$\("auto-focus"\)\.disabled=currentRole !== "interaction"/);
+  assert.match(section,/\$\("auto-focus"\)\.disabled=!isInteractionRole\(currentRole\)/);
   assert.doesNotMatch(section,/pl\.config\.viewport\s*=/);
 });
 
@@ -415,8 +416,21 @@ test("新一批独立互动即使没有人物/技能模型也可单独展示",()
   assert.match(page,/skin\.interaction_only \? " · 互动专辑/);
   assert.match(page,/catalog\.sort\(\(left,right\) => priority\(left\)-priority\(right\)\)/);
   assert.match(page,/const ready = catalog\.find\(skin => installed\.get\(skin\.id\)\?\.roles\.interaction\)/);
-  assert.match(page,/loadRole\(item\.roles\.character \? "character" : Object\.keys\(item\.roles\)\[0\]\)/);
+  assert.match(page,/loadRole\(item\.roles\.interaction \? "interaction" : item\.roles\.interaction2/);
   assert.match(page,/new Set\(ids\)\.size !== ids\.length/);
+});
+
+test("第三批20款目录按需读取，Aquila 双互动场景都遵循相同双轨逻辑",()=>{
+  assert.match(page,/fetch\("\.\.\/curated_batch_20\.json"/);
+  assert.match(page,/catalog = \[\.\.\.batch20,\.\.\.interactionBatch/);
+  assert.match(page,/data-filter="batch20"/);
+  assert.match(page,/collectionFilter === "batch20"/);
+  assert.match(page,/interaction2:"互动动画②"/);
+  assert.match(page,/const isInteractionRole = role => role === "interaction" \|\| role === "interaction2"/);
+  assert.match(page,/defaultMix:isInteractionRole\(role\) \? 0 : 0\.18/);
+  assert.match(page,/if \(isInteractionRole\(role\)\) return interactionLabel\(skin\)/);
+  assert.match(page,/isInteractionRole\(currentRole\) && !manualSkinSelection/);
+  assert.match(page,/roles\.some\(isInteractionRole\)/);
 });
 
 test("互动状态区分官方没有互动、资源待下载、真实已安装",()=>{

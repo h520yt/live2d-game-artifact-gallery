@@ -21,14 +21,14 @@
 - **外观风格筛选**：新增「御姐 / 腿部重点 / 运动系」标签与一键安装脚本 `python nikke/scripts/install_style.py 运动系`，自动识别并下载选中风格的 NIKKE 角色、皮肤。详见 [`nikke/SPORTS.md`](nikke/SPORTS.md)。
 - **四批收藏一键补齐**：新增 35 个黑丝、网袜、长筒袜、成熟御姐与兔女郎候选 ID，并提供分批下载、文件完整性核验、缺失资源报告。`python nikke/scripts/install_batches.py --all`，详见 [`nikke/CURATED_BATCHES.md`](nikke/CURATED_BATCHES.md)。
 
-## 棕色尘埃2 · 互动动画优先（34 套，21 套独立互动）
+## 棕色尘埃2 · 动态皮肤第三批20款（累计54款）
 
-- 优先收集类似 Sylvia · Bikini Agent 的完整互动场景。**第2批新增8套互动专辑，仅要求独立互动模型，不强制具备人物动态或技能演出。**
-- 全部精选目前是 6 尊爵 + 8 Special Skin + 12 风格精选 + 8 互动专辑，共 **34 套**；其中 **21 套有独立互动映射**。
-- 本次 8 套互动专辑：Loen Celebrity Bunny、Ventana Onsen Practitioner、Angelica Neon Savior、Elise Code Name O、Granhildr Combat Medic、Teresse Medical Club、Palette Miracle Violet、Tyr Innocent Bunny。
-- 更新后运行 `python brown_dust2/scripts/install_prestige.py` 默认只下载这批8套互动骨骼；要补齐所有互动用 `--collection interactive --role interaction`。
-- 展示柜默认「有互动」，可按「本批新增8套」筛选；已安装的互动优先预览，未下载的素材不会虚报已安装。详见 [完整说明](brown_dust2/README.md)。
-- 游戏素材只在本地 `brown_dust2/data/`，此前已下载的模型不会删除。
+- **第三批新增20款**，均在原始素材库中确认有角色模型和技能演出目录；其中 **Aquila · Sealed Desires** 同时有 `illust_dating22_1` 和 `illust_dating22_2` 两个独立互动场景，其余19款不虚报独立互动。
+- **Liatris · Sweet Temptation** 根据 2026-11-05 官方更新归入 Special Skin，其他以成熟御姐、兔女郎、泳装、腿部或运动系造型为主，风格标签需结合本地预览进一步审核。
+- 展柜累计 **54 款精选、22 款有独立互动**。第三批筛选按钮「第三批20套」；打开有互动的衣装时优先进入独立互动。
+- `python brown_dust2/scripts/install_prestige.py --collection batch-20 --list` 查看第三批，直接运行安装器默认安装这一批。
+- 推荐先执行 `python brown_dust2/scripts/install_prestige.py --only costume-067902 --interaction-only` 单独下载 Aquila 的两组互动场景。其余批次见 [详细说明](brown_dust2/README.md)。
+- 所有素材仅在用户本地 `brown_dust2/data/` 下载，Git 仓库不包含游戏美术资产。
 
 ---
 

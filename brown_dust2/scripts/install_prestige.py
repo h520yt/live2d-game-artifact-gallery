@@ -19,12 +19,13 @@ CATALOG = BASE / "curated_prestige.json"
 ALL_COSTUMES = BASE / "costume_catalog.json"
 CURATED_STYLE = BASE / "curated_style.json"
 INTERACTION_BATCH = BASE / "curated_interactions.json"
+NEXT_BATCH = BASE / "curated_batch_20.json"
 MANIFEST = BASE / "viewer" / "manifest.json"
 REPORT = DATA / "install-report.json"
 REPO = "myssal/Brown-Dust-2-Asset"
 BRANCH = "master"
 ALLOWED_EXT = {".skel", ".json", ".atlas", ".png", ".jpg", ".jpeg", ".webp"}
-VALID_ROLE = {"character", "cutscene", "interaction"}
+VALID_ROLE = {"character", "cutscene", "interaction", "interaction2"}
 VERSION = re.compile(rb"([34]\.\d+\.\d+)")
 AGENT = "Personal-RD-Lab-BD2-Installer/1.0"
 
@@ -59,7 +60,7 @@ def validate_folder(folder):
     allowed = (
         r"spine/char/char[0-9]+",
         r"spine/cutscenes/cutscene_char[0-9]+",
-        r"spine/illust/illust_dating/illust_dating[0-9]+",
+        r"spine/illust/illust_dating/illust_dating[0-9]+(?:_[12])?",
     )
     if not any(re.fullmatch(pattern, folder) for pattern in allowed):
         raise ValueError("目录不在白名单: " + folder)
@@ -288,7 +289,27 @@ def read_catalog():
         if not item.get("interaction_only") or not item.get("interaction_batch"):
             raise ValueError("互动专辑缺少独立模型标记: " + identifier)
         batch_ids.add(identifier)
-    selected = batch + selected
+    newest = json.loads(NEXT_BATCH.read_text(encoding="utf-8"))["skins"]
+    newest_ids = set()
+    for item in newest:
+        identifier = item["id"]
+        if identifier in existing or identifier in batch_ids or identifier in newest_ids:
+            raise ValueError("第三批与已收录资源重复: " + identifier)
+        source = known.get(identifier)
+        if not source:
+            raise ValueError("第三批服装不在来源目录中: " + identifier)
+        expected_roles = dict(source["roles"])
+        if identifier == "costume-067902":
+            expected_roles["interaction"] = (
+                "spine/illust/illust_dating/illust_dating22_1"
+            )
+            expected_roles["interaction2"] = (
+                "spine/illust/illust_dating/illust_dating22_2"
+            )
+        if item["roles"] != expected_roles:
+            raise ValueError("第三批资源映射不一致: " + identifier)
+        newest_ids.add(identifier)
+    selected = newest + batch + selected
     ids = [item["id"] for item in prestige + selected]
     if len(ids) != len(set(ids)):
         raise ValueError("精选目录存在重复 ID")
@@ -303,6 +324,8 @@ def select_skins(prestige, costumes, collection, only=None, character=None, limi
         selected = [skin for skin in all_selected if skin["id"] == only]
         if not selected:
             raise ValueError("不在当前精选范围的服装 ID: " + only)
+    elif collection == "batch-20":
+        selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-03"]
     elif collection == "interaction-batch":
         selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-02"]
     elif collection == "prestige":
@@ -350,12 +373,14 @@ def main(argv=None):
     parser.add_argument("--list", action="store_true", help="离线列出服装、模型数量与安装状态")
     parser.add_argument("--audit-interactions", action="store_true",
                         help="离线核对所有精选服装的真实独立互动情况")
-    parser.add_argument("--role", choices=("character", "cutscene", "interaction"),
-                        help="仅下载指定类别，例如 --role interaction 只补互动")
+    parser.add_argument("--role", choices=("character", "cutscene", "interaction", "interaction2"),
+                        help="仅下载指定模型类别")
+    parser.add_argument("--interaction-only", action="store_true",
+                        help="只下载互动资源；同时包含 Aquila 的 interaction 与 interaction2")
     parser.add_argument("--collection",
-                        choices=("interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
-                        default="interaction-batch",
-                        help="默认只补本批8套独立互动；interactive=全部互动；all=全部精选")
+                        choices=("batch-20", "interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
+                        default="batch-20",
+                        help="默认第3批20套；interaction-batch=上批8套；interactive=全部互动"))
     parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")
     parser.add_argument("--limit", type=int, help="本次最多处理的套数，建议批量安装时设置")
     parser.add_argument("--offset", type=int, default=0,
@@ -366,6 +391,8 @@ def main(argv=None):
     parser.add_argument("--only", choices=[skin["id"] for skin in prestige + costumes],
                         help="仅安装指定套装，也支持 costume-xxxxxx")
     args = parser.parse_args(argv)
+    if args.role and args.interaction_only:
+        parser.error("--role 与 --interaction-only 不可同时使用")
     skins = prestige + costumes
     try:
         selected = select_skins(prestige, costumes, args.collection,
@@ -405,6 +432,8 @@ def main(argv=None):
         print(f"\n[{skin['id']}] {skin['character']} · {skin['skin']}")
         for role, folder in skin["roles"].items():
             if args.role is not None and role != args.role:
+                continue
+            if args.interaction_only and not role.startswith("interaction"):
                 continue
             try:
                 extras = skin.get("extra_files", {}).get(role, [])

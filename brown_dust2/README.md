@@ -1,4 +1,61 @@
-# 棕色尘埃2 · 互动动画优先展示柜
+# 棕色尘埃2 · 互动优先展示柜（第三批20款）
+
+## 最新：第三批20款（2026-11-17）
+
+本次根据互动优先、成熟御姐、黑丝/网袜、腿部展示及泳装/运动系等偏好新增20款。**20款不是20套独立互动**：只核实到 Aquila · Sealed Desires 的两段新互动场景，另外19款是人物/技能 Spine 动态（其中 Sweet Temptation Liatris 是新 Special Skin）。不把技能动画冒充互动。
+
+累计：原34款 + 第三批20款 = **54款**，有独立互动映射 **22款**。独立互动场景文件合计23组（Aquila 两组计作一款）。
+
+### 第三批名单
+
+| # | 角色 | 服装 | 收录理由 | 模型类型 |
+|---:|---|---|---|---|
+| 1 | Aquila | Sealed Desires | 新 Fated Guest；独立互动分为两个场景 | 独立互动×2＋人物＋技能 |
+| 2 | Liatris | Sweet Temptation | 11月5日新 Special Skin，甜点制作主题 | 人物＋技能 |
+| 3 | Eleaneer | Shadow Bunny | 黑色兔女郎造型，深色服饰与腿部视觉 | 人物＋技能 |
+| 4 | Darian | Bittersweet Bunny | 兔女郎主题，腿部视觉优先 | 人物＋技能 |
+| 5 | Eclipse | Beach Vacation | 成熟角色的夏日海滩造型 | 人物＋技能 |
+| 6 | Dalvi | Summer Vacation | 狐系角色夏日清凉造型 | 人物＋技能 |
+| 7 | Liberta | Onsen Manager | 温泉经营者和式造型 | 人物＋技能 |
+| 8 | Morpeah | Beach Vacation | 海滩假日泳装风格 | 人物＋技能 |
+| 9 | Nebris | Laid-back Lifeguard | 救生员运动系泳装 | 人物＋技能 |
+| 10 | Angelica | Pool Party | 成人角色泳池派对服装 | 人物＋技能 |
+| 11 | Scheherazade | Pool Party | 泳池派对夏装 | 人物＋技能 |
+| 12 | Rubia | Maid Bikini | 女仆+比基尼主题 | 人物＋技能 |
+| 13 | Luvencia | Ocean Vanguard | 夏日先锋轻装与腿部视觉 | 人物＋技能 |
+| 14 | Loen | Track and Field Team | 田径队主题 | 人物＋技能 |
+| 15 | Levia | Overheat | Levia 高热战斗造型，建议预览动作 | 人物＋技能 |
+| 16 | Michaela | Beachside Justice | 海滨主题成人女性角色 | 人物＋技能 |
+| 17 | Mamonir | Miracle Marine | 海军夏日造型 | 人物＋技能 |
+| 18 | Venaka | Wind Dancer | 舞蹈主题，动作表现优先 | 人物＋技能 |
+| 19 | Valze | Night of Betrayal | 2026-11-05 新吸血鬼女王角色 | 人物＋技能 |
+| 20 | Wilhelmina | Frozen Queen | 冰霜女王造型，重点成熟气质 | 人物＋技能 |
+
+### Windows 本地命令
+
+```powershell
+cd D:\project_python\live2d-game-artifact-gallery
+git pull origin main
+
+# 只查看第三批名单，不联网下载
+python brown_dust2/scripts/install_prestige.py --collection batch-20 --list
+
+# 优先安装 Aquila 的两部分独立互动
+python brown_dust2/scripts/install_prestige.py --only costume-067902 --interaction-only
+
+# 分批安装20款人物及技能资源（可能较大，可加 --limit 5 --offset 0）
+python brown_dust2/scripts/install_prestige.py --collection batch-20
+
+# 离线重建已有安装清单
+python brown_dust2/scripts/install_prestige.py --verify --collection all
+python -m http.server 8000
+```
+
+浏览器地址：`http://127.0.0.1:8000/brown_dust2/viewer/index.html`。使用「第三批20套」筛选；Aquila 将显示「互动动画① / 互动动画②」两个入口。其它19款尚无同服装独立互动映射，人物动态和技能演出可用性以本地下载后的完整性检测为准。
+
+**来源与限制：** 新增列表和角色/技能目录来自 `myssal/Brown-Dust-2-Asset` 与 `Jelosus2/BD2-L2D-Viewer`；两组 Aquila 互动还与另一资源库的 Aquila/Sealed_Desires 目录交叉核对。官方 2026-11-05 更新证实 Sweet Temptation Liatris 是 Special Skin。下载或播放完整度需用户本地验证；游戏美术版权归原权利人。
+
+---
 
 **最新收藏规则：独立互动动画优先。** 只要能匹配真实、独立的 Spine 互动场景，即便没有普通人物动态或技能演出，也可以单独加入展示柜。其余继续保留已选的 Prestige、Special Skin、御姐/黑丝/腿部重点服装，但默认「有互动」筛选。
 

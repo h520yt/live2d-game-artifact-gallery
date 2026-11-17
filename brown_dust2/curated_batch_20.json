@@ -1,0 +1,554 @@
+{
+  "version": 1,
+  "batch": "interaction-03",
+  "title": "互动优先 · 第三批 20 款",
+  "date": "2026-11-17",
+  "note": "20 款全部已核查角色/技能上游目录存在；仅 Aquila Sealed Desires 具有两个可核验的独立互动场景，其它19款仅角色/技能动态，不冒充独立互动。标签为风格筛选、部分需本地画面二次审核。新增资源只在本地安装。",
+  "skins": [
+    {
+      "id": "costume-067902",
+      "costume_id": "067902",
+      "character": "Aquila",
+      "character_en": "Aquila",
+      "skin": "Sealed Desires",
+      "skin_en": "Sealed Desires",
+      "tier": "Fated Guest",
+      "roles": {
+        "character": "spine/char/char067902",
+        "cutscene": "spine/cutscenes/cutscene_char067902",
+        "interaction": "spine/illust/illust_dating/illust_dating22_1",
+        "interaction2": "spine/illust/illust_dating/illust_dating22_2"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 1,
+      "preference_tags": [
+        "成熟御姐",
+        "互动优先"
+      ],
+      "selection_reason": "新 Fated Guest；独立互动分为两个场景",
+      "mapping": "spine_files_verified+fated_guest_confirmed",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": "https://dotgg.gg/brown-dust-2/%F0%9F%93%A2-october-21-utc-routine-maintenance-and-update/"
+      }
+    },
+    {
+      "id": "costume-001297",
+      "costume_id": "001297",
+      "character": "Liatris",
+      "character_en": "Liatris",
+      "skin": "Sweet Temptation",
+      "skin_en": "Sweet Temptation",
+      "tier": "Special Skin",
+      "roles": {
+        "character": "spine/char/char001297",
+        "cutscene": "spine/cutscenes/cutscene_char001297"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 2,
+      "preference_tags": [
+        "特殊皮肤",
+        "成熟御姐"
+      ],
+      "selection_reason": "11月5日新 Special Skin，甜点制作主题",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": "https://dotgg.gg/brown-dust-2/%F0%9F%93%A2november-4-utc-routine-maintenance-and-update/"
+      }
+    },
+    {
+      "id": "costume-061103",
+      "costume_id": "061103",
+      "character": "Eleaneer",
+      "character_en": "Eleaneer",
+      "skin": "Shadow Bunny",
+      "skin_en": "Shadow Bunny",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061103",
+        "cutscene": "spine/cutscenes/cutscene_char061103"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 3,
+      "preference_tags": [
+        "黑色兔女郎",
+        "腿部重点"
+      ],
+      "selection_reason": "黑色兔女郎造型，深色服饰与腿部视觉",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-004002",
+      "costume_id": "004002",
+      "character": "Darian",
+      "character_en": "Darian",
+      "skin": "Bittersweet Bunny",
+      "skin_en": "Bittersweet Bunny",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char004002",
+        "cutscene": "spine/cutscenes/cutscene_char004002"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 4,
+      "preference_tags": [
+        "兔女郎",
+        "腿部重点"
+      ],
+      "selection_reason": "兔女郎主题，腿部视觉优先",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-000707",
+      "costume_id": "000707",
+      "character": "Eclipse",
+      "character_en": "Eclipse",
+      "skin": "Beach Vacation",
+      "skin_en": "Beach Vacation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000707",
+        "cutscene": "spine/cutscenes/cutscene_char000707"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 5,
+      "preference_tags": [
+        "成熟御姐",
+        "夏日泳装",
+        "腿部重点"
+      ],
+      "selection_reason": "成熟角色的夏日海滩造型",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-061305",
+      "costume_id": "061305",
+      "character": "Dalvi",
+      "character_en": "Dalvi",
+      "skin": "Summer Vacation",
+      "skin_en": "Summer Vacation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char061305",
+        "cutscene": "spine/cutscenes/cutscene_char061305"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 6,
+      "preference_tags": [
+        "成熟御姐",
+        "夏日泳装",
+        "腿部重点"
+      ],
+      "selection_reason": "狐系角色夏日清凉造型",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-003802",
+      "costume_id": "003802",
+      "character": "Liberta",
+      "character_en": "Liberta",
+      "skin": "Onsen Manager",
+      "skin_en": "Onsen Manager",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003802",
+        "cutscene": "spine/cutscenes/cutscene_char003802"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 7,
+      "preference_tags": [
+        "成熟御姐",
+        "温泉"
+      ],
+      "selection_reason": "温泉经营者和式造型",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-003401",
+      "costume_id": "003401",
+      "character": "Morpeah",
+      "character_en": "Morpeah",
+      "skin": "Beach Vacation",
+      "skin_en": "Beach Vacation",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003401",
+        "cutscene": "spine/cutscenes/cutscene_char003401"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 8,
+      "preference_tags": [
+        "成熟御姐",
+        "夏日泳装"
+      ],
+      "selection_reason": "海滩假日泳装风格",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-003302",
+      "costume_id": "003302",
+      "character": "Nebris",
+      "character_en": "Nebris",
+      "skin": "Laid-back Lifeguard",
+      "skin_en": "Laid-back Lifeguard",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003302",
+        "cutscene": "spine/cutscenes/cutscene_char003302"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 9,
+      "preference_tags": [
+        "运动系",
+        "夏日泳装",
+        "腿部重点"
+      ],
+      "selection_reason": "救生员运动系泳装",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-066402",
+      "costume_id": "066402",
+      "character": "Angelica",
+      "character_en": "Angelica",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char066402",
+        "cutscene": "spine/cutscenes/cutscene_char066402"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 10,
+      "preference_tags": [
+        "成熟御姐",
+        "夏日泳装"
+      ],
+      "selection_reason": "成人角色泳池派对服装",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-000306",
+      "costume_id": "000306",
+      "character": "Scheherazade",
+      "character_en": "Scheherazade",
+      "skin": "Pool Party",
+      "skin_en": "Pool Party",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000306",
+        "cutscene": "spine/cutscenes/cutscene_char000306"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 11,
+      "preference_tags": [
+        "夏日泳装",
+        "腿部重点"
+      ],
+      "selection_reason": "泳池派对夏装",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-000807",
+      "costume_id": "000807",
+      "character": "Rubia",
+      "character_en": "Rubia",
+      "skin": "Maid Bikini",
+      "skin_en": "Maid Bikini",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char000807",
+        "cutscene": "spine/cutscenes/cutscene_char000807"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 12,
+      "preference_tags": [
+        "女仆泳装",
+        "腿部重点"
+      ],
+      "selection_reason": "女仆+比基尼主题",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-067504",
+      "costume_id": "067504",
+      "character": "Luvencia",
+      "character_en": "Luvencia",
+      "skin": "Ocean Vanguard",
+      "skin_en": "Ocean Vanguard",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067504",
+        "cutscene": "spine/cutscenes/cutscene_char067504"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 13,
+      "preference_tags": [
+        "运动系",
+        "夏日泳装",
+        "腿部重点"
+      ],
+      "selection_reason": "夏日先锋轻装与腿部视觉",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-003202",
+      "costume_id": "003202",
+      "character": "Loen",
+      "character_en": "Loen",
+      "skin": "Track and Field Team",
+      "skin_en": "Track and Field Team",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char003202",
+        "cutscene": "spine/cutscenes/cutscene_char003202"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 14,
+      "preference_tags": [
+        "运动系",
+        "腿部重点"
+      ],
+      "selection_reason": "田径队主题",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-067303",
+      "costume_id": "067303",
+      "character": "Levia",
+      "character_en": "Levia",
+      "skin": "Overheat",
+      "skin_en": "Overheat",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067303",
+        "cutscene": "spine/cutscenes/cutscene_char067303"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 15,
+      "preference_tags": [
+        "成熟御姐",
+        "腿部重点"
+      ],
+      "selection_reason": "Levia 高热战斗造型，建议预览动作",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-067401",
+      "costume_id": "067401",
+      "character": "Michaela",
+      "character_en": "Michaela",
+      "skin": "Beachside Justice",
+      "skin_en": "Beachside Justice",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067401",
+        "cutscene": "spine/cutscenes/cutscene_char067401"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 16,
+      "preference_tags": [
+        "成熟御姐",
+        "夏日泳装"
+      ],
+      "selection_reason": "海滨主题成人女性角色",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-067803",
+      "costume_id": "067803",
+      "character": "Mamonir",
+      "character_en": "Mamonir",
+      "skin": "Miracle Marine",
+      "skin_en": "Miracle Marine",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067803",
+        "cutscene": "spine/cutscenes/cutscene_char067803"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 17,
+      "preference_tags": [
+        "成熟御姐",
+        "夏日泳装"
+      ],
+      "selection_reason": "海军夏日造型",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-067202",
+      "costume_id": "067202",
+      "character": "Venaka",
+      "character_en": "Venaka",
+      "skin": "Wind Dancer",
+      "skin_en": "Wind Dancer",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067202",
+        "cutscene": "spine/cutscenes/cutscene_char067202"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 18,
+      "preference_tags": [
+        "成熟御姐",
+        "舞蹈系",
+        "腿部重点"
+      ],
+      "selection_reason": "舞蹈主题，动作表现优先",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    },
+    {
+      "id": "costume-068001",
+      "costume_id": "068001",
+      "character": "Valze",
+      "character_en": "Valze",
+      "skin": "Night of Betrayal",
+      "skin_en": "Night of Betrayal",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char068001",
+        "cutscene": "spine/cutscenes/cutscene_char068001"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 19,
+      "preference_tags": [
+        "成熟御姐"
+      ],
+      "selection_reason": "2026-11-05 新吸血鬼女王角色",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": "https://dotgg.gg/brown-dust-2/%F0%9F%93%8B55th-developer-notes-november-update/"
+      }
+    },
+    {
+      "id": "costume-067604",
+      "costume_id": "067604",
+      "character": "Wilhelmina",
+      "character_en": "Wilhelmina",
+      "skin": "Frozen Queen",
+      "skin_en": "Frozen Queen",
+      "tier": "Costume",
+      "roles": {
+        "character": "spine/char/char067604",
+        "cutscene": "spine/cutscenes/cutscene_char067604"
+      },
+      "interaction_batch": "interaction-03",
+      "batch_no": 3,
+      "priority": 20,
+      "preference_tags": [
+        "成熟御姐"
+      ],
+      "selection_reason": "冰霜女王造型，重点成熟气质",
+      "mapping": "character_cutscene_folders_verified",
+      "source": {
+        "repository": "myssal/Brown-Dust-2-Asset",
+        "original_index": "Jelosus2/BD2-L2D-Viewer",
+        "reference": null
+      }
+    }
+  ]
+}
