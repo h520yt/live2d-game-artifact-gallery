@@ -116,7 +116,8 @@ def _azur_collection_info(root: Path) -> dict[str, dict[str, Any]]:
             footwear = item.get("footwear")
             if isinstance(footwear, str) and footwear:
                 # "候选"是关键限定词，不能暗示整套动作/场景均符合鞋履要求。
-                for tag in ("鞋履候选", "候选：" + footwear):
+                footwear_label = "候选：" + footwear.removesuffix("候选").strip()
+                for tag in ("鞋履候选", footwear_label):
                     if tag not in info["tags"]:
                         info["tags"].append(tag)
             status = item.get("review_status") or item.get("review_priority")
