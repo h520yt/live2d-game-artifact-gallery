@@ -347,6 +347,12 @@ def select_skins(prestige, costumes, collection, only=None, character=None, limi
         selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-03"]
     elif collection == "nonbarefoot":
         selected = [skin for skin in all_selected if skin.get("nonbarefoot")]
+    elif collection == "nonbarefoot-pending":
+        selected = [skin for skin in all_selected if skin.get("nonbarefoot", {}).get(
+            "scene_status") == "candidate_unverified"]
+    elif collection == "nonbarefoot-reviewed":
+        selected = [skin for skin in all_selected if skin.get("nonbarefoot") and
+                    skin["nonbarefoot"]["scene_status"] != "candidate_unverified"]
     elif collection == "interaction-batch":
         selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-02"]
     elif collection == "prestige":
@@ -399,9 +405,9 @@ def main(argv=None):
     parser.add_argument("--interaction-only", action="store_true",
                         help="只下载互动资源；同时包含 Aquila 的 interaction 与 interaction2")
     parser.add_argument("--collection",
-                        choices=("batch-20", "nonbarefoot", "interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
+                        choices=("batch-20", "nonbarefoot", "nonbarefoot-pending", "nonbarefoot-reviewed", "interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
                         default="batch-20",
-                        help="默认第3批20套；interaction-batch=上批8套；interactive=全部互动")
+                        help="默认第3批20套；nonbarefoot=22套筛选池，nonbarefoot-pending=14套待核验，nonbarefoot-reviewed=原8套")
     parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")
     parser.add_argument("--limit", type=int, help="本次最多处理的套数，建议批量安装时设置")
     parser.add_argument("--offset", type=int, default=0,

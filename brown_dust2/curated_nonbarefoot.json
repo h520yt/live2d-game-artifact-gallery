@@ -1,7 +1,7 @@
 {
-  "version": 1,
-  "policy": "按具体互动场景判定；丝袜/网袜/鞋靴或脚部被遮住/出画都符合。只需要部分场景符合即可收录。禁止把人物/技能动画冒充独立互动，也不代表所有动作都非赤脚。",
-  "notes": "user_confirmed_scene 来自用户明确确认；user_reference_scene 来自提供的参考画面；partial_scene_needs_motion_check 为已知服装特征对应的场景候选，暂不指定动作编号。",
+  "version": 2,
+  "policy": "非赤脚按互动场景筛选：穿鞋/靴/包脚袜子，或脚部完全遮挡、画面外均可收录；候选待核验不代表已符合。",
+  "notes": "原8套保留既有线索及用户确认动作。新增14套是独立互动来源已映射、脚部画面未核验的候选；candidate_unverified 状态不得误报为非赤脚已合格。",
   "entries": [
     {
       "skin_id": "costume-067004",
@@ -66,6 +66,132 @@
       "preferred_role": "interaction",
       "preferred_animation": null,
       "notes": "被褥遮挡下半身的互动场景符合遮挡标准；具体 idle 编号待本地渲染核对"
+    },
+    {
+      "skin_id": "justia-hot-summer-dream",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "泳装互动；需检查脚部出画或被场景物件完全遮挡；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "teresse-milky-bikini",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "泳装互动；需检查脚部是否完全出画/遮挡；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "zenith-stranger-bunny",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 1,
+      "notes": "兔女郎互动；优先核验丝袜、鞋履保留的阶段；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "liberta-hedonist",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "已映射互动，脚部状态未核验；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-067902",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "有两组独立互动，需分别检查脚部与镜头；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-066403",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 1,
+      "notes": "霓虹救星多阶段互动，优先查看脚部是否出画；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-060802",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 1,
+      "notes": "代号 O 互动；需核验脚部被遮挡或出画的具体阶段；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-067104",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 1,
+      "notes": "战地医护兵互动；需核验鞋袜和具体画面；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-004202",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "奇迹紫罗兰互动；需核验脚部状态；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-004102",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "软萌兔女郎互动；需检查场景错位及脚部遮挡；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-061302",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "明月互动；优先检查坐姿场景脚部是否出画；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-003402",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 1,
+      "notes": "白日梦兔女郎互动；优先检查袜子保留阶段；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-003604",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "引退的传说互动；需核验镜头裁切和道具遮挡；未通过本地视觉验收，暂不视为符合非赤脚条件"
+    },
+    {
+      "skin_id": "costume-067603",
+      "reason": "unverified_scene",
+      "scene_status": "candidate_unverified",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "review_priority": 2,
+      "notes": "水上乐园女王互动；需核验脚部出画或遮挡；未通过本地视觉验收，暂不视为符合非赤脚条件"
     }
   ]
 }

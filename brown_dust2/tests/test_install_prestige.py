@@ -185,8 +185,14 @@ class PrestigeInstallTests(unittest.TestCase):
         prestige, chosen = installer.read_catalog()
         all_skins = prestige + chosen
         valid = installer.select_skins(prestige, chosen, "nonbarefoot")
-        self.assertEqual(8, len(valid))
-        self.assertEqual(8, len({skin["id"] for skin in valid}))
+        self.assertEqual(22, len(valid))
+        self.assertEqual(22, len({skin["id"] for skin in valid}))
+        pending = installer.select_skins(prestige, chosen, "nonbarefoot-pending")
+        reviewed = installer.select_skins(prestige, chosen, "nonbarefoot-reviewed")
+        self.assertEqual(14, len(pending))
+        self.assertEqual(8, len(reviewed))
+        self.assertEqual({skin["id"] for skin in valid},
+                         {skin["id"] for skin in pending + reviewed})
         self.assertEqual(54, len(all_skins))
         for skin in valid:
             with self.subTest(skin=skin["id"]):
@@ -207,6 +213,9 @@ class PrestigeInstallTests(unittest.TestCase):
                   {"costume-067004", "costume-001006"}]
         self.assertTrue(all(s["nonbarefoot"]["preferred_animation"] is None
                             for s in others))
+        self.assertTrue(all(s["nonbarefoot"]["scene_status"] == "candidate_unverified"
+                            and s["nonbarefoot"]["reason"] == "unverified_scene"
+                            for s in pending))
 
     def test_nonbarefoot_metadata_duplicate_and_invalid_scene_rejected(self):
         raw = json.loads(installer.NONBAREFOOT.read_text(encoding="utf-8"))

@@ -1,15 +1,30 @@
 # 棕色尘埃2 · 互动优先展示柜（第三批20款）
 
+## 2026-11-18 · 22 套互动加入非赤脚筛选池
+
+当前全部 22 套独立互动在仓库中已存在来源映射，本轮将原先未分类的 **14 套**作为**脚部待核验候选**加入「非赤脚筛选池」，不复制模型、不删除原有素材。最初 8 套保留原先场景线索和指定 idle；**候选≠已确认符合**。新增「待核验14套」筛选入口，可逐一打开其互动场景判断是否穿鞋、包脚袜子、脚部完全遮挡或出画。
+
+```powershell
+cd D:\project_python\live2d-game-artifact-gallery
+git pull origin main
+python brown_dust2/scripts/install_prestige.py --collection nonbarefoot-pending --list
+python brown_dust2/scripts/install_prestige.py --collection nonbarefoot-pending --interaction-only
+python brown_dust2/scripts/install_prestige.py --verify --collection all
+python -m http.server 8000
+```
+
+打开 `http://127.0.0.1:8000/brown_dust2/viewer/index.html`。已分类的原 8 套单独查看：`--collection nonbarefoot-reviewed`；全部 22 套：`--collection nonbarefoot`。只会在本地下载缺失的互动 Spine 素材，不会把素材提交 Git。
+
 ## 非赤脚互动 · 场景级筛选（2026-11-18）
 
 展示柜新加 **「非赤脚互动」** 分类。判断依据是互动中的具体画面：有鞋/靴/丝袜/网袜，或脚部被被褥、道具、家具遮挡、位于画面之外，均可收录；同一皮肤只需有部分场景符合，不要求全部动作都符合。
 
-- 本轮将既有的 **8 套独立互动皮肤**按此口径加入分类，直接复用原有模型路径，不重复创建皮肤记录、不会删除或重新下载素材。
+- 最初 8 套已有场景或外观线索；新增 14 套为待核验候选，不等于全部合格。全部复用现有模型，不复制皮肤记录或删除素材。
 - 配置在 `curated_nonbarefoot.json`，为每套存储判定原因、场景确认程度、优先角色模型与优先 idle（仅有截图依据时才写具体编号）。
 - **Ventana · Onsen Practitioner** 用户明确认可的脚部遮挡场景为 `idle2`，进入该皮肤时优先尝试 `idle2`；**Sylvia · Bikini Agent** 的参考横躺画面优先 `idle1`。
 - 其他资源目前只有鞋袜或特定遮挡场景的依据，**已入选但标为「非赤脚·部分场景」**；这些条目不会虚构已验证的动画编号，也不代表任意 `mix` 动作都符合。
 - 查看当前筛选结果：页面「非赤脚互动」；使用本地安装器只查看这批：`python brown_dust2/scripts/install_prestige.py --collection nonbarefoot --list`。仅下载其中已入选且缺失的互动资源：`python brown_dust2/scripts/install_prestige.py --collection nonbarefoot --interaction-only`。
-- 下载状态仍由本地模型完整性检测控制；只标记符合偏好不等于 Spine 已安装或已完成 WebGL 画面验收。
+- 下载状态仍由本地模型完整性检测控制；14 套新候选尚未完成 WebGL 画面验收，不能视为已符合非赤脚条件。
 
 
 ## 最新：第三批20款（2026-11-17）

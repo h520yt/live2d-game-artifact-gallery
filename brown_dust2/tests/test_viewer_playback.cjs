@@ -578,11 +578,12 @@ test("原有互动多轨、Skin、视口和 PNG 导出仍保留",()=>{
 test("非赤脚互动按场景标记：鞋袜、遮挡、脚部出画满足其一即可入选",()=>{
   const data=JSON.parse(fs.readFileSync(
     path.join(__dirname,"../curated_nonbarefoot.json"),"utf8"));
-  assert.equal(data.entries.length,8);
-  assert.equal(new Set(data.entries.map(s=>s.skin_id)).size,8);
+  assert.equal(data.entries.length,22);
+  assert.equal(new Set(data.entries.map(s=>s.skin_id)).size,22);
+  assert.equal(data.entries.filter(e=>e.scene_status==="candidate_unverified").length,14);
   for(const entry of data.entries) {
     assert.ok(["stockings_or_shoes","boots_or_stockings","feet_occluded",
-      "feet_out_of_frame"].includes(entry.reason));
+      "feet_out_of_frame","unverified_scene"].includes(entry.reason));
     assert.ok(entry.scene_status);
     assert.equal(entry.preferred_role,"interaction");
     assert.ok(entry.notes.length>5);
@@ -590,11 +591,15 @@ test("非赤脚互动按场景标记：鞋袜、遮挡、脚部出画满足其�
   assert.equal(data.entries.find(x=>x.skin_id==="costume-067004").preferred_animation,"idle2");
   assert.equal(data.entries.find(x=>x.skin_id==="costume-001006").preferred_animation,"idle1");
   const other = data.entries.filter(x=>!x.preferred_animation);
-  assert.equal(other.length,6);
+  assert.equal(other.length,20);
+  assert.ok(data.entries.filter(e=>e.scene_status==="candidate_unverified")
+    .every(e=>e.reason==="unverified_scene" && e.preferred_animation===null));
 });
 
 test("非赤脚场景筛选只显示有真实互动的对应服装，并优先打开可确认的 idle",()=>{
   assert.match(page,/data-filter="nonbarefoot"/);
+  assert.match(page,/data-filter="nonbarefootPending"/);
+  assert.match(page,/collectionFilter === "nonbarefootPending"/);
   assert.match(page,/collectionFilter === "nonbarefoot"/);
   assert.match(page,/skin\.nonbarefoot && \(skin\.roles\.interaction \|\| skin\.roles\.interaction2\)/);
   assert.match(page,/fetch\("\.\.\/curated_nonbarefoot\.json"/);

@@ -109,7 +109,8 @@ code{font-family:Consolas,monospace;color:#eace9b}
   </div>
   <div class="collection-filters" id="filters">
     <button type="button" data-filter="interactive" class="active">有互动</button>
-    <button type="button" data-filter="nonbarefoot">非赤脚互动</button>
+    <button type="button" data-filter="nonbarefoot">非赤脚筛选池</button>
+    <button type="button" data-filter="nonbarefootPending">待核验14套</button>
     <button type="button" data-filter="batch20">第三批20套</button>
     <button type="button" data-filter="batch">第二批8套</button>
     <button type="button" data-filter="all">全部精选</button>
@@ -776,6 +777,9 @@ function renderCards(filter) {
     if (collectionFilter === "nonbarefoot") {
       return Boolean(skin.nonbarefoot && (skin.roles.interaction || skin.roles.interaction2));
     }
+    if (collectionFilter === "nonbarefootPending") {
+      return skin.nonbarefoot?.scene_status === "candidate_unverified";
+    }
     if (collectionFilter === "batch20") return skin.interaction_batch === "interaction-03";
     if (collectionFilter === "batch") return skin.interaction_batch === "interaction-02";
     if (collectionFilter === "special") return isSpecial(skin);
@@ -828,10 +832,13 @@ function renderCards(filter) {
       roles.length ? "ready" : "wait"));
     for (const name of skin.preference_tags || []) tags.appendChild(badge(name));
     if (skin.nonbarefoot) {
-      const confirmed = skin.nonbarefoot.scene_status === "user_confirmed_scene"
-        || skin.nonbarefoot.scene_status === "user_reference_scene";
-      tags.appendChild(badge(confirmed ? "非赤脚·场景定位" : "非赤脚·部分场景",
-        confirmed ? "ready" : "wait"));
+      const status = skin.nonbarefoot.scene_status;
+      const confirmed = status === "user_confirmed_scene"
+        || status === "user_reference_scene";
+      const unverified = status === "candidate_unverified";
+      const label = unverified ? "脚部待核验" : confirmed
+        ? "非赤脚·场景定位" : "非赤脚·动作待核";
+      tags.appendChild(badge(label, confirmed ? "ready" : "wait"));
     }
     if (skin.interaction_only) {
       tags.appendChild(badge("仅互动，无需人物/技能"));
@@ -850,7 +857,8 @@ function renderCards(filter) {
   $("collection-info").textContent = "本页显示 " + matches.length
     + " 套 · 特殊 " + catalog.filter(isSpecial).length
     + " · 独立互动 " + catalog.filter(skin => skin.roles.interaction).length
-    + " · 非赤脚互动 " + catalog.filter(skin => skin.nonbarefoot).length
+    + " · 非赤脚筛选池 " + catalog.filter(skin => skin.nonbarefoot).length
+    + "（待核验 " + catalog.filter(skin => skin.nonbarefoot?.scene_status === "candidate_unverified").length + "）"
     + " · 第三批 " + catalog.filter(skin => skin.interaction_batch === "interaction-03").length
     + " · 互动优先";
   $("list-status").textContent = matches.length ? "" : "当前条件没有符合要求的皮肤";
@@ -957,10 +965,12 @@ function selectSkin(skin) {
     (skin.interaction_only ? " · 互动专辑（仅独立互动模型）"
       : isPrestige(skin) ? " · Prestige Skin" : " · " + skin.tier)
     + " · " + interactionLabel(skin)
-    + (skin.nonbarefoot ? " · 非赤脚互动："
-      + (skin.nonbarefoot.preferred_animation
-        ? "优先 " + skin.nonbarefoot.preferred_animation
-        : "部分场景符合，待逐动作核验") : "");
+    + (skin.nonbarefoot ? " · " + (
+      skin.nonbarefoot.scene_status === "candidate_unverified"
+        ? "脚部尚未核验：仅为互动候选，不能视为合格"
+        : skin.nonbarefoot.preferred_animation
+          ? "非赤脚互动优先 " + skin.nonbarefoot.preferred_animation
+          : "非赤脚互动：部分场景有线索，待逐动作核验") : "");
   const item = installed.get(skin.id);
   const downloadedRoles = item?.roles || {};
   $("roles").replaceChildren();
