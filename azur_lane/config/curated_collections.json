@@ -556,7 +556,9 @@
           "style": "运动系·网球",
           "footwear": "网球鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 101441
+          "source_skin_id": 101441,
+          "maturity_screen": "excluded",
+          "maturity_note": "整体造型偏年少，不符合成熟御姐优先筛选"
         },
         {
           "character": "巴尔的摩",
@@ -565,7 +567,9 @@
           "style": "运动系·赛车",
           "footwear": "赛车靴/运动鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 103165
+          "source_skin_id": 103165,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "霞飞",
@@ -574,7 +578,9 @@
           "style": "运动系·竞速",
           "footwear": "运动鞋/包脚鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 907013
+          "source_skin_id": 907013,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "艾伦·萨姆纳",
@@ -583,7 +589,9 @@
           "style": "兔女郎·丝袜",
           "footwear": "包脚鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 101451
+          "source_skin_id": 101451,
+          "maturity_screen": "hold",
+          "maturity_note": "外观年龄感存在不确定性，暂停收录并等待完整立绘复审"
         },
         {
           "character": "里诺",
@@ -592,7 +600,9 @@
           "style": "兔女郎·丝袜",
           "footwear": "包脚鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 102263
+          "source_skin_id": 102263,
+          "maturity_screen": "hold",
+          "maturity_note": "外观成熟度尚未人工核实，暂停收录并等待完整立绘复审"
         },
         {
           "character": "柴郡",
@@ -601,7 +611,9 @@
           "style": "礼装·丝袜",
           "footwear": "礼装鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 299034
+          "source_skin_id": 299034,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "威严",
@@ -610,7 +622,9 @@
           "style": "兔女郎·腿部展示",
           "footwear": "包脚鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 701021
+          "source_skin_id": 701021,
+          "maturity_screen": "excluded",
+          "maturity_note": "截图反馈：造型偏幼态，不符合成熟风格精选方向"
         },
         {
           "character": "狮",
@@ -619,7 +633,9 @@
           "style": "夜景·成熟",
           "footwear": "高跟鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 205162
+          "source_skin_id": 205162,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "戈里齐亚",
@@ -628,7 +644,9 @@
           "style": "职场·丝袜",
           "footwear": "包脚鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 603061
+          "source_skin_id": 603061,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "腓德雷卡·卡尔",
@@ -637,7 +655,9 @@
           "style": "夜景·成熟",
           "footwear": "高跟鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 403143
+          "source_skin_id": 403143,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "埃姆登",
@@ -646,7 +666,9 @@
           "style": "暗色礼装",
           "footwear": "礼装鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 402071
+          "source_skin_id": 402071,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "关岛",
@@ -655,7 +677,9 @@
           "style": "忍者·腿部展示",
           "footwear": "忍者鞋/足部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 118022
+          "source_skin_id": 118022,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "路易九世",
@@ -664,7 +688,9 @@
           "style": "骑士·礼装",
           "footwear": "长靴/礼装鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 899011
+          "source_skin_id": 899011,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "喀琅施塔得",
@@ -673,7 +699,9 @@
           "style": "制服·战术",
           "footwear": "军靴/包脚鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 718011
+          "source_skin_id": 718011,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "曾克海军上将",
@@ -682,7 +710,9 @@
           "style": "职场·审讯",
           "footwear": "高跟鞋/包脚鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 404071
+          "source_skin_id": 404071,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "前卫",
@@ -691,7 +721,9 @@
           "style": "角色扮演·成熟",
           "footwear": "靴子/包脚鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 205131
+          "source_skin_id": 205131,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "可畏",
@@ -700,7 +732,9 @@
           "style": "纪念礼装",
           "footwear": "礼装鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 207055
+          "source_skin_id": 207055,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "吾妻",
@@ -709,7 +743,9 @@
           "style": "制服·腿部展示",
           "footwear": "包脚鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 399042
+          "source_skin_id": 399042,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "武藏",
@@ -718,7 +754,9 @@
           "style": "运动系·应援",
           "footwear": "运动鞋/包脚鞋候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 305103
+          "source_skin_id": 305103,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "浅间",
@@ -727,9 +765,12 @@
           "style": "夜景·礼装",
           "footwear": "高跟鞋/脚部遮挡候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 303201
+          "source_skin_id": 303201,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         }
-      ]
+      ],
+      "maturity_policy": "先排除明显幼态/儿童感人物，再评价服装、腿部、鞋履及 Live2D 动作；排除或暂停项不参与精选安装，不删除已有模型"
     },
     "batch8": {
       "description": "第八批·成熟制服、礼装、靴与丝袜 Live2D 候选；直接接入统一展柜",
@@ -743,7 +784,9 @@
           "style": "成熟·制服互动",
           "footwear": "军装/丝袜与鞋履待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 705022
+          "source_skin_id": 705022,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "让·巴尔",
@@ -752,7 +795,9 @@
           "style": "成熟·礼装",
           "footwear": "礼装鞋与脚部遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 905013
+          "source_skin_id": 905013,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "黎塞留",
@@ -761,7 +806,9 @@
           "style": "成熟·暗色礼装",
           "footwear": "礼装鞋/丝袜待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 805012
+          "source_skin_id": 805012,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "基尔萨治",
@@ -770,7 +817,9 @@
           "style": "成熟·春日礼装",
           "footwear": "鞋履与构图遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 902012
+          "source_skin_id": 902012,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "天城",
@@ -779,7 +828,9 @@
           "style": "成熟·和风礼装",
           "footwear": "包脚鞋或足部遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 304052
+          "source_skin_id": 304052,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "信浓",
@@ -788,7 +839,9 @@
           "style": "成熟·魔术造型",
           "footwear": "礼装鞋与动作遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 307084
+          "source_skin_id": 307084,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "基洛夫",
@@ -797,7 +850,9 @@
           "style": "成熟·高速运动",
           "footwear": "长靴/包脚鞋待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 702042
+          "source_skin_id": 702042,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "约克城II",
@@ -806,7 +861,9 @@
           "style": "成熟·温柔礼装",
           "footwear": "礼装鞋/脚部遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 107102
+          "source_skin_id": 107102,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "彼得·史特拉塞",
@@ -815,7 +872,9 @@
           "style": "成熟·节庆礼装",
           "footwear": "高跟鞋/丝袜待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 407031
+          "source_skin_id": 407031,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "让·巴尔",
@@ -824,7 +883,9 @@
           "style": "成熟·夜间礼装",
           "footwear": "包脚鞋与脚部遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 905014
+          "source_skin_id": 905014,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "天城航母",
@@ -833,7 +894,9 @@
           "style": "成熟·王座礼装",
           "footwear": "包脚鞋/长裙遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 307151
+          "source_skin_id": 307151,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "关岛",
@@ -842,7 +905,9 @@
           "style": "舞台·腿部展示",
           "footwear": "舞台鞋/丝袜待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 118021
+          "source_skin_id": 118021,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "让·巴尔",
@@ -851,7 +916,9 @@
           "style": "成熟·私服",
           "footwear": "包脚鞋与动作遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 905012
+          "source_skin_id": 905012,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "德文郡",
@@ -860,7 +927,9 @@
           "style": "成熟·暗夜造型",
           "footwear": "高跟鞋/黑丝待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 203131
+          "source_skin_id": 203131,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "苏维埃同盟",
@@ -869,7 +938,9 @@
           "style": "成熟·制服",
           "footwear": "军靴/鞋履待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 705021
+          "source_skin_id": 705021,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "威严",
@@ -878,7 +949,9 @@
           "style": "战术·腿部展示",
           "footwear": "长靴/鞋履待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 701023
+          "source_skin_id": 701023,
+          "maturity_screen": "excluded",
+          "maturity_note": "同角色整体偏幼态，暂不进入成熟风格精选"
         },
         {
           "character": "安图",
@@ -887,7 +960,9 @@
           "style": "成熟·夜间礼装",
           "footwear": "礼装鞋/腿部遮挡待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 304091
+          "source_skin_id": 304091,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "库尔斯克",
@@ -896,7 +971,9 @@
           "style": "成熟·冬装",
           "footwear": "长靴/包脚鞋待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 703021
+          "source_skin_id": 703021,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "俾斯麦",
@@ -905,7 +982,9 @@
           "style": "成熟·铁血礼装",
           "footwear": "靴子/礼装鞋待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 405011
+          "source_skin_id": 405011,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         },
         {
           "character": "吕佐夫",
@@ -914,9 +993,12 @@
           "style": "成熟·暗夜礼装",
           "footwear": "黑丝/礼装鞋待核验候选",
           "review_status": "待视觉与动作核验",
-          "source_skin_id": 404041
+          "source_skin_id": 404041,
+          "maturity_screen": "candidate",
+          "maturity_note": "成熟画风初筛候选；仍需核对完整立绘及全部动作，不等于人工审核通过"
         }
-      ]
+      ],
+      "maturity_policy": "先排除明显幼态/儿童感人物，再评价服装、腿部、鞋履及 Live2D 动作；排除或暂停项不参与精选安装，不删除已有模型"
     }
   }
 }
