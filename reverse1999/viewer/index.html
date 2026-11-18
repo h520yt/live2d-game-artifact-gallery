@@ -124,6 +124,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
 <script src="../../shared/vendor/live2d.min.js"></script>
+<script src="../../shared/gallery_bridge.js"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -395,6 +396,7 @@ async function loadSpinePose(m, poseName, modelToken){
           });
           const idle=names.find(name=>/idle|stand|wait|loop/i.test(name))||names[0];
           if(idle)playSpineAnimation(pl,idle);
+          window.GalleryViewerBridge?.refresh();
         }catch(error){console.error(error);message('已加载模型，但无法读取动作列表：'+error.message);}
       },
       error:(pl,msg)=>{if(modelToken===requestId&&tk===poseToken)message('Spine 加载失败：'+String(msg||'资源不兼容'));}
@@ -551,6 +553,7 @@ async function selectModel(m, viewMode){
     fitSkin(model,m);
     setupControls(model);
     hideMessage();
+    window.GalleryViewerBridge?.refresh();
   }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
 function initInteraction(){
@@ -624,6 +627,40 @@ async function start(){
     $('filter-unique').onclick=()=>{galleryFilter='unique';renderList();};
     $('filter-jukebox').onclick=()=>{galleryFilter='jukebox';renderList();};
     if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
+    window.GalleryViewerBridge?.register({
+      game: 'reverse1999',
+      open: (asset) => {
+        const model = models.find(item =>
+          String(item.id) + ':' + String(item.folder || item.channel || item.skin || '') === asset);
+        if (!model) return false;
+        selectModel(model, model.type === 'artwork' ? 'artwork' : 'model');
+        return true;
+      },
+      listRoles: () => selected?.poses ? Object.keys(selected.poses) : [],
+      selectRole: (name) => {
+        if (!selected?.poses?.[name]) return false;
+        loadSpinePose(selected, name, requestId);
+        return true;
+      },
+      listActions: () => {
+        if (active) return Object.keys(active.internalModel?.settings?.motions || {});
+        return spinePlayer?.animationState?.data?.skeletonData?.animations?.map(item => item.name) || [];
+      },
+      playAction: (name) => {
+        const cubism = active?.internalModel?.settings?.motions || {};
+        if (active && Object.prototype.hasOwnProperty.call(cubism, name)) {
+          active.motion(name, 0, FORCE);
+          return true;
+        }
+        const names = spinePlayer?.animationState?.data?.skeletonData?.animations?.map(item => item.name) || [];
+        if (spinePlayer && names.includes(name)) {
+          playSpineAnimation(spinePlayer, name);
+          return true;
+        }
+        return false;
+      },
+    });
+
   }catch(error){console.error(error);message('查看器初始化失败：'+error.message);}
 }
 start();
