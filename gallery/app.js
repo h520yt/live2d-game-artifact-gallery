@@ -1,12 +1,12 @@
 "use strict";
 
 (() => {
-  const GAMES = Object.freeze({
+  const GAMES = {
     azur_lane: { title: "碧蓝航线", viewer: "../azur_lane/viewer/index.html" },
     nikke: { title: "NIKKE", viewer: "../nikke/viewer/index.html" },
     reverse1999: { title: "重返未来：1999", viewer: "../reverse1999/viewer/index.html" },
     brown_dust2: { title: "棕色尘埃2", viewer: "../brown_dust2/viewer/index.html" },
-  });
+  };
   const STATUS = Object.freeze({
     entrypoints_present: "入口文件齐全",
     partial: "入口部分缺失",
@@ -85,6 +85,18 @@
       option.value = value;
       option.textContent = value;
       select.append(option);
+    }
+  }
+
+  function registerCatalogGames(gameInfo) {
+    if (!gameInfo || typeof gameInfo !== "object" || Array.isArray(gameInfo)) return;
+    for (const [id, item] of Object.entries(gameInfo)) {
+      if (GAMES[id] || !/^[a-z][a-z0-9_]{1,39}$/.test(id)) continue;
+      const expectedViewer = "games/" + id + "/viewer/index.html";
+      if (!item || typeof item.title !== "string" || !item.title.trim() ||
+          item.title.length > 120 || item.viewer !== expectedViewer) continue;
+      // 不允许索引数据注入外站链接或任意路径，仅启用项目内生成的标准目录。
+      GAMES[id] = { title: item.title, viewer: "../" + expectedViewer };
     }
   }
 
@@ -264,6 +276,7 @@
       if (catalog.schema_version !== 1 || !Array.isArray(catalog.assets)) {
         throw new Error("统一索引版本不匹配或格式不正确");
       }
+      registerCatalogGames(catalog.game_info);
       state.assets = catalog.assets.filter((item) => item &&
         typeof item.id === "string" && typeof item.game === "string" &&
         GAMES[item.game] && typeof item.source_id === "string");
