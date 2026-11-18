@@ -490,6 +490,7 @@
 <script src="../../shared/vendor/live2d.min.js"></script>
 <script src="artmesh_visibility.js"></script>
 <script src="scene_gallery.js"></script>
+<script src="../../shared/gallery_bridge.js"></script>
 <script>
 const { Live2DModel } = PIXI.live2d;
 let app, current, manifest;
@@ -529,6 +530,34 @@ async function boot(){
   enableInteraction();          // 交互只需绑定一次
   setupTabs();
   document.getElementById('l2d-back').onclick = exitStage;
+  window.GalleryViewerBridge?.register({
+    game: 'azur_lane',
+    open: (asset) => {
+      const modelIndex = manifest.models.findIndex(item => item.name === asset);
+      if (modelIndex !== -1) {
+        document.querySelector('.tab[data-view="live2d-view"]')?.click();
+        enterStage(modelIndex);
+        return true;
+      }
+      const artwork = manifest.characters.find(item => item.asset === asset);
+      if (!artwork) return false;
+      document.querySelector('.tab[data-view="gallery-view"]')?.click();
+      openDetail(artwork);
+      return true;
+    },
+    listActions: () => {
+      if (!current) return [];
+      return Object.keys(current.internalModel?.settings?.motions || {});
+    },
+    playAction: (name) => {
+      const motions = current?.internalModel?.settings?.motions || {};
+      if (!Object.prototype.hasOwnProperty.call(motions, name)) return false;
+      const force = PIXI.live2d.MotionPriority?.FORCE || 3;
+      current.motion(name, 0, force);
+      AzurArtmeshVisibility.setMotion(current, name);
+      return true;
+    },
+  });
 }
 
 function applyCardColumns(value){
@@ -738,6 +767,7 @@ async function selectShip(i){
     buildMotionPanel(cached);
     AzurArtmeshVisibility.mount(cached, manifest.models[i].name, 'artmesh-tools');
     loading.style.display = 'none';
+    window.GalleryViewerBridge?.refresh();
     return;
   }
 
@@ -777,6 +807,7 @@ async function selectShip(i){
   buildMotionPanel(model);
   AzurArtmeshVisibility.mount(model, manifest.models[i].name, 'artmesh-tools');
   loading.style.display = 'none';
+  window.GalleryViewerBridge?.refresh();
 }
 
 // 动作面板：折叠开关 + 紧凑网格；按前缀分组（主要/IDLE/TOUCH/其他），点击播放
