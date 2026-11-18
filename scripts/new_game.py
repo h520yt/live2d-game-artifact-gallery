@@ -25,7 +25,7 @@ def viewer_html(title: str) -> str:
 body{{background:#111b27;color:#eff4fa;font:15px/1.6 system-ui,'Microsoft YaHei',sans-serif}}
 main{{max-width:1000px;margin:30px auto;padding:15px}}a{{color:#f2c68d}}
 button{{cursor:pointer;color:inherit;background:#26394b;border:1px solid #54677e;border-radius:8px;padding:10px;margin:5px}}
-#preview{{display:block;max-height:65vh;max-width:100%;object-fit:contain;margin:16px auto}}
+#preview{{display:block;max-height:65vh;max-width:100%;object-fit:contain;margin:16px auto}}[hidden]{{display:none!important}}
 .note{{color:#b1c3d4}}
 </style></head><body><main>
 <a href="../../../gallery/">← 统一资源目录</a><h1>{safe}</h1>
@@ -56,10 +56,15 @@ def viewer_js(game: str) -> str:
     image.hidden = true;
     image.removeAttribute("src");
     const cover = current.preview;
-    if (typeof cover === "string" && cover && !cover.startsWith("/") &&
-        !cover.includes("..") && !cover.includes("://")) {
-      image.src = cover;
-      image.hidden = false;
+    if (typeof cover === "string" && cover.startsWith("../data/")) {
+      const parts = cover.slice("../data/".length).split("/");
+      const valid = parts.length > 0 && parts.every((part) =>
+        part !== "" && part !== "." && part !== ".." &&
+        !part.includes("\\") && !part.includes("?") && !part.includes("#"));
+      if (valid) {
+        image.src = cover;
+        image.hidden = false;
+      }
     }
     return true;
   }
