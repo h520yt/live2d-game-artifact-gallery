@@ -19,6 +19,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 from gallery_core.azur_metadata import load_skin_metadata, resolve_skin_entry
+from gallery_core.collections import load_batch_candidates
 
 from install_batch2 import Skin, main as install_batch
 
@@ -27,27 +28,9 @@ REPORT = ROOT / "data" / "batch5-install-report.json"
 
 # 角色、英文换装名、精确 L2D 资源路径名、鞋履风格、人工审核优先级。
 # 鞋履款式仅是筛选标签；待复核项需在本地预览确认，赤脚应移出本批。
-CANDIDATES = (
-    ("欧根亲王", "Final Lap", "ougen_5", "长靴", "优先"),
-    ("企业", "Wind Catcher", "qiye_7", "长靴", "优先"),
-    ("乌尔里希·冯·胡滕", "Ignition Matrician", "wuerlixi_2", "长靴", "优先"),
-    ("巴尔的摩", "Finish Line Flagbearer", "baerdimo_5", "长靴", "优先"),
-    ("圣路易斯", "Luxurious Wheels", "shengluyisi_2", "长靴", "优先"),
-    ("维托里奥·维内托", "The Flower of La Spezia", "weineituo_2", "高跟鞋", "优先"),
-    ("乌尔里希·冯·胡滕", "Mayhem Maid", "wuerlixi_3", "女仆鞋", "优先"),
-    ("埃吉尔", "Iron Blood's Dragon Maid", "aijier_2", "女仆鞋", "优先"),
-    ("兴登堡", "Delirious Duel", "xingdengbao_2", "高跟鞋", "优先"),
-    ("基尔萨治", "All-Night Charge", "jialisuoniye_3", "高跟鞋", "优先"),
-    ("武藏", "The Purple Rabbit's Marksmanship", "wuzang_3", "高跟鞋", "优先"),
-    ("大凤", "Fun on the Baize", "dafeng_7", "高跟鞋", "优先"),
-    ("欧根亲王", "Kindred Evening Spirits", "ougen_6", "高跟鞋", "候选"),
-    ("企业", "Diving Under Blue Skies", "qiye_9", "高跟鞋", "候选"),
-    ("圣路易斯", "Holiness to Haziness", "shengluyisi_4", "鞋履待复核", "候选"),
-    ("柴郡", "Cheshire Cat's Fairytale Maze", "chaijun_4", "鞋履待复核", "候选"),
-    ("贝尔法斯特", "Iridescent Rosa", "beierfasite_2", "高跟鞋", "候选"),
-    ("罗马", "White Heron of Darkest Night", "luoma_2", "高跟鞋", "候选"),
-    ("纳希莫夫海军上将", "First Time in the Limelight", "naximofu_2", "鞋履待复核", "候选"),
-    ("匹兹堡", "The Bartender's Gambit", "pizibao_2", "靴子", "候选"),
+CANDIDATES = load_batch_candidates(
+    ROOT / "config" / "curated_collections.json", "batch5",
+    ("character", "title", "asset", "footwear", "review_priority"),
 )
 
 
