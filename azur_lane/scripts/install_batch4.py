@@ -19,21 +19,17 @@ import sys
 
 from install_batch2 import Skin, main as install_batch
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.collections import load_skin_batch
+
 # skin ID / 英文标题与项目历史 manifest 及官方资源 hash 清单对应。
 # category=live2d 仅说明 CDN 存在模型包，不代表游戏内特殊动态效果全部支持。
-BATCH = (
-    Skin("腓特烈大帝", "Boudoir's Lingering Flame", "feiteliedadi_4", 499023, "live2d"),
-    Skin("金鹿号", "The Pale Phantom's Smile", "jinluhao_3", 9600032, "live2d"),
-    Skin("珍珠号", "Fallen Angel in the Dark Castle", "zhenzhuhao_2", 9600141, "live2d"),
-    Skin("信浓", "Dreamy White Sands", "xinnong_4", 307083, "live2d"),
-    Skin("斯特拉斯堡", "Faerie of the Race Circuit", "sitelasibao_2", 904021, "live2d"),
-    Skin("天狼星", "Rabbit of Paradise", "tianlangxing_5", 202204, "live2d"),
-    Skin("雷根斯堡", "Dark Dragon, Brilliant Beach", "leigensibao_2", 402101, "live2d"),
-    Skin("新泽西", "Midsummer Leisure", "xinzexi_3", 105172, "live2d"),
-    Skin("腓特烈大帝", "One Summer Night's Intimacy", "feiteliedadi_3", 499022, "live2d"),
-    Skin("君主", "Sovereign of the Beach", "junzhu_5", 299024, "live2d"),
-    Skin("大凤", "Seaside Daydreams", "dafeng_6", 307075, "live2d"),
-    Skin("企业", "Bathing Under Sunny Skies", "qiye_10", 137061, "live2d"),
+BATCH = tuple(
+    Skin(**item) for item in load_skin_batch(
+        PROJECT_ROOT / "azur_lane/config/curated_collections.json", "batch4"
+    )
 )
 
 REPORT = Path(__file__).resolve().parents[1] / "data" / "batch4-install-report.json"
