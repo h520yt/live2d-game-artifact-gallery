@@ -519,6 +519,7 @@ const { Live2DModel } = PIXI.live2d;
 let app, current, manifest;
 let modelGroups = [];          // 按皮肤汇总普通和 HX 模型，不改原始清单
 let selectedModelIndex = -1;   // 保留真实模型索引，允许操作台精确切换形态
+let stageToken = 0;           // 退出舞台时取消尚未执行的延迟模型选择
 let loadToken = 0;              // 递增令牌：只让最后一次点击的结果生效
 const modelCache = new Map();  // path -> Live2DModel，避免重复加载
 const CACHE_MAX = 12;          // 最多缓存模型数，超出销毁最旧的（防内存爆）
@@ -782,10 +783,12 @@ function renderVariantSelector(index){
 
 // 进入操作台
 function enterStage(i){
+  const token = ++stageToken;
   document.getElementById('l2d-grid-view').style.display = 'none';
   document.getElementById('l2d-stage-view').style.display = 'block';
   // stage 之前是 display:none，等浏览器重排后再按真实尺寸 resize，否则画布为 0
   setTimeout(() => {
+    if (token !== stageToken) return;
     const wrap = document.getElementById('canvas-wrap');
     if(wrap.clientWidth > 0){
       app.renderer.resize(wrap.clientWidth, wrap.clientHeight);
@@ -795,6 +798,7 @@ function enterStage(i){
 }
 // 返回列表
 function exitStage(){
+  ++stageToken;
   ++loadToken;                      // 退出时令未完成的模型读取失效
   selectedModelIndex = -1;
   document.getElementById('l2d-variant-tools').hidden = true;
