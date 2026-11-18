@@ -421,7 +421,7 @@ test("新一批独立互动即使没有人物/技能模型也可单独展示",()
   assert.match(page,/skin\.interaction_only \? " · 互动专辑/);
   assert.match(page,/catalog\.sort\(\(left,right\) => priority\(left\)-priority\(right\)\)/);
   assert.match(page,/if\(catalog\.length\) \{\s*\$\("catalog-view"\)\.hidden = false;/);
-  assert.match(page,/loadRole\(item\.roles\.interaction \? "interaction" : item\.roles\.interaction2/);
+  assert.match(page,/const initialRole = preferredRole && item\.roles\[preferredRole\]/);
   assert.match(page,/new Set\(ids\)\.size !== ids\.length/);
 });
 
@@ -520,7 +520,7 @@ test("卡片预览、批次筛选、列数和排序控件不修改原始资源",
   assert.match(page,/\$\("viewer"\)\.hidden = true/);
   assert.match(page,/window\.scrollTo\(0,catalogScroll\)/);
   assert.match(page,/localStorage\.setItem\("bd2\.gridColumns",String\(n\)\)/);
-  assert.match(page,/loadRole\(item\.roles\.interaction \? "interaction"/);
+  assert.match(page,/loadRole\(initialRole, restored\)/);
 });
 
 test("折叠动作抽屉搜索可用，避免几百个动作压缩舞台",()=>{
