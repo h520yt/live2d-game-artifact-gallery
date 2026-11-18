@@ -109,6 +109,7 @@ code{font-family:Consolas,monospace;color:#eace9b}
   </div>
   <div class="collection-filters" id="filters">
     <button type="button" data-filter="interactive" class="active">有互动</button>
+    <button type="button" data-filter="nonbarefoot">非赤脚互动</button>
     <button type="button" data-filter="batch20">第三批20套</button>
     <button type="button" data-filter="batch">第二批8套</button>
     <button type="button" data-filter="all">全部精选</button>
@@ -772,6 +773,9 @@ function renderCards(filter) {
       skin.skin_en,skin.id,skin.costume_id || ""]
       .some(value => String(value).toLowerCase().includes(q));
     if (!keyword) return false;
+    if (collectionFilter === "nonbarefoot") {
+      return Boolean(skin.nonbarefoot && (skin.roles.interaction || skin.roles.interaction2));
+    }
     if (collectionFilter === "batch20") return skin.interaction_batch === "interaction-03";
     if (collectionFilter === "batch") return skin.interaction_batch === "interaction-02";
     if (collectionFilter === "special") return isSpecial(skin);
@@ -823,6 +827,12 @@ function renderCards(filter) {
       "/" + Object.keys(skin.roles).length + " 类" : "待安装",
       roles.length ? "ready" : "wait"));
     for (const name of skin.preference_tags || []) tags.appendChild(badge(name));
+    if (skin.nonbarefoot) {
+      const confirmed = skin.nonbarefoot.scene_status === "user_confirmed_scene"
+        || skin.nonbarefoot.scene_status === "user_reference_scene";
+      tags.appendChild(badge(confirmed ? "非赤脚·场景定位" : "非赤脚·部分场景",
+        confirmed ? "ready" : "wait"));
+    }
     if (skin.interaction_only) {
       tags.appendChild(badge("仅互动，无需人物/技能"));
       for (const name of skin.interaction_tags || []) tags.appendChild(badge(name));
@@ -840,6 +850,7 @@ function renderCards(filter) {
   $("collection-info").textContent = "本页显示 " + matches.length
     + " 套 · 特殊 " + catalog.filter(isSpecial).length
     + " · 独立互动 " + catalog.filter(skin => skin.roles.interaction).length
+    + " · 非赤脚互动 " + catalog.filter(skin => skin.nonbarefoot).length
     + " · 第三批 " + catalog.filter(skin => skin.interaction_batch === "interaction-03").length
     + " · 互动优先";
   $("list-status").textContent = matches.length ? "" : "当前条件没有符合要求的皮肤";
@@ -945,7 +956,11 @@ function selectSkin(skin) {
   $("description").textContent = skin.character_en + " / " + skin.skin_en +
     (skin.interaction_only ? " · 互动专辑（仅独立互动模型）"
       : isPrestige(skin) ? " · Prestige Skin" : " · " + skin.tier)
-    + " · " + interactionLabel(skin);
+    + " · " + interactionLabel(skin)
+    + (skin.nonbarefoot ? " · 非赤脚互动："
+      + (skin.nonbarefoot.preferred_animation
+        ? "优先 " + skin.nonbarefoot.preferred_animation
+        : "部分场景符合，待逐动作核验") : "");
   const item = installed.get(skin.id);
   const downloadedRoles = item?.roles || {};
   $("roles").replaceChildren();
@@ -968,8 +983,15 @@ function selectSkin(skin) {
           + skin.id + " --role interaction"
         : ""));
   } else {
-    loadRole(item.roles.interaction ? "interaction" : item.roles.interaction2 ? "interaction2"
-      : item.roles.character ? "character" : Object.keys(item.roles)[0]);
+    const preferred = skin.nonbarefoot;
+    const preferredRole = preferred?.preferred_role;
+    const initialRole = preferredRole && item.roles[preferredRole]
+      ? preferredRole
+      : item.roles.interaction ? "interaction" : item.roles.interaction2 ? "interaction2"
+      : item.roles.character ? "character" : Object.keys(item.roles)[0];
+    const restored = initialRole === preferredRole && preferred?.preferred_animation
+      ? {animation:preferred.preferred_animation} : null;
+    loadRole(initialRole, restored);
   }
   renderCards($("search").value);
   updateNeighborButtons();
@@ -1348,14 +1370,15 @@ for (const button of $("filters").querySelectorAll("button")) {
 }
 (async () => {
   try {
-    const [a,b,c,d,e,f,g] = await Promise.all([
+    const [a,b,c,d,e,f,g,h] = await Promise.all([
       fetch("../curated_prestige.json", {cache:"no-store"}),
       fetch("manifest.json", {cache:"no-store"}),
       fetch("../costume_catalog.json", {cache:"no-store"}),
       fetch("../curated_style.json", {cache:"no-store"}),
       fetch("../curated_interactions.json", {cache:"no-store"}),
       fetch("../curated_batch_20.json", {cache:"no-store"}),
-      fetch("../thumbnail_catalog.json", {cache:"no-store"})
+      fetch("../thumbnail_catalog.json", {cache:"no-store"}),
+      fetch("../curated_nonbarefoot.json", {cache:"no-store"})
     ]);
     if(!a.ok || !b.ok || !c.ok || !d.ok || !e.ok || !f.ok) {
       throw new Error("互动资源索引不存在，请从项目根目录启动 HTTP 服务并更新代码");
@@ -1365,6 +1388,11 @@ for (const button of $("filters").querySelectorAll("button")) {
     const styles = (await d.json()).styles || [];
     const interactionBatch = (await e.json()).skins || [];
     const batch20 = (await f.json()).skins || [];
+    const nonbarefootData = (await h.json()).entries || [];
+    const nonbarefootMap = new Map(nonbarefootData.map(entry => [entry.skin_id, entry]));
+    if (nonbarefootMap.size !== nonbarefootData.length) {
+      throw new Error("非赤脚互动存在重复 ID");
+    }
     if (g.ok) {
       const thumbnails = await g.json();
       thumbnailIndex = new Map(Object.entries(thumbnails.images || {}));
@@ -1386,6 +1414,15 @@ for (const button of $("filters").querySelectorAll("button")) {
       ...original.map(skin => ({...skin,tier:"Prestige Skin"})),
       ...regular];
     const ids = catalog.map(skin => skin.id);
+    const missingNonbarefoot = nonbarefootData.filter(entry =>
+      !catalog.some(skin => skin.id === entry.skin_id
+        && (skin.roles.interaction || skin.roles.interaction2)));
+    if (missingNonbarefoot.length) {
+      throw new Error("非赤脚场景配置未匹配到真实互动资源");
+    }
+    catalog = catalog.map(skin => ({
+      ...skin, nonbarefoot:nonbarefootMap.get(skin.id) || null
+    }));
     if (new Set(ids).size !== ids.length) {
       throw new Error("互动专辑与现有精选服装 ID 重复，请核对索引");
     }

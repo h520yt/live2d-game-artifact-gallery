@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "policy": "按具体互动场景判定；丝袜/网袜/鞋靴或脚部被遮住/出画都符合。只需要部分场景符合即可收录。禁止把人物/技能动画冒充独立互动，也不代表所有动作都非赤脚。",
+  "notes": "user_confirmed_scene 来自用户明确确认；user_reference_scene 来自提供的参考画面；partial_scene_needs_motion_check 为已知服装特征对应的场景候选，暂不指定动作编号。",
+  "entries": [
+    {
+      "skin_id": "costume-067004",
+      "reason": "feet_occluded",
+      "scene_status": "user_confirmed_scene",
+      "preferred_role": "interaction",
+      "preferred_animation": "idle2",
+      "notes": "用户确认：温泉房间 idle2 场景脚部遮挡或未完整出画；不代表其它动作也符合"
+    },
+    {
+      "skin_id": "costume-001006",
+      "reason": "feet_out_of_frame",
+      "scene_status": "user_reference_scene",
+      "preferred_role": "interaction",
+      "preferred_animation": "idle1",
+      "notes": "根据先前提供的横躺场景截图，脚部未完整进入画面；仅把 idle1 作为预选，不声明整套动作非赤脚"
+    },
+    {
+      "skin_id": "costume-000706",
+      "reason": "stockings_or_shoes",
+      "scene_status": "partial_scene_needs_motion_check",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "notes": "原服装网袜/高跟鞋符合偏好；互动过程会改变服饰，需实际检查具体 idle/mix 阶段"
+    },
+    {
+      "skin_id": "costume-003203",
+      "reason": "stockings_or_shoes",
+      "scene_status": "partial_scene_needs_motion_check",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "notes": "原服装破损丝袜符合偏好；仅标记有符合条件的场景候选，不保证所有动作"
+    },
+    {
+      "skin_id": "costume-003303",
+      "reason": "boots_or_stockings",
+      "scene_status": "partial_scene_needs_motion_check",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "notes": "角色服装含长靴或长袜，互动中可能移除；不指定未经核验的具体动作"
+    },
+    {
+      "skin_id": "costume-001106",
+      "reason": "stockings_or_shoes",
+      "scene_status": "partial_scene_needs_motion_check",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "notes": "医疗社团互动可见袜子元素；需按动作核查最终是否保留"
+    },
+    {
+      "skin_id": "scheherazade-deliberate-ace",
+      "reason": "stockings_or_shoes",
+      "scene_status": "partial_scene_needs_motion_check",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "notes": "互动部分阶段存在丝袜，后续可能变化；未确认具体动作编号"
+    },
+    {
+      "skin_id": "yuri-forever-mascot",
+      "reason": "feet_occluded",
+      "scene_status": "scene_exists_needs_motion_check",
+      "preferred_role": "interaction",
+      "preferred_animation": null,
+      "notes": "被褥遮挡下半身的互动场景符合遮挡标准；具体 idle 编号待本地渲染核对"
+    }
+  ]
+}

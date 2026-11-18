@@ -20,6 +20,7 @@ ALL_COSTUMES = BASE / "costume_catalog.json"
 CURATED_STYLE = BASE / "curated_style.json"
 INTERACTION_BATCH = BASE / "curated_interactions.json"
 NEXT_BATCH = BASE / "curated_batch_20.json"
+NONBAREFOOT = BASE / "curated_nonbarefoot.json"
 MANIFEST = BASE / "viewer" / "manifest.json"
 REPORT = DATA / "install-report.json"
 REPO = "myssal/Brown-Dust-2-Asset"
@@ -313,6 +314,24 @@ def read_catalog():
     ids = [item["id"] for item in prestige + selected]
     if len(ids) != len(set(ids)):
         raise ValueError("精选目录存在重复 ID")
+
+    # 按场景判断的非赤脚收藏：不新增另一份重复模型，也不假设整套动作都符合。
+    annotations = json.loads(NONBAREFOOT.read_text(encoding="utf-8"))["entries"]
+    by_id = {skin["id"]: skin for skin in prestige + selected}
+    seen_nonbarefoot = set()
+    for annotation in annotations:
+        skin_id = annotation["skin_id"]
+        if skin_id in seen_nonbarefoot:
+            raise ValueError("非赤脚场景标记重复: " + skin_id)
+        skin = by_id.get(skin_id)
+        if not skin or not skin["roles"].get(annotation["preferred_role"], "").startswith(
+                "spine/illust/illust_dating/"):
+            raise ValueError("非赤脚场景未关联真实互动资源: " + skin_id)
+        animation = annotation.get("preferred_animation")
+        if animation and not re.fullmatch(r"idle\d+(?:[_-]\d+)?", animation):
+            raise ValueError("非赤脚场景存在非法动画编号: " + skin_id)
+        skin["nonbarefoot"] = annotation
+        seen_nonbarefoot.add(skin_id)
     return prestige, selected
 
 
@@ -326,6 +345,8 @@ def select_skins(prestige, costumes, collection, only=None, character=None, limi
             raise ValueError("不在当前精选范围的服装 ID: " + only)
     elif collection == "batch-20":
         selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-03"]
+    elif collection == "nonbarefoot":
+        selected = [skin for skin in all_selected if skin.get("nonbarefoot")]
     elif collection == "interaction-batch":
         selected = [skin for skin in costumes if skin.get("interaction_batch") == "interaction-02"]
     elif collection == "prestige":
@@ -378,7 +399,7 @@ def main(argv=None):
     parser.add_argument("--interaction-only", action="store_true",
                         help="只下载互动资源；同时包含 Aquila 的 interaction 与 interaction2")
     parser.add_argument("--collection",
-                        choices=("batch-20", "interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
+                        choices=("batch-20", "nonbarefoot", "interaction-batch", "interactive", "all", "special", "prestige", "style", "guest", "other"),
                         default="batch-20",
                         help="默认第3批20套；interaction-batch=上批8套；interactive=全部互动")
     parser.add_argument("--character", help="按角色名筛选，例如 Eclipse / Teresse")

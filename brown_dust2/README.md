@@ -1,5 +1,17 @@
 # 棕色尘埃2 · 互动优先展示柜（第三批20款）
 
+## 非赤脚互动 · 场景级筛选（2026-11-18）
+
+展示柜新加 **「非赤脚互动」** 分类。判断依据是互动中的具体画面：有鞋/靴/丝袜/网袜，或脚部被被褥、道具、家具遮挡、位于画面之外，均可收录；同一皮肤只需有部分场景符合，不要求全部动作都符合。
+
+- 本轮将既有的 **8 套独立互动皮肤**按此口径加入分类，直接复用原有模型路径，不重复创建皮肤记录、不会删除或重新下载素材。
+- 配置在 `curated_nonbarefoot.json`，为每套存储判定原因、场景确认程度、优先角色模型与优先 idle（仅有截图依据时才写具体编号）。
+- **Ventana · Onsen Practitioner** 用户明确认可的脚部遮挡场景为 `idle2`，进入该皮肤时优先尝试 `idle2`；**Sylvia · Bikini Agent** 的参考横躺画面优先 `idle1`。
+- 其他资源目前只有鞋袜或特定遮挡场景的依据，**已入选但标为「非赤脚·部分场景」**；这些条目不会虚构已验证的动画编号，也不代表任意 `mix` 动作都符合。
+- 查看当前筛选结果：页面「非赤脚互动」；使用本地安装器只查看这批：`python brown_dust2/scripts/install_prestige.py --collection nonbarefoot --list`。仅下载其中已入选且缺失的互动资源：`python brown_dust2/scripts/install_prestige.py --collection nonbarefoot --interaction-only`。
+- 下载状态仍由本地模型完整性检测控制；只标记符合偏好不等于 Spine 已安装或已完成 WebGL 画面验收。
+
+
 ## 最新：第三批20款（2026-11-17）
 
 本次根据互动优先、成熟御姐、黑丝/网袜、腿部展示及泳装/运动系等偏好新增20款。**20款不是20套独立互动**：只核实到 Aquila · Sealed Desires 的两段新互动场景，另外19款是人物/技能 Spine 动态（其中 Sweet Temptation Liatris 是新 Special Skin）。不把技能动画冒充互动。

@@ -181,6 +181,55 @@ class PrestigeInstallTests(unittest.TestCase):
         self.assertIn("黑丝/网袜", eclipse["preference_tags"])
         self.assertEqual("Fated Guest", eclipse["tier"])
 
+    def test_nonbarefoot_scene_annotations_select_existing_real_interactions(self):
+        prestige, chosen = installer.read_catalog()
+        all_skins = prestige + chosen
+        valid = installer.select_skins(prestige, chosen, "nonbarefoot")
+        self.assertEqual(8, len(valid))
+        self.assertEqual(8, len({skin["id"] for skin in valid}))
+        self.assertEqual(54, len(all_skins))
+        for skin in valid:
+            with self.subTest(skin=skin["id"]):
+                note = skin["nonbarefoot"]
+                self.assertEqual(skin["id"], note["skin_id"])
+                self.assertIn(note["preferred_role"], skin["roles"])
+                self.assertIn(note["preferred_role"], ("interaction", "interaction2"))
+                self.assertIn("illust_dating", skin["roles"][note["preferred_role"]])
+                self.assertTrue(note["notes"])
+        ventana = next(s for s in valid if s["id"] == "costume-067004")
+        self.assertEqual("idle2", ventana["nonbarefoot"]["preferred_animation"])
+        self.assertEqual("user_confirmed_scene",
+                         ventana["nonbarefoot"]["scene_status"])
+        sylvia = next(s for s in valid if s["id"] == "costume-001006")
+        self.assertEqual("idle1", sylvia["nonbarefoot"]["preferred_animation"])
+        # No unsupported scene IDs are silently manufactured for clothing-based candidates.
+        others = [s for s in valid if s["id"] not in
+                  {"costume-067004", "costume-001006"}]
+        self.assertTrue(all(s["nonbarefoot"]["preferred_animation"] is None
+                            for s in others))
+
+    def test_nonbarefoot_metadata_duplicate_and_invalid_scene_rejected(self):
+        raw = json.loads(installer.NONBAREFOOT.read_text(encoding="utf-8"))
+        original = raw["entries"]
+        with tempfile.TemporaryDirectory() as tmp:
+            target = Path(tmp) / "nonbarefoot.json"
+            def check(entries):
+                target.write_text(json.dumps({"entries":entries}),encoding="utf-8")
+                with patch.object(installer,"NONBAREFOOT",target):
+                    installer.read_catalog()
+            with self.assertRaisesRegex(ValueError, "重复"):
+                check(original + [original[0]])
+            with self.assertRaisesRegex(ValueError, "未关联真实互动"):
+                check(original + [{
+                    "skin_id":"costume-001207","preferred_role":"interaction",
+                    "preferred_animation":None
+                }])
+            with self.assertRaisesRegex(ValueError, "非法动画编号"):
+                bad = [{**e,"preferred_animation":"mix2_1_1"}
+                       if e["skin_id"] == "costume-067004" else e
+                       for e in original]
+                check(bad)
+
     def test_third_batch_contains_20_unique_styles_and_aquila_two_interactions(self):
         prestige, chosen = installer.read_catalog()
         batch = installer.select_skins(prestige, chosen, "batch-20")
