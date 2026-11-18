@@ -290,6 +290,259 @@
           "review_status": "待复核"
         }
       ]
+    },
+    "batch2": {
+      "description": "第二批·历史精选",
+      "items": [
+        {
+          "character": "光辉",
+          "title": "幽影徘徊之夜",
+          "asset": "guanghui_9",
+          "skin_id": 237031,
+          "category": "live2d_plus"
+        },
+        {
+          "character": "白凤",
+          "title": "晴雨狐嫁",
+          "asset": "baifeng_3",
+          "skin_id": 307162,
+          "category": "live2d_plus"
+        },
+        {
+          "character": "本宁顿",
+          "title": "全速！盛夏逐光企划",
+          "asset": "benningdun_2",
+          "skin_id": 107201,
+          "category": "live2d_plus"
+        },
+        {
+          "character": "水星号",
+          "title": "天使降临之日",
+          "asset": "shuixinghao_2",
+          "skin_id": 9600171,
+          "category": "live2d_plus"
+        },
+        {
+          "character": "伊冯娜（约克DE）",
+          "title": "幻夜绮舞",
+          "asset": "yueke_ger_4",
+          "skin_id": 403113,
+          "category": "special_dynamic"
+        },
+        {
+          "character": "虎",
+          "title": "临水的辰星",
+          "asset": "hu_2",
+          "skin_id": 202381,
+          "category": "dynamic"
+        },
+        {
+          "character": "七省",
+          "title": "秽翼天使",
+          "asset": "qisheng_3",
+          "skin_id": 1102012,
+          "category": "dynamic"
+        },
+        {
+          "character": "安妮女王复仇号",
+          "title": "堕翼之诱",
+          "asset": "anninvwang_3",
+          "skin_id": 9600122,
+          "category": "dynamic"
+        },
+        {
+          "character": "菲莉西娅·鲁梅",
+          "title": "暮色邀约",
+          "asset": "fulici_3",
+          "skin_id": 407042,
+          "category": "dynamic"
+        },
+        {
+          "character": "埃塞克斯",
+          "title": "泳池里的默契训练",
+          "asset": "aisaikesi_10",
+          "skin_id": 137090,
+          "category": "dynamic"
+        }
+      ]
+    },
+    "batch3": {
+      "description": "第三批·历史精选",
+      "items": [
+        {
+          "character": "高雄",
+          "title": "Inner Cultivation",
+          "asset": "gaoxiong_7",
+          "skin_id": 303117,
+          "category": "live2d"
+        },
+        {
+          "character": "奥古斯特·冯·帕塞瓦尔",
+          "title": "Night Rendezvous with the Unhulde",
+          "asset": "aogusite_4",
+          "skin_id": 499063,
+          "category": "live2d"
+        },
+        {
+          "character": "兴登堡",
+          "title": "Dancer of the Deep Chamber",
+          "asset": "xingdengbao_3",
+          "skin_id": 499092,
+          "category": "live2d"
+        },
+        {
+          "character": "戈茨·冯·贝利欣根",
+          "title": "Rapture Beneath the Blood Moon",
+          "asset": "gezi_2",
+          "skin_id": 405071,
+          "category": "live2d"
+        },
+        {
+          "character": "莫加多尔",
+          "title": "Diving for Desire",
+          "asset": "mojiaduoer_4",
+          "skin_id": 901073,
+          "category": "live2d"
+        },
+        {
+          "character": "信浓",
+          "title": "Embrace Upon A Melted Dream",
+          "asset": "xinnong_6",
+          "skin_id": 307085,
+          "category": "live2d"
+        },
+        {
+          "character": "新泽西",
+          "title": "Black Blur Prelude",
+          "asset": "xinzexi_5",
+          "skin_id": 105174,
+          "category": "live2d"
+        },
+        {
+          "character": "马塞纳",
+          "title": "Sweetly Intoxicating Spring",
+          "asset": "masaina_2",
+          "skin_id": 804011,
+          "category": "live2d"
+        },
+        {
+          "character": "布雷斯特",
+          "title": "Moonlit Night's Spring Vista",
+          "asset": "buleisite_3",
+          "skin_id": 899032,
+          "category": "live2d"
+        },
+        {
+          "character": "怨仇",
+          "title": "Her Beauty Runneth Over",
+          "asset": "yuanchou_3",
+          "skin_id": 207072,
+          "category": "live2d"
+        },
+        {
+          "character": "梅克伦堡",
+          "title": "Branding Witchcraft",
+          "asset": "meikelunbao_2",
+          "skin_id": 499101,
+          "category": "live2d"
+        },
+        {
+          "character": "阿尔萨斯",
+          "title": "Tipsy Oni on a Sacred Night",
+          "asset": "aersasi_3",
+          "skin_id": 805032,
+          "category": "live2d"
+        }
+      ]
+    },
+    "batch4": {
+      "description": "第四批·历史精选",
+      "items": [
+        {
+          "character": "腓特烈大帝",
+          "title": "Boudoir's Lingering Flame",
+          "asset": "feiteliedadi_4",
+          "skin_id": 499023,
+          "category": "live2d"
+        },
+        {
+          "character": "金鹿号",
+          "title": "The Pale Phantom's Smile",
+          "asset": "jinluhao_3",
+          "skin_id": 9600032,
+          "category": "live2d"
+        },
+        {
+          "character": "珍珠号",
+          "title": "Fallen Angel in the Dark Castle",
+          "asset": "zhenzhuhao_2",
+          "skin_id": 9600141,
+          "category": "live2d"
+        },
+        {
+          "character": "信浓",
+          "title": "Dreamy White Sands",
+          "asset": "xinnong_4",
+          "skin_id": 307083,
+          "category": "live2d"
+        },
+        {
+          "character": "斯特拉斯堡",
+          "title": "Faerie of the Race Circuit",
+          "asset": "sitelasibao_2",
+          "skin_id": 904021,
+          "category": "live2d"
+        },
+        {
+          "character": "天狼星",
+          "title": "Rabbit of Paradise",
+          "asset": "tianlangxing_5",
+          "skin_id": 202204,
+          "category": "live2d"
+        },
+        {
+          "character": "雷根斯堡",
+          "title": "Dark Dragon, Brilliant Beach",
+          "asset": "leigensibao_2",
+          "skin_id": 402101,
+          "category": "live2d"
+        },
+        {
+          "character": "新泽西",
+          "title": "Midsummer Leisure",
+          "asset": "xinzexi_3",
+          "skin_id": 105172,
+          "category": "live2d"
+        },
+        {
+          "character": "腓特烈大帝",
+          "title": "One Summer Night's Intimacy",
+          "asset": "feiteliedadi_3",
+          "skin_id": 499022,
+          "category": "live2d"
+        },
+        {
+          "character": "君主",
+          "title": "Sovereign of the Beach",
+          "asset": "junzhu_5",
+          "skin_id": 299024,
+          "category": "live2d"
+        },
+        {
+          "character": "大凤",
+          "title": "Seaside Daydreams",
+          "asset": "dafeng_6",
+          "skin_id": 307075,
+          "category": "live2d"
+        },
+        {
+          "character": "企业",
+          "title": "Bathing Under Sunny Skies",
+          "asset": "qiye_10",
+          "skin_id": 137061,
+          "category": "live2d"
+        }
+      ]
     }
   }
 }
