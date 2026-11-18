@@ -300,8 +300,22 @@ def _brown_dust2(root: Path, manifest: Path, data: dict) -> list[dict]:
             local = _local_path(
                 root, manifest, f"../data/_thumbnails/{source_id}.png"
             )
-            if local and (root / local).is_file() and (root / local).stat().st_size > 8:
-                preview = local
+            if local:
+                local_path = root / local
+                try:
+                    if local_path.is_file() and local_path.stat().st_size >= 24:
+                        with local_path.open("rb") as image_file:
+                            header = image_file.read(24)
+                        is_png = header.startswith(b"\\x89PNG\\r\\n\\x1a\\n")
+                        valid_dimensions = (
+                            int.from_bytes(header[16:20], "big") > 0 and
+                            int.from_bytes(header[20:24], "big") > 0
+                        )
+                        if is_png and valid_dimensions:
+                            preview = local
+                except OSError:
+                    # 本地缓存损坏或正被写入时，仍可尝试源站的库存立绘。
+                    preview = None
         thumbnail_url = thumbnail_cdn + image_name if image_name else None
         result.append(_record(
             "brown_dust2", source_id, str(title), "spine", roles,
