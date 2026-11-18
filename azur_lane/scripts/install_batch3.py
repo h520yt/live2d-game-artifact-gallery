@@ -11,23 +11,22 @@
 """
 from __future__ import annotations
 
+from pathlib import Path
+import sys
+
 from install_batch2 import Skin, main as install_batch
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.collections import load_skin_batch
 
 # 以仓库完整资源索引中的 skin ID / painting 名为准。
 # 类型统一使用 live2d：仅表示存在可提取模型，不代替官方档次判断。
-BATCH = (
-    Skin("高雄", "Inner Cultivation", "gaoxiong_7", 303117, "live2d"),
-    Skin("奥古斯特·冯·帕塞瓦尔", "Night Rendezvous with the Unhulde", "aogusite_4", 499063, "live2d"),
-    Skin("兴登堡", "Dancer of the Deep Chamber", "xingdengbao_3", 499092, "live2d"),
-    Skin("戈茨·冯·贝利欣根", "Rapture Beneath the Blood Moon", "gezi_2", 405071, "live2d"),
-    Skin("莫加多尔", "Diving for Desire", "mojiaduoer_4", 901073, "live2d"),
-    Skin("信浓", "Embrace Upon A Melted Dream", "xinnong_6", 307085, "live2d"),
-    Skin("新泽西", "Black Blur Prelude", "xinzexi_5", 105174, "live2d"),
-    Skin("马塞纳", "Sweetly Intoxicating Spring", "masaina_2", 804011, "live2d"),
-    Skin("布雷斯特", "Moonlit Night's Spring Vista", "buleisite_3", 899032, "live2d"),
-    Skin("怨仇", "Her Beauty Runneth Over", "yuanchou_3", 207072, "live2d"),
-    Skin("梅克伦堡", "Branding Witchcraft", "meikelunbao_2", 499101, "live2d"),
-    Skin("阿尔萨斯", "Tipsy Oni on a Sacred Night", "aersasi_3", 805032, "live2d"),
+BATCH = tuple(
+    Skin(**item) for item in load_skin_batch(
+        PROJECT_ROOT / "azur_lane/config/curated_collections.json", "batch3"
+    )
 )
 
 
