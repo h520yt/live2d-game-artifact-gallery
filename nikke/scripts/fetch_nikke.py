@@ -20,10 +20,16 @@ import json
 import time
 import argparse
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 import requests
 
 import config as C
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.storage import atomic_write_bytes, file_ready
 
 
 def make_session():
@@ -93,7 +99,7 @@ def download(session, urls, dest):
 
     返回 (ok, size, skipped)。仅 HTTP 200 且非 HTML、实际非空才视为成功。
     """
-    if os.path.isfile(dest) and os.path.getsize(dest) > 0:
+    if file_ready(dest):
         return True, os.path.getsize(dest), True
 
     if isinstance(urls, str):
@@ -162,15 +168,7 @@ def download_atlas(session, urls, dest):
                     pages = parse_atlas_pages(payload.decode("utf-8", "ignore"))
                     if not pages:
                         break
-                    os.makedirs(os.path.dirname(dest), exist_ok=True)
-                    tmp = dest + ".part"
-                    try:
-                        with open(tmp, "wb") as file:
-                            file.write(payload)
-                        os.replace(tmp, dest)
-                    finally:
-                        if os.path.isfile(tmp):
-                            os.remove(tmp)
+                    atomic_write_bytes(dest, payload)
                     return pages
             except (requests.RequestException, OSError) as error:
                 if attempt == 0:

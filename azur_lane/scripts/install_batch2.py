@@ -13,7 +13,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -24,6 +23,11 @@ from datetime import datetime, timezone
 
 SCRIPT_DIR = Path(__file__).resolve().parent
 AZL_ROOT = SCRIPT_DIR.parent
+PROJECT_ROOT = AZL_ROOT.parent
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.collections import load_skin_batch
+from gallery_core.storage import file_ready
 
 
 @dataclass(frozen=True)
@@ -35,17 +39,10 @@ class Skin:
     category: str  # live2d_plus | special_dynamic | dynamic
 
 
-BATCH = (
-    Skin("光辉", "幽影徘徊之夜", "guanghui_9", 237031, "live2d_plus"),
-    Skin("白凤", "晴雨狐嫁", "baifeng_3", 307162, "live2d_plus"),
-    Skin("本宁顿", "全速！盛夏逐光企划", "benningdun_2", 107201, "live2d_plus"),
-    Skin("水星号", "天使降临之日", "shuixinghao_2", 9600171, "live2d_plus"),
-    Skin("伊冯娜（约克DE）", "幻夜绮舞", "yueke_ger_4", 403113, "special_dynamic"),
-    Skin("虎", "临水的辰星", "hu_2", 202381, "dynamic"),
-    Skin("七省", "秽翼天使", "qisheng_3", 1102012, "dynamic"),
-    Skin("安妮女王复仇号", "堕翼之诱", "anninvwang_3", 9600122, "dynamic"),
-    Skin("菲莉西娅·鲁梅", "暮色邀约", "fulici_3", 407042, "dynamic"),
-    Skin("埃塞克斯", "泳池里的默契训练", "aisaikesi_10", 137090, "dynamic"),
+BATCH = tuple(
+    Skin(**item) for item in load_skin_batch(
+        PROJECT_ROOT / "azur_lane/config/curated_collections.json", "batch2"
+    )
 )
 
 # 主立绘和换装变体；背景/前景属于同一皮肤的场景分层，也需要安装。
@@ -113,14 +110,9 @@ def painting_output(row: AssetRow, dest_dir: Path) -> Path:
 
 
 def check_hash(row: AssetRow, cache_root: Path) -> bool:
-    filename = cache_root.joinpath(*row.path.split("/"))
-    if not filename.is_file() or filename.stat().st_size != row.size:
-        return False
-    digest = hashlib.md5()
-    with filename.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest() == row.md5
+    """使用公共流式 MD5 校验缓存文件，官方清单仍是唯一哈希来源。"""
+    file = cache_root.joinpath(*row.path.split("/"))
+    return file_ready(file, expected_size=row.size, expected_md5=row.md5)
 
 
 def valid_png(path: Path) -> bool:

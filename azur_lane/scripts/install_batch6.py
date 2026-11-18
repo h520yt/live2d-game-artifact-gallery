@@ -13,6 +13,12 @@ import json
 from pathlib import Path
 import sys
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.azur_metadata import load_skin_metadata, resolve_skin_entry
+from gallery_core.collections import load_batch_candidates
+
 from install_batch2 import Skin, main as install_batch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -20,63 +26,25 @@ REPORT = ROOT / "data" / "batch6-install-report.json"
 
 # 资源名称均已在当前 L2D.csv 与 PAINTING.csv 找到；18 款鞋履仍需人工审核。
 # 中文名称仅用于候选导航，不推断为真实皮肤 ID；ID 从元数据读取。
-CANDIDATES = (
-    ("信浓", "xinnong_3", "赛车长靴", "Moonlit Chrome", "初筛符合"),
-    ("大凤", "dafeng_2", "赛车长靴", "Enraptured Companion", "初筛符合"),
-    ("布雷默顿", "bulaimodun_4", "休闲/运动鞋候选", "", "待复核"),
-    ("布雷默顿", "bulaimodun_5", "休闲/运动鞋候选", "", "待复核"),
-    ("埃吉尔", "aijier_3", "冬装鞋候选", "One-on-One Leisure Time", "待复核"),
-    ("七省", "qisheng_2", "制服/礼装候选", "", "待复核"),
-    ("安妮女王复仇号", "anninvwang_2", "海盗风鞋候选", "Call of the Creeping Embrace", "待复核"),
-    ("皇家方舟", "huangjiafangzhou_3", "制服鞋候选", "", "待复核"),
-    ("金鹿号", "jinluhao_2", "礼装鞋候选", "Forlorn Femme Fatale", "待复核"),
-    ("德意志", "deyizhi_3", "制服鞋候选", "", "待复核"),
-    ("格奈森瑙", "genaisennao_2", "制服鞋候选", "", "待复核"),
-    ("列克星敦II", "liekexingdunii_2", "女仆鞋候选", "The Fluffiest of Maids", "待复核"),
-    ("光辉", "guanghui_7", "礼装鞋候选", "", "待复核"),
-    ("威悉", "weixi_2", "礼装鞋候选", "", "待复核"),
-    ("圣路易斯", "shengluyisi_3", "礼装鞋候选", "", "待复核"),
-    ("路易九世", "luyijiushi_4", "礼装鞋候选", "", "待复核"),
-    ("克利夫兰", "kelifulan_8", "制服鞋候选", "", "待复核"),
-    ("北卡罗来纳", "beikaluolaina_2", "礼装鞋候选", "", "待复核"),
-    ("埃米尔·贝尔汀", "aimierbeierding_3", "礼装鞋候选", "", "待复核"),
-    ("俾斯麦", "bisimai_4", "节庆鞋候选", "Unpacked Surprise", "待复核"),
+CANDIDATES = load_batch_candidates(
+    ROOT / "config" / "curated_collections.json", "batch6",
+    ("character", "asset", "footwear", "title_hint", "review_status"),
 )
 
 
 def load_catalog() -> tuple[Skin, ...]:
-    """用元数据精确映射 skin ID；重复映射优先唯一可玩角色 ID。"""
+    """复用共享消歧规则；无法确定 ID 时仍可按资源名下载。"""
     from config import CFG_JSON_DIR
     source = Path(CFG_JSON_DIR) / "ship_skin_template.json"
-    if not source.is_file():
-        raise FileNotFoundError(f"元数据缺失：{source}；请运行 fetch_metadata.py")
-    data = json.loads(source.read_text(encoding="utf-8"))
-    matches: dict[str, list[dict]] = {}
-    for entry in data.values():
-        if not isinstance(entry, dict):
-            continue
-        asset, skin_id = entry.get("painting"), entry.get("id")
-        if isinstance(asset, str) and isinstance(skin_id, int) and skin_id > 0:
-            matches.setdefault(asset.lower(), []).append(entry)
+    index = load_skin_metadata(source)
 
     result = []
     for character, asset, _, title_hint, _ in CANDIDATES:
-        entries = matches.get(asset, [])
-        ids = sorted({e["id"] for e in entries})
-        if len(ids) == 1:
-            chosen_id = ids[0]
-        else:
-            # 900000-999999 通常为剧情别名；960xxxx 等七位数仍属于正常船。
-            playable = [sid for sid in ids if not 900000 <= sid < 1000000]
-            if len(playable) == 1:
-                chosen_id = playable[0]
-                print(f"[映射] {asset}: {ids} => {chosen_id}")
-            else:
-                # 下载只依赖 asset/hash；无法可靠判断皮肤 ID 时用 -1 标识未知，
-                # 不编造 ID，也不阻断 --plan / --only / 资源提取。
-                chosen_id = -1
-                print(f"[警告] {asset}: 元数据皮肤 ID 不明确 {ids}；保留未知 ID，不影响资源下载")
-        chosen_entry = next((e for e in entries if e["id"] == chosen_id), {})
+        chosen_id, chosen_entry = resolve_skin_entry(index, asset, allow_unknown=True)
+        if chosen_id == -1:
+            candidates = sorted({e["id"] for e in index.get(asset.lower(), [])})
+            print(f"[警告] {asset}: 元数据皮肤 ID 不明确 {candidates}；"
+                  "保留未知 ID，不影响资源下载")
         title = chosen_entry.get("name") if chosen_entry else None
         if not isinstance(title, str) or not title.strip():
             title = title_hint or asset

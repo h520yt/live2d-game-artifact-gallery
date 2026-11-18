@@ -1,0 +1,65 @@
+name: Gallery Core Tests
+
+on:
+  push:
+    branches:
+      - refactor/gallery-core-20261118
+  pull_request:
+    paths:
+      - 'gallery_core/**'
+      - 'gallery/**'
+      - 'scripts/gallery.py'
+      - 'scripts/new_game.py'
+      - 'scripts/smoke_browser.py'
+      - 'shared/gallery_bridge.js'
+      - 'games/**'
+      - 'tests/*.cjs'
+      - 'azur_lane/viewer/index.html'
+      - 'azur_lane/viewer/model_variants.js'
+      - 'nikke/viewer/index.html'
+      - 'reverse1999/viewer/index.html'
+      - 'brown_dust2/viewer/index.html'
+      - 'tests/test_gallery_*.py'
+      - 'azur_lane/config/curated_collections.json'
+      - 'azur_lane/scripts/install_batch*.py'
+      - 'brown_dust2/scripts/install_prestige.py'
+      - 'brown_dust2/scripts/download_thumbnails.py'
+      - 'brown_dust2/thumbnail_catalog.json'
+      - 'nikke/scripts/fetch_nikke.py'
+      - 'index.html'
+      - 'azur_lane/scripts/install_batch6.py'
+      - '.github/workflows/gallery-core-tests.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests (no game assets required)
+        run: python -m unittest discover -s tests -p 'test_gallery_*.py' -v
+      - name: Check Python syntax
+        run: python -m compileall -q gallery_core scripts/gallery.py scripts/new_game.py scripts/smoke_browser.py brown_dust2/scripts/download_thumbnails.py azur_lane/scripts/install_batch2.py azur_lane/scripts/install_batch3.py azur_lane/scripts/install_batch4.py azur_lane/scripts/install_batch5.py azur_lane/scripts/install_batch6.py nikke/scripts/fetch_nikke.py brown_dust2/scripts/install_prestige.py
+      - name: Generate unified index from committed manifests
+        run: python scripts/gallery.py sync-index
+      - name: Diagnose game viewer integration
+        run: python scripts/gallery.py doctor
+      - name: Validate unified browser syntax
+        run: |
+          node --check gallery/app.js
+          node --check shared/gallery_bridge.js
+          node --check azur_lane/viewer/model_variants.js
+          node --test tests/test_gallery_bridge.cjs tests/test_viewer_inline_syntax.cjs tests/test_azur_model_variants.cjs
+          python scripts/new_game.py --id test_plugin --title "测试插件" --dry-run
+      - name: Browser smoke when Chrome is installed
+        run: python scripts/smoke_browser.py
+      - name: Check historical batch command compatibility
+        run: |
+          python azur_lane/scripts/install_batch2.py --help
+          python azur_lane/scripts/install_batch3.py --help
+          python azur_lane/scripts/install_batch4.py --help

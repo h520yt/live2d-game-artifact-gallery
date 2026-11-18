@@ -15,6 +15,12 @@ import json
 from pathlib import Path
 import sys
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.azur_metadata import load_skin_metadata, resolve_skin_entry
+from gallery_core.collections import load_batch_candidates
+
 from install_batch2 import Skin, main as install_batch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -22,78 +28,24 @@ REPORT = ROOT / "data" / "batch5-install-report.json"
 
 # 角色、英文换装名、精确 L2D 资源路径名、鞋履风格、人工审核优先级。
 # 鞋履款式仅是筛选标签；待复核项需在本地预览确认，赤脚应移出本批。
-CANDIDATES = (
-    ("欧根亲王", "Final Lap", "ougen_5", "长靴", "优先"),
-    ("企业", "Wind Catcher", "qiye_7", "长靴", "优先"),
-    ("乌尔里希·冯·胡滕", "Ignition Matrician", "wuerlixi_2", "长靴", "优先"),
-    ("巴尔的摩", "Finish Line Flagbearer", "baerdimo_5", "长靴", "优先"),
-    ("圣路易斯", "Luxurious Wheels", "shengluyisi_2", "长靴", "优先"),
-    ("维托里奥·维内托", "The Flower of La Spezia", "weineituo_2", "高跟鞋", "优先"),
-    ("乌尔里希·冯·胡滕", "Mayhem Maid", "wuerlixi_3", "女仆鞋", "优先"),
-    ("埃吉尔", "Iron Blood's Dragon Maid", "aijier_2", "女仆鞋", "优先"),
-    ("兴登堡", "Delirious Duel", "xingdengbao_2", "高跟鞋", "优先"),
-    ("基尔萨治", "All-Night Charge", "jialisuoniye_3", "高跟鞋", "优先"),
-    ("武藏", "The Purple Rabbit's Marksmanship", "wuzang_3", "高跟鞋", "优先"),
-    ("大凤", "Fun on the Baize", "dafeng_7", "高跟鞋", "优先"),
-    ("欧根亲王", "Kindred Evening Spirits", "ougen_6", "高跟鞋", "候选"),
-    ("企业", "Diving Under Blue Skies", "qiye_9", "高跟鞋", "候选"),
-    ("圣路易斯", "Holiness to Haziness", "shengluyisi_4", "鞋履待复核", "候选"),
-    ("柴郡", "Cheshire Cat's Fairytale Maze", "chaijun_4", "鞋履待复核", "候选"),
-    ("贝尔法斯特", "Iridescent Rosa", "beierfasite_2", "高跟鞋", "候选"),
-    ("罗马", "White Heron of Darkest Night", "luoma_2", "高跟鞋", "候选"),
-    ("纳希莫夫海军上将", "First Time in the Limelight", "naximofu_2", "鞋履待复核", "候选"),
-    ("匹兹堡", "The Bartender's Gambit", "pizibao_2", "靴子", "候选"),
+CANDIDATES = load_batch_candidates(
+    ROOT / "config" / "curated_collections.json", "batch5",
+    ("character", "title", "asset", "footwear", "review_priority"),
 )
 
 
-# 一些剧情/NPC 记录会复用玩家换装的 painting 资源名。
-# 显式绑定可游玩舰船皮肤 ID，不用取列表第一项或随机选择。
-PREFERRED_SKIN_IDS = {
-    "wuzang_3": 305102,  # 武藏·The Purple Rabbit's Marksmanship（900458 为共用画面的其它记录）
-}
-
-
 def catalog() -> tuple[Skin, ...]:
-    """用社区元数据确定皮肤 ID，避免手写猜测造成错配。"""
+    """按共享元数据解析器映射皮肤 ID，不重复实现消歧逻辑。"""
     from config import CFG_JSON_DIR
     metadata_path = Path(CFG_JSON_DIR) / "ship_skin_template.json"
-    if not metadata_path.is_file():
-        raise FileNotFoundError(f"缺少 {metadata_path}，先运行 fetch_metadata.py")
-    metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
-    by_asset: dict[str, list[int]] = {}
-    for item in metadata.values():
-        if not isinstance(item, dict):
-            continue
-        asset = item.get("painting")
-        skin_id = item.get("id")
-        if isinstance(asset, str) and isinstance(skin_id, int) and skin_id > 0:
-            by_asset.setdefault(asset.lower(), []).append(skin_id)
+    index = load_skin_metadata(metadata_path)
     result = []
     errors = []
     for character, title, asset, _, _ in CANDIDATES:
-        ids = sorted(set(by_asset.get(asset, [])))
-        preferred = PREFERRED_SKIN_IDS.get(asset)
-        if preferred is not None:
-            # 防止元数据版本变化后，显式绑定失效却悄悄映射到错误皮肤。
-            if preferred not in ids:
-                errors.append(f"{asset}: 指定皮肤 ID {preferred} 未出现在元数据中；可选 {ids}")
-                continue
-            skin_id = preferred
-            if len(ids) > 1:
-                print(f"[映射] {asset}: 元数据重复 {ids}，选择玩家换装 ID {skin_id}")
-        elif len(ids) == 1:
-            skin_id = ids[0]
-        elif len(ids) > 1:
-            # 仅在存在唯一非 900xxx 记录时安全回退；若仍模糊则报错，
-            # 不能任意取第一个 ID，否则可能展示错款或错误分组。
-            playable = [skin_id for skin_id in ids if not str(skin_id).startswith("900")]
-            if len(playable) != 1:
-                errors.append(f"{asset}: 多个候选皮肤 ID {ids}，需明确指定")
-                continue
-            skin_id = playable[0]
-            print(f"[映射] {asset}: 元数据重复 {ids}，选择非 NPC 候选 {skin_id}")
-        else:
-            errors.append(f"{asset}: 元数据缺少皮肤 ID，请更新元数据")
+        try:
+            skin_id, _ = resolve_skin_entry(index, asset)
+        except ValueError as exc:
+            errors.append(str(exc))
             continue
         result.append(Skin(character, title, asset, skin_id, "live2d"))
     if errors:

@@ -1,5 +1,39 @@
 # 棕色尘埃2 · 互动优先展示柜（第三批20款）
 
+## 2026-11-18 · 统一资源展示柜的 54 套预览图修复
+
+统一展柜曾显示「暂无独立预览图」，原因是重构后的统一索引没有读取
+`thumbnail_catalog.json`。现已把原游戏查看器现有的 **54 套真实库存立绘映射**
+接入 `gallery/catalog.json`；本地有有效的 PNG 缓存时优先展示本地图片，
+没有则尝试原有的 GitHub Raw 库存封面。**无需重装任何 Spine 骨骼或动作文件。**
+
+更新重构分支后，在项目根目录运行：
+
+```powershell
+python scripts/gallery.py serve --port 8000
+```
+
+打开 `http://127.0.0.1:8000/gallery/`，选择「棕色尘埃2」，应能加载对应库存封面。
+
+若图片源访问缓慢/受限，使用**项目已有**的本地缓存工具，不需安装新依赖：
+
+```powershell
+# 检查 54 套库存图是否已有缓存
+python brown_dust2/scripts/download_thumbnails.py --list
+
+# 将缺失的库存封面下载到 brown_dust2/data/_thumbnails/
+python brown_dust2/scripts/download_thumbnails.py
+
+# 重新生成目录索引和文件状态，随后强制刷新浏览器
+python scripts/gallery.py sync-index
+python scripts/gallery.py verify
+```
+
+也可以重启 `serve` 自动刷新索引。缓存下载器只访问已核对映射，
+并检查 PNG 签名及尺寸；素材依然留在本地且不提交 Git。
+封面属于静态库存立绘，文件入口核验和封面显示均不代表互动动作完整验收。
+
+
 ## 2026-11-18 · 22 套互动加入非赤脚筛选池
 
 当前全部 22 套独立互动在仓库中已存在来源映射，本轮将原先未分类的 **14 套**作为**脚部待核验候选**加入「非赤脚筛选池」，不复制模型、不删除原有素材。最初 8 套保留原先场景线索和指定 idle；**候选≠已确认符合**。新增「待核验14套」筛选入口，可逐一打开其互动场景判断是否穿鞋、包脚袜子、脚部完全遮挡或出画。

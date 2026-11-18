@@ -1,5 +1,86 @@
 # live2d-game-artifact-gallery
 
+## 多游戏统一浏览（重构分支）
+
+支持碧蓝航线、NIKKE、重返未来：1999、棕色尘埃2 的**跨游戏索引、搜索、标签和收藏**，
+同时保留所有游戏现有的独立预览器（动画、互动、场景合成没有被替换）。
+
+```powershell
+# 仅在 refactor/gallery-core-20261118 分支可用
+python scripts/gallery.py serve --port 8000
+```
+
+然后访问 <http://127.0.0.1:8000/gallery/>。该命令在本地生成统一索引及文件核查报告、
+启动仅监听 127.0.0.1 的静态服务器，不下载或覆盖游戏素材。
+游戏资源更新后重启该命令即可刷新索引。四套原始 manifest 仍由各游戏脚本维护。
+
+碧蓝航线第二至第六批共 74 个**批次条目**已迁入
+`azur_lane/config/curated_collections.json`，原来各批次安装命令不变。
+统一缓存完整性及原子写入模块位于 `gallery_core/storage.py`；
+当前只抽出跨游戏共通的文件处理，不替换各游戏特有的 CDN/鉴权/解包逻辑。
+
+详见 [第二阶段重构记录](docs/2026-11-18-gallery-core-phase2.md)。
+
+
+### 第三阶段：皮肤直达、统一动作接口、新游戏脚手架
+
+从统一目录点选一个资源后，浏览器会将精确资源 ID 传给原游戏查看器并尝试自动加载。
+查看器页面底部提供统一姿态与动作控制条；实际动画仍由各游戏原有 Cubism/Spine 运行时执行。
+某个皮肤没有对应文件、动作或模型加载失败时，查看器会明确提示，不能把索引存在视为已加载成功。
+
+新增游戏时，无须再为统一目录硬编码一个入口：
+
+```powershell
+python scripts/new_game.py --id example_game --title "示例游戏" --dry-run
+python scripts/new_game.py --id example_game --title "示例游戏"
+python scripts/gallery.py serve --port 8000
+```
+
+脚手架会创建插件 manifest、静态预览模板、游戏 README 并注册到 `gallery/plugins.json`。
+**静态模板不是通用 Live2D/Spine 播放器**；动态模型仍需游戏特有的素材提取器和渲染适配器。
+实际游戏资源应放在相应的 `games/<id>/data/` 下（Git 默认忽略）。
+
+第三阶段说明详见 [统一查看器与插件架构](docs/2026-11-18-gallery-core-phase3.md)。
+
+### 碧蓝航线 Live2D 卡片去重（2026-11-18）
+
+碧蓝航线查看器现在把同一皮肤的普通模型和 `_hx` 形态合并显示，
+当前 60 个模型文件展示为 **54 张皮肤卡片**。其中 6 套双形态皮肤
+在舞台左侧「模型形态」下拉菜单切换原版/HX；各模型的下载、动作、ArtMesh
+等功能保持独立，不删除任何素材，也不修改原始 manifest。
+
+按 Cubism 版本筛选时，只要该皮肤的任意形态符合条件就会显示；
+打开后优先进入符合所选版本的模型。统一目录中指向 `_hx` 的精确
+模型链接继续可用。进入皮肤后可在底部统一控制条中切换形态。
+
+### 第四阶段：集成诊断与发布前验收
+
+第四阶段不扩充新的游戏类型，重点是稳定性与回归验收。资源索引和文件核验报告现在通过稳定摘要对应；
+在浏览器中会显示**文件状态最近核验时间**，避免把旧索引核验结果当成实时状态。
+注册的新游戏也可被 `python scripts/gallery.py list --game <game_id>` 查询。
+
+```powershell
+# 检查四游戏和新插件入口、桥接协议（不检查真实动画画面）
+python scripts/gallery.py doctor
+
+# 文件入口存在性报告
+python scripts/gallery.py verify
+
+# 在安装 Chrome/Chromium 的电脑上执行真正的浏览器静态目录烟测
+python scripts/gallery.py sync-index
+python scripts/smoke_browser.py
+```
+
+仓库的自动检查涵盖了本地 HTTP 路由和浏览器资源卡片/直达链接，但**不会下载游戏版权素材**，
+也不能判断画面、触摸动作、BD2 连续互动和场景合成是否真正正确。
+最终合并主分支前必须先用 Windows 本地已安装的皮肤完成实机验收。
+
+验收清单、手工测试步骤与合并门槛见
+[第四阶段重构验收报告](docs/2026-11-18-gallery-core-phase4.md)。
+
+
+---
+
 游戏资源解包 & 展示平台。从游戏客户端提取**立绘、Live2D 模型、音频**等美术制品，
 还原成网页可直接查看的格式，并提供带搜索/分组/排序/动作播放的查看器。
 
