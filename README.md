@@ -42,6 +42,32 @@ python scripts/gallery.py serve --port 8000
 
 第三阶段说明详见 [统一查看器与插件架构](docs/2026-11-18-gallery-core-phase3.md)。
 
+### 第四阶段：集成诊断与发布前验收
+
+第四阶段不扩充新的游戏类型，重点是稳定性与回归验收。资源索引和文件核验报告现在通过稳定摘要对应；
+在浏览器中会显示**文件状态最近核验时间**，避免把旧索引核验结果当成实时状态。
+注册的新游戏也可被 `python scripts/gallery.py list --game <game_id>` 查询。
+
+```powershell
+# 检查四游戏和新插件入口、桥接协议（不检查真实动画画面）
+python scripts/gallery.py doctor
+
+# 文件入口存在性报告
+python scripts/gallery.py verify
+
+# 在安装 Chrome/Chromium 的电脑上执行真正的浏览器静态目录烟测
+python scripts/gallery.py sync-index
+python scripts/smoke_browser.py
+```
+
+仓库的自动检查涵盖了本地 HTTP 路由和浏览器资源卡片/直达链接，但**不会下载游戏版权素材**，
+也不能判断画面、触摸动作、BD2 连续互动和场景合成是否真正正确。
+最终合并主分支前必须先用 Windows 本地已安装的皮肤完成实机验收。
+
+验收清单、手工测试步骤与合并门槛见
+[第四阶段重构验收报告](docs/2026-11-18-gallery-core-phase4.md)。
+
+
 ---
 
 游戏资源解包 & 展示平台。从游戏客户端提取**立绘、Live2D 模型、音频**等美术制品，
