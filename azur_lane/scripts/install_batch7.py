@@ -1,12 +1,12 @@
 """碧蓝航线第七批：新的穿鞋/脚部遮挡 Live2D 候选，直接进入原统一查看器。
 
-不再生成新的批次专题网页。20 个资源在公开 L2D/PAINTING 哈希清单中
-核对过名称，但鞋履条件和各个触摸动作必须在本地查看器单独审核。
+不再生成新的批次专题网页。原始 20 个候选在公开 L2D/PAINTING 哈希清单中
+核对过名称；偏幼态及待复核造型自动跳过，鞋履及动作仍需人工检查。
 
 项目根目录执行：
   python azur_lane/scripts/install_batch7.py --plan
   python azur_lane/scripts/install_batch7.py
-  python azur_lane/scripts/install_batch7.py --only kubo_2 baerdimo_6
+  python azur_lane/scripts/install_batch7.py --only baerdimo_6 xiafei_4
 """
 from __future__ import annotations
 
@@ -45,8 +45,9 @@ def validate_batch_uniqueness() -> None:
     overlap = assets & historical
     if overlap:
         raise ValueError("第七批与已有批次重复：" + "、".join(sorted(overlap)))
-    if len(CANDIDATES) != 20 or len(assets) != 20:
-        raise ValueError("第七批必须恰好包含 20 个不同资源名")
+    # 原始 20 条候选保留历史记录，成熟风格不合格及待复核项不参与安装。
+    if len(batches["batch7"]["items"]) != 20 or not CANDIDATES or len(assets) != len(CANDIDATES):
+        raise ValueError("第七批候选数据数量、筛选结果或资源去重异常")
 
 
 def load_catalog() -> tuple[Skin, ...]:
