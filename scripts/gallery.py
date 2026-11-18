@@ -73,7 +73,7 @@ def main(argv: list[str] | None = None) -> int:
                 try:
                     server.serve_forever()
                 except KeyboardInterrupt:
-                    print("\\n服务已停止")
+                    print("服务已停止")
             return 0
 
         if args.command == "sync-index":
