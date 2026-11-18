@@ -185,6 +185,7 @@ code{font-family:Consolas,monospace;color:#eace9b}
 </main>
 <script src="../../shared/vendor/spine-player4.0.js"></script>
 <script src="../../shared/vendor/spine-player4.1.js"></script>
+<script src="../../shared/gallery_bridge.js"></script>
 <script>
 "use strict";
 const ROLE_NAME = {character:"人物动态",cutscene:"技能演出",
@@ -1251,6 +1252,7 @@ async function loadRole(role, restore=null) {
           $("motions").appendChild(button);
         }
         updateMotionCount();
+        window.GalleryViewerBridge?.refresh();
         const first = initial.animation;
         const started = first ? selectAnimation(pl, first) : false;
         if (started) {
@@ -1449,6 +1451,30 @@ for (const button of $("filters").querySelectorAll("button")) {
       + " 先下载互动：python brown_dust2/scripts/install_prestige.py --only costume-067902 --interaction-only。"
       + " 其余：--collection batch-20。以前的素材不会删除。";
     setStatus("已读取本地模型索引；选择模型后将启动 Spine 播放。");
+    window.GalleryViewerBridge?.register({
+      game: "brown_dust2",
+      open: (asset) => {
+        const skin = catalog.find(item => item.id === asset);
+        if (!skin) return false;
+        selectSkin(skin);
+        return true;
+      },
+      listRoles: () => selected && installed.get(selected.id)
+        ? Object.keys(installed.get(selected.id).roles || {}) : [],
+      selectRole: (role) => {
+        if (!selected || !installed.get(selected.id)?.roles?.[role]) return false;
+        loadRole(role);
+        return true;
+      },
+      listActions: () => activeSpine?.animationState?.data?.skeletonData?.animations?.map(item => item.name) || [],
+      playAction: (name) => {
+        const names = activeSpine?.animationState?.data?.skeletonData?.animations?.map(item => item.name) || [];
+        if (!activeSpine || !names.includes(name)) return false;
+        // 必须复用独立互动的 idle/mix 编排，不能绕过 selectAnimation。
+        return selectAnimation(activeSpine, name);
+      },
+    });
+
     // 与碧蓝航线一致，初次进入显示卡片画廊，不自动占满页面加载某个模型。
     if(catalog.length) {
       $("catalog-view").hidden = false;
