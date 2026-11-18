@@ -186,8 +186,8 @@
 
     const actions = makeElement("div", "card-actions");
     const link = makeElement("a", "open-link", "进入游戏查看器");
-    link.href = info.viewer;
-    link.title = "进入" + info.title + "专属查看器，按资源 ID 搜索：" + asset.source_id;
+    link.href = info.viewer + "?" + new URLSearchParams({gallery_asset: asset.source_id}).toString();
+    link.title = "进入" + info.title + "专属查看器，并自动定位：" + asset.source_id;
     actions.append(link);
     const favorite = makeElement("button", "fav-button", isFavorite(asset) ? "★ 已收藏" : "☆ 收藏");
     favorite.type = "button";
