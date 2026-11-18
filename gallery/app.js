@@ -281,7 +281,8 @@
         typeof item.id === "string" && typeof item.game === "string" &&
         GAMES[item.game] && typeof item.source_id === "string");
       const verification = await fetchJson("./verification-report.json", true);
-      if (verification && Array.isArray(verification.items)) {
+      if (verification && verification.catalog_digest === catalog.catalog_digest &&
+          typeof catalog.catalog_digest === "string" && Array.isArray(verification.items)) {
         for (const item of verification.items) {
           if (item && typeof item.id === "string" && typeof item.status === "string") {
             state.statuses.set(item.id, item.status);
