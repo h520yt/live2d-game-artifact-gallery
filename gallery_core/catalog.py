@@ -108,10 +108,16 @@ def _azur_collection_info(root: Path) -> dict[str, dict[str, Any]]:
             asset = item["asset"].lower()
             info = result.setdefault(asset, {"batches": [], "tags": [], "reviews": []})
             info["batches"].append(batch)
+            style = item.get("style")
+            if isinstance(style, str) and style.strip():
+                label = "风格候选：" + style.strip()
+                if label not in info["tags"]:
+                    info["tags"].append(label)
             footwear = item.get("footwear")
             if isinstance(footwear, str) and footwear:
                 # "候选"是关键限定词，不能暗示整套动作/场景均符合鞋履要求。
-                for tag in ("鞋履候选", "候选：" + footwear):
+                footwear_label = "候选：" + footwear.removesuffix("候选").strip()
+                for tag in ("鞋履候选", footwear_label):
                     if tag not in info["tags"]:
                         info["tags"].append(tag)
             status = item.get("review_status") or item.get("review_priority")

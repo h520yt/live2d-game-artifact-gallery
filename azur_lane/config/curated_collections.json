@@ -543,6 +543,193 @@
           "category": "live2d"
         }
       ]
+    },
+    "batch7": {
+      "description": "第七批·统一展柜新增候选（运动鞋/靴/丝袜/礼装，足部不得裸露）",
+      "source_validation": "2026-11-18 以公开 Live2D/painting 哈希列表与游戏皮肤目录交叉校验资源名；本地实时资源及鞋履须人工核实",
+      "review_policy": "仅资源名称匹配，未完成模型动作、脚部状态与画面视觉审核；任何场景赤脚或露趾不通过",
+      "items": [
+        {
+          "character": "库珀",
+          "title_hint": "烈日的网球场",
+          "asset": "kubo_2",
+          "style": "运动系·网球",
+          "footwear": "网球鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 101441
+        },
+        {
+          "character": "巴尔的摩",
+          "title_hint": "迅疾的蓝星",
+          "asset": "baerdimo_6",
+          "style": "运动系·赛车",
+          "footwear": "赛车靴/运动鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 103165
+        },
+        {
+          "character": "霞飞",
+          "title_hint": "祝福的起步冲刺",
+          "asset": "xiafei_4",
+          "style": "运动系·竞速",
+          "footwear": "运动鞋/包脚鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 907013
+        },
+        {
+          "character": "艾伦·萨姆纳",
+          "title_hint": "Charming Rabbit",
+          "asset": "ailunsamuna_2",
+          "style": "兔女郎·丝袜",
+          "footwear": "包脚鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 101451
+        },
+        {
+          "character": "里诺",
+          "title_hint": "bunny·reno！",
+          "asset": "linuo_3",
+          "style": "兔女郎·丝袜",
+          "footwear": "包脚鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 102263
+        },
+        {
+          "character": "柴郡",
+          "title_hint": "绚烂夜梦",
+          "asset": "chaijun_5",
+          "style": "礼装·丝袜",
+          "footwear": "礼装鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 299034
+        },
+        {
+          "character": "威严",
+          "title_hint": "囚牢里的危险兔",
+          "asset": "weiyan_2",
+          "style": "兔女郎·腿部展示",
+          "footwear": "包脚鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 701021
+        },
+        {
+          "character": "狮",
+          "title_hint": "夜巷中的诱引者",
+          "asset": "shi_3",
+          "style": "夜景·成熟",
+          "footwear": "高跟鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 205162
+        },
+        {
+          "character": "戈里齐亚",
+          "title_hint": "办公室的“隔阂”",
+          "asset": "geliqiya_2",
+          "style": "职场·丝袜",
+          "footwear": "包脚鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 603061
+        },
+        {
+          "character": "腓德雷卡·卡尔",
+          "title_hint": "午夜频道",
+          "asset": "feiteliekaer_4",
+          "style": "夜景·成熟",
+          "footwear": "高跟鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 403143
+        },
+        {
+          "character": "埃姆登",
+          "title_hint": "黑白的夜之主",
+          "asset": "aimudeng_2",
+          "style": "暗色礼装",
+          "footwear": "礼装鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 402071
+        },
+        {
+          "character": "关岛",
+          "title_hint": "女忍者的危险综艺秀",
+          "asset": "guandao_3",
+          "style": "忍者·腿部展示",
+          "footwear": "忍者鞋/足部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 118022
+        },
+        {
+          "character": "路易九世",
+          "title_hint": "华服的圣骑士",
+          "asset": "luyijiushi_2",
+          "style": "骑士·礼装",
+          "footwear": "长靴/礼装鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 899011
+        },
+        {
+          "character": "喀琅施塔得",
+          "title_hint": "突击行动开始！",
+          "asset": "kalangshitade_2",
+          "style": "制服·战术",
+          "footwear": "军靴/包脚鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 718011
+        },
+        {
+          "character": "曾克海军上将",
+          "title_hint": "心动审讯练习中",
+          "asset": "zengkehaijunshangjiang_2",
+          "style": "职场·审讯",
+          "footwear": "高跟鞋/包脚鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 404071
+        },
+        {
+          "character": "前卫",
+          "title_hint": "摇摆不定的伪装",
+          "asset": "qianwei_2",
+          "style": "角色扮演·成熟",
+          "footwear": "靴子/包脚鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 205131
+        },
+        {
+          "character": "可畏",
+          "title_hint": "纪念印记",
+          "asset": "kewei_6",
+          "style": "纪念礼装",
+          "footwear": "礼装鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 207055
+        },
+        {
+          "character": "吾妻",
+          "title_hint": "心向何方的指导课",
+          "asset": "wuqi_3",
+          "style": "制服·腿部展示",
+          "footwear": "包脚鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 399042
+        },
+        {
+          "character": "武藏",
+          "title_hint": "只为你献上的应援",
+          "asset": "wuzang_4",
+          "style": "运动系·应援",
+          "footwear": "运动鞋/包脚鞋候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 305103
+        },
+        {
+          "character": "浅间",
+          "title_hint": "绽放于至深之夜",
+          "asset": "qianjian_2",
+          "style": "夜景·礼装",
+          "footwear": "高跟鞋/脚部遮挡候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 303201
+        }
+      ]
     }
   }
 }

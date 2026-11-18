@@ -1,5 +1,27 @@
 # live2d-game-artifact-gallery
 
+## 碧蓝航线：统一展示与第七批候选（2026-11-18）
+
+碧蓝航线原 Live2D 查看器顶部已移除第五、第六批的专题入口。
+今后所有新批次都进入已有 **Live2D 模型 / 立绘画廊**，不再为每批创建单独的展示页。
+
+第七批初步筛选 20 个不与前六批及仓库当前 manifest 重复的皮肤资源名，
+覆盖运动系、丝袜、兔女郎、夜间礼装、制服等方向。
+公开 L2D 和 painting 哈希清单均能检索到对应资源，
+但**鞋履是否包脚、各触摸动作是否露脚仍待本地人工验收**。
+
+```powershell
+python azur_lane/scripts/install_batch7.py --plan
+python azur_lane/scripts/install_batch7.py
+python scripts/gallery.py serve --port 8000
+```
+
+安装过程复用既有下载/解包/校验流程，`batch7-install-report.json`
+仅确认模型及立绘文件完整度，绝不自动设置鞋履审核通过。
+完整名单见[第七批 20 款候选与验收说明](azur_lane/docs/2026-11-18-batch7-unified-gallery.md)。
+
+---
+
 ## 多游戏统一浏览（重构分支）
 
 支持碧蓝航线、NIKKE、重返未来：1999、棕色尘埃2 的**跨游戏索引、搜索、标签和收藏**，
