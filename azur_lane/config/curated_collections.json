@@ -1,0 +1,295 @@
+{
+  "schema_version": 1,
+  "batches": {
+    "batch5": {
+      "description": "第五批·鞋履 Live2D",
+      "items": [
+        {
+          "character": "欧根亲王",
+          "title": "Final Lap",
+          "asset": "ougen_5",
+          "footwear": "长靴",
+          "review_priority": "优先"
+        },
+        {
+          "character": "企业",
+          "title": "Wind Catcher",
+          "asset": "qiye_7",
+          "footwear": "长靴",
+          "review_priority": "优先"
+        },
+        {
+          "character": "乌尔里希·冯·胡滕",
+          "title": "Ignition Matrician",
+          "asset": "wuerlixi_2",
+          "footwear": "长靴",
+          "review_priority": "优先"
+        },
+        {
+          "character": "巴尔的摩",
+          "title": "Finish Line Flagbearer",
+          "asset": "baerdimo_5",
+          "footwear": "长靴",
+          "review_priority": "优先"
+        },
+        {
+          "character": "圣路易斯",
+          "title": "Luxurious Wheels",
+          "asset": "shengluyisi_2",
+          "footwear": "长靴",
+          "review_priority": "优先"
+        },
+        {
+          "character": "维托里奥·维内托",
+          "title": "The Flower of La Spezia",
+          "asset": "weineituo_2",
+          "footwear": "高跟鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "乌尔里希·冯·胡滕",
+          "title": "Mayhem Maid",
+          "asset": "wuerlixi_3",
+          "footwear": "女仆鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "埃吉尔",
+          "title": "Iron Blood's Dragon Maid",
+          "asset": "aijier_2",
+          "footwear": "女仆鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "兴登堡",
+          "title": "Delirious Duel",
+          "asset": "xingdengbao_2",
+          "footwear": "高跟鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "基尔萨治",
+          "title": "All-Night Charge",
+          "asset": "jialisuoniye_3",
+          "footwear": "高跟鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "武藏",
+          "title": "The Purple Rabbit's Marksmanship",
+          "asset": "wuzang_3",
+          "footwear": "高跟鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "大凤",
+          "title": "Fun on the Baize",
+          "asset": "dafeng_7",
+          "footwear": "高跟鞋",
+          "review_priority": "优先"
+        },
+        {
+          "character": "欧根亲王",
+          "title": "Kindred Evening Spirits",
+          "asset": "ougen_6",
+          "footwear": "高跟鞋",
+          "review_priority": "候选"
+        },
+        {
+          "character": "企业",
+          "title": "Diving Under Blue Skies",
+          "asset": "qiye_9",
+          "footwear": "高跟鞋",
+          "review_priority": "候选"
+        },
+        {
+          "character": "圣路易斯",
+          "title": "Holiness to Haziness",
+          "asset": "shengluyisi_4",
+          "footwear": "鞋履待复核",
+          "review_priority": "候选"
+        },
+        {
+          "character": "柴郡",
+          "title": "Cheshire Cat's Fairytale Maze",
+          "asset": "chaijun_4",
+          "footwear": "鞋履待复核",
+          "review_priority": "候选"
+        },
+        {
+          "character": "贝尔法斯特",
+          "title": "Iridescent Rosa",
+          "asset": "beierfasite_2",
+          "footwear": "高跟鞋",
+          "review_priority": "候选"
+        },
+        {
+          "character": "罗马",
+          "title": "White Heron of Darkest Night",
+          "asset": "luoma_2",
+          "footwear": "高跟鞋",
+          "review_priority": "候选"
+        },
+        {
+          "character": "纳希莫夫海军上将",
+          "title": "First Time in the Limelight",
+          "asset": "naximofu_2",
+          "footwear": "鞋履待复核",
+          "review_priority": "候选"
+        },
+        {
+          "character": "匹兹堡",
+          "title": "The Bartender's Gambit",
+          "asset": "pizibao_2",
+          "footwear": "靴子",
+          "review_priority": "候选"
+        }
+      ]
+    },
+    "batch6": {
+      "description": "第六批·包脚鞋履候选",
+      "items": [
+        {
+          "character": "信浓",
+          "asset": "xinnong_3",
+          "footwear": "赛车长靴",
+          "title_hint": "Moonlit Chrome",
+          "review_status": "初筛符合"
+        },
+        {
+          "character": "大凤",
+          "asset": "dafeng_2",
+          "footwear": "赛车长靴",
+          "title_hint": "Enraptured Companion",
+          "review_status": "初筛符合"
+        },
+        {
+          "character": "布雷默顿",
+          "asset": "bulaimodun_4",
+          "footwear": "休闲/运动鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "布雷默顿",
+          "asset": "bulaimodun_5",
+          "footwear": "休闲/运动鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "埃吉尔",
+          "asset": "aijier_3",
+          "footwear": "冬装鞋候选",
+          "title_hint": "One-on-One Leisure Time",
+          "review_status": "待复核"
+        },
+        {
+          "character": "七省",
+          "asset": "qisheng_2",
+          "footwear": "制服/礼装候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "安妮女王复仇号",
+          "asset": "anninvwang_2",
+          "footwear": "海盗风鞋候选",
+          "title_hint": "Call of the Creeping Embrace",
+          "review_status": "待复核"
+        },
+        {
+          "character": "皇家方舟",
+          "asset": "huangjiafangzhou_3",
+          "footwear": "制服鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "金鹿号",
+          "asset": "jinluhao_2",
+          "footwear": "礼装鞋候选",
+          "title_hint": "Forlorn Femme Fatale",
+          "review_status": "待复核"
+        },
+        {
+          "character": "德意志",
+          "asset": "deyizhi_3",
+          "footwear": "制服鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "格奈森瑙",
+          "asset": "genaisennao_2",
+          "footwear": "制服鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "列克星敦II",
+          "asset": "liekexingdunii_2",
+          "footwear": "女仆鞋候选",
+          "title_hint": "The Fluffiest of Maids",
+          "review_status": "待复核"
+        },
+        {
+          "character": "光辉",
+          "asset": "guanghui_7",
+          "footwear": "礼装鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "威悉",
+          "asset": "weixi_2",
+          "footwear": "礼装鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "圣路易斯",
+          "asset": "shengluyisi_3",
+          "footwear": "礼装鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "路易九世",
+          "asset": "luyijiushi_4",
+          "footwear": "礼装鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "克利夫兰",
+          "asset": "kelifulan_8",
+          "footwear": "制服鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "北卡罗来纳",
+          "asset": "beikaluolaina_2",
+          "footwear": "礼装鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "埃米尔·贝尔汀",
+          "asset": "aimierbeierding_3",
+          "footwear": "礼装鞋候选",
+          "title_hint": "",
+          "review_status": "待复核"
+        },
+        {
+          "character": "俾斯麦",
+          "asset": "bisimai_4",
+          "footwear": "节庆鞋候选",
+          "title_hint": "Unpacked Surprise",
+          "review_status": "待复核"
+        }
+      ]
+    }
+  }
+}
