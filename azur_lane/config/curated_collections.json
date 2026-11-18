@@ -730,6 +730,193 @@
           "source_skin_id": 303201
         }
       ]
+    },
+    "batch8": {
+      "description": "第八批·成熟制服、礼装、靴与丝袜 Live2D 候选；直接接入统一展柜",
+      "source_validation": "2026-11-18 交叉校对公开 Live2D/painting 哈希列表、换装目录、历史七批与已登记模型",
+      "review_policy": "所有皮肤未经过完整立绘及逐动作鞋履核验；任何赤脚或明确露趾动作需重新评估并剔除",
+      "items": [
+        {
+          "character": "苏维埃同盟",
+          "title_hint": "缠丝审讯",
+          "asset": "suweiaitongmeng_3",
+          "style": "成熟·制服互动",
+          "footwear": "军装/丝袜与鞋履待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 705022
+        },
+        {
+          "character": "让·巴尔",
+          "title_hint": "舶刀Première neige",
+          "asset": "rangbaer_4",
+          "style": "成熟·礼装",
+          "footwear": "礼装鞋与脚部遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 905013
+        },
+        {
+          "character": "黎塞留",
+          "title_hint": "常緑Rêve prophétique",
+          "asset": "lisailiu_3",
+          "style": "成熟·暗色礼装",
+          "footwear": "礼装鞋/丝袜待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 805012
+        },
+        {
+          "character": "基尔萨治",
+          "title_hint": "春晓醉梦",
+          "asset": "jialisuoniye_4",
+          "style": "成熟·春日礼装",
+          "footwear": "鞋履与构图遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 902012
+        },
+        {
+          "character": "天城",
+          "title_hint": "红鸢的闲暇片刻",
+          "asset": "tiancheng_3",
+          "style": "成熟·和风礼装",
+          "footwear": "包脚鞋或足部遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 304052
+        },
+        {
+          "character": "信浓",
+          "title_hint": "幻梦奇术",
+          "asset": "xinnong_5",
+          "style": "成熟·魔术造型",
+          "footwear": "礼装鞋与动作遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 307084
+        },
+        {
+          "character": "基洛夫",
+          "title_hint": "疾速截击",
+          "asset": "jiluofu_3",
+          "style": "成熟·高速运动",
+          "footwear": "长靴/包脚鞋待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 702042
+        },
+        {
+          "character": "约克城II",
+          "title_hint": "交错的温柔时光",
+          "asset": "yuekechengii_3",
+          "style": "成熟·温柔礼装",
+          "footwear": "礼装鞋/脚部遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 107102
+        },
+        {
+          "character": "彼得·史特拉塞",
+          "title_hint": "节庆的Chronos",
+          "asset": "shitelasai_2",
+          "style": "成熟·节庆礼装",
+          "footwear": "高跟鞋/丝袜待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 407031
+        },
+        {
+          "character": "让·巴尔",
+          "title_hint": "灯映星展",
+          "asset": "rangbaer_5",
+          "style": "成熟·夜间礼装",
+          "footwear": "包脚鞋与脚部遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 905014
+        },
+        {
+          "character": "天城航母",
+          "title_hint": "落于王座之花",
+          "asset": "tiancheng_cv_2",
+          "style": "成熟·王座礼装",
+          "footwear": "包脚鞋/长裙遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 307151
+        },
+        {
+          "character": "关岛",
+          "title_hint": "魅力舞台",
+          "asset": "guandao_2",
+          "style": "舞台·腿部展示",
+          "footwear": "舞台鞋/丝袜待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 118021
+        },
+        {
+          "character": "让·巴尔",
+          "title_hint": "秘密的Après midi",
+          "asset": "rangbaer_3",
+          "style": "成熟·私服",
+          "footwear": "包脚鞋与动作遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 905012
+        },
+        {
+          "character": "德文郡",
+          "title_hint": "红月下的恶魔",
+          "asset": "dewenjun_2",
+          "style": "成熟·暗夜造型",
+          "footwear": "高跟鞋/黑丝待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 203131
+        },
+        {
+          "character": "苏维埃同盟",
+          "title_hint": "天幕危机",
+          "asset": "suweiaitongmeng_2",
+          "style": "成熟·制服",
+          "footwear": "军靴/鞋履待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 705021
+        },
+        {
+          "character": "威严",
+          "title_hint": "突袭！暗黑基地！",
+          "asset": "weiyan_4",
+          "style": "战术·腿部展示",
+          "footwear": "长靴/鞋履待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 701023
+        },
+        {
+          "character": "安图",
+          "title_hint": "午夜的瑰色电梯",
+          "asset": "antu_2",
+          "style": "成熟·夜间礼装",
+          "footwear": "礼装鞋/腿部遮挡待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 304091
+        },
+        {
+          "character": "库尔斯克",
+          "title_hint": "雾中雪狼",
+          "asset": "kuersike_2",
+          "style": "成熟·冬装",
+          "footwear": "长靴/包脚鞋待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 703021
+        },
+        {
+          "character": "俾斯麦",
+          "title_hint": "铁血的辉光",
+          "asset": "bisimai_2",
+          "style": "成熟·铁血礼装",
+          "footwear": "靴子/礼装鞋待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 405011
+        },
+        {
+          "character": "吕佐夫",
+          "title_hint": "永夜的赤之贵族",
+          "asset": "lvzuofu_2",
+          "style": "成熟·暗夜礼装",
+          "footwear": "黑丝/礼装鞋待核验候选",
+          "review_status": "待视觉与动作核验",
+          "source_skin_id": 404041
+        }
+      ]
     }
   }
 }
