@@ -13,6 +13,11 @@ import json
 from pathlib import Path
 import sys
 
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.azur_metadata import load_skin_metadata, resolve_skin_entry
+
 from install_batch2 import Skin, main as install_batch
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -45,38 +50,18 @@ CANDIDATES = (
 
 
 def load_catalog() -> tuple[Skin, ...]:
-    """用元数据精确映射 skin ID；重复映射优先唯一可玩角色 ID。"""
+    """复用共享消歧规则；无法确定 ID 时仍可按资源名下载。"""
     from config import CFG_JSON_DIR
     source = Path(CFG_JSON_DIR) / "ship_skin_template.json"
-    if not source.is_file():
-        raise FileNotFoundError(f"元数据缺失：{source}；请运行 fetch_metadata.py")
-    data = json.loads(source.read_text(encoding="utf-8"))
-    matches: dict[str, list[dict]] = {}
-    for entry in data.values():
-        if not isinstance(entry, dict):
-            continue
-        asset, skin_id = entry.get("painting"), entry.get("id")
-        if isinstance(asset, str) and isinstance(skin_id, int) and skin_id > 0:
-            matches.setdefault(asset.lower(), []).append(entry)
+    index = load_skin_metadata(source)
 
     result = []
     for character, asset, _, title_hint, _ in CANDIDATES:
-        entries = matches.get(asset, [])
-        ids = sorted({e["id"] for e in entries})
-        if len(ids) == 1:
-            chosen_id = ids[0]
-        else:
-            # 900000-999999 通常为剧情别名；960xxxx 等七位数仍属于正常船。
-            playable = [sid for sid in ids if not 900000 <= sid < 1000000]
-            if len(playable) == 1:
-                chosen_id = playable[0]
-                print(f"[映射] {asset}: {ids} => {chosen_id}")
-            else:
-                # 下载只依赖 asset/hash；无法可靠判断皮肤 ID 时用 -1 标识未知，
-                # 不编造 ID，也不阻断 --plan / --only / 资源提取。
-                chosen_id = -1
-                print(f"[警告] {asset}: 元数据皮肤 ID 不明确 {ids}；保留未知 ID，不影响资源下载")
-        chosen_entry = next((e for e in entries if e["id"] == chosen_id), {})
+        chosen_id, chosen_entry = resolve_skin_entry(index, asset, allow_unknown=True)
+        if chosen_id == -1:
+            candidates = sorted({e["id"] for e in index.get(asset.lower(), [])})
+            print(f"[警告] {asset}: 元数据皮肤 ID 不明确 {candidates}；"
+                  "保留未知 ID，不影响资源下载")
         title = chosen_entry.get("name") if chosen_entry else None
         if not isinstance(title, str) or not title.strip():
             title = title_hint or asset
