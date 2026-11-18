@@ -149,6 +149,24 @@
     backdrop-filter:blur(8px);transition:.2s var(--ease);
   }
   .back-btn:hover{border-color:var(--brass);color:var(--brass-lit);transform:translateX(-2px)}
+  /* 一套皮肤允许多套真实 Live2D 模型，但只在卡片网格出现一次。 */
+  .variant-tools{
+    position:absolute;top:calc(var(--s4) + 3.5rem);left:var(--s4);z-index:7;
+    display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;
+    padding:.55rem .75rem;border-radius:var(--r2);
+    background:rgba(8,20,32,.87);border:1px solid var(--line-lit);
+    backdrop-filter:blur(9px);font:var(--fx2) var(--mono);color:var(--foam);
+  }
+  .variant-tools[hidden]{display:none}
+  .variant-tools select{
+    max-width:min(230px,50vw);border:1px solid var(--line-lit);border-radius:var(--r1);
+    background:var(--abyss);color:var(--ivory);padding:.35rem .5rem;
+    font:var(--fx2) var(--mono);cursor:pointer;
+  }
+  .variant-note{
+    padding:.05rem .8rem .7rem;background:rgba(0,0,0,.12);
+    font:var(--fx1) var(--mono);color:var(--brass-lit);
+  }
   .stage{position:relative;overflow:hidden;height:100%}
   #canvas-wrap{position:absolute;inset:0}
   canvas{display:block;width:100%;height:100%}
@@ -416,6 +434,10 @@
       <div class="stage">
         <div id="canvas-wrap"><canvas id="live2d-canvas"></canvas></div>
         <div class="loading" id="l2d-loading">加载模型</div>
+        <div id="l2d-variant-tools" class="variant-tools" hidden>
+          <label for="l2d-variant-select">模型形态</label>
+          <select id="l2d-variant-select" aria-label="切换同一皮肤的普通与 HX 模型"></select>
+        </div>
         <div class="motions" id="motion-panel"></div>
         <div class="layer-tools" id="artmesh-tools" aria-label="Live2D 前景图层控制"></div>
         <div class="stage-hint">
@@ -547,6 +569,23 @@ async function boot(){
       if (!artwork) return false;
       document.querySelector('.tab[data-view="gallery-view"]')?.click();
       openDetail(artwork);
+      return true;
+    },
+    listRoles: () => {
+      const model = manifest.models[selectedModelIndex];
+      if (!model) return [];
+      const group = AzurModelVariants.groupForModel(modelGroups, model.name);
+      return group && group.variants.length > 1
+        ? group.variants.map(variant => variant.name)
+        : [];
+    },
+    selectRole: (name) => {
+      const model = manifest.models[selectedModelIndex];
+      const group = model && AzurModelVariants.groupForModel(modelGroups, model.name);
+      if (!group || !group.variants.some(variant => variant.name === name)) return false;
+      const index = manifest.models.findIndex(variant => variant.name === name);
+      if (index === -1) return false;
+      if (index !== selectedModelIndex) selectShip(index);
       return true;
     },
     listActions: () => {
@@ -712,6 +751,33 @@ function buildL2dGrid(){
   document.getElementById('ship-sort').onchange = apply;
   document.getElementById('ship-ver').onchange = apply;
   apply();
+}
+
+/**
+ * 更新操作台的模型形态选择；只有实际存在多个匹配模型时才显示。
+ * 不按皮肤 ID 以外的条件猜测变体，防止误合并不同角色。
+ */
+function renderVariantSelector(index){
+  const item = manifest.models[index];
+  const group = item && AzurModelVariants.groupForModel(modelGroups, item.name);
+  const toolbar = document.getElementById('l2d-variant-tools');
+  const select = document.getElementById('l2d-variant-select');
+  toolbar.hidden = !group || group.variants.length < 2;
+  select.replaceChildren();
+  if (toolbar.hidden) return;
+
+  for (const variant of group.variants) {
+    const option = document.createElement('option');
+    option.value = variant.name;
+    const label = variant.name.endsWith('_hx') ? 'HX 形态' : '普通形态';
+    option.textContent = label + ' · v' + variant.ver + ' (' + variant.name + ')';
+    select.appendChild(option);
+  }
+  select.value = item.name;
+  select.onchange = () => {
+    const target = manifest.models.findIndex(model => model.name === select.value);
+    if (target !== -1 && target !== selectedModelIndex) selectShip(target);
+  };
 }
 
 // 进入操作台
