@@ -54,9 +54,9 @@ class PhaseTwoCollectionTests(unittest.TestCase):
 
     def test_all_five_batches_reuse_json_without_duplicate_items(self):
         config = json.loads(COLLECTIONS.read_text(encoding="utf-8"))
-        self.assertEqual(set(config["batches"]), {
-            "batch2", "batch3", "batch4", "batch5", "batch6"
-        })
+        historical_batches = {"batch2", "batch3", "batch4", "batch5", "batch6"}
+        # 历史批次必须保留，但后续可以追加 batch7、batch8 等新配置。
+        self.assertTrue(historical_batches.issubset(set(config["batches"])))
         for key, expected in (("batch5", 20), ("batch6", 20)):
             with self.subTest(batch=key):
                 values = load_batch_candidates(COLLECTIONS, key, ("asset",))
