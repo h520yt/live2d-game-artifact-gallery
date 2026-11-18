@@ -13,7 +13,6 @@
 from __future__ import annotations
 
 import argparse
-import hashlib
 import json
 import os
 from pathlib import Path
@@ -28,6 +27,7 @@ PROJECT_ROOT = AZL_ROOT.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 from gallery_core.collections import load_skin_batch
+from gallery_core.storage import file_ready
 
 
 @dataclass(frozen=True)
@@ -110,14 +110,9 @@ def painting_output(row: AssetRow, dest_dir: Path) -> Path:
 
 
 def check_hash(row: AssetRow, cache_root: Path) -> bool:
-    filename = cache_root.joinpath(*row.path.split("/"))
-    if not filename.is_file() or filename.stat().st_size != row.size:
-        return False
-    digest = hashlib.md5()
-    with filename.open("rb") as f:
-        for chunk in iter(lambda: f.read(1024 * 1024), b""):
-            digest.update(chunk)
-    return digest.hexdigest() == row.md5
+    """使用公共流式 MD5 校验缓存文件，官方清单仍是唯一哈希来源。"""
+    file = cache_root.joinpath(*row.path.split("/"))
+    return file_ready(file, expected_size=row.size, expected_md5=row.md5)
 
 
 def valid_png(path: Path) -> bool:
