@@ -5,13 +5,17 @@ import json
 import os
 import re
 import sys
-import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path, PurePosixPath
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote, urlencode, urlparse
 from urllib.request import Request, urlopen
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(PROJECT_ROOT))
+from gallery_core.storage import atomic_write_bytes, file_ready
 
 BASE = Path(__file__).resolve().parents[1]
 DATA = BASE / "data"
@@ -198,26 +202,16 @@ def target_path(skin_id, role, remote_path, source_folder=None):
 
 
 def download_one(record, dest):
-    """下载原子落盘，raw 模式不依赖上游 Content-Length 或 GitHub API。"""
+    """按原有缓存规则读取资源，使用公共原子写入防止中途损坏。"""
     expected = record.get("size")
-    if dest.is_file() and dest.stat().st_size > 0:
-        if expected is None or dest.stat().st_size == expected:
-            return "cached"
-    dest.parent.mkdir(parents=True, exist_ok=True)
+    if file_ready(dest, expected_size=expected):
+        return "cached"
     payload = record.get("payload")
     if payload is None:
         payload = request(record["url"], binary=True)
     if not payload or (expected is not None and len(payload) != expected):
         raise RuntimeError("资源内容为空或大小不匹配: " + record["path"])
-    tmp_name = None
-    try:
-        with tempfile.NamedTemporaryFile(dir=dest.parent, delete=False) as handle:
-            tmp_name = handle.name
-            handle.write(payload)
-        os.replace(tmp_name, dest)
-    finally:
-        if tmp_name and os.path.exists(tmp_name):
-            os.unlink(tmp_name)
+    atomic_write_bytes(dest, payload, expected_size=expected)
     return "downloaded"
 
 
