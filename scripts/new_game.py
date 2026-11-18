@@ -141,12 +141,12 @@ def create_game(game: str, title: str, dry_run: bool = False) -> list[str]:
         raise ValueError("游戏 ID 须为小写 ASCII 字母开头的 2~40 位字母、数字、下划线，且不能重复")
     if not title.strip() or len(title) > 120:
         raise ValueError("游戏名称必须为 1~120 个字符")
-    existing = load_plugins(ROOT, reserved=set(GAME_MANIFESTS))
-    if game in {plugin["id"] for plugin in existing}:
-        raise ValueError("游戏已存在注册")
     folder = ROOT / "games" / game
     if folder.exists():
         raise FileExistsError(f"游戏目录已存在：{folder}")
+    existing = load_plugins(ROOT, reserved=set(GAME_MANIFESTS))
+    if game in {plugin["id"] for plugin in existing}:
+        raise ValueError("游戏已存在注册")
     registry = ROOT / PLUGIN_CONFIG
     config = json.loads(registry.read_text(encoding="utf-8")) if registry.is_file() else {
         "schema_version": 1, "plugins": []
