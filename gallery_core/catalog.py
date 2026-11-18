@@ -78,6 +78,37 @@ def _record(
     }
 
 
+def _azur_collection_info(root: Path) -> dict[str, dict[str, Any]]:
+    """为统一浏览补齐批次/鞋履候选信息，不将初筛直接标注为人工验收。"""
+    config = root / "azur_lane" / "config" / "curated_collections.json"
+    if not config.is_file():
+        return {}
+    batches = _read(config).get("batches")
+    if not isinstance(batches, dict):
+        raise ValueError("碧蓝航线精选批次配置无效")
+
+    result: dict[str, dict[str, Any]] = {}
+    for batch, group in batches.items():
+        if not isinstance(group, dict):
+            continue
+        for item in group.get("items", []):
+            if not isinstance(item, dict) or not isinstance(item.get("asset"), str):
+                continue
+            asset = item["asset"].lower()
+            info = result.setdefault(asset, {"batches": [], "tags": [], "reviews": []})
+            info["batches"].append(batch)
+            footwear = item.get("footwear")
+            if isinstance(footwear, str) and footwear:
+                # "候选"是关键限定词，不能暗示整套动作/场景均符合鞋履要求。
+                for tag in ("鞋履候选", "候选：" + footwear):
+                    if tag not in info["tags"]:
+                        info["tags"].append(tag)
+            status = item.get("review_status") or item.get("review_priority")
+            if status:
+                info["reviews"].append({"batch": batch, "status": status})
+    return result
+
+
 def _azur_lane(root: Path, manifest: Path, data: dict) -> list[dict]:
     models = data.get("models", [])
     artworks = data.get("characters", [])
@@ -85,6 +116,7 @@ def _azur_lane(root: Path, manifest: Path, data: dict) -> list[dict]:
         raise ValueError("Azur Lane manifest models/characters 不是数组")
     result = []
     grouped_models: set[str] = set()
+    collections = _azur_collection_info(root)
 
     for art in artworks:
         if not isinstance(art, dict) or not art.get("asset"):
@@ -100,13 +132,17 @@ def _azur_lane(root: Path, manifest: Path, data: dict) -> list[dict]:
         ])
         preview = _local_path(root, manifest, art.get("rep_path"))
         roles = {"model": model_paths, "artwork": paintings}
+        collection = collections.get(asset.lower(), {})
         # 多模型形态均为必要入口；立绘变体属于可选资源。
         required = model_paths or ([preview] if preview else paintings[:1])
         result.append(_record(
             "azur_lane", asset, str(art.get("en") or asset),
             "cubism" if model_paths else "static", roles,
             required=required, optional=paintings, preview=preview,
-            metadata={"skin_id": art.get("skin"), "release": art.get("rel")},
+            tags=collection.get("tags", []),
+            metadata={"skin_id": art.get("skin"), "release": art.get("rel"),
+                      "batches": collection.get("batches", []),
+                      "reviews": collection.get("reviews", [])},
         ))
 
     for model in models:
@@ -117,11 +153,15 @@ def _azur_lane(root: Path, manifest: Path, data: dict) -> list[dict]:
             continue
         model_paths = _paths(root, manifest, [model.get("path")])
         preview = _local_path(root, manifest, model.get("cover"))
+        collection = collections.get(name.lower(), {})
         result.append(_record(
             "azur_lane", name, str(model.get("en") or name), "cubism",
             {"model": model_paths}, required=model_paths,
             optional=[preview] if preview else [], preview=preview,
-            metadata={"skin_id": model.get("id"), "model_version": model.get("ver")},
+            tags=collection.get("tags", []),
+            metadata={"skin_id": model.get("id"), "model_version": model.get("ver"),
+                      "batches": collection.get("batches", []),
+                      "reviews": collection.get("reviews", [])},
         ))
     return result
 
