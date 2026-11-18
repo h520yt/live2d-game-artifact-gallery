@@ -7,6 +7,7 @@ import unittest
 from pathlib import Path
 
 from gallery_core.azur_metadata import load_skin_metadata, resolve_skin_entry
+from gallery_core.collections import load_batch_candidates
 from gallery_core.catalog import build_catalog, verify_catalog
 
 
@@ -124,6 +125,32 @@ class CatalogTests(unittest.TestCase):
         save(file, {"characters": [{"id": "c001"}, {"id": "c001"}]})
         with self.assertRaises(ValueError):
             build_catalog(self.root)
+
+
+class CollectionsTests(unittest.TestCase):
+    def test_json_batch_loader_preserves_order(self):
+        with tempfile.TemporaryDirectory() as temp:
+            file = Path(temp) / "batches.json"
+            save(file, {"schema_version": 1, "batches": {"batch7": {
+                "items": [{"asset": "a_1", "character": "A"},
+                          {"asset": "b_1", "character": "B"}]}}})
+            rows = load_batch_candidates(file, "batch7", ("character", "asset"))
+            self.assertEqual(rows, (("A", "a_1"), ("B", "b_1")))
+
+    def test_json_batch_loader_rejects_duplicate_assets(self):
+        with tempfile.TemporaryDirectory() as temp:
+            file = Path(temp) / "batches.json"
+            save(file, {"schema_version": 1, "batches": {"batch7": {
+                "items": [{"asset": "A_1"}, {"asset": "a_1"}]}}})
+            with self.assertRaises(ValueError):
+                load_batch_candidates(file, "batch7", ("asset",))
+
+    def test_migrated_batches_have_twenty_distinct_items_each(self):
+        config = Path(__file__).resolve().parents[1] / "azur_lane/config/curated_collections.json"
+        for batch in ("batch5", "batch6"):
+            rows = load_batch_candidates(config, batch, ("asset",))
+            self.assertEqual(len(rows), 20)
+            self.assertEqual(len(set(rows)), 20)
 
 
 if __name__ == "__main__":
