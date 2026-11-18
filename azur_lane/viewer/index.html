@@ -491,9 +491,12 @@
 <script src="artmesh_visibility.js"></script>
 <script src="scene_gallery.js"></script>
 <script src="../../shared/gallery_bridge.js"></script>
+<script src="model_variants.js"></script>
 <script>
 const { Live2DModel } = PIXI.live2d;
 let app, current, manifest;
+let modelGroups = [];          // 按皮肤汇总普通和 HX 模型，不改原始清单
+let selectedModelIndex = -1;   // 保留真实模型索引，允许操作台精确切换形态
 let loadToken = 0;              // 递增令牌：只让最后一次点击的结果生效
 const modelCache = new Map();  // path -> Live2DModel，避免重复加载
 const CACHE_MAX = 12;          // 最多缓存模型数，超出销毁最旧的（防内存爆）
@@ -523,6 +526,7 @@ function cacheModel(path, model){
 
 async function boot(){
   manifest = await (await fetch('manifest.json')).json();
+  modelGroups = AzurModelVariants.groupModels(manifest.models);
   setupCardColumns();
   buildL2dGrid();
   buildGallery();
@@ -652,20 +656,24 @@ const L2D_PAGE = 48;
 
 function buildL2dGrid(){
   const grid = document.getElementById('l2d-grid');
-  const models = manifest.models;
+  const models = modelGroups;
 
   const appendCards = () => {
     const slice = l2dFiltered.slice(l2dShown, l2dShown + L2D_PAGE);
-    slice.forEach(m => {
-      const gi = manifest.models.indexOf(m);
-      const cover = m.cover || '';
+    slice.forEach(group => {
+      const version = document.getElementById('ship-ver').value;
+      const model = AzurModelVariants.preferredModel(group, version);
+      const index = manifest.models.indexOf(model);
+      const variantNote = group.variants.length > 1
+        ? `<div class="variant-note">${group.variants.length} 个模型形态 · 进入后切换</div>`
+        : '';
       grid.appendChild(createCard({
-        img: cover,
-        alt: m.name,
+        img: group.cover || model.cover || '',
+        alt: group.name,
         badge: '<span class="badge">L2D</span>',
-        leftBadge: m.ver ? `<span class="vbadge">v${escapeHtml(m.ver)}</span>` : '',
-        info: cardInfo(m.en, m.name),
-        onClick: () => enterStage(gi),
+        leftBadge: model.ver ? `<span class="vbadge">v${escapeHtml(model.ver)}</span>` : '',
+        info: cardInfo(group.en, group.name) + variantNote,
+        onClick: () => enterStage(index),
       }));
     });
     l2dShown += slice.length;
@@ -676,7 +684,9 @@ function buildL2dGrid(){
     l2dShown = 0;
     grid.innerHTML = '';
     appendCards();
-    document.getElementById('l2d-count').textContent = `${items.length} 模型`;
+    const modelCount = items.reduce((total, group) => total + group.variants.length, 0);
+    document.getElementById('l2d-count').textContent =
+      `${items.length} 皮肤 · ${modelCount} 个模型形态`;
   };
 
   const apply = () => {
@@ -684,8 +694,13 @@ function buildL2dGrid(){
     const mode = document.getElementById('ship-sort').value;
     const ver = document.getElementById('ship-ver').value;   // '' = 全部
     let items = models;
-    if(q) items = items.filter(m => m.name.toLowerCase().includes(q) || (m.en && m.en.toLowerCase().includes(q)));
-    if(ver) items = items.filter(m => String(m.ver) === ver);
+    if(q) items = items.filter(group =>
+      (group.en && group.en.toLowerCase().includes(q)) ||
+      group.variants.some(model => model.name.toLowerCase().includes(q))
+    );
+    if(ver) items = items.filter(group =>
+      group.variants.some(model => String(model.ver) === ver)
+    );
     reset(sortItems(items, mode));
   };
 
@@ -714,6 +729,10 @@ function enterStage(i){
 }
 // 返回列表
 function exitStage(){
+  ++loadToken;                      // 退出时令未完成的模型读取失效
+  selectedModelIndex = -1;
+  document.getElementById('l2d-variant-tools').hidden = true;
+  window.GalleryViewerBridge?.refresh();
   AzurArtmeshVisibility.clearPanel();
   if(current){ app.stage.removeChild(current); current = null; }
   document.getElementById('l2d-stage-view').style.display = 'none';
@@ -749,7 +768,10 @@ async function preloadModel(model3Path, onProgress){
 }
 
 async function selectShip(i){
-  const token = ++loadToken;               // 本次加载的令牌
+  if (!Number.isInteger(i) || i < 0 || i >= manifest.models.length) return;
+  const token = ++loadToken;
+  selectedModelIndex = i;
+  renderVariantSelector(i);               // 本次加载的令牌
   const path = manifest.models[i].path;
   const loading = document.getElementById('l2d-loading');
 
