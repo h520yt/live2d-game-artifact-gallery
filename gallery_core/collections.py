@@ -41,3 +41,39 @@ def load_batch_candidates(path: Path, batch: str, fields: tuple[str, ...]) -> tu
         seen_assets.add(asset)
         results.append(tuple(row))
     return tuple(results)
+
+
+def load_skin_batch(path: Path, batch: str) -> tuple[dict, ...]:
+    """读取已确认的静态皮肤元数据（第2~4批），不依赖游戏运行时。
+
+    这些批次的历史 ID 是明确绑定，严禁默默换成其他 ID。
+    """
+    data = json.loads(path.read_text(encoding="utf-8"))
+    if data.get("schema_version") != 1:
+        raise ValueError(f"不支持的批次配置版本：{path}")
+    groups = data.get("batches")
+    group = groups.get(batch) if isinstance(groups, dict) else None
+    entries = group.get("items") if isinstance(group, dict) else None
+    if not isinstance(entries, list) or not entries:
+        raise ValueError(f"批次 {batch} 缺少有效条目")
+    keys = ("character", "title", "asset", "skin_id", "category")
+    result = []
+    seen = set()
+    for i, item in enumerate(entries, 1):
+        if not isinstance(item, dict):
+            raise ValueError(f"{batch} 第 {i} 项必须为对象")
+        row = {}
+        for field in keys:
+            value = item.get(field)
+            if field == "skin_id":
+                if type(value) is not int or value <= 0:
+                    raise ValueError(f"{batch} 第 {i} 项 skin_id 必须为正整数")
+            elif not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{batch} 第 {i} 项 {field} 必须为非空字符串")
+            row[field] = value
+        asset = row["asset"].lower()
+        if asset in seen:
+            raise ValueError(f"{batch} 资源名重复：{asset}")
+        seen.add(asset)
+        result.append(row)
+    return tuple(result)
