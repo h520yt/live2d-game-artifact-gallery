@@ -7,10 +7,14 @@ on:
   pull_request:
     paths:
       - 'gallery_core/**'
+      - 'gallery/**'
       - 'scripts/gallery.py'
-      - 'tests/test_gallery_core.py'
+      - 'tests/test_gallery_*.py'
       - 'azur_lane/config/curated_collections.json'
-      - 'azur_lane/scripts/install_batch5.py'
+      - 'azur_lane/scripts/install_batch*.py'
+      - 'brown_dust2/scripts/install_prestige.py'
+      - 'nikke/scripts/fetch_nikke.py'
+      - 'index.html'
       - 'azur_lane/scripts/install_batch6.py'
       - '.github/workflows/gallery-core-tests.yml'
 
@@ -26,8 +30,15 @@ jobs:
         with:
           python-version: '3.12'
       - name: Unit tests (no game assets required)
-        run: python -m unittest discover -s tests -p test_gallery_core.py -v
+        run: python -m unittest discover -s tests -p 'test_gallery_*.py' -v
       - name: Check Python syntax
-        run: python -m compileall -q gallery_core scripts/gallery.py azur_lane/scripts/install_batch5.py azur_lane/scripts/install_batch6.py
+        run: python -m compileall -q gallery_core scripts/gallery.py azur_lane/scripts/install_batch2.py azur_lane/scripts/install_batch3.py azur_lane/scripts/install_batch4.py azur_lane/scripts/install_batch5.py azur_lane/scripts/install_batch6.py nikke/scripts/fetch_nikke.py brown_dust2/scripts/install_prestige.py
       - name: Generate unified index from committed manifests
         run: python scripts/gallery.py sync-index
+      - name: Validate unified browser syntax
+        run: node --check gallery/app.js
+      - name: Check historical batch command compatibility
+        run: |
+          python azur_lane/scripts/install_batch2.py --help
+          python azur_lane/scripts/install_batch3.py --help
+          python azur_lane/scripts/install_batch4.py --help
