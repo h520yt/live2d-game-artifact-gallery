@@ -117,6 +117,7 @@ ID: {game}
 
 def atomic_registry(path: Path, data: dict) -> None:
     """先完成插件文件创建，最后一次性更新注册表。"""
+    path.parent.mkdir(parents=True, exist_ok=True)
     temp = None
     try:
         with tempfile.NamedTemporaryFile(
