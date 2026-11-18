@@ -17,6 +17,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 from gallery_core.azur_metadata import load_skin_metadata, resolve_skin_entry
+from gallery_core.collections import load_batch_candidates
 
 from install_batch2 import Skin, main as install_batch
 
@@ -25,27 +26,9 @@ REPORT = ROOT / "data" / "batch6-install-report.json"
 
 # 资源名称均已在当前 L2D.csv 与 PAINTING.csv 找到；18 款鞋履仍需人工审核。
 # 中文名称仅用于候选导航，不推断为真实皮肤 ID；ID 从元数据读取。
-CANDIDATES = (
-    ("信浓", "xinnong_3", "赛车长靴", "Moonlit Chrome", "初筛符合"),
-    ("大凤", "dafeng_2", "赛车长靴", "Enraptured Companion", "初筛符合"),
-    ("布雷默顿", "bulaimodun_4", "休闲/运动鞋候选", "", "待复核"),
-    ("布雷默顿", "bulaimodun_5", "休闲/运动鞋候选", "", "待复核"),
-    ("埃吉尔", "aijier_3", "冬装鞋候选", "One-on-One Leisure Time", "待复核"),
-    ("七省", "qisheng_2", "制服/礼装候选", "", "待复核"),
-    ("安妮女王复仇号", "anninvwang_2", "海盗风鞋候选", "Call of the Creeping Embrace", "待复核"),
-    ("皇家方舟", "huangjiafangzhou_3", "制服鞋候选", "", "待复核"),
-    ("金鹿号", "jinluhao_2", "礼装鞋候选", "Forlorn Femme Fatale", "待复核"),
-    ("德意志", "deyizhi_3", "制服鞋候选", "", "待复核"),
-    ("格奈森瑙", "genaisennao_2", "制服鞋候选", "", "待复核"),
-    ("列克星敦II", "liekexingdunii_2", "女仆鞋候选", "The Fluffiest of Maids", "待复核"),
-    ("光辉", "guanghui_7", "礼装鞋候选", "", "待复核"),
-    ("威悉", "weixi_2", "礼装鞋候选", "", "待复核"),
-    ("圣路易斯", "shengluyisi_3", "礼装鞋候选", "", "待复核"),
-    ("路易九世", "luyijiushi_4", "礼装鞋候选", "", "待复核"),
-    ("克利夫兰", "kelifulan_8", "制服鞋候选", "", "待复核"),
-    ("北卡罗来纳", "beikaluolaina_2", "礼装鞋候选", "", "待复核"),
-    ("埃米尔·贝尔汀", "aimierbeierding_3", "礼装鞋候选", "", "待复核"),
-    ("俾斯麦", "bisimai_4", "节庆鞋候选", "Unpacked Surprise", "待复核"),
+CANDIDATES = load_batch_candidates(
+    ROOT / "config" / "curated_collections.json", "batch6",
+    ("character", "asset", "footwear", "title_hint", "review_status"),
 )
 
 
