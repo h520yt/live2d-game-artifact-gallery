@@ -12,6 +12,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from functools import partial
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -41,6 +43,8 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("sync-index", help="从现有游戏 manifest 生成统一索引")
+    serve = sub.add_parser("serve", help="生成索引及核验报告，启动本地统一展柜")
+    serve.add_argument("--port", type=int, default=8000, help="监听端口，默认 8000")
     listing = sub.add_parser("list", help="筛选跨游戏资源（直接读取当前原始清单）")
     listing.add_argument("--game", choices=tuple(GAME_MANIFESTS), help="指定游戏")
     listing.add_argument("--tag", help="按已标注的风格标签筛选")
@@ -51,9 +55,27 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     if args.command == "list" and args.limit < 0:
         parser.error("--limit 不能为负数")
+    if args.command == "serve" and not 1 <= args.port <= 65535:
+        parser.error("--port 必须在 1-65535 范围内")
 
     try:
         catalog = build_catalog(ROOT)
+        if args.command == "serve":
+            write_json(CATALOG_FILE, catalog)
+            report = verify_catalog(ROOT, catalog)
+            write_json(REPORT_FILE, report)
+            handler = partial(SimpleHTTPRequestHandler, directory=str(ROOT))
+            with ThreadingHTTPServer(("127.0.0.1", args.port), handler) as server:
+                print(f"已生成 {len(catalog['assets'])} 项资源索引及核验报告")
+                print(f"展柜首页：http://127.0.0.1:{args.port}/")
+                print(f"统一目录：http://127.0.0.1:{args.port}/gallery/")
+                print("仅监听本机，按 Ctrl+C 停止服务；新增素材后重启可刷新索引。")
+                try:
+                    server.serve_forever()
+                except KeyboardInterrupt:
+                    print("\\n服务已停止")
+            return 0
+
         if args.command == "sync-index":
             write_json(CATALOG_FILE, catalog)
             counts = {game: sum(row["game"] == game for row in catalog["assets"])
