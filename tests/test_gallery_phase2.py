@@ -39,6 +39,19 @@ class PhaseTwoCollectionTests(unittest.TestCase):
             "live2d_plus",
         )
 
+    def test_unified_index_marks_azur_footwear_as_candidates(self):
+        from gallery_core.catalog import build_catalog
+
+        catalog = build_catalog(ROOT)
+        indexed = {x["source_id"]: x for x in catalog["assets"]
+                   if x["game"] == "azur_lane"}
+        self.assertIn("ougen_5", indexed)
+        entry = indexed["ougen_5"]
+        self.assertIn("鞋履候选", entry["tags"])
+        self.assertIn("候选：长靴", entry["tags"])
+        self.assertIn("batch5", entry["metadata"]["batches"])
+        self.assertEqual(entry["verification"], "not_checked")
+
     def test_all_five_batches_reuse_json_without_duplicate_items(self):
         config = json.loads(COLLECTIONS.read_text(encoding="utf-8"))
         self.assertEqual(set(config["batches"]), {
