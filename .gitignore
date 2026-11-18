@@ -37,6 +37,7 @@ brown_dust2/data/
 # 统一展示柜本地生成的索引和校验报告
 gallery/catalog.json
 gallery/verification-report.json
+gallery/doctor-report.json
 gallery/*.tmp
 
 # 新游戏插件本地资源（版权素材不提交）
