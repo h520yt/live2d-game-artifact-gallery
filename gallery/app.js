@@ -32,6 +32,7 @@
     assets: [],
     statuses: new Map(),
     favorites: loadFavorites(),
+    verifiedAt: null,
     visibleLimit: PAGE_SIZE,
   };
 
@@ -227,7 +228,10 @@
     byId("game-count").textContent = new Set(state.assets.map((item) => item.game)).size;
     byId("visible-count").textContent = filtered.length.toLocaleString();
     byId("favorite-count").textContent = state.favorites.size;
-    byId("result-text").textContent = "匹配 " + filtered.length + " 项 · 当前显示 " + page.length + " 项";
+    const verifiedLabel = state.verifiedAt
+      ? " · 文件状态核验于 " + new Date(state.verifiedAt).toLocaleString("zh-CN")
+      : " · 文件状态未核验或核验报告已过期";
+    byId("result-text").textContent = "匹配 " + filtered.length + " 项 · 当前显示 " + page.length + " 项" + verifiedLabel;
     byId("pagination").hidden = page.length >= filtered.length;
     if (!filtered.length) showMessage("没有符合当前条件的资源。可以调整关键词、游戏和标签筛选。");
     else hideMessage();
@@ -283,6 +287,10 @@
       const verification = await fetchJson("./verification-report.json", true);
       if (verification && verification.catalog_digest === catalog.catalog_digest &&
           typeof catalog.catalog_digest === "string" && Array.isArray(verification.items)) {
+        if (typeof verification.checked_at === "string" &&
+            Number.isFinite(Date.parse(verification.checked_at))) {
+          state.verifiedAt = verification.checked_at;
+        }
         for (const item of verification.items) {
           if (item && typeof item.id === "string" && typeof item.status === "string") {
             state.statuses.set(item.id, item.status);
