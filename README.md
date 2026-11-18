@@ -1,5 +1,22 @@
 # live2d-game-artifact-gallery
 
+## 碧蓝航线：第八批 20 款成熟礼装与鞋履候选（2026-11-18）
+
+已直接在 `main` 增加 [第八批 20 款候选](azur_lane/docs/2026-11-18-batch8-unified-gallery.md)：
+优先成熟军装、夜间礼装、舞台/丝袜及靴类造型，排除前七批名单及当前已登记模型。
+候选的 Live2D 和 painting 资源名已经过公开清单交叉核对；**鞋履外观及全部动作均尚未审核**。
+
+```powershell
+python azur_lane/scripts/install_batch8.py --plan
+python azur_lane/scripts/install_batch8.py
+python scripts/gallery.py serve --port 8000
+```
+
+安装后只进入原有 Live2D 模型及立绘画廊，不新增批次页面或主导航。
+本地报告在 `azur_lane/data/batch8-install-report.json`，不会把“模型齐全”标为“鞋履已通过”。
+
+---
+
 ## 碧蓝航线：统一展示与第七批候选（2026-11-18）
 
 碧蓝航线原 Live2D 查看器顶部已移除第五、第六批的专题入口。
@@ -22,13 +39,12 @@ python scripts/gallery.py serve --port 8000
 
 ---
 
-## 多游戏统一浏览（重构分支）
+## 多游戏统一浏览（main 分支）
 
 支持碧蓝航线、NIKKE、重返未来：1999、棕色尘埃2 的**跨游戏索引、搜索、标签和收藏**，
 同时保留所有游戏现有的独立预览器（动画、互动、场景合成没有被替换）。
 
 ```powershell
-# 仅在 refactor/gallery-core-20261118 分支可用
 python scripts/gallery.py serve --port 8000
 ```
 
@@ -36,7 +52,7 @@ python scripts/gallery.py serve --port 8000
 启动仅监听 127.0.0.1 的静态服务器，不下载或覆盖游戏素材。
 游戏资源更新后重启该命令即可刷新索引。四套原始 manifest 仍由各游戏脚本维护。
 
-碧蓝航线第二至第六批共 74 个**批次条目**已迁入
+碧蓝航线第二至第八批共 114 个**批次候选条目**已迁入
 `azur_lane/config/curated_collections.json`，原来各批次安装命令不变。
 统一缓存完整性及原子写入模块位于 `gallery_core/storage.py`；
 当前只抽出跨游戏共通的文件处理，不替换各游戏特有的 CDN/鉴权/解包逻辑。
