@@ -73,6 +73,17 @@
     return "../" + raw.split("/").map(encodeURIComponent).join("/");
   }
 
+  function safeBd2ThumbnailUrl(asset) {
+    // 仅接收棕色尘埃2现有库存立绘目录；拒绝从 manifest 注入任意外站地址。
+    if (asset.game !== "brown_dust2") return null;
+    const candidate = asset.metadata?.thumbnail_url;
+    const prefix = "https://raw.githubusercontent.com/myssal/Brown-Dust-2-Asset/" +
+      "master/ui/illust/illust_inven_char/";
+    if (typeof candidate !== "string" || !candidate.startsWith(prefix)) return null;
+    const filename = candidate.slice(prefix.length);
+    return /^illust_inven_char\d{6}_\d+\.png$/.test(filename) ? candidate : null;
+  }
+
   function makeElement(tag, className, text) {
     const el = document.createElement(tag);
     if (className) el.className = className;
@@ -159,24 +170,41 @@
     const info = GAMES[asset.game];
     const card = makeElement("article", "card");
     const media = makeElement("div", "card-media");
-    const fallback = makeElement("div", "media-fallback", asset.preview ? "本地预览未就绪" : "暂无独立预览图");
+    const localPreview = safePreviewPath(asset.preview);
+    const remotePreview = safeBd2ThumbnailUrl(asset);
+    const sources = [localPreview, remotePreview].filter(Boolean);
+    const fallback = makeElement(
+      "div", "media-fallback",
+      sources.length ? "正在读取封面…" : "暂无独立预览图"
+    );
     media.append(fallback);
-    const imgPath = safePreviewPath(asset.preview);
-    if (imgPath) {
+
+    if (sources.length) {
       const picture = document.createElement("img");
-      picture.src = imgPath;
-      picture.alt = String(asset.title || asset.source_id) + " 的本地预览";
+      picture.alt = String(asset.title || asset.source_id) + " 的皮肤封面";
       picture.loading = "lazy";
       picture.decoding = "async";
+      picture.referrerPolicy = "no-referrer";
       picture.hidden = true;
+      let sourceIndex = 0;
       picture.addEventListener("load", () => {
         picture.hidden = false;
         fallback.hidden = true;
       });
       picture.addEventListener("error", () => {
+        sourceIndex += 1;
+        if (sourceIndex < sources.length) {
+          // 本地文件丢失时自动使用已有的官方库存图索引，不复用 Spine 贴图碎片。
+          picture.src = sources[sourceIndex];
+          return;
+        }
         picture.remove();
+        fallback.textContent = asset.game === "brown_dust2"
+          ? "封面加载失败 · 可缓存到本地"
+          : "本地预览未就绪";
         fallback.hidden = false;
-      }, { once: true });
+      });
+      picture.src = sources[0];
       media.append(picture);
     }
     card.append(media);
