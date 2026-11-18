@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import unquote
 
+from .plugins import load_plugins
+
 GAME_MANIFESTS = {
     "azur_lane": "azur_lane/viewer/manifest.json",
     "nikke": "nikke/viewer/nikke_manifest.json",
@@ -18,6 +20,13 @@ GAME_MANIFESTS = {
     "brown_dust2": "brown_dust2/viewer/manifest.json",
 }
 SCHEMA_VERSION = 1
+
+GAME_INFO = {
+    "azur_lane": {"title": "碧蓝航线", "viewer": "azur_lane/viewer/index.html"},
+    "nikke": {"title": "NIKKE", "viewer": "nikke/viewer/index.html"},
+    "reverse1999": {"title": "重返未来：1999", "viewer": "reverse1999/viewer/index.html"},
+    "brown_dust2": {"title": "棕色尘埃2", "viewer": "brown_dust2/viewer/index.html"},
+}
 
 
 def _read(path: Path) -> dict[str, Any]:
@@ -278,6 +287,52 @@ ADAPTERS = {
 }
 
 
+def _generic_game(root: Path, manifest: Path, data: dict, game: str) -> list[dict]:
+    """通用插件清单适配，特殊引擎行为由对应游戏自己的 viewer 实现。"""
+    if data.get("schema_version") != 1 or not isinstance(data.get("assets"), list):
+        raise ValueError(f"{game}: 插件 manifest 须使用 generic-assets-v1 格式")
+    entries = []
+    for item in data["assets"]:
+        if not isinstance(item, dict):
+            raise ValueError(f"{game}: asset 必须是对象")
+        source_id = item.get("id")
+        if not isinstance(source_id, str) or not source_id or len(source_id) > 180:
+            raise ValueError(f"{game}: asset id 无效")
+        if not all(char.isascii() and (char.isalnum() or char in "_:.-") for char in source_id):
+            raise ValueError(f"{game}: asset id 含不支持的字符：{source_id}")
+        renderer = item.get("renderer", "static")
+        if renderer not in ("static", "spine", "cubism"):
+            raise ValueError(f"{game}: 不支持的资源渲染类型：{renderer}")
+        roles_data = item.get("roles", {})
+        if not isinstance(roles_data, dict):
+            raise ValueError(f"{game}: roles 应为路径数组的对象")
+        roles: dict[str, list[str]] = {}
+        for role, paths in roles_data.items():
+            if not isinstance(role, str) or not role or not isinstance(paths, list):
+                raise ValueError(f"{game}: roles 无效：{role}")
+            if any(not isinstance(path, str) or not path for path in paths):
+                raise ValueError(f"{game}: {role} 必须为非空字符串路径数组")
+            roles[role] = _paths(root, manifest, paths)
+        required_data = item.get("required_files", [])
+        optional_data = item.get("optional_files", [])
+        tags = item.get("tags", [])
+        metadata = item.get("metadata", {})
+        if (not isinstance(required_data, list) or not isinstance(optional_data, list)
+                or not isinstance(tags, list) or not isinstance(metadata, dict)):
+            raise ValueError(f"{game}: 资源校验、标签或扩展信息类型错误")
+        if any(not isinstance(value, str) for value in tags):
+            raise ValueError(f"{game}: tags 只允许字符串")
+        required = _paths(root, manifest, required_data)
+        optional = _paths(root, manifest, optional_data)
+        preview = _local_path(root, manifest, item.get("preview"))
+        entries.append(_record(
+            game, source_id, str(item.get("title") or source_id), renderer, roles,
+            required=required, optional=optional, preview=preview,
+            tags=tags, metadata=metadata,
+        ))
+    return entries
+
+
 def build_catalog(root: Path) -> dict[str, Any]:
     """从四个原始清单生成统一索引，无需网络或游戏素材文件。"""
     root = root.resolve()
@@ -288,6 +343,13 @@ def build_catalog(root: Path) -> dict[str, Any]:
             raise FileNotFoundError(f"缺少 {game} 的资源清单：{manifest}")
         records.extend(ADAPTERS[game](root, manifest, _read(manifest)))
 
+    game_info = {key: dict(value) for key, value in GAME_INFO.items()}
+    plugins = load_plugins(root, reserved=set(GAME_MANIFESTS))
+    for spec in plugins:
+        manifest = root / spec["manifest"]
+        records.extend(_generic_game(root, manifest, _read(manifest), spec["id"]))
+        game_info[spec["id"]] = {"title": spec["title"], "viewer": spec["viewer"]}
+
     ids = [row["id"] for row in records]
     if len(ids) != len(set(ids)):
         duplicates = sorted({rid for rid in ids if ids.count(rid) > 1})
@@ -295,7 +357,7 @@ def build_catalog(root: Path) -> dict[str, Any]:
 
     return {"schema_version": SCHEMA_VERSION,
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "games": list(GAME_MANIFESTS), "assets": records}
+            "games": list(game_info), "game_info": game_info, "assets": records}
 
 
 def verify_catalog(root: Path, catalog: dict[str, Any]) -> dict[str, Any]:
