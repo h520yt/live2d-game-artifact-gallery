@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -252,6 +253,21 @@ def _brown_dust2(root: Path, manifest: Path, data: dict) -> list[dict]:
                 for x in _read(tags_file).get("styles", [])
                 if isinstance(x, dict) and x.get("id")}
 
+    # 复用棕色尘埃2专属查看器的真实 256x256 库存立绘索引，
+    # 不能拿 Spine atlas 的纹理碎片当作角色缩略图。
+    thumbnails_path = root / "brown_dust2" / "thumbnail_catalog.json"
+    thumbnails = {}
+    if thumbnails_path.is_file():
+        thumbnails_data = _read(thumbnails_path).get("images", {})
+        if not isinstance(thumbnails_data, dict):
+            raise ValueError("棕色尘埃2封面索引 images 必须为对象")
+        thumbnails = thumbnails_data
+    thumbnail_cdn = (
+        "https://raw.githubusercontent.com/myssal/Brown-Dust-2-Asset/"
+        "master/ui/illust/illust_inven_char/"
+    )
+    thumbnail_pattern = re.compile(r"illust_inven_char\d{6}_\d+\.png")
+
     result = []
     for skin in data.get("installed", []):
         if not isinstance(skin, dict) or not skin.get("id"):
@@ -271,11 +287,28 @@ def _brown_dust2(root: Path, manifest: Path, data: dict) -> list[dict]:
             required.extend(paths)
         details = meta.get(source_id, {})
         title = details.get("skin") or details.get("skin_en") or source_id
+        image_name = thumbnails.get(source_id)
+        if image_name is not None and (
+            not isinstance(image_name, str) or
+            not thumbnail_pattern.fullmatch(image_name)
+        ):
+            raise ValueError(f"棕色尘埃2封面映射非法：{source_id}")
+        # 本地缓存存在时优先使用；没有缓存时用游戏原查看器已有的 CDN 源。
+        # 本地文件也不需要作为模型安装的必要文件参与核验。
+        preview = None
+        if image_name and re.fullmatch(r"[a-zA-Z0-9_-]+", source_id):
+            local = _local_path(
+                root, manifest, f"../data/_thumbnails/{source_id}.png"
+            )
+            if local and (root / local).is_file() and (root / local).stat().st_size > 8:
+                preview = local
+        thumbnail_url = thumbnail_cdn + image_name if image_name else None
         result.append(_record(
             "brown_dust2", source_id, str(title), "spine", roles,
-            required=required, tags=list(tags.get(source_id) or []),
+            required=required, preview=preview, tags=list(tags.get(source_id) or []),
             metadata={"character": details.get("character") or details.get("character_en"),
-                      "tier": details.get("tier"), "role_names": list(roles)},
+                      "tier": details.get("tier"), "role_names": list(roles),
+                      "thumbnail_url": thumbnail_url},
         ))
     return result
 
