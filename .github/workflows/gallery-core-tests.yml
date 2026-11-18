@@ -18,6 +18,7 @@ on:
       - 'tests/*.cjs'
       - 'azur_lane/viewer/index.html'
       - 'azur_lane/viewer/model_variants.js'
+      - 'azur_lane/viewer/scroll_state.js'
       - 'nikke/viewer/index.html'
       - 'reverse1999/viewer/index.html'
       - 'brown_dust2/viewer/index.html'
@@ -56,7 +57,8 @@ jobs:
           node --check gallery/app.js
           node --check shared/gallery_bridge.js
           node --check azur_lane/viewer/model_variants.js
-          node --test tests/test_gallery_bridge.cjs tests/test_viewer_inline_syntax.cjs tests/test_azur_model_variants.cjs
+          node --check azur_lane/viewer/scroll_state.js
+          node --test tests/test_gallery_bridge.cjs tests/test_viewer_inline_syntax.cjs tests/test_azur_model_variants.cjs tests/test_azur_scroll_state.cjs
           python scripts/new_game.py --id test_plugin --title "测试插件" --dry-run
       - name: Browser smoke when Chrome is installed
         run: python scripts/smoke_browser.py
