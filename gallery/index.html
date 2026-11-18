@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>统一资源浏览 · 游戏皮肤展示柜</title>
+<link rel="stylesheet" href="styles.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+  <div class="site-wrap">
+    <header class="site-header">
+      <a class="back" href="../index.html">← 返回游戏主页</a>
+      <div class="eyebrow">PERSONAL ARTIFACT ARCHIVE / V2</div>
+      <h1>统一资源浏览</h1>
+      <p class="lead">跨游戏查找角色、皮肤和互动资源，选择后进入原游戏操作台。</p>
+    </header>
+    <section class="summary" aria-label="资源统计">
+      <div><span class="metric" id="total-count">—</span><span class="metric-label">资源条目</span></div>
+      <div><span class="metric" id="game-count">—</span><span class="metric-label">游戏</span></div>
+      <div><span class="metric" id="visible-count">—</span><span class="metric-label">当前匹配</span></div>
+      <div><span class="metric" id="favorite-count">—</span><span class="metric-label">本地收藏</span></div>
+    </section>
+    <main class="layout">
+      <aside class="filters" aria-label="筛选资源">
+        <div class="filters-title">
+          <h2>筛选</h2><button type="button" id="reset-filters" class="text-button">重置</button>
+        </div>
+        <label for="search">关键词</label>
+        <input type="search" id="search" placeholder="角色 / 皮肤 / 资源 ID" autocomplete="off">
+        <label for="game">游戏</label>
+        <select id="game"><option value="">全部游戏</option></select>
+        <label for="renderer">资源类型</label>
+        <select id="renderer">
+          <option value="">全部类型</option>
+          <option value="cubism">Live2D / Cubism</option>
+          <option value="spine">Spine</option>
+          <option value="static">静态 / 场景</option>
+        </select>
+        <label for="tag">风格标签</label>
+        <select id="tag"><option value="">全部标签</option></select>
+        <label for="status">本地文件状态</label>
+        <select id="status">
+          <option value="">全部状态</option>
+          <option value="entrypoints_present">入口文件齐全</option>
+          <option value="partial">部分缺失</option>
+          <option value="missing">入口缺失</option>
+          <option value="no_entrypoints">无可核查入口</option>
+          <option value="not_checked">尚未核查</option>
+        </select>
+        <label class="check-row" for="favorites-only">
+          <input id="favorites-only" type="checkbox">
+          <span>仅看收藏</span>
+        </label>
+        <div class="aside-hint">
+          收藏只保存在当前浏览器。<strong>入口文件齐全并不表示动态效果或互动已验证。</strong>
+          运行 <code>python scripts/gallery.py sync-index</code> 生成索引，
+          再运行 <code>python scripts/gallery.py verify</code> 更新文件状态。
+        </div>
+      </aside>
+      <section class="results" aria-label="跨游戏皮肤列表">
+        <div class="result-heading">
+          <div><h2>资源目录</h2><p id="result-text">读取本地目录中…</p></div>
+          <label class="sort-label" for="sort">排序
+            <select id="sort">
+              <option value="game">游戏 / 名称</option>
+              <option value="title">皮肤名称</option>
+              <option value="favorites">收藏优先</option>
+            </select>
+          </label>
+        </div>
+        <div class="message" id="message" role="status" hidden></div>
+        <div id="cards" class="cards" aria-live="polite"></div>
+        <div class="pagination" id="pagination" hidden>
+          <button id="load-more" type="button">继续加载</button>
+        </div>
+      </section>
+    </main>
+    <footer>仅管理本地资源目录 · 原始版权素材不随仓库提交 · 各游戏专属查看器保持独立</footer>
+  </div>
+</body>
+</html>
