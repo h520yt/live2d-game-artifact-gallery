@@ -308,6 +308,7 @@
 
 <script src="../../shared/vendor/spine-player4.0.js"></script>
 <script src="../../shared/vendor/spine-player4.1.js"></script>
+<script src="../../shared/gallery_bridge.js"></script>
 <script>
 const POSE_LABEL = { fb: '立绘', cover: '半身', aim: '瞄准', skillcut: '技能演出' };
 
@@ -371,6 +372,32 @@ async function boot(){
   buildGrid();
   loadCollectionStatus();
   document.getElementById('back').onclick = exitStage;
+  window.GalleryViewerBridge?.register({
+    game: 'nikke',
+    open: (asset) => {
+      const index = manifest.characters.findIndex(item => item.id === asset);
+      if (index === -1) return false;
+      enterStage(index, null);
+      return true;
+    },
+    listRoles: () => manifest.characters[current.idx]
+      ? Object.keys(manifest.characters[current.idx].poses || {}) : [],
+    selectRole: (pose) => {
+      const character = manifest.characters[current.idx];
+      if (!character || !character.poses?.[pose]) return false;
+      current.pose = pose;
+      buildPoseTabs(character);
+      loadPose();
+      return true;
+    },
+    listActions: () => player?.animationState?.data?.skeletonData?.animations?.map(item => item.name) || [],
+    playAction: (name) => {
+      const names = player?.animationState?.data?.skeletonData?.animations?.map(item => item.name) || [];
+      if (!player || !names.includes(name)) return false;
+      playAnim(player, names, name);
+      return true;
+    },
+  });
 }
 
 // 四批收藏是“计划清单”，manifest 是“本地已生成的资源清单”。
@@ -712,6 +739,7 @@ async function loadPose(){
           }
         }catch(e){ buildMotionPanel(pl, [], null); }
         window.NikkeArt?.onPoseReady?.();
+        window.GalleryViewerBridge?.refresh();
       },
       error: (pl, msg) => { if(tk===loadToken) setLoading(true, '加载失败: ' + (msg||''), true); },
     });
