@@ -306,7 +306,7 @@ def _brown_dust2(root: Path, manifest: Path, data: dict) -> list[dict]:
                     if local_path.is_file() and local_path.stat().st_size >= 24:
                         with local_path.open("rb") as image_file:
                             header = image_file.read(24)
-                        is_png = header.startswith(b"\\x89PNG\\r\\n\\x1a\\n")
+                        is_png = header.startswith(b"\x89PNG\r\n\x1a\n")
                         valid_dimensions = (
                             int.from_bytes(header[16:20], "big") > 0 and
                             int.from_bytes(header[20:24], "big") > 0
