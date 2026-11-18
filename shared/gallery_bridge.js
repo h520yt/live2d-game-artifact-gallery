@@ -16,7 +16,7 @@
   function parseRequest(search) {
     const params = new URLSearchParams(search || "");
     const id = params.get(PARAM);
-    if (!id || id.length > MAX_ID_LENGTH || !/^[\w:.-]+$/.test(id)) return null;
+    if (!id || id.length > MAX_ID_LENGTH || /[\u0000-\u001f\u007f/\\?#]/.test(id)) return null;
     const role = params.get(ROLE_PARAM);
     const motion = params.get(ACTION_PARAM);
     return {
