@@ -10,6 +10,7 @@ on:
       - 'gallery/**'
       - 'scripts/gallery.py'
       - 'scripts/new_game.py'
+      - 'scripts/smoke_browser.py'
       - 'shared/gallery_bridge.js'
       - 'games/**'
       - 'tests/*.cjs'
@@ -40,7 +41,7 @@ jobs:
       - name: Unit tests (no game assets required)
         run: python -m unittest discover -s tests -p 'test_gallery_*.py' -v
       - name: Check Python syntax
-        run: python -m compileall -q gallery_core scripts/gallery.py scripts/new_game.py azur_lane/scripts/install_batch2.py azur_lane/scripts/install_batch3.py azur_lane/scripts/install_batch4.py azur_lane/scripts/install_batch5.py azur_lane/scripts/install_batch6.py nikke/scripts/fetch_nikke.py brown_dust2/scripts/install_prestige.py
+        run: python -m compileall -q gallery_core scripts/gallery.py scripts/new_game.py scripts/smoke_browser.py azur_lane/scripts/install_batch2.py azur_lane/scripts/install_batch3.py azur_lane/scripts/install_batch4.py azur_lane/scripts/install_batch5.py azur_lane/scripts/install_batch6.py nikke/scripts/fetch_nikke.py brown_dust2/scripts/install_prestige.py
       - name: Generate unified index from committed manifests
         run: python scripts/gallery.py sync-index
       - name: Diagnose game viewer integration
@@ -51,6 +52,8 @@ jobs:
           node --check shared/gallery_bridge.js
           node --test tests/test_gallery_bridge.cjs tests/test_viewer_inline_syntax.cjs
           python scripts/new_game.py --id test_plugin --title "测试插件" --dry-run
+      - name: Browser smoke when Chrome is installed
+        run: python scripts/smoke_browser.py
       - name: Check historical batch command compatibility
         run: |
           python azur_lane/scripts/install_batch2.py --help
