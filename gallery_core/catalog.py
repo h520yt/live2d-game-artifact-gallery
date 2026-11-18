@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from datetime import datetime, timezone
 from pathlib import Path
@@ -355,9 +356,15 @@ def build_catalog(root: Path) -> dict[str, Any]:
         duplicates = sorted({rid for rid in ids if ids.count(rid) > 1})
         raise ValueError(f"统一索引中存在重复 ID：{duplicates[:10]}")
 
+    # 摘要只反映可见资源元数据，不依赖生成时间，供浏览器识别过期核验报告。
+    stable_content = {"games": list(game_info), "game_info": game_info, "assets": records}
+    encoded = json.dumps(stable_content, ensure_ascii=False, sort_keys=True,
+                         separators=(",", ":")).encode("utf-8")
+    digest = hashlib.sha256(encoded).hexdigest()
     return {"schema_version": SCHEMA_VERSION,
             "generated_at": datetime.now(timezone.utc).isoformat(),
-            "games": list(game_info), "game_info": game_info, "assets": records}
+            "catalog_digest": digest,
+            **stable_content}
 
 
 def verify_catalog(root: Path, catalog: dict[str, Any]) -> dict[str, Any]:
@@ -380,5 +387,6 @@ def verify_catalog(root: Path, catalog: dict[str, Any]) -> dict[str, Any]:
     counts = {status: sum(x["status"] == status for x in results)
               for status in ("entrypoints_present", "partial", "missing", "no_entrypoints")}
     return {"checked_at": datetime.now(timezone.utc).isoformat(),
+            "catalog_digest": catalog.get("catalog_digest"),
             "status_definition": "entrypoints_present 不代表贴图/动作/互动已完整验证",
             "counts": counts, "items": results}
