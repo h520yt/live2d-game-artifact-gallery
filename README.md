@@ -21,6 +21,27 @@ python scripts/gallery.py serve --port 8000
 
 详见 [第二阶段重构记录](docs/2026-11-18-gallery-core-phase2.md)。
 
+
+### 第三阶段：皮肤直达、统一动作接口、新游戏脚手架
+
+从统一目录点选一个资源后，浏览器会将精确资源 ID 传给原游戏查看器并尝试自动加载。
+查看器页面底部提供统一姿态与动作控制条；实际动画仍由各游戏原有 Cubism/Spine 运行时执行。
+某个皮肤没有对应文件、动作或模型加载失败时，查看器会明确提示，不能把索引存在视为已加载成功。
+
+新增游戏时，无须再为统一目录硬编码一个入口：
+
+```powershell
+python scripts/new_game.py --id example_game --title "示例游戏" --dry-run
+python scripts/new_game.py --id example_game --title "示例游戏"
+python scripts/gallery.py serve --port 8000
+```
+
+脚手架会创建插件 manifest、静态预览模板、游戏 README 并注册到 `gallery/plugins.json`。
+**静态模板不是通用 Live2D/Spine 播放器**；动态模型仍需游戏特有的素材提取器和渲染适配器。
+实际游戏资源应放在相应的 `games/<id>/data/` 下（Git 默认忽略）。
+
+第三阶段说明详见 [统一查看器与插件架构](docs/2026-11-18-gallery-core-phase3.md)。
+
 ---
 
 游戏资源解包 & 展示平台。从游戏客户端提取**立绘、Live2D 模型、音频**等美术制品，
