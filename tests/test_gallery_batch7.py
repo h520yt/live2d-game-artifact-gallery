@@ -71,7 +71,7 @@ class BatchSevenIntegrationTests(unittest.TestCase):
 
     def test_validate_report_does_not_claim_shoe_review_complete(self):
         report = {"batch": "azur_lane_batch7", "skins": [{
-            "asset": "kubo_2",
+            "asset": "baerdimo_6",
             "paintings_expected": 2,
             "paintings_built": 2,
             "models_expected": 1,
@@ -83,11 +83,11 @@ class BatchSevenIntegrationTests(unittest.TestCase):
         self.assertEqual(row["review_status"], "pending_visual_and_motion_review")
         self.assertFalse(row["footwear_verified"])
         self.assertFalse(row["all_motions_verified"])
-        self.assertIn("网球", row["style_candidate"])
+        self.assertIn("赛车", row["style_candidate"])
 
     def test_incomplete_models_fail_and_never_count_as_ready(self):
         report = {"batch": "azur_lane_batch7", "skins": [{
-            "asset": "kubo_2",
+            "asset": "baerdimo_6",
             "paintings_expected": 1,
             "paintings_built": 1,
             "models_expected": 0,
@@ -102,7 +102,7 @@ class BatchSevenIntegrationTests(unittest.TestCase):
             temp = Path(temporary) / "collections.json"
             modified = json.loads(json.dumps(self.config, ensure_ascii=False))
             modified["batches"]["batch6"]["items"].append(
-                {"asset": self.items[0]["asset"]}
+                {"asset": "baerdimo_6"}
             )
             temp.write_text(json.dumps(modified, ensure_ascii=False),
                             encoding="utf-8")
