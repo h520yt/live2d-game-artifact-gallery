@@ -88,5 +88,6 @@ python azur_lane/scripts/install_batch6.py --plan
 改动仅在 `refactor/gallery-core-20261118` 分支，原 `main` 未修改。
 本地素材目录继续保持原样，切回 `main` 即可回滚代码。
 
-第二阶段将把第 2`6 批名单移入声明式配置，并抽取通用下载/校验流程；
+第五、六批共 40 项候选已迁入 `azur_lane/config/curated_collections.json`。
+下一步将第 2 至 4 批迁入声明式配置，并抽取通用下载/校验流程；
 再整合前端列表、搜索、收藏和标签。特殊 Cubism / Spine 互动依然由各引擎单独实现。
