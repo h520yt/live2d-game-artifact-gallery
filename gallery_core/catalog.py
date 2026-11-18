@@ -105,6 +105,9 @@ def _azur_collection_info(root: Path) -> dict[str, dict[str, Any]]:
         for item in group.get("items", []):
             if not isinstance(item, dict) or not isinstance(item.get("asset"), str):
                 continue
+            # 排除/暂缓的皮肤仍可保留原游戏模型，但不得获得“鞋履/风格精选候选”标签。
+            if item.get("maturity_screen") in ("excluded", "hold"):
+                continue
             asset = item["asset"].lower()
             info = result.setdefault(asset, {"batches": [], "tags": [], "reviews": []})
             info["batches"].append(batch)
