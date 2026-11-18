@@ -512,6 +512,7 @@
 <script src="scene_gallery.js"></script>
 <script src="../../shared/gallery_bridge.js"></script>
 <script src="model_variants.js"></script>
+<script src="scroll_state.js"></script>
 <script>
 const { Live2DModel } = PIXI.live2d;
 let app, current, manifest;
@@ -781,6 +782,7 @@ function renderVariantSelector(index){
 
 // 进入操作台
 function enterStage(i){
+  AzurGalleryScroll.remember("l2d-list");
   const token = ++stageToken;
   document.getElementById('l2d-grid-view').style.display = 'none';
   document.getElementById('l2d-stage-view').style.display = 'block';
@@ -805,6 +807,7 @@ function exitStage(){
   if(current){ app.stage.removeChild(current); current = null; }
   document.getElementById('l2d-stage-view').style.display = 'none';
   document.getElementById('l2d-grid-view').style.display = 'block';
+  AzurGalleryScroll.restore('l2d-list');
 }
 
 // 预下载模型的 moc3 + 贴图，回调下载百分比。下载后浏览器缓存变热，Live2DModel.from 从缓存读。
@@ -1154,6 +1157,7 @@ function buildGallery(){
 }
 
 function openDetail(c){
+  AzurGalleryScroll.remember("paint-list");
   document.getElementById('detail-title').textContent = c.en || c.rep;
   document.getElementById('detail-sub').textContent =
     `${c.rep}　·　${c.items.length} 张`;
@@ -1172,10 +1176,13 @@ function openDetail(c){
   AzurSceneGallery.open(c);
   document.getElementById('detail').classList.add('on');
 }
+function closeDetail(){
+  document.getElementById('detail').classList.remove('on');
+  AzurGalleryScroll.restore('paint-list');
+}
 document.getElementById('detail-close').onclick =
 document.getElementById('detail').onclick = e => {
-  if(e.target.id === 'detail' || e.target.id === 'detail-close')
-    document.getElementById('detail').classList.remove('on');
+  if(e.target.id === 'detail' || e.target.id === 'detail-close') closeDetail();
 };
 
 function openLightbox(p){
