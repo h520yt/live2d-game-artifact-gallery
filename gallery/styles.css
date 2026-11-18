@@ -9,6 +9,7 @@
   --accent: #e9b976;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body { margin: 0; color: var(--text); background: radial-gradient(ellipse at 75% 0%,#202f40 0%,var(--bg) 45%); font: 15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif; }
 button,input,select { font: inherit; }
 button { cursor: pointer; }
