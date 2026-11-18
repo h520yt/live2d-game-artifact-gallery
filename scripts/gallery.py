@@ -20,9 +20,11 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 from gallery_core import GAME_MANIFESTS, build_catalog, verify_catalog  # noqa: E402
+from gallery_core.doctor import diagnose_gallery  # noqa: E402
 
 CATALOG_FILE = ROOT / "gallery" / "catalog.json"
 REPORT_FILE = ROOT / "gallery" / "verification-report.json"
+DOCTOR_FILE = ROOT / "gallery" / "doctor-report.json"
 
 
 def write_json(path: Path, data: dict) -> None:
@@ -43,6 +45,7 @@ def main(argv: list[str] | None = None) -> int:
     sub = parser.add_subparsers(dest="command", required=True)
 
     sub.add_parser("sync-index", help="从现有游戏 manifest 生成统一索引")
+    sub.add_parser("doctor", help="不下载素材，检查游戏入口、索引和动作桥接协议")
     serve = sub.add_parser("serve", help="生成索引及核验报告，启动本地统一展柜")
     serve.add_argument("--port", type=int, default=8000, help="监听端口，默认 8000")
     listing = sub.add_parser("list", help="筛选跨游戏资源（直接读取当前原始清单）")
@@ -62,6 +65,18 @@ def main(argv: list[str] | None = None) -> int:
         catalog = build_catalog(ROOT)
         if args.command == "list" and args.game and args.game not in catalog["games"]:
             parser.error("未知游戏 ID：" + args.game)
+        if args.command == "doctor":
+            report = diagnose_gallery(ROOT, catalog)
+            write_json(DOCTOR_FILE, report)
+            print(f"静态诊断：{report['games']} 个游戏、{report['resources']} 个资源")
+            print(f"错误：{report['error_count']}；警告：{report['warning_count']}")
+            print(f"详情：{DOCTOR_FILE.relative_to(ROOT)}")
+            for problem in report["errors"]:
+                print(f"  [错误] {problem}")
+            if report["warning_count"]:
+                print("警告包含无可核查入口的资源；不代表浏览器渲染失败。")
+            return 1 if report["error_count"] else 0
+
         if args.command == "serve":
             write_json(CATALOG_FILE, catalog)
             report = verify_catalog(ROOT, catalog)
