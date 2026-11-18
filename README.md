@@ -1,5 +1,18 @@
 # live2d-game-artifact-gallery
 
+## 成熟画风筛选补充（2026-11-18）
+
+按实际画廊反馈，今后**先筛人物整体成熟感，再筛鞋履、服装与 Live2D 动作**，
+明显偏幼态的角色不进入成熟精选。第七批 `kubo_2`、`weiyan_2`，
+第八批 `weiyan_4` 已排除；`ailunsamuna_2`、`linuo_3` 因
+完整画风尚未复核暂缓。原始名单保留、不删除已下载模型。
+
+当前第七批可安装精选候选 **16 款**、第八批 **19 款**；
+未核实成熟感的后续新批次必须先填写 `maturity_screen` 才可进入安装流程。
+详见 [成熟画风筛选规范](azur_lane/docs/mature-style-curation-policy.md)。
+
+---
+
 ## 碧蓝航线：第八批 20 款成熟礼装与鞋履候选（2026-11-18）
 
 已直接在 `main` 增加 [第八批 20 款候选](azur_lane/docs/2026-11-18-batch8-unified-gallery.md)：
