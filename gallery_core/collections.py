@@ -39,6 +39,15 @@ def load_batch_candidates(path: Path, batch: str, fields: tuple[str, ...]) -> tu
         if asset in seen_assets:
             raise ValueError(f"{batch} 存在重复资源名：{asset}")
         seen_assets.add(asset)
+        # 第七批起先进行成熟画风初筛。明确排除或待复核的造型不得进入精选安装。
+        # 历史 2~6 批无此字段，保持既有安装契约。
+        if batch.startswith("batch") and batch[5:].isdigit() and int(batch[5:]) >= 7:
+            maturity_screen = item.get("maturity_screen")
+            allowed = {"candidate", "hold", "excluded"}
+            if maturity_screen not in allowed:
+                raise ValueError(f"{batch} 第 {i} 项未完成成熟画风初筛：{asset}")
+            if maturity_screen != "candidate":
+                continue
         results.append(tuple(row))
     return tuple(results)
 
