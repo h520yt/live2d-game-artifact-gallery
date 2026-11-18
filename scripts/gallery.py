@@ -46,7 +46,7 @@ def main(argv: list[str] | None = None) -> int:
     serve = sub.add_parser("serve", help="生成索引及核验报告，启动本地统一展柜")
     serve.add_argument("--port", type=int, default=8000, help="监听端口，默认 8000")
     listing = sub.add_parser("list", help="筛选跨游戏资源（直接读取当前原始清单）")
-    listing.add_argument("--game", choices=tuple(GAME_MANIFESTS), help="指定游戏")
+    listing.add_argument("--game", help="指定内置或插件游戏 ID")
     listing.add_argument("--tag", help="按已标注的风格标签筛选")
     listing.add_argument("--limit", type=int, default=40, help="显示条目数")
     verify = sub.add_parser("verify", help="核查本地入口文件，不执行渲染")
@@ -60,6 +60,8 @@ def main(argv: list[str] | None = None) -> int:
 
     try:
         catalog = build_catalog(ROOT)
+        if args.command == "list" and args.game and args.game not in catalog["games"]:
+            parser.error("未知游戏 ID：" + args.game)
         if args.command == "serve":
             write_json(CATALOG_FILE, catalog)
             report = verify_catalog(ROOT, catalog)
@@ -79,7 +81,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "sync-index":
             write_json(CATALOG_FILE, catalog)
             counts = {game: sum(row["game"] == game for row in catalog["assets"])
-                      for game in GAME_MANIFESTS}
+                      for game in catalog["games"]}
             print(f"已写入 {CATALOG_FILE.relative_to(ROOT)}（仅生成索引，不下载）")
             for game, count in counts.items():
                 print(f"  {game}: {count} 个条目")
