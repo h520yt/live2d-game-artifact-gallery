@@ -1,0 +1,62 @@
+name: Reverse 1999 full viewport audit (UNIQUE and Jukebox)
+on:
+  push:
+    branches:
+      - fix/reverse1999-stage-regression
+    paths:
+      - "reverse1999/**"
+      - ".github/workflows/reverse1999-full-stage-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download verified matching scenes and Jukebox models
+        run: |
+          set -e
+          for id in 308303 308603 315503 313403 306604; do
+            python reverse1999/scripts/sync.py unique "$id"
+          done
+          for id in 311604 308804; do
+            python reverse1999/scripts/sync.py jukebox "$id" || true
+          done
+          python reverse1999/scripts/sync.py manifest
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path("reverse1999/viewer")
+          data=json.loads((base/"manifest.json").read_text(encoding="utf-8"))
+          for skin_id in (308303,308603,315503,313403,306604,311604,308804):
+              row=next((m for m in data["models"] if m.get("id")==skin_id and m.get("type") in ("scene-live2d","cubism")),None)
+              assert row, skin_id
+              assert (base / row["path"]).is_file(),row
+              if row["type"]=="scene-live2d":
+                  assert (base / row["background"]).is_file(),row
+          print("AUDIT-DATA-READY: 7 model IDs")
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install real WebGL Chromium test support
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Assert seven real models visible at two browser sizes
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/1999-audit-http.log 2>&1 &
+          node reverse1999/tests/stage-full-audit.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reverse1999-stage-audit-images
+          path: reverse1999/test-output/stage-audit/
+          if-no-files-found: ignore
