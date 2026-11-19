@@ -7,7 +7,11 @@ const {chromium}=require("playwright");
 
 const ROOT=path.resolve(__dirname,"../test-output/stage-audit");
 const catalog=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../viewer/manifest.json"),"utf8"));
-const ids=["308203","308804","311604","308303","308603","315503","313403","306604"];
+const focusIds=["308203","308804","311604","308303","308603","315503","313403","306604"];
+const ids=process.argv.includes("--all")
+  ? [...new Set(catalog.models.filter(model =>
+      model.type==="cubism"||model.type==="scene-live2d").map(model=>String(model.id)))]
+  : focusIds;
 const widths=[{width:1776,height:800},{width:1366,height:900}];
 fs.mkdirSync(ROOT,{recursive:true});
 
@@ -86,6 +90,6 @@ async function verify(page,id,viewport){
       }
     }
   }finally{await browser.close();}
-  console.log("TOTAL",ids.length*widths.length,"FAILURES",JSON.stringify(failures));
+  console.log("TOTAL",ids.length*widths.length,"SKINS",ids.length,"FAILURES",JSON.stringify(failures));
   assert.deepEqual(failures,[]);
 })().catch(error=>{console.error(error);process.exit(1);});
