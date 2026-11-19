@@ -100,7 +100,12 @@ async function main() {
 
   // 可选下载：只会从已核对的上游固定路径获取同一皮肤的资源。
   if (download) {
-    runPython(["reverse1999/scripts/sync.py", "unique", target]);
+    try {
+      runPython(["reverse1999/scripts/sync.py", "unique", target]);
+    } catch (error) {
+      // 安装器已保存成功下载的皮肤并刷新 manifest，不因单套失败放弃其余截图。
+      console.warn("部分模型下载未完成，继续导出已安装资源：" + error.message);
+    }
   }
   // 下载完成后的清单已更新；离线模式沿用已有清单。
   const models = JSON.parse(fs.readFileSync(MANIFEST, "utf8")).models;
@@ -155,7 +160,7 @@ async function main() {
           await page.evaluate(() => window.dispatchEvent(new Event("resize")));
           await page.waitForTimeout(1000);
           await page.locator("#stage-area").screenshot({
-            path: temporary, animations: "disabled", timeout: 90000,
+            path: temporary, type: "png", animations: "disabled", timeout: 90000,
           });
           if (!validPng(temporary, width, height)) throw new Error("导出的 PNG 尺寸或内容校验失败");
           fs.renameSync(temporary, filename);
