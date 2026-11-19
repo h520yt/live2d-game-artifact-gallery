@@ -151,7 +151,7 @@ async function main() {
           }, null, { timeout: 90000 });
           // 仅让合成舞台占据输出画布，不截取搜索框、按钮或文字标签。
           await page.addStyleTag({ content: [
-            "header,aside,.stage-toolbar{display:none!important}",
+            "header,aside,.stage-toolbar,.sg-detail-head,.sg-floating-tools{display:none!important}",
             "html,body,main{margin:0!important;padding:0!important;width:100%!important;height:100%!important;overflow:hidden!important}",
             "main{display:block!important;min-height:0!important}",
             "section.stage,#stage-area{width:100vw!important;height:100vh!important;min-height:0!important}",
