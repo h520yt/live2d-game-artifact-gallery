@@ -129,7 +129,7 @@ async function main() {
         const sourceId = String(row.id) + ":" + model.folder;
         const url = "http://127.0.0.1:" + service.port +
           "/reverse1999/viewer/index.html?gallery_asset=" +
-          encodeURIComponent(sourceId);
+          encodeURIComponent(sourceId) + "&export_scene=1";
         const filename = path.join(OUTPUT, row.id + ".png");
         const temporary = filename + ".tmp";
         try {
