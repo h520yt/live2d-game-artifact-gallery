@@ -1,13 +1,13 @@
-/* 画廊内页的位置恢复工具。
- * 模型舞台使用 display:none 隐藏长列表，浏览器会压缩 scrollY；
- * 记录入口位置并在列表重新布局后恢复，避免返回时跳到顶部。
+/* 画廊滚动位置记忆。
+ * 返回模型列表前同步恢复坐标：不使用 requestAnimationFrame 延迟，
+ * 避免 html 的 scroll-behavior:smooth 造成可见的整页滚动。
  */
 (function (global) {
   "use strict";
 
   const positions = new Map();
 
-  /** 进入模型舞台或图片详情前保存当前页面位置。 */
+  /** 进入模型舞台或立绘详情前，保存当前窗口滚动位置。 */
   function remember(key) {
     if (!key) return;
     positions.set(key, {
@@ -16,17 +16,26 @@
     });
   }
 
-  /** 先恢复被隐藏的列表，再等待浏览器完成布局后恢复原始坐标。 */
+  /** 列表恢复显示后在当前事件中立即归位，不等待下一帧，也不触发平滑滚动。 */
   function restore(key) {
     const position = positions.get(key);
     if (!position) return false;
-    global.requestAnimationFrame(() => {
+
+    const root = global.document?.documentElement;
+    const originalBehavior = root?.style?.scrollBehavior;
+    if (root?.style) root.style.scrollBehavior = "auto";
+
+    try {
+      // CSS 根元素即使声明 smooth，也不得把“返回位置”变成滚动动画。
       global.scrollTo(position.x, position.y);
-    });
+    } finally {
+      if (root?.style) root.style.scrollBehavior = originalBehavior;
+    }
+
     return true;
   }
 
-  /** 新筛选或重新开始浏览时可以清除旧的保存状态。 */
+  /** 用户主动清空筛选状态时才需要遗忘旧位置。 */
   function clear(key) {
     positions.delete(key);
   }
