@@ -72,6 +72,7 @@ test("opening a full-screen detail and returning retains original list DOM and s
   assert.equal(x.detail.hidden,false);
   assert.equal(x.gallery.navigate(1),true);
   assert.deepEqual(x.selected,["313403","315901"]);
+  x.window.scrollY=0; // 模拟极端浏览器在关闭 overlay 时错误重置了滚动位置。
   x.gallery.close();
   assert.equal(x.detail.hidden,true);
   assert.equal(x.grid.children[0],cards[0]);
@@ -98,4 +99,14 @@ test("search only changes the card list and never introduces collection tabs",()
   x.search.value="白雪";x.search.dispatch("input");
   assert.equal(x.grid.children.length,1);
   assert.equal(x.grid.children[0].dataset.key,"315901");
+});
+
+test("normal back does not trigger a scroll or rebuild cards",()=>{
+  const x=setup();
+  x.gallery.setItems([{key:"315901",title:"佩施塔",ready:true}]);
+  const card=x.grid.children[0];
+  x.gallery.open("315901",card);
+  x.gallery.close();
+  assert.equal(x.scrollCalls.length,0);
+  assert.equal(x.grid.children[0],card);
 });
