@@ -1,5 +1,8 @@
 # live2d-game-artifact-gallery
 
+> **统一展示规范**：碧蓝航线、棕色尘埃 2、重返未来 1999 采用封面卡片→大舞台→原位返回；后续游戏脚手架直接复用 `shared/skin_gallery.css` / `shared/skin_gallery.js`，不按版本、价格或导入批次新增分类页。参见 [统一游戏画廊标准](docs/unified-game-gallery-standard.md)。
+
+
 ## 重返未来：1999 · 完整场景图（角色＋专属背景，2026-11-19）
 
 已核对个人 fork [h520yt/Reverse-1999-CN-Asset](https://github.com/h520yt/Reverse-1999-CN-Asset)
