@@ -265,6 +265,12 @@ function closeDetail(){
   ++requestId;
   ++poseToken;
   ++framingSequence;
+  userAdjustedFraming=false;
+  $('canvas').style.opacity='1';
+  if(resizeFitTimer!==null){
+    clearTimeout(resizeFitTimer);
+    resizeFitTimer=null;
+  }
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
   disposeSpine();
   $('full-scene-image').removeAttribute('src');
@@ -348,107 +354,120 @@ function fit(model){
 // 所有 Cubism（UNIQUE / 点唱机 / 普通模型）使用相同的像素校正流程。
 function fitSkin(model){
   fit(model);
+  const area=$('stage-area');
+  lastFittedViewport=area.clientWidth+'x'+area.clientHeight;
 }
 
 // 不能只根据模型几何包围盒判断人物位置：许多 Cubism 衣着的外框
 // 含不可见的装饰网格，首次动画姿态也可能偏离静态骨骼中心。
 // 从透明 WebGL 画布读取实际绘制的 alpha，在人物真正进入首帧后做保守修正。
 let framingSequence=0;
+let lastFittedViewport="";
+let resizeFitTimer=null;
+let userAdjustedFraming=false;
+const alphaSampleCanvas=document.createElement("canvas");
 
 function visiblePixels(){
   const area=$('stage-area');
-  const renderer=app?.renderer;
-  if(!renderer||!area.clientWidth||!area.clientHeight)return null;
+  const source=$('canvas');
+  if(!source?.width||!source?.height||!area.clientWidth||!area.clientHeight)return null;
   try{
-    const image=renderer.plugins?.extract?.canvas();
-    if(!image?.width||!image?.height)return null;
-    const ctx=image.getContext('2d',{willReadFrequently:true});
+    // 使用普通 2D Canvas 复制实际 WebGL 已绘制画面。
+    // 不再调用 PIXI renderer.plugins.extract.canvas()：
+    // 该接口会触发一次额外的渲染 / GL 状态恢复，可能破坏 Cubism Mask。
+    const ratio=source.width/source.height;
+    const sampleHeight=280;
+    const sampleWidth=Math.max(200,Math.min(560,Math.round(sampleHeight*ratio)));
+    alphaSampleCanvas.width=sampleWidth;
+    alphaSampleCanvas.height=sampleHeight;
+    const ctx=alphaSampleCanvas.getContext('2d',{willReadFrequently:true});
     if(!ctx)return null;
-    const width=image.width,height=image.height;
-    const rgba=ctx.getImageData(0,0,width,height).data;
-    const step=Math.max(2,Math.round(Math.min(width,height)/250));
-    let left=width,top=height,right=-1,bottom=-1,count=0;
-    // 这里不读取独立的 CSS 背景图；只识别 Live2D 角色画布的非透明像素。
-    for(let y=0;y<height;y+=step){
-      for(let x=0;x<width;x+=step){
-        if(rgba[(y*width+x)*4+3]<48)continue;
+    ctx.clearRect(0,0,sampleWidth,sampleHeight);
+    ctx.drawImage(source,0,0,sampleWidth,sampleHeight);
+    const rgba=ctx.getImageData(0,0,sampleWidth,sampleHeight).data;
+    let left=sampleWidth,top=sampleHeight,right=-1,bottom=-1,count=0;
+    for(let y=0;y<sampleHeight;y++){
+      for(let x=0;x<sampleWidth;x++){
+        if(rgba[(y*sampleWidth+x)*4+3]<55)continue;
         left=Math.min(left,x);top=Math.min(top,y);
         right=Math.max(right,x);bottom=Math.max(bottom,y);count++;
       }
     }
-    const samples=Math.ceil(width/step)*Math.ceil(height/step);
-    // 有些浏览器提取插件会把透明画布当成不透明底色，禁止全画面误判为人物。
-    if(count<100||count>samples*.55||right<=left||bottom<=top)return null;
-    const sx=area.clientWidth/width,sy=area.clientHeight/height;
-    return {left:left*sx,top:top*sy,right:(right+step)*sx,
-      bottom:(bottom+step)*sy};
+    if(count<65||count>sampleWidth*sampleHeight*.55||
+       right<=left||bottom<=top)return null;
+    return {
+      left:left/sampleWidth*area.clientWidth,
+      right:(right+1)/sampleWidth*area.clientWidth,
+      top:top/sampleHeight*area.clientHeight,
+      bottom:(bottom+1)/sampleHeight*area.clientHeight
+    };
   }catch(error){
-    console.warn('透明画布像素采样不可用，保留保守骨骼定位：',error);
+    console.warn('读取 Live2D 可见像素失败，沿用安全的初始定位:',error);
     return null;
   }
 }
 
-function visibleFramingTransform(bounds,width,height){
-  const b=framingRect({
-    x:bounds.left,y:bounds.top,width:bounds.right-bounds.left,
-    height:bounds.bottom-bounds.top
+function waitRenderedFrames(){
+  return new Promise(resolve=>{
+    requestAnimationFrame(()=>requestAnimationFrame(resolve));
   });
-  const touching=b.x<width*.035||b.y<height*.045||
-    b.x+b.width>width*.965||b.y+b.height>height*.955;
-  const factor=Math.min(touching?.74:1,width*.70/b.width,height*.70/b.height);
-  return {
-    factor:Math.max(.20,Math.min(1,factor)),
-    cx:b.x+b.width/2,
-    cy:b.y+b.height/2,
-    touching
-  };
 }
 
 async function stabilizeFraming(model,skin,token){
   const sequence=++framingSequence;
-  // 所有 Cubism 都必须参与可见区域校正，不允许按档位跳过。
   const area=$('stage-area');
   const width=area.clientWidth,height=area.clientHeight;
   if(!width||!height)return;
+  const current=()=>token===requestId&&sequence===framingSequence&&
+    active===model&&!userAdjustedFraming&&!$('stage-area').hidden;
 
-  // 有些 model3.json 在动画刚开始时包含超大透明网格，先让几何定位略保守。
-  model.scale.set(model.scale.x*.85);
-  model.position.set(width/2+(model.x-width/2)*.85,
-    height/2+(model.y-height/2)*.85+height*.04);
+  // fitSkin() 已按单位包围盒进行过初始定位。
+  // 先做一次保守缩小，为头发/飘带等真实可见像素保留安全空间。
+  // 后续只执行一次 Alpha 校正，不使用多轮反馈，杜绝加载中的连续漂移。
+  const shrink=.82;
+  model.position.set(width*.5+(model.x-width*.5)*shrink,
+    height*.5+(model.y-height*.5)*shrink);
+  model.scale.set(model.scale.x*shrink);
+  await waitRenderedFrames();
+  if(!current())return;
+  const bounds=visiblePixels();
+  if(!bounds)return;
+  const visibleWidth=bounds.right-bounds.left;
+  const visibleHeight=bounds.bottom-bounds.top;
+  if(visibleWidth<=2||visibleHeight<=2)return;
 
-  for(let pass=0;pass<3;pass++){
-    await new Promise(resolve=>setTimeout(resolve,150));
-    if(token!==requestId||sequence!==framingSequence||
-       active!==model||$('stage-area').hidden)return;
-    const bounds=visiblePixels();
-    if(!bounds)break;
-    const correction=visibleFramingTransform(bounds,width,height);
-    const dx=width*.5-correction.cx,dy=height*.50-correction.cy;
-    if(!correction.touching&&correction.factor>=.995&&
-       Math.abs(dx)<width*.045&&Math.abs(dy)<height*.045)break;
-    const zoom=correction.factor;
-    model.position.set(width*.5+(model.x-correction.cx)*zoom,
-      height*.5+(model.y-correction.cy)*zoom);
-    model.scale.set(model.scale.x*zoom);
-  }
-
-  // 先安全收进画面，再放大到适合欣赏的全身构图。
-  // 防止极端透明网格把非 UNIQUE 模型缩成舞台中央很小的一团。
-  if(token!==requestId||sequence!==framingSequence||active!==model)return;
-  const finalBounds=visiblePixels();
-  if(!finalBounds)return;
-  const visibleWidth=finalBounds.right-finalBounds.left;
-  const visibleHeight=finalBounds.bottom-finalBounds.top;
-  const safe=finalBounds.left>width*.07&&finalBounds.right<width*.93&&
-    finalBounds.top>height*.07&&finalBounds.bottom<height*.93;
-  if(!safe||visibleWidth<2||visibleHeight<2)return;
-  const zoom=Math.min(1.60,width*.68/visibleWidth,height*.66/visibleHeight);
-  if(zoom<=1.08)return;
-  const centerX=(finalBounds.left+finalBounds.right)*.5;
-  const centerY=(finalBounds.top+finalBounds.bottom)*.5;
+  const centerX=(bounds.left+bounds.right)/2;
+  const centerY=(bounds.top+bounds.bottom)/2;
+  const zoom=Math.max(.25,Math.min(1.65,
+    width*.70/visibleWidth,height*.68/visibleHeight));
   model.position.set(width*.5+(model.x-centerX)*zoom,
     height*.5+(model.y-centerY)*zoom);
   model.scale.set(model.scale.x*zoom);
+
+  // 修正必须全部发生在 CSS opacity=0 的阶段：不让模型露出未校准的边缘。
+  // 大型 UNIQUE 装饰可能在初始取样时已经超出画布，单次 Alpha 边界
+  // 会低估真实可见范围。提交首轮变换后只做有条件的隐藏安全检查，
+  // 最多 3 次收缩，不在动画播放期间追踪/修改人物坐标。
+  await waitRenderedFrames();
+  for(let i=0;i<3;i++){
+    if(!current())return;
+    const frame=visiblePixels();
+    if(!frame)break;
+    const clipped=frame.left<width*.025||frame.right>width*.975||
+      frame.top<height*.040||frame.bottom>height*.960;
+    if(!clipped)break;
+    const frameWidth=frame.right-frame.left;
+    const frameHeight=frame.bottom-frame.top;
+    if(frameWidth<=2||frameHeight<=2)break;
+    const safetyZoom=Math.max(.30,Math.min(.84,
+      width*.62/frameWidth,height*.60/frameHeight));
+    const cx=(frame.left+frame.right)*.5;
+    const cy=(frame.top+frame.bottom)*.5;
+    model.position.set(width*.5+(model.x-cx)*safetyZoom,
+      height*.5+(model.y-cy)*safetyZoom);
+    model.scale.set(model.scale.x*safetyZoom);
+    await waitRenderedFrames();
+  }
 }
 
 function disposeSpine(){
@@ -596,6 +615,8 @@ function setupSceneControls(){
 
 async function selectModel(m, viewMode){
   selected=m;const token=++requestId;
+  // 保持 WebGL 正常渲染用于后台 Alpha 取样，但在首次构图完成前不显示旧位置。
+  $('canvas').style.opacity='0';
   $('detail-title').textContent=m.name+' · '+m.skin;
   $('detail-subtitle').textContent=String(m.id)+(m.full_scene?' · 完整场景可用':' · 动态资源');
   $('viewer-tools').open=false;
@@ -716,22 +737,43 @@ async function selectModel(m, viewMode){
     if(m.type==='scene-live2d'){
       try{model.motion('b_idle',0,FORCE);}catch(error){console.warn('Live2D 默认动作不可用:',error);}
     }
-    fitSkin(model,m);
     setupControls(model);
-    await stabilizeFraming(model,m,token);
+    await finishCubismFraming(model,token);
     if(token!==requestId)return;
-    hideMessage();
     window.GalleryViewerBridge?.refresh();
   }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
+async function finishCubismFraming(model,token,loadingText){
+  if(!model||active!==model||token!==requestId)return;
+  if(loadingText)message(loadingText);
+  // opacity=0 不影响 canvas WebGL 绘制与 drawImage 取样，
+  // 只防止首次未校准的头部裁切和数次自动位移被用户看见。
+  $('canvas').style.opacity='0';
+  userAdjustedFraming=false;
+  fitSkin(model);
+  const expectedSequence=framingSequence+1;
+  await stabilizeFraming(model,selected,token);
+  // 新旧 resize / 重新定位可能并发运行。只有最后一轮校准能显露人物，
+  // 较早取消的请求不能提前把仍在移动的模型显示出来。
+  if(token!==requestId||active!==model||
+     expectedSequence!==framingSequence)return;
+  $('canvas').style.opacity='1';
+  hideMessage();
+}
+
 function initInteraction(){
   $('live2d-fit').onclick=()=>{
     if(!active)return;
-    fitSkin(active,selected);
-    stabilizeFraming(active,selected,requestId);
+    void finishCubismFraming(active,requestId,'正在重新定位人物…');
   };
   const area=$('stage-area');let drag=false,px=0,py=0;
-  area.addEventListener('pointerdown',e=>{if(!active)return;drag=true;px=e.clientX;py=e.clientY;area.setPointerCapture(e.pointerId);});
+  area.addEventListener('pointerdown',e=>{
+    if(!active||$('canvas').style.opacity==='0')return;
+    userAdjustedFraming=true;
+    ++framingSequence;
+    drag=true;px=e.clientX;py=e.clientY;
+    area.setPointerCapture(e.pointerId);
+  });
   area.addEventListener('pointerup',()=>drag=false);
   area.addEventListener('pointercancel',()=>drag=false);
   area.addEventListener('pointermove',e=>{
@@ -740,11 +782,28 @@ function initInteraction(){
     const rect=area.getBoundingClientRect();
     try{active.focus(e.clientX-rect.left,e.clientY-rect.top)}catch(error){/* 不是每个模型都带视线参数 */}
   });
-  area.addEventListener('wheel',e=>{if(!active)return;e.preventDefault();const factor=e.deltaY<0?1.07:.93;active.scale.set(Math.max(.01,Math.min(50,active.scale.x*factor)));},{passive:false});
+  area.addEventListener('wheel',e=>{
+    if(!active||$('canvas').style.opacity==='0')return;
+    e.preventDefault();
+    userAdjustedFraming=true;
+    ++framingSequence;
+    const factor=e.deltaY<0?1.07:.93;
+    active.scale.set(Math.max(.01,Math.min(50,active.scale.x*factor)));
+  },{passive:false});
   window.addEventListener('resize',()=>{
     if(!active||$('stage-area').hidden)return;
-    fitSkin(active,selected);
-    stabilizeFraming(active,selected,requestId);
+    const dimensions=area.clientWidth+'x'+area.clientHeight;
+    if(dimensions===lastFittedViewport)return;
+    // 只在舞台尺寸真正变化且稳定后重新适配一次。
+    // 多次 resize 只重置一次，不能每个事件都缩小/移动人物。
+    if(resizeFitTimer!==null)clearTimeout(resizeFitTimer);
+    resizeFitTimer=setTimeout(()=>{
+      resizeFitTimer=null;
+      if(!active||area.hidden)return;
+      const next=area.clientWidth+'x'+area.clientHeight;
+      if(next===lastFittedViewport)return;
+      void finishCubismFraming(active,requestId,'正在适配新的舞台尺寸…');
+    },180);
   });
 }
 async function start(){
