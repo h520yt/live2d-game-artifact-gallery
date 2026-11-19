@@ -120,6 +120,34 @@
   .brown .tag{color:#e8c58b;border-color:rgba(232,197,139,.48);background:rgba(232,197,139,.08)}
   .brown .arrow{color:#e8c58b}
 
+
+  /* 天命之子：冷绿宝石与淡金线条，遵循现有首页视觉系统 */
+  .destiny{--card-accent:#8be0cb}
+  .destiny .bg{background:radial-gradient(115% 95% at 70% 5%,#274d53 0%,#18353d 50%,#0d1b25 100%)}
+  .destiny .art{background:
+    repeating-linear-gradient(120deg,rgba(154,225,208,.10) 0 2px,transparent 2px 44px),
+    radial-gradient(65% 70% at 20% 20%,rgba(229,196,125,.18),transparent 70%),
+    repeating-linear-gradient(0deg,rgba(139,224,203,.04) 0 1px,transparent 1px 30px)}
+  .destiny .tag{color:#a6eddc;border-color:rgba(139,224,203,.48);background:rgba(139,224,203,.09)}
+  .destiny .arrow{color:#a6eddc}
+
+  /* 后续新插件使用中性蓝绿主题；无需为每个新游戏单独写一份 CSS */
+  .plugin{--card-accent:#84b9d8}
+  .plugin .bg{background:radial-gradient(120% 95% at 70% 12%,#2e495b,#172a37 54%,#0d1923)}
+  .plugin .art{background:
+    repeating-linear-gradient(118deg,rgba(151,194,222,.10) 0 2px,transparent 2px 46px),
+    radial-gradient(60% 80% at 20% 20%,rgba(108,188,210,.18),transparent 70%)}
+  .plugin .tag{color:#a4cce7;border-color:rgba(132,185,216,.48);background:rgba(132,185,216,.08)}
+  .plugin .arrow{color:#a4cce7}
+
+  /* 双列布局下，奇数张卡片居中收尾；移动端继续单列铺满。 */
+  @media (min-width:850px){
+    .games > .game-card:last-child:nth-child(odd){
+      grid-column:1 / -1;
+      width:calc((100% - 2rem) / 2);
+      justify-self:center;
+    }
+  }
 </style>
 </head>
 <body>
@@ -173,9 +201,65 @@
         <div class="tags"><span class="tag">Spine 4.1</span><span class="tag">54 套精选 · 22 套独立互动</span><span class="tag">第三批20套 · Aquila双互动场景</span></div>
       </div>
     </a>
+    <a class="game-card destiny" href="games/destiny_child/viewer/index.html">
+      <div class="bg"></div><div class="art"></div><span class="arrow">→</span>
+      <div class="info">
+        <div class="title">天命之子</div>
+        <div class="sub">DESTINY CHILD</div>
+        <div class="tags">
+          <span class="tag">Live2D · 首批20套</span>
+          <span class="tag">Cubism 2 · 本地按需安装</span>
+        </div>
+      </div>
+    </a>
   </div>
 </main>
 
 <footer>仅供个人学习研究 · 资源版权归各游戏方所有</footer>
+<script>
+  /* 首页静态保留已接入游戏；未来新增插件由 gallery/plugins.json 自动补卡。 */
+  (() => {
+    const container = document.querySelector(".games");
+    const knownGames = new Set(["azur_lane","nikke","reverse1999","brown_dust2","destiny_child"]);
+    if (!container) return;
+
+    function element(tag,className,text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function addPlugin(entry) {
+      if (!entry || typeof entry.id !== "string" || typeof entry.title !== "string") return;
+      const id = entry.id;
+      const title = entry.title.trim();
+      if (!/^[a-z][a-z0-9_]{1,39}$/.test(id) || !title || title.length > 120 || knownGames.has(id)) return;
+      knownGames.add(id);
+
+      const card = element("a","game-card plugin");
+      card.href = "games/" + id + "/viewer/index.html";
+      card.append(element("div","bg"),element("div","art"),element("span","arrow","→"));
+      const info = element("div","info");
+      info.append(element("div","title",title),element("div","sub",id.toUpperCase()));
+      const tags = element("div","tags");
+      tags.append(element("span","tag","资源插件 · 本地按需安装"));
+      info.append(tags);
+      card.append(info);
+      container.append(card);
+    }
+
+    fetch("gallery/plugins.json",{cache:"no-store"})
+      .then(response => {
+        if (!response.ok) throw new Error("HTTP " + response.status);
+        return response.json();
+      })
+      .then(registry => {
+        if (registry?.schema_version !== 1 || !Array.isArray(registry.plugins)) return;
+        registry.plugins.forEach(addPlugin);
+      })
+      .catch(error => console.warn("插件入口清单暂不可用，已保留静态游戏入口：",error));
+  })();
+</script>
 </body>
 </html>

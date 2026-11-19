@@ -34,9 +34,9 @@ class CatalogReleaseTests(unittest.TestCase):
     def test_diagnostic_passes_for_checked_in_project_layout(self):
         report = diagnose_gallery(ROOT, self.catalog)
         self.assertEqual(report["error_count"], 0, report["errors"][:12])
-        self.assertEqual(report["games"], 4)
+        self.assertEqual(report["games"], 5)
         self.assertEqual(set(report["per_game"]), {
-            "azur_lane", "nikke", "reverse1999", "brown_dust2"
+            "azur_lane", "nikke", "reverse1999", "brown_dust2", "destiny_child"
         })
         self.assertGreater(report["resources"], 0)
 
@@ -87,6 +87,9 @@ class StaticHttpSmokeTests(unittest.TestCase):
             "/nikke/viewer/index.html",
             "/reverse1999/viewer/index.html",
             "/brown_dust2/viewer/index.html",
+            "/games/destiny_child/viewer/index.html",
+            "/games/destiny_child/viewer/manifest.json",
+            "/games/destiny_child/viewer/viewer.js",
         ]
         for path in paths:
             with self.subTest(path=path):

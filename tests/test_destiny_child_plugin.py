@@ -7,6 +7,13 @@ class DestinyChildTests(unittest.TestCase):
     def test_registered(self):
         plugins=json.loads((ROOT/"gallery/plugins.json").read_text(encoding="utf-8"))["plugins"]
         self.assertEqual(sum(p["id"]=="destiny_child" for p in plugins),1)
+    def test_homepage_has_destination_and_auto_registration(self):
+        home = (ROOT/"index.html").read_text(encoding="utf-8")
+        self.assertIn('href="games/destiny_child/viewer/index.html"',home)
+        self.assertIn('DESTINY CHILD',home)
+        self.assertIn('gallery/plugins.json',home)
+        self.assertIn('knownGames.has(id)',home)
+
     def test_manifest(self):
         manifest=json.loads((ROOT/"games/destiny_child/viewer/manifest.json").read_text(encoding="utf-8"))
         rows=manifest["assets"]
