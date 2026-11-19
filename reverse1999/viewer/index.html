@@ -523,7 +523,7 @@ async function selectModel(m, viewMode){
   $('artwork-image').removeAttribute('src');
   $('full-scene-stage').hidden=true;
   $('full-scene-image').removeAttribute('src');
-  const hasFullScene=m.type==='scene-live2d'&&!!m.full_scene;
+  const hasFullScene=!!m.full_scene;
   const showFullScene=hasFullScene&&viewMode!=='model';
   $('full-scene-controls').hidden=!hasFullScene;
   $('scene-view-image').classList.toggle('active',showFullScene);
