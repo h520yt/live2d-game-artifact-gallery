@@ -228,6 +228,7 @@ def _reverse1999(root: Path, manifest: Path, data: dict) -> list[dict]:
         model_paths = _paths(root, manifest, [model.get("path")])
         artwork = _paths(root, manifest, [model.get("artwork")])
         background = _paths(root, manifest, [model.get("background")])
+        full_scene = _paths(root, manifest, [model.get("full_scene")])
         raw_type = str(model.get("type") or "").lower()
         renderer = "spine" if "spine" in raw_type else "cubism" if (
             "cubism" in raw_type or "live2d" in raw_type
@@ -235,13 +236,19 @@ def _reverse1999(root: Path, manifest: Path, data: dict) -> list[dict]:
         result.append(_record(
             "reverse1999", source_id,
             str(model.get("skin") or model.get("name") or raw_id), renderer,
-            {"model": model_paths, "artwork": artwork, "background": background},
+            {"model": model_paths, "artwork": artwork, "background": background,
+             "full_scene": full_scene},
             required=model_paths or artwork[:1],
-            optional=artwork + background,
-            preview=(artwork or background or [None])[0],
-            tags=[str(model["tier"])] if model.get("tier") else [],
+            optional=full_scene + artwork + background,
+            # 背景层并非人物+背景完整图片，不能当作完成的角色封面。
+            preview=(full_scene or artwork or
+                     ([] if raw_type in ("scene-live2d", "scene", "showcase") else background)
+                     or [None])[0],
+            tags=([str(model["tier"])] if model.get("tier") else []) +
+                 (["完整场景图"] if full_scene else []),
             metadata={"character": model.get("name"), "skin_id": model.get("id"),
-                      "channel": model.get("channel"), "tier": model.get("tier")},
+                      "channel": model.get("channel"), "tier": model.get("tier"),
+                      "complete_scene": bool(full_scene)},
         ))
     return result
 
