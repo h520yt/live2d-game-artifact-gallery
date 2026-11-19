@@ -177,6 +177,26 @@ def download_model(folder):
     print(f"本次下载/更新 {new} 个文件，目录：{target}")
 
 
+def complete_scene_path(skin_id):
+    """任何衣着 ID 都可接完整场景 PNG，不绑定价格档位或 UNIQUE 分类。"""
+    sid = str(skin_id)
+    if not re.fullmatch(r"\d{6}", sid):
+        return None
+    picture = ROOT / "data" / "full_scenes" / f"{sid}.png"
+    try:
+        if picture.stat().st_size < 24000:
+            return None
+        with picture.open("rb") as file:
+            header = file.read(24)
+        if (len(header) != 24 or header[:8] != b"\x89PNG\r\n\x1a\n"
+                or int.from_bytes(header[16:20], "big") < 640
+                or int.from_bytes(header[20:24], "big") < 640):
+            return None
+    except OSError:
+        return None
+    return f"../data/full_scenes/{sid}.png"
+
+
 def generate_manifest(mapping):
     meta = mapped_entries(mapping)
     by_folder = {}
@@ -221,6 +241,12 @@ def generate_manifest(mapping):
               (m.get("type") == "scene-live2d" and str(m.get("id")) in unique_ids)]
     models.extend(unique_models)
     models.extend(jukebox.collect_models(mapping))
+    # 完整场景是图片资产而非新一套皮肤：只给现有衣着附加展示方式。
+    # 68 元档位、最新角色以及以后加入的衣着统一沿用此关联规则。
+    for entry in models:
+        image = complete_scene_path(entry.get("id"))
+        if image:
+            entry["full_scene"] = image
     models.sort(key=lambda x: (str(x["name"]), str(x["skin"]), str(x["folder"]), str(x.get("type", ""))))
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
     output = {"source": SOURCE, "models": models, "unique": unique.catalog(), "jukebox": jukebox.catalog()}
