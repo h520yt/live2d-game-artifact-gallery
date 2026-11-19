@@ -15,7 +15,8 @@ const {PNG}=require('pngjs');
     const errors=[];
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://127.0.0.1:8000/reverse1999/viewer/',{waitUntil:'domcontentloaded',timeout:20000});
-    await page.locator('button.item').filter({hasText:'Live2D 动态衣着+专属背景'}).click({timeout:15000});
+    // 全屏卡片画廊按 ID 去重，不再有旧版左侧 button.item。
+    await page.locator('#models .sg-card[data-key="313403"]').click({timeout:15000});
     await page.waitForFunction(()=>{
       const bg=document.querySelector('#live2d-background');
       return bg && !bg.hidden && bg.complete && bg.naturalWidth>100 &&
@@ -50,6 +51,7 @@ const {PNG}=require('pngjs');
     }
     assert.ok(changed>800,'Cubism model not visibly painted over the original background: '+changed);
     await page.evaluate(()=>{active.visible=true;});
+    await page.locator('#viewer-tools summary').click();
     await page.getByRole('button',{name:'b_ruchang',exact:true}).click();
     await page.waitForTimeout(400);
     assert.equal((await page.locator('#status').isHidden()),true);
