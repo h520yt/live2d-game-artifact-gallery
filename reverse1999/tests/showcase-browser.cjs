@@ -17,7 +17,8 @@ async function main(){
     const errors=[];
     page.on('pageerror',err=>errors.push(err.message));
     await page.goto('http://127.0.0.1:8000/reverse1999/viewer/',{waitUntil:'domcontentloaded',timeout:20000});
-    await page.getByRole('button',{name:/露西 · 生如行棋/}).click({timeout:15000});
+    // 新版画廊按钮 aria-label 采用角色名 + 衣着名，不再依赖旧侧栏按钮文案。
+    await page.locator('#models .sg-card[data-key="308603"]').click({timeout:15000});
     await page.waitForFunction(()=>{
       const background=document.querySelector('#showcase-background');
       const canvas=document.querySelector('#spine-container canvas');
@@ -86,6 +87,7 @@ async function main(){
     }
     assert.ok(modelPixels>1500,'商城人物被背景遮挡：前景与纯背景差异像素太少: '+modelPixels);
     result.modelVisiblePixels=modelPixels;
+    await page.locator('#viewer-tools summary').click();
     await page.locator('#scene-bg-toggle').click();
     await page.screenshot({path:path.join(dir,'308603-foreground-only.png'),fullPage:true});
     await page.locator('#scene-bg-toggle').click();
