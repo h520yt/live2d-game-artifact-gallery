@@ -34,7 +34,10 @@ UNIQUE_SKINS = (
     ("313403", "贝丽尔", "释命运以弦音", "v4a0_313403_ble", 9438795, "4.0"),
 )
 SKINS = {row[0]: row for row in UNIQUE_SKINS}
-BASE = f"https://raw.githubusercontent.com/{spine.SOURCE}/master"
+# 已在用户 fork 的全部 12 个 Cubism 目录及专属背景清单中核实存在。
+# 仅 UNIQUE 这批使用个人 fork，其他已接入下载器继续保持原有来源。
+SOURCE = "h520yt/Reverse-1999-CN-Asset"
+BASE = f"https://raw.githubusercontent.com/{SOURCE}/master"
 
 
 def require_skin(skin_id):
