@@ -104,7 +104,9 @@
       document.body.classList.remove("sg-detail-open");
       if (typeof config.onClose === "function") config.onClose();
       // 背景目录从未移除 DOM；返回时不会重新渲染卡片或播放滚动动画。
-      window.scrollTo({top:returnScroll,behavior:"instant"});
+      if (Math.abs(window.scrollY - returnScroll) > 1) {
+        window.scrollTo({top:returnScroll,behavior:"instant"});
+      }
       if (lastButton?.isConnected) lastButton.focus({preventScroll:true});
     }
     function navigate(offset) {
