@@ -3,10 +3,20 @@ on:
   push:
     paths:
       - "reverse1999/**"
+      - "shared/skin_gallery.css"
+      - "shared/skin_gallery.js"
+      - "gallery_core/catalog.py"
+      - "scripts/new_game.py"
+      - "tests/test_shared_skin_gallery.cjs"
       - ".github/workflows/reverse1999-tests.yml"
   pull_request:
     paths:
       - "reverse1999/**"
+      - "shared/skin_gallery.css"
+      - "shared/skin_gallery.js"
+      - "gallery_core/catalog.py"
+      - "scripts/new_game.py"
+      - "tests/test_shared_skin_gallery.cjs"
       - ".github/workflows/reverse1999-tests.yml"
 jobs:
   python-tests:
@@ -19,7 +29,11 @@ jobs:
       - name: Run resource sync unit tests
         run: python -m unittest discover -s reverse1999/tests -v
       - name: Check Python syntax
-        run: python -m compileall -q reverse1999/scripts reverse1999/tests
+        run: python -m compileall -q reverse1999/scripts reverse1999/tests gallery_core scripts/new_game.py
+      - name: Shared gallery and plugin scaffold regression
+        run: |
+          python -m unittest discover -s tests -p 'test_gallery_phase3.py' -v
+          node --test tests/test_shared_skin_gallery.cjs
 
   skin-scene-asset-smoke:
     if: github.ref == 'refs/heads/feat/reverse1999-313403-live2d-stage'
