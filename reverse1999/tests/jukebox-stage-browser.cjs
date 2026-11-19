@@ -62,6 +62,12 @@ const shapes=[
         assert.ok(b.bottom<h*.97,"character feet clipped at bottom: "+JSON.stringify(b));
         assert.ok(b.left>w*.015&&b.right<w*.985,
           "character outside horizontal bounds: "+JSON.stringify(b));
+        assert.ok((b.bottom-b.top)>h*.57,
+          "character is still too small in the full-screen viewer: "+JSON.stringify(b));
+        assert.ok((b.bottom-b.top)<h*.85,
+          "character exceeds safe scene framing: "+JSON.stringify(b));
+        assert.equal(await page.locator("#gallery-bridge-toolbar").isVisible(),false,
+          "duplicated bridge controls must not overlay the stage");
         assert.deepEqual(errors,[],"browser errors: "+errors.join(","));
       }finally{await page.close();}
     }
