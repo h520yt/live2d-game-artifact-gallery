@@ -110,3 +110,19 @@ test("normal back does not trigger a scroll or rebuild cards",()=>{
   assert.equal(x.scrollCalls.length,0);
   assert.equal(x.grid.children[0],card);
 });
+
+test("previous-next skips unavailable skins without closing current viewer",()=>{
+  const x=setup();
+  x.gallery.setItems([
+    {key:"1",title:"已安装甲",ready:true},
+    {key:"2",title:"未安装乙",ready:false},
+    {key:"3",title:"已安装丙",ready:true}
+  ]);
+  assert.equal(x.gallery.open("1"),true);
+  assert.equal(x.gallery.navigate(1),true);
+  assert.equal(x.gallery.selectedKey,"3");
+  assert.equal(x.detail.hidden,false);
+  assert.equal(x.gallery.navigate(1),true);
+  assert.equal(x.gallery.selectedKey,"1");
+  assert.equal(x.detail.hidden,false);
+});
