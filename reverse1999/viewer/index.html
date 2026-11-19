@@ -420,7 +420,9 @@ function visiblePixels(){
         right=Math.max(right,x);bottom=Math.max(bottom,y);count++;
       }
     }
-    if(count<100||right<=left||bottom<=top)return null;
+    const samples=Math.ceil(width/step)*Math.ceil(height/step);
+    // 有些浏览器提取插件会把透明画布当成不透明底色，禁止全画面误判为人物。
+    if(count<100||count>samples*.55||right<=left||bottom<=top)return null;
     const sx=area.clientWidth/width,sy=area.clientHeight/height;
     return {left:left*sx,top:top*sy,right:(right+step)*sx,
       bottom:(bottom+step)*sy};
