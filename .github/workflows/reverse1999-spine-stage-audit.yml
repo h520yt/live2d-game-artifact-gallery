@@ -1,0 +1,54 @@
+name: Reverse 1999 all Jukebox Spine viewer regression
+on:
+  push:
+    branches: [fix/reverse1999-stage-regression]
+    paths:
+      - ".github/workflows/reverse1999-spine-stage-audit.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  spine-viewer:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install Jukebox Spine assets with real skeletons
+        run: |
+          for id in 301703 302003 301103 302403 301603; do
+            python reverse1999/scripts/sync.py jukebox "$id" || true
+          done
+          python reverse1999/scripts/sync.py manifest
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("reverse1999/viewer/manifest.json")
+          m=json.loads(p.read_text(encoding="utf-8"))["models"]
+          for id in (301703,302003,301103,302403,301603):
+            row=next((x for x in m if x.get("id")==id and x["type"]=="spine"),None)
+            assert row,id
+            for item in row["poses"].values():
+              assert (p.parent/row["dir"]/item["skel"]).is_file(),row
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium and screenshot pixel decoder
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1 pngjs@7.0.0
+          npx playwright install --with-deps chromium
+      - name: Check all five original Spine skins in the current full-screen viewer
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/spine-http.log 2>&1 &
+          node reverse1999/tests/spine-stage-audit.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reverse1999-all-spine-screenshots
+          path: reverse1999/test-output/spine-audit/
+          if-no-files-found: ignore
