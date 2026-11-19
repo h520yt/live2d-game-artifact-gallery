@@ -26,7 +26,8 @@
       "background": "../data/unique/306604/background.png",
       "version": "2.2",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 37
+      "motion_groups": 37,
+      "full_scene": "../data/full_scenes/306604.png"
     },
     {
       "id": 303803,
@@ -193,7 +194,8 @@
       "background": "../data/unique/310003/background.png",
       "version": "3.2",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 38
+      "motion_groups": 38,
+      "full_scene": "../data/full_scenes/310003.png"
     },
     {
       "id": 301603,
@@ -273,7 +275,8 @@
       "background": "../data/unique/302504/background.png",
       "version": "1.9",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 31
+      "motion_groups": 31,
+      "full_scene": "../data/full_scenes/302504.png"
     },
     {
       "type": "scene-live2d",
@@ -288,7 +291,8 @@
       "background": "../data/unique/308303/background.png",
       "version": "2.5",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 36
+      "motion_groups": 36,
+      "full_scene": "../data/full_scenes/308303.png"
     },
     {
       "id": 300731,
@@ -344,7 +348,8 @@
       "background": "../data/unique/311003/background.png",
       "version": "3.4",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 40
+      "motion_groups": 40,
+      "full_scene": "../data/full_scenes/311003.png"
     },
     {
       "id": 306204,
@@ -448,7 +453,8 @@
       "background": "../data/unique/305305/background.png",
       "version": "3.4",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 30
+      "motion_groups": 30,
+      "full_scene": "../data/full_scenes/305305.png"
     },
     {
       "type": "scene-live2d",
@@ -463,7 +469,8 @@
       "background": "../data/unique/315503/background.png",
       "version": "4.0",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 36
+      "motion_groups": 36,
+      "full_scene": "../data/full_scenes/315503.png"
     },
     {
       "id": 301103,
@@ -543,7 +550,8 @@
       "background": "../data/unique/314403/background.png",
       "version": "3.7",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 33
+      "motion_groups": 33,
+      "full_scene": "../data/full_scenes/314403.png"
     },
     {
       "id": 310404,
@@ -570,7 +578,8 @@
       "background": "../data/unique/310504/background.png",
       "version": "S02",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 36
+      "motion_groups": 36,
+      "full_scene": "../data/full_scenes/310504.png"
     },
     {
       "id": 312104,
@@ -621,7 +630,8 @@
       "background": "../data/unique/312003/background.png",
       "version": "3.7",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 31
+      "motion_groups": 31,
+      "full_scene": "../data/full_scenes/312003.png"
     },
     {
       "type": "scene",
@@ -638,7 +648,8 @@
         "atlas": "313403_ble_skinstorecardface.atlas",
         "version": "4.2.36",
         "label": "商城素材组合预览（非游戏内完整复刻）"
-      }
+      },
+      "full_scene": "../data/full_scenes/313403.png"
     },
     {
       "type": "scene-live2d",
@@ -653,7 +664,8 @@
       "background": "../data/unique/313403/background.png",
       "version": "4.0",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 34
+      "motion_groups": 34,
+      "full_scene": "../data/full_scenes/313403.png"
     },
     {
       "id": 304804,
@@ -692,7 +704,8 @@
       "background": "../data/unique/308603/background.png",
       "version": "2.8",
       "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
-      "motion_groups": 56
+      "motion_groups": 56,
+      "full_scene": "../data/full_scenes/308603.png"
     }
   ],
   "unique": [
