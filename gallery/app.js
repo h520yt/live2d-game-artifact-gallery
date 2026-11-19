@@ -84,6 +84,13 @@
     return /^illust_inven_char\d{6}_\d+\.png$/.test(filename) ? candidate : null;
   }
 
+  function safeDestinyThumbnailUrl(asset) {
+    // 固定资源仓库与提交 SHA，拒绝从 manifest 注入第三方封面 URL。
+    if (asset.game !== "destiny_child" || !/^c[0-9]{3}_[0-9]{2}$/.test(asset.source_id)) return null;
+    const expected = "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/" + asset.source_id + "/icon.png";
+    return asset.metadata?.thumbnail_url === expected ? expected : null;
+  }
+
   function makeElement(tag, className, text) {
     const el = document.createElement(tag);
     if (className) el.className = className;
@@ -171,7 +178,7 @@
     const card = makeElement("article", "card");
     const media = makeElement("div", "card-media");
     const localPreview = safePreviewPath(asset.preview);
-    const remotePreview = safeBd2ThumbnailUrl(asset);
+    const remotePreview = safeBd2ThumbnailUrl(asset) || safeDestinyThumbnailUrl(asset);
     const sources = [localPreview, remotePreview].filter(Boolean);
     const fallback = makeElement(
       "div", "media-fallback",

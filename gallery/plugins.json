@@ -1,4 +1,9 @@
 {
   "schema_version": 1,
-  "plugins": []
+  "plugins": [
+    {
+      "id": "destiny_child",
+      "title": "天命之子"
+    }
+  ]
 }

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>天命之子 · Live2D 展示柜</title>
+<link rel="stylesheet" href="../../../shared/skin_gallery.css">
+<style>
+#dc-stage{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(ellipse at center,#26334a,#0a111c 80%)}
+#dc-canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+#dc-status{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);padding:1rem 1.3rem;max-width:85%;
+ border-radius:9px;background:#101923dc;color:#e8e3d6;text-align:center;line-height:1.6;white-space:pre-wrap;pointer-events:none}
+#dc-status[hidden],#detail-view[hidden]{display:none!important}
+#dc-tools{position:absolute;bottom:1rem;right:1rem;z-index:4;max-width:min(340px,85vw);max-height:65%;overflow:auto}
+#dc-tools .sg-floating-body{display:block}
+#actions button,#expressions button,#reset-fit{margin:.15rem;padding:.4rem .6rem;border:1px solid #526476;
+ border-radius:6px;background:#1f2d40;color:#fff;cursor:pointer}
+#actions button:hover,#expressions button:hover{border-color:#d7b978}
+</style></head><body class="sg-host">
+<header class="sg-header"><a href="../../../gallery/">← 总目录</a>
+<div><strong>天命之子</strong><small>Destiny Child · Cubism 2 Live2D</small></div></header>
+<section id="catalog-view" class="sg-catalog"><div class="sg-toolbar"><h2>皮肤画廊</h2>
+<span id="count" class="sg-count">读取中…</span>
+<div class="sg-tools"><input id="search" type="search" placeholder="搜索角色 / 衣着 / 编号" aria-label="搜索皮肤">
+<select id="sort" aria-label="排序"><option value="recent">默认顺序</option><option value="installed">已安装优先</option>
+<option value="name">名称排序</option></select></div></div>
+<div id="items" class="sg-grid"></div>
+<p id="catalog-status" class="sg-list-note">首批20套；仅本地完整素材可以播放。缩略图是对应角色图标，不冒充人物＋背景完整场景。</p>
+<details class="sg-list-note"><summary>本地安装</summary><code>python games/destiny_child/scripts/sync.py --all</code></details>
+</section>
+<main id="detail-view" class="sg-detail-overlay" hidden>
+<div class="sg-detail-head"><button id="back-to-catalog" type="button">← 返回列表</button>
+<div class="sg-detail-identity"><strong id="selected">皮肤</strong><small id="detail">动态模型</small></div>
+<div class="sg-detail-nav"><button id="prev" type="button">〈 上一个</button><button id="next" type="button">下一个 〉</button></div></div>
+<div class="sg-workspace"><div id="dc-stage"><canvas id="dc-canvas" aria-label="Live2D 舞台"></canvas>
+<div id="dc-status">加载中…</div></div>
+<details id="dc-tools" class="sg-floating-tools"><summary>动作 / 表情 ▾</summary>
+<div class="sg-floating-body"><p>点击触摸、右键攻击、拖动平移、滚轮缩放。</p>
+<div id="actions"></div><div id="expressions"></div><button id="reset-fit" type="button">恢复居中</button></div>
+</details></div></main>
+<script src="../../../shared/vendor/pixi.min.js"></script>
+<script src="../../../shared/vendor/live2d.min.js"></script>
+<script src="../../../shared/gallery_bridge.js"></script>
+<script src="../../../shared/skin_gallery.js"></script>
+<script src="viewer.js"></script>
+</body></html>

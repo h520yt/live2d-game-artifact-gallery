@@ -1,0 +1,545 @@
+{
+  "schema_version": 1,
+  "assets": [
+    {
+      "id": "c001_14",
+      "title": "Mona · Teacher",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c001_14/model.json"
+        ]
+      },
+      "preview": "../data/c001_14/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c001_14/model.json",
+        "../data/c001_14/model.moc",
+        "../data/c001_14/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c001_14/icon.png"
+      ],
+      "metadata": {
+        "character": "Mona",
+        "skin": "Teacher",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c001_14/icon.png"
+      }
+    },
+    {
+      "id": "c001_16",
+      "title": "Mona · Swimsuit",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c001_16/model.json"
+        ]
+      },
+      "preview": "../data/c001_16/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c001_16/model.json",
+        "../data/c001_16/model.moc",
+        "../data/c001_16/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c001_16/icon.png"
+      ],
+      "metadata": {
+        "character": "Mona",
+        "skin": "Swimsuit",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c001_16/icon.png"
+      }
+    },
+    {
+      "id": "c002_01",
+      "title": "Lisa · Original",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c002_01/model.json"
+        ]
+      },
+      "preview": "../data/c002_01/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c002_01/model.json",
+        "../data/c002_01/model.moc",
+        "../data/c002_01/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c002_01/icon.png"
+      ],
+      "metadata": {
+        "character": "Lisa",
+        "skin": "Original",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c002_01/icon.png"
+      }
+    },
+    {
+      "id": "c049_10",
+      "title": "Maat · Abyssal",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c049_10/model.json"
+        ]
+      },
+      "preview": "../data/c049_10/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c049_10/model.json",
+        "../data/c049_10/model.moc",
+        "../data/c049_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c049_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Maat",
+        "skin": "Abyssal",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c049_10/icon.png"
+      }
+    },
+    {
+      "id": "c124_10",
+      "title": "Eve · Cyan Rose",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c124_10/model.json"
+        ]
+      },
+      "preview": "../data/c124_10/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c124_10/model.json",
+        "../data/c124_10/model.moc",
+        "../data/c124_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c124_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Eve",
+        "skin": "Cyan Rose",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c124_10/icon.png"
+      }
+    },
+    {
+      "id": "c167_11",
+      "title": "Chang'e · Beautiful",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c167_11/model.json"
+        ]
+      },
+      "preview": "../data/c167_11/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c167_11/model.json",
+        "../data/c167_11/model.moc",
+        "../data/c167_11/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c167_11/icon.png"
+      ],
+      "metadata": {
+        "character": "Chang'e",
+        "skin": "Beautiful",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c167_11/icon.png"
+      }
+    },
+    {
+      "id": "c294_02",
+      "title": "Bathory · Bloody",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c294_02/model.json"
+        ]
+      },
+      "preview": "../data/c294_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c294_02/model.json",
+        "../data/c294_02/model.moc",
+        "../data/c294_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c294_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Bathory",
+        "skin": "Bloody",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c294_02/icon.png"
+      }
+    },
+    {
+      "id": "c394_02",
+      "title": "Bathory · Supreme Courtesan",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c394_02/model.json"
+        ]
+      },
+      "preview": "../data/c394_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c394_02/model.json",
+        "../data/c394_02/model.moc",
+        "../data/c394_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c394_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Bathory",
+        "skin": "Supreme Courtesan",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c394_02/icon.png"
+      }
+    },
+    {
+      "id": "c296_02",
+      "title": "Hildr · Sniper",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c296_02/model.json"
+        ]
+      },
+      "preview": "../data/c296_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c296_02/model.json",
+        "../data/c296_02/model.moc",
+        "../data/c296_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c296_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Hildr",
+        "skin": "Sniper",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c296_02/icon.png"
+      }
+    },
+    {
+      "id": "c374_02",
+      "title": "Hildr · Wedding Gown",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c374_02/model.json"
+        ]
+      },
+      "preview": "../data/c374_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c374_02/model.json",
+        "../data/c374_02/model.moc",
+        "../data/c374_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c374_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Hildr",
+        "skin": "Wedding Gown",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c374_02/icon.png"
+      }
+    },
+    {
+      "id": "c344_10",
+      "title": "Isolde · Summer Spike",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c344_10/model.json"
+        ]
+      },
+      "preview": "../data/c344_10/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c344_10/model.json",
+        "../data/c344_10/model.moc",
+        "../data/c344_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c344_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Isolde",
+        "skin": "Summer Spike",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c344_10/icon.png"
+      }
+    },
+    {
+      "id": "c417_02",
+      "title": "Tamamo · Bewitching",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c417_02/model.json"
+        ]
+      },
+      "preview": "../data/c417_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c417_02/model.json",
+        "../data/c417_02/model.moc",
+        "../data/c417_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c417_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Tamamo",
+        "skin": "Bewitching",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c417_02/icon.png"
+      }
+    },
+    {
+      "id": "c430_02",
+      "title": "Giltine · Ice Field Hunter",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c430_02/model.json"
+        ]
+      },
+      "preview": "../data/c430_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c430_02/model.json",
+        "../data/c430_02/model.moc",
+        "../data/c430_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c430_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Giltine",
+        "skin": "Ice Field Hunter",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c430_02/icon.png"
+      }
+    },
+    {
+      "id": "c287_02",
+      "title": "Salome · Leaping",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c287_02/model.json"
+        ]
+      },
+      "preview": "../data/c287_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c287_02/model.json",
+        "../data/c287_02/model.moc",
+        "../data/c287_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c287_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Salome",
+        "skin": "Leaping",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c287_02/icon.png"
+      }
+    },
+    {
+      "id": "c311_02",
+      "title": "Khepri · Vicious",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c311_02/model.json"
+        ]
+      },
+      "preview": "../data/c311_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c311_02/model.json",
+        "../data/c311_02/model.moc",
+        "../data/c311_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c311_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Khepri",
+        "skin": "Vicious",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c311_02/icon.png"
+      }
+    },
+    {
+      "id": "c370_02",
+      "title": "Mona · Diver",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c370_02/model.json"
+        ]
+      },
+      "preview": "../data/c370_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c370_02/model.json",
+        "../data/c370_02/model.moc",
+        "../data/c370_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c370_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Mona",
+        "skin": "Diver",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c370_02/icon.png"
+      }
+    },
+    {
+      "id": "c371_02",
+      "title": "Lisa · Summer Blue",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c371_02/model.json"
+        ]
+      },
+      "preview": "../data/c371_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c371_02/model.json",
+        "../data/c371_02/model.moc",
+        "../data/c371_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c371_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Lisa",
+        "skin": "Summer Blue",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c371_02/icon.png"
+      }
+    },
+    {
+      "id": "c247_02",
+      "title": "Myrina · Autocratic",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c247_02/model.json"
+        ]
+      },
+      "preview": "../data/c247_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c247_02/model.json",
+        "../data/c247_02/model.moc",
+        "../data/c247_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c247_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Myrina",
+        "skin": "Autocratic",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c247_02/icon.png"
+      }
+    },
+    {
+      "id": "c363_02",
+      "title": "Lupin · Vanguard",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c363_02/model.json"
+        ]
+      },
+      "preview": "../data/c363_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c363_02/model.json",
+        "../data/c363_02/model.moc",
+        "../data/c363_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c363_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Lupin",
+        "skin": "Vanguard",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c363_02/icon.png"
+      }
+    },
+    {
+      "id": "c440_02",
+      "title": "Mona · Lovely",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c440_02/model.json"
+        ]
+      },
+      "preview": "../data/c440_02/icon.png",
+      "tags": [
+        "Live2D"
+      ],
+      "required_files": [
+        "../data/c440_02/model.json",
+        "../data/c440_02/model.moc",
+        "../data/c440_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c440_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Mona",
+        "skin": "Lovely",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c440_02/icon.png"
+      }
+    }
+  ]
+}
