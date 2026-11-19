@@ -59,23 +59,62 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 @media(max-width:1080px){main{height:auto;grid-template-columns:240px 1fr}section.stage{height:calc(100vh - 76px);min-height:580px}.right{grid-column:1 / -1;border-top:1px solid var(--line);border-left:0!important}.right .controls{display:grid;grid-template-columns:1fr 1fr;gap:1rem}}
 @media(max-width:660px){main{display:flex;flex-direction:column}.left{max-height:230px;border-right:0!important;border-bottom:1px solid var(--line)}.stage{height:450px!important;min-height:450px!important}#stage-area{height:450px;min-height:450px}.right .controls{display:block}header{padding:.8rem}}
 </style>
+<link rel="stylesheet" href="../../shared/skin_gallery.css">
+<style>
+/* 1999 只保留引擎特有的舞台样式；目录和详情布局复用公共画廊。 */
+.sg-host #detail-view{display:flex;grid-template-columns:none;height:auto;min-height:0}
+.sg-host #detail-view[hidden]{display:none!important}
+.sg-host .sg-workspace{height:auto;min-height:0;display:block}
+.sg-host #detail-view section.stage{height:100%;min-height:0}
+.sg-host #detail-view #stage-area{height:100%;min-height:0}
+.sg-host #detail-view #spine-stage,.sg-host #detail-view #spine-container{min-height:0;height:100%}
+.sg-host .sg-floating-body .controls{display:block}
+.sg-host .sg-floating-body .controls h3{margin:.5rem 0}
+.sg-host .sg-floating-body .controls .list{margin:0 0 1rem}
+.sg-host .sg-floating-body .controls button{margin:0 2px 5px 0}
+.sg-host #full-scene-stage{inset:0}
+.sg-host #detail-view .stage-toolbar{max-width:calc(100% - 370px)}
+.sg-host #status{z-index:9;pointer-events:none}
+.sg-host .sg-catalog .note{margin-top:18px}
+@media(max-width:680px){.sg-host #detail-view .stage-toolbar{max-width:calc(100% - 20px)}}
+</style>
 </head>
-<body>
-<header><a href="../../index.html">← 返回游戏列表</a><div><strong>重返未来：1999</strong><small>Live2D / Spine · 本地资源预览器</small></div></header>
-<main>
-  <aside class="left">
-    <input id="search" type="search" placeholder="搜索角色名、皮肤、ID" aria-label="搜索模型">
-    <div class="unique-tabs">
-      <button id="filter-all" class="active" type="button">全部资源</button>
-      <button id="filter-unique" type="button">Unique 最高档</button>
-      <button id="filter-jukebox" type="button">吼吼点唱机</button>
+<body class="sg-host">
+<header class="sg-header">
+  <a href="../../index.html">← 游戏主页</a>
+  <div><strong>重返未来：1999</strong><small>完整场景 · Live2D / Spine 皮肤画廊</small></div>
+</header>
+<section id="catalog-view" class="sg-catalog">
+  <div class="sg-toolbar">
+    <h2>皮肤画廊</h2><span id="count" class="sg-count">读取资源中…</span>
+    <div class="sg-tools">
+      <input id="search" type="search" placeholder="搜索角色 / 衣着 / 编号" aria-label="搜索皮肤">
+      <select id="catalog-sort" aria-label="皮肤排序">
+        <option value="recent">最新编号优先</option>
+        <option value="installed">已安装优先</option>
+        <option value="name">名称排序</option>
+      </select>
     </div>
-    <div id="jukebox-tip" class="unique-tip" hidden>点唱机·典藏光碟历期衣着，已收录 32 套。<strong>非 UNIQUE 品质分级</strong>。27 套 Cubism、5 套 Spine；原画和模型分别下载、分别标记状态，不使用假背景。原画补齐：<code>python reverse1999/scripts/sync.py jukebox-art all</code>。完整安装：<code>python reverse1999/scripts/sync.py jukebox all</code></div>
-    <div id="unique-tip" class="unique-tip" hidden>已收录 12 套女性 Unique 衣着；灰色项目尚未下载。批量下载：<code>python reverse1999/scripts/sync.py unique all</code></div>
-    <div class="count" id="count">读取资源清单中…</div>
-    <div id="models"></div>
-    <p class="note">可在「吼吼点唱机」查看至 4.1 的 32 套典藏光碟衣着，或用 <code>python reverse1999/scripts/sync.py jukebox all</code> 批量下载。Unique 女性最高档已建目录，点击筛选查看下载状态；可执行 <code>python reverse1999/scripts/sync.py unique all</code> 批量下载。贝丽尔动态衣着：<code>python reverse1999/scripts/sync.py scene 313403</code>（完整 Live2D 动作 + 独立背景）；另有露西样板：<code>python reverse1999/scripts/sync.py showcase 308603</code>（露西·生如行棋）。其他皮肤可用 <code>list --search 角色名</code> 查询模型。</p>
-  </aside>
+  </div>
+  <div id="models" class="sg-grid"></div>
+  <p id="catalog-status" class="sg-list-note" role="status">同一衣着只展示一张卡片；没有完整场景图时仍可查看已安装的动态模型。</p>
+  <details class="sg-list-note">
+    <summary>资源安装说明</summary>
+    <p>UNIQUE 衣着：<code>python reverse1999/scripts/sync.py unique all</code>；
+    点唱机衣着：<code>python reverse1999/scripts/sync.py jukebox all</code>；
+    完整场景 PNG：<code>node reverse1999/scripts/export_full_scenes.cjs all</code>。</p>
+  </details>
+</section>
+<main id="detail-view" class="sg-detail-overlay" hidden>
+  <div class="sg-detail-head">
+    <button id="back-to-catalog" type="button">← 返回列表</button>
+    <div class="sg-detail-identity"><strong id="detail-title">皮肤展示</strong><small id="detail-subtitle">完整场景 / 动态模型</small></div>
+    <div class="sg-detail-nav">
+      <button id="prev-skin" type="button" aria-label="上一套皮肤">〈 上一个</button>
+      <button id="next-skin" type="button" aria-label="下一套皮肤">下一个 〉</button>
+    </div>
+  </div>
+  <div class="sg-workspace">
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><img id="live2d-background" alt="这套衣着对应的专属背景" hidden><canvas id="canvas"></canvas></div>
@@ -87,7 +126,9 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
     </div>
     <div class="overlay" id="status">请从左侧选择模型</div>
   </section>
-  <aside class="right"><div class="controls">
+  <details id="viewer-tools" class="sg-floating-tools">
+    <summary>动作 / 场景设置 ▾</summary>
+    <div class="sg-floating-body"><div class="controls">
     <div id="jukebox-view-controls" hidden>
       <h3>衣着展示方式</h3>
       <div class="list">
@@ -130,12 +171,14 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
       </div>
       <p class="note">自动按动态模型包围盒居中，预留头部和脚部空间；也支持拖动人物、滚轮缩放。</p>
     </div>
-    <div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></aside>
+    <div><h3>展示姿态</h3><div class="list" id="poses"><p class="empty">选择 Spine 模型后显示</p></div></div><div><h3>动作</h3><div class="list" id="motions"><p class="empty">选择模型后显示</p></div></div><div><h3>表情</h3><div class="list" id="expressions"><p class="empty">选择模型后显示</p></div></div></div><p class="note">拖动模型平移，滚轮缩放，鼠标移动可控制视线（视模型支持情况）。</p></div></details>
+  </div>
 </main>
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
 <script src="../../shared/vendor/live2d.min.js"></script>
 <script src="../../shared/gallery_bridge.js"></script>
+<script src="../../shared/skin_gallery.js"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -148,70 +191,66 @@ const FORCE = (PIXI.live2d.MotionPriority && PIXI.live2d.MotionPriority.FORCE) |
 
 function message(value){$('status').hidden = false; $('status').textContent = value;}
 function hideMessage(){ $('status').hidden = true; }
+let galleryUi = null;
+let catalogRows = [];
+
+// 统一按衣着 ID 合并：UNIQUE / 点唱机 / Spine / 68 元档位共用同一个画廊。
+// 同 ID 的独立商城骨骼不再重复生成第二张卡片，但精确资源链接仍可直达。
+function galleryRows(){
+  const found = new Map();
+  const priority = m => (m.full_scene ? 100 : 0) +
+    (m.type==='scene-live2d' ? 50 : m.type==='showcase' ? 35 :
+     m.type==='cubism' ? 25 : m.type==='spine' ? 20 : 0);
+  for (const model of models) {
+    if (model.type==='artwork') continue;
+    const key=String(model.id);
+    if (!/^\d{6}$/.test(key)) continue;
+    const existing=found.get(key);
+    if (!existing || priority(model)>priority(existing.model)){
+      found.set(key,{
+        key,title:model.name||key,subtitle:model.skin||'默认衣着',
+        searchText:[model.en,model.skin_en,key].join(' '),
+        ready:true,preview:model.full_scene||null,
+        status:model.full_scene?'完整场景图 · 可切换动态':
+          model.type==='scene-live2d'||model.type==='showcase'?'动态场景':'动态模型',
+        model,
+      });
+    }
+  }
+  for(const [collection,channel] of [[uniqueCatalog,'unique'],[jukeboxCatalog,'jukebox']]){
+    for(const row of collection){
+      const key=String(row.id);
+      if(found.has(key)||!/^\d{6}$/.test(key))continue;
+      found.set(key,{
+        key,title:row.name||key,subtitle:row.skin||'默认衣着',searchText:key,
+        ready:false,preview:null,status:'素材待安装',channel,model:null,
+      });
+    }
+  }
+  return [...found.values()].sort((a,b)=>Number(b.key)-Number(a.key));
+}
 function renderList(){
-  const q=$('search').value.trim().toLocaleLowerCase();
-  const matches=record=>[record.id,record.name,record.en,record.skin,record.skin_en,record.folder,record.version].some(v=>String(v||'').toLocaleLowerCase().includes(q));
-  $('filter-all').classList.toggle('active',galleryFilter==='all');
-  $('filter-unique').classList.toggle('active',galleryFilter==='unique');
-  $('filter-jukebox').classList.toggle('active',galleryFilter==='jukebox');
-  $('unique-tip').hidden=galleryFilter!=='unique';
-  $('jukebox-tip').hidden=galleryFilter!=='jukebox';
-  $('models').replaceChildren();
-  if(galleryFilter==='jukebox'){
-    const visible=jukeboxCatalog.filter(matches);
-    const complete=jukeboxCatalog.filter(x=>x.downloaded&&x.artwork_downloaded).length;
-    const countModel=jukeboxCatalog.filter(x=>x.downloaded).length;
-    const countArt=jukeboxCatalog.filter(x=>x.artwork_downloaded).length;
-    $('count').textContent='点唱机全套 '+complete+'/'+jukeboxCatalog.length+
-      ' · 模型 '+countModel+' · 原画 '+countArt;
-    visible.forEach(row=>{
-      const model=models.find(m=>m.channel==='JUKEBOX'&&String(m.id)===String(row.id));
-      const btn=document.createElement('button');
-      btn.className='item'+(!model?' not-downloaded':'')+(model&&selected===model?' active':'');
-      const name=document.createElement('div');name.textContent=row.name+' · '+row.skin;
-      const meta=document.createElement('small');
-      meta.textContent='点唱机 · '+(row.type==='spine'?'Spine':'Live2D')+' · '+row.id+
-        ' · 模型'+(row.downloaded?'已安装':'待下载')+' / 原画'+(row.artwork_downloaded?'已安装':'待补齐');
-      btn.append(name,meta);
-      btn.onclick=()=>{
-        if(model){selectModel(model);return;}
-        message('尚未下载 '+row.name+'「'+row.skin+'」\nVS Code 项目根目录执行：\npython reverse1999/scripts/sync.py jukebox '+row.id+'\n然后刷新浏览器。');
-      };
-      $('models').appendChild(btn);
-    });
-    return;
+  catalogRows=galleryRows();
+  galleryUi?.setItems(catalogRows);
+}
+function closeDetail(){
+  ++requestId;
+  ++poseToken;
+  if(active){app.stage.removeChild(active);active.destroy();active=null;}
+  disposeSpine();
+  $('full-scene-image').removeAttribute('src');
+  $('live2d-background').removeAttribute('src');
+  $('artwork-image').removeAttribute('src');
+  $('viewer-tools').open=false;
+}
+function openCatalogRow(row){
+  if(!row.model){
+    const command=row.channel==='unique'?'unique':'jukebox';
+    $('catalog-status').textContent='皮肤 '+row.title+'「'+row.subtitle+'」尚未安装。执行 python reverse1999/scripts/sync.py '+command+' '+row.key;
+    return false;
   }
-  if(galleryFilter==='unique'){
-    const visible=uniqueCatalog.filter(matches);
-    const completed=uniqueCatalog.filter(x=>x.downloaded).length;
-    $('count').textContent='UNIQUE 女性 '+completed+' / '+uniqueCatalog.length+' 套已下载';
-    visible.forEach(row=>{
-      const m=models.find(item=>item.tier==='UNIQUE'&&String(item.id)===String(row.id));
-      const btn=document.createElement('button');
-      btn.className='item'+(!m?' not-downloaded':'')+(selected===m&&m?' active':'');
-      const label=document.createElement('div');label.textContent=row.name+' · '+row.skin;
-      const detail=document.createElement('small');
-      detail.textContent='UNIQUE · '+row.version+' · '+row.id+' · '+(m?'点击预览 Live2D':'待下载（点击查看命令）');
-      btn.append(label,detail);
-      btn.onclick=()=>{
-        if(m){selectModel(m);return;}
-        message('尚未下载 '+row.name+'「'+row.skin+'」\n在 VS Code 项目根目录执行：\npython reverse1999/scripts/sync.py unique '+row.id+'\n然后刷新浏览器。');
-      };
-      $('models').appendChild(btn);
-    });
-    return;
-  }
-  const visible=models.filter(matches);
-  $('count').textContent='本地 '+visible.length+' / '+models.length+' 套可预览资源';
-  visible.forEach(m=>{
-    const btn=document.createElement('button');btn.className='item'+(selected===m?' active':'');
-    const line=document.createElement('div');line.textContent=m.name+' · '+m.skin;
-    const second=document.createElement('small');
-    const type=m.type==='scene-live2d'?'Live2D 动态衣着+专属背景':m.type==='scene'?'商城卡面 Spine+背景':m.type==='showcase'?'完整皮肤展示':m.type==='spine'?'Spine':'Live2D';
-    second.textContent=(m.tier==='UNIQUE'?'UNIQUE · ':m.channel==='JUKEBOX'?'点唱机 · ':'')+type+' · '+m.id+' · '+m.folder;
-    btn.append(line,second);btn.onclick=()=>selectModel(m);
-    $('models').appendChild(btn);
-  });
+  selectModel(row.model);
+  return true;
 }
 function buttons(container, names, onClick){
   container.replaceChildren();
@@ -472,7 +511,10 @@ function setupSceneControls(){
 }
 
 async function selectModel(m, viewMode){
-  selected=m;renderList();const token=++requestId;
+  selected=m;const token=++requestId;
+  $('detail-title').textContent=m.name+' · '+m.skin;
+  $('detail-subtitle').textContent=String(m.id)+(m.full_scene?' · 完整场景可用':' · 动态资源');
+  $('viewer-tools').open=false;
   ++poseToken;
   if(active){app.stage.removeChild(active);active.destroy();active=null;}
   disposeSpine();
@@ -492,8 +534,9 @@ async function selectModel(m, viewMode){
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
   const jukebox=m.channel==='JUKEBOX', hasArt=jukebox&&!!m.artwork, artOnly=m.type==='artwork';
-  const showArt=hasArt&&viewMode!=='model';
-  $('jukebox-view-controls').hidden=!jukebox;
+  // 1999 默认不展示单独角色原画；已有的原画文件保留以兼容旧资源。
+  const showArt=hasArt&&viewMode==='artwork';
+  $('jukebox-view-controls').hidden=true;
   $('view-artwork').disabled=!hasArt;
   $('view-model').disabled=artOnly;
   $('view-artwork').classList.toggle('active',showArt);
@@ -645,7 +688,15 @@ async function start(){
       };
     });
     app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
-    initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
+    initInteraction();setupSceneControls();
+    galleryUi=SkinGallery.create({
+      grid:$('models'),search:$('search'),sort:$('catalog-sort'),count:$('count'),
+      detail:$('detail-view'),onOpen:openCatalogRow,onClose:closeDetail,
+    });
+    renderList();
+    $('back-to-catalog').onclick=()=>galleryUi.close();
+    $('prev-skin').onclick=()=>galleryUi.navigate(-1);
+    $('next-skin').onclick=()=>galleryUi.navigate(1);
     $('view-artwork').onclick=()=>{if(selected)selectModel(selected,'artwork');};
     $('view-model').onclick=()=>{if(selected&&selected.type!=='artwork')selectModel(selected,'model');};
     $('scene-view-image').onclick=()=>{if(selected?.full_scene)selectModel(selected,'image');};
@@ -657,9 +708,7 @@ async function start(){
       if(selected?.channel==='JUKEBOX'&&!$('artwork-stage').hidden)
         message('原画文件无法加载，请重新运行 jukebox-art '+selected.id+' 后刷新。');
     };
-    $('filter-all').onclick=()=>{galleryFilter='all';renderList();};
-    $('filter-unique').onclick=()=>{galleryFilter='unique';renderList();};
-    $('filter-jukebox').onclick=()=>{galleryFilter='jukebox';renderList();};
+    // 不再按价格、档位、最新角色或点唱机创建独立分类入口。
     if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
     window.GalleryViewerBridge?.register({
       game: 'reverse1999',
@@ -667,9 +716,10 @@ async function start(){
         const model = models.find(item =>
           String(item.id) + ':' + String(item.folder || item.channel || item.skin || '') === asset);
         if (!model) return false;
-        // 截图导出流程强制打开动态合成舞台；普通浏览优先查看完整成图。
+        // 源 ID 仍可指向精确的 Spine / Cubism 变体；画廊主列表仅去重显示。
         const exporting=new URLSearchParams(location.search).get('export_scene')==='1';
-        selectModel(model, exporting?'model':(model.type==='artwork'?'artwork':undefined));
+        galleryUi.open(String(model.id));
+        if(selected!==model||exporting)selectModel(model,exporting?'model':undefined);
         return true;
       },
       listRoles: () => selected?.poses ? Object.keys(selected.poses) : [],
