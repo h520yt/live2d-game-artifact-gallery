@@ -206,7 +206,8 @@ function galleryRows(){
     if (!existing || priority(model)>priority(existing.model)){
       found.set(key,{
         key,title:model.name||key,subtitle:model.skin||'默认衣着',
-        searchText:[model.en,model.skin_en,key].join(' '),
+        // 4.1 新角色「佩施塔」也常被叫作“白雪公主”，作为搜索别名，不新增分类。
+        searchText:[model.en,model.skin_en,key,model.name==='佩施塔'?'白雪 白雪公主':''].join(' '),
         ready:true,preview:model.full_scene||null,
         status:model.full_scene?'完整场景图 · 可切换动态':
           model.type==='scene-live2d'||model.type==='showcase'?'动态场景':'动态模型',
