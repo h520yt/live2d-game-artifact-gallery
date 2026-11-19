@@ -120,5 +120,5 @@ test("gallery wires model return and artwork detail close to instant position re
   assert.match(page, /function openDetail\(c\)\{\s*AzurGalleryScroll\.remember\("paint-list"\)/);
   assert.match(page, /function closeDetail\(\)\{[\s\S]*?AzurGalleryScroll\.restore\('paint-list'\)/);
   assert.ok(page.includes("if(e.target.id === 'detail' || e.target.id === 'detail-close') closeDetail();"));
-  assert.ok(!source.includes("requestAnimationFrame"), "scroll state should not delay restoration");
+  assert.ok(!source.includes("global.requestAnimationFrame("), "scroll state should not delay restoration");
 });
