@@ -41,6 +41,7 @@ async function snapshot(page,id,milliseconds) {
     return {x:active.position.x,y:active.position.y,scale:active.scale.x,
       width:area.clientWidth,height:area.clientHeight,
       statusVisible:!document.querySelector("#status").hidden,
+      canvasOpacity:getComputedStyle(canvas).opacity,
       bounds,frameSeq:framingSequence};
   });
   await page.locator("#stage-area").screenshot({
@@ -84,9 +85,28 @@ async function snapshot(page,id,milliseconds) {
         }));
         const movementX=center.length?Math.max(...center.map(x=>x.x))-Math.min(...center.map(x=>x.x)):null;
         const movementY=center.length?Math.max(...center.map(x=>x.y))-Math.min(...center.map(x=>x.y)):null;
-        const outcome={id,swingX,swingY,swingScale,movementX,movementY,loading:stable.some(s=>s.statusVisible),errors};
+        const earlyVisible=samples.some(s=>s.statusVisible&&s.canvasOpacity!=="0");
+        const hiddenAfterReady=samples.some(s=>!s.statusVisible&&s.canvasOpacity!=="1");
+        const beforeResize={...stable.at(-1)};
+        // 历史回归：没有真正改变舞台尺寸时，重复触发 resize 不能重启自动定位。
+        await page.evaluate(()=>{
+          for(let i=0;i<7;i++)window.dispatchEvent(new Event("resize"));
+        });
+        await page.waitForTimeout(500);
+        const afterResize=await page.evaluate(()=>({
+          x:active.x,y:active.y,scale:active.scale.x,seq:framingSequence,
+          statusVisible:!document.querySelector("#status").hidden
+        }));
+        const resizeStable=Math.abs(beforeResize.x-afterResize.x)<.5&&
+          Math.abs(beforeResize.y-afterResize.y)<.5&&
+          Math.abs(beforeResize.scale-afterResize.scale)<.0001&&
+          beforeResize.frameSeq===afterResize.seq;
+        const outcome={id,swingX,swingY,swingScale,movementX,movementY,
+          earlyVisible,hiddenAfterReady,resizeStable,
+          loading:stable.some(s=>s.statusVisible),errors};
         console.log("DRIFT-RESULT",JSON.stringify(outcome));
         if(swingX>1||swingY>1||swingScale>.005||outcome.loading||
+          earlyVisible||hiddenAfterReady||!resizeStable||
           movementX>stable[0].width*.12||movementY>stable[0].height*.16||
           errors.length||stable.some(s=>!s.bounds)){
           failures.push(outcome);
