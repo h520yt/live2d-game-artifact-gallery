@@ -1,0 +1,60 @@
+name: Reverse 1999 drift fix full Cubism regression
+on:
+  push:
+    branches: [fix/reverse1999-live2d-drift]
+    paths:
+      - ".github/workflows/reverse1999-drift-full-audit.yml"
+      - "reverse1999/viewer/index.html"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  all-cubism:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Retrieve all 12 UNIQUE and all 32 Jukebox model sets
+        run: |
+          python reverse1999/scripts/sync.py unique all || true
+          python reverse1999/scripts/sync.py jukebox all || true
+          python reverse1999/scripts/sync.py manifest
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path("reverse1999/viewer")
+          manifest=json.loads((base/"manifest.json").read_text(encoding="utf-8"))
+          uniques=[m for m in manifest["models"] if m.get("tier")=="UNIQUE"]
+          jukebox=[m for m in manifest["models"] if m.get("channel")=="JUKEBOX"]
+          assert len(uniques)==12, [m["id"] for m in uniques]
+          assert len(jukebox)==32, [m["id"] for m in jukebox]
+          cubism=[m for m in manifest["models"] if m["type"] in ("cubism","scene-live2d")]
+          assert len({m["id"] for m in cubism})>=39, len(cubism)
+          for model in cubism:
+              assert (base / model["path"]).is_file(),model
+              if model.get("type")=="scene-live2d":
+                  assert (base / model["background"]).is_file(),model
+          print("FULL-ASSET-READY: 12 UNIQUE / 32 Jukebox /",len(cubism),"Cubism models")
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium and image support
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Open all Cubism cards at wide and standard desktop widths
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/all-skins-http.log 2>&1 &
+          node reverse1999/tests/stage-full-audit.cjs --all
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reverse1999-all-cubism-screenshots
+          path: reverse1999/test-output/stage-audit/
+          if-no-files-found: ignore
