@@ -72,7 +72,30 @@ def main() -> int:
             print("可能是前端脚本异常、生成索引格式错误或 HTTP 加载失败。",
                   file=sys.stderr)
             return 1
+        # 真实浏览器校验平滑滚动 CSS 下能否在第一帧之前恢复长列表位置。
+        scroll_command = command[:-1] + [
+            f"http://127.0.0.1:{port}/tests/fixtures/azur_instant_scroll.html"
+        ]
+        scroll_result = subprocess.run(
+            scroll_command, capture_output=True, text=True,
+            encoding="utf-8", errors="replace", timeout=50
+        )
+        if scroll_result.returncode != 0:
+            print("画廊滚动定位浏览器测试启动失败：",
+                  scroll_result.stderr[-1500:], file=sys.stderr)
+            return 1
+        if 'data-scroll-smoke="passed"' not in scroll_result.stdout:
+            details = re.search(
+                r'<body[^>]*data-scroll-smoke="[^"]*"[^>]*>',
+                scroll_result.stdout
+            )
+            print("画廊返回定位测试失败：" +
+                  (details.group(0) if details else "测试页面未得到有效状态"),
+                  file=sys.stderr)
+            return 1
+
         print("Chrome 浏览器烟测通过：已运行前端 JS，生成资源卡片和皮肤直达链接。")
+        print("Azur Lane 返回模型列表位置测试通过：无可见平滑滚动动画。")
         print("注意：未加载版权模型，不等于动画或独立互动验收通过。")
         return 0
     except subprocess.TimeoutExpired:
