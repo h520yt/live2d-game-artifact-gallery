@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>Live2D gallery instant-return browser smoke</title>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; }
+    #cards { height: 7200px; }
+    #stage { height: 100vh; display: none; }
+  </style>
+</head>
+<body>
+  <section id="cards">Simulated long gallery grid</section>
+  <section id="stage">Simulated Live2D model stage</section>
+  <script src="../../azur_lane/viewer/scroll_state.js"></script>
+  <script>
+    window.addEventListener("load", () => {
+      const cards = document.getElementById("cards");
+      const stage = document.getElementById("stage");
+      window.scrollTo({ top: 3100, behavior: "instant" });
+      const origin = Math.round(window.scrollY);
+
+      AzurGalleryScroll.remember("l2d-list");
+      cards.style.display = "none";
+      stage.style.display = "block";
+      void stage.offsetHeight; // 触发浏览器将过深的窗口位置压回顶部
+
+      stage.style.display = "none";
+      cards.style.display = "block";
+      const restored = AzurGalleryScroll.restore("l2d-list");
+      const sameTask = Math.round(window.scrollY) === origin;
+
+      requestAnimationFrame(() => {
+        const firstPaint = Math.round(window.scrollY) === origin;
+        setTimeout(() => {
+          const afterDelay = Math.round(window.scrollY) === origin;
+          document.body.dataset.scrollSmoke = (
+            origin > 1000 && restored && sameTask && firstPaint && afterDelay
+          ) ? "passed" : "failed";
+          document.body.dataset.origin = String(origin);
+          document.body.dataset.sameTask = String(sameTask);
+          document.body.dataset.firstPaint = String(firstPaint);
+          document.body.dataset.afterDelay = String(afterDelay);
+        }, 250);
+      });
+    });
+  </script>
+</body>
+</html>
