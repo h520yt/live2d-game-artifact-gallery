@@ -444,9 +444,30 @@ async function stabilizeFraming(model,skin,token){
     height*.5+(model.y-centerY)*zoom);
   model.scale.set(model.scale.x*zoom);
 
-  // 让最终变换真正提交给 renderer 后即可展示。
-  // 不再对后续 idle / 表情 / 点击动作追踪像素并反复修改模型坐标。
+  // 修正必须全部发生在 CSS opacity=0 的阶段：不让模型露出未校准的边缘。
+  // 大型 UNIQUE 装饰可能在初始取样时已经超出画布，单次 Alpha 边界
+  // 会低估真实可见范围。提交首轮变换后只做有条件的隐藏安全检查，
+  // 最多 3 次收缩，不在动画播放期间追踪/修改人物坐标。
   await waitRenderedFrames();
+  for(let i=0;i<3;i++){
+    if(!current())return;
+    const frame=visiblePixels();
+    if(!frame)break;
+    const clipped=frame.left<width*.025||frame.right>width*.975||
+      frame.top<height*.040||frame.bottom>height*.960;
+    if(!clipped)break;
+    const frameWidth=frame.right-frame.left;
+    const frameHeight=frame.bottom-frame.top;
+    if(frameWidth<=2||frameHeight<=2)break;
+    const safetyZoom=Math.max(.30,Math.min(.84,
+      width*.62/frameWidth,height*.60/frameHeight));
+    const cx=(frame.left+frame.right)*.5;
+    const cy=(frame.top+frame.bottom)*.5;
+    model.position.set(width*.5+(model.x-cx)*safetyZoom,
+      height*.5+(model.y-cy)*safetyZoom);
+    model.scale.set(model.scale.x*safetyZoom);
+    await waitRenderedFrames();
+  }
 }
 
 function disposeSpine(){
