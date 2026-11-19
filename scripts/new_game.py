@@ -17,22 +17,49 @@ from gallery_core.plugins import PLUGIN_CONFIG, SLUG_PATTERN, load_plugins  # no
 
 
 def viewer_html(title: str) -> str:
+    """未来新游戏默认使用「卡片网格 → 全屏大舞台 → 原位返回」公共结构。"""
     safe = html.escape(title, quote=True)
     return f"""<!doctype html>
 <html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{safe} · 游戏资源</title>
+<title>{safe} · 游戏皮肤展示柜</title>
+<link rel="stylesheet" href="../../../shared/skin_gallery.css">
 <style>
-body{{background:#111b27;color:#eff4fa;font:15px/1.6 system-ui,'Microsoft YaHei',sans-serif}}
-main{{max-width:1000px;margin:30px auto;padding:15px}}a{{color:#f2c68d}}
-button{{cursor:pointer;color:inherit;background:#26394b;border:1px solid #54677e;border-radius:8px;padding:10px;margin:5px}}
-#preview{{display:block;max-height:65vh;max-width:100%;object-fit:contain;margin:16px auto}}[hidden]{{display:none!important}}
-.note{{color:#b1c3d4}}
-</style></head><body><main>
-<a href="../../../gallery/">← 统一资源目录</a><h1>{safe}</h1>
-<p class="note">插件模板仅提供静态预览；动态 Spine/Cubism 播放须接入此游戏专属引擎适配器。</p>
-<h2 id="selected">选择资源</h2><p id="detail" class="note"></p><img id="preview" hidden alt="">
-<div id="items"></div></main>
-<script src="../../../shared/gallery_bridge.js"></script><script src="viewer.js"></script>
+#preview{{width:100%;height:100%;object-fit:contain;background:#0b1827}}
+#preview[hidden]{{display:none!important}}
+#preview-empty{{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  color:#9fb2c3;text-align:center;max-width:80%;pointer-events:none}}
+</style>
+</head><body class="sg-host">
+<header class="sg-header"><a href="../../../gallery/">← 总目录</a>
+<div><strong>{safe}</strong><small>资源卡片 · 完整画面 · 独立动态舞台</small></div></header>
+<section id="catalog-view" class="sg-catalog">
+  <div class="sg-toolbar"><h2>皮肤画廊</h2><span id="count" class="sg-count">读取中…</span>
+    <div class="sg-tools">
+      <input id="search" type="search" placeholder="搜索角色 / 皮肤 / 编号" aria-label="搜索皮肤">
+      <select id="sort" aria-label="排序">
+        <option value="recent">默认顺序</option>
+        <option value="installed">已安装优先</option>
+        <option value="name">名称</option>
+      </select>
+    </div>
+  </div>
+  <div class="sg-grid" id="items"></div>
+  <p class="sg-list-note" id="catalog-status">本页面为标准静态查看器。动态资源由游戏专属适配器加载，不会假装模型已可播放。</p>
+</section>
+<main id="detail-view" class="sg-detail-overlay" hidden>
+  <div class="sg-detail-head">
+    <button id="back-to-catalog" type="button">← 返回列表</button>
+    <div class="sg-detail-identity"><strong id="selected">皮肤</strong><small id="detail">资源预览</small></div>
+    <div class="sg-detail-nav"><button id="prev" type="button">〈 上一个</button><button id="next" type="button">下一个 〉</button></div>
+  </div>
+  <div class="sg-workspace">
+    <img id="preview" hidden alt="本地角色与场景预览">
+    <div id="preview-empty">暂无完整场景预览。动态 Spine / Cubism 需要为该游戏实现专属播放器。</div>
+  </div>
+</main>
+<script src="../../../shared/gallery_bridge.js"></script>
+<script src="../../../shared/skin_gallery.js"></script>
+<script src="viewer.js"></script>
 </body></html>
 """
 
@@ -41,62 +68,75 @@ def viewer_js(game: str) -> str:
     source = r'''"use strict";
 (async () => {
   const game = __GAME__;
-  const items = document.getElementById("items");
-  const selected = document.getElementById("selected");
-  const detail = document.getElementById("detail");
-  const image = document.getElementById("preview");
+  const $ = id => document.getElementById(id);
   let assets = [];
   let current = null;
+  let gallery = null;
 
-  function open(id) {
-    current = assets.find((asset) => asset.id === id) || null;
-    if (!current) return false;
-    selected.textContent = current.title || current.id;
-    detail.textContent = "格式：" + current.renderer + "。动态资源需在此游戏的 viewer 实现播放器。";
-    image.hidden = true;
-    image.removeAttribute("src");
-    const cover = current.preview;
-    if (typeof cover === "string" && cover.startsWith("../data/")) {
-      const parts = cover.slice("../data/".length).split("/");
-      const valid = parts.length > 0 && parts.every((part) =>
-        part !== "" && part !== "." && part !== ".." &&
-        !part.includes("\\") && !part.includes("?") && !part.includes("#"));
-      if (valid) {
-        image.src = cover;
-        image.hidden = false;
-      }
-    }
+  function safeCover(value) {
+    if (typeof value !== "string" || !value.startsWith("../data/")) return null;
+    const parts = value.slice("../data/".length).split("/");
+    return parts.length > 0 && parts.every(part =>
+      part && part !== "." && part !== ".." &&
+      !part.includes("\\") && !part.includes("?") && !part.includes("#")
+    ) ? value : null;
+  }
+
+  function selectAsset(row) {
+    current = row.asset;
+    $("selected").textContent = current.title || current.id;
+    $("detail").textContent = "资源格式：" + current.renderer +
+      " · 静态预览 / 动态模型需接入专属播放器";
+    const cover = safeCover(current.preview);
+    $("preview").hidden = !cover;
+    $("preview-empty").hidden = !!cover;
+    if (cover) $("preview").src = cover;
+    else $("preview").removeAttribute("src");
     return true;
   }
 
   try {
-    const response = await fetch("manifest.json", {cache: "no-store"});
+    const response = await fetch("manifest.json", {cache:"no-store"});
     if (!response.ok) throw new Error("HTTP " + response.status);
     const payload = await response.json();
     if (payload.schema_version !== 1 || !Array.isArray(payload.assets)) throw new Error("manifest 结构错误");
     assets = payload.assets;
-    for (const item of assets) {
-      const button = document.createElement("button");
-      button.type = "button";
-      button.textContent = item.title || item.id;
-      button.onclick = () => open(item.id);
-      items.append(button);
-    }
+    gallery = SkinGallery.create({
+      grid:$("items"),search:$("search"),sort:$("sort"),count:$("count"),detail:$("detail-view"),
+      onOpen:selectAsset,
+      onClose:() => {
+        $("preview").hidden = true;
+        $("preview").removeAttribute("src");
+      },
+    });
+    gallery.setItems(assets.map(asset => ({
+      key:asset.id,title:asset.title||asset.id,subtitle:asset.metadata?.character||asset.renderer,
+      ready:!!safeCover(asset.preview),preview:safeCover(asset.preview),
+      status:asset.renderer==="static"?"静态资源":"专属播放器待接入",
+      asset,
+    })));
+    $("back-to-catalog").onclick = () => gallery.close();
+    $("prev").onclick = () => gallery.navigate(-1);
+    $("next").onclick = () => gallery.navigate(1);
+    $("preview").onerror = () => {
+      $("preview").hidden = true;
+      $("preview-empty").hidden = false;
+    };
     window.GalleryViewerBridge?.register({
       game,
-      open,
+      open: id => gallery.open(id),
       listRoles: () => Object.keys(current?.roles || {}),
-      selectRole: (role) => {
+      selectRole: role => {
         if (!Array.isArray(current?.roles?.[role])) return false;
-        detail.textContent = role + "：已索引 " + current.roles[role].length +
-          " 个文件。播放功能需要专属游戏适配器实现。";
+        $("detail").textContent = "已索引 " + current.roles[role].length +
+          " 个文件。动态播放须实现游戏专属适配器。";
         return true;
       },
       listActions: () => [],
       playAction: () => false,
     });
   } catch (error) {
-    detail.textContent = "无法读取插件资源索引：" + error.message;
+    $("catalog-status").textContent = "无法读取资源索引：" + error.message;
   }
 })();
 '''
@@ -112,8 +152,11 @@ ID: {game}
    roles（资源角色到路径数组）、preview、tags、required_files、optional_files、metadata。
 2. 相对路径均以 viewer/manifest.json 位置为基准，例如 ../data/example.png。
 3. 在此游戏目录内实现自己的下载、解包、Cubism / Spine 渲染与互动编排代码。
-4. 替换 viewer/viewer.js 中的占位静态预览实现，保留 GalleryViewerBridge 协议。
-5. 运行 python scripts/gallery.py serve 重新生成全局索引并查看。
+4. 标准布局由 shared/skin_gallery.css 与 shared/skin_gallery.js 提供，
+   所有游戏统一「封面卡片 -> 独立大舞台 -> 返回原位」；不要新增价格/批次独立页面。
+5. 在 viewer/viewer.js 中补充游戏专属 Spine/Cubism 播放器，
+   保留 SkinGallery 和 GalleryViewerBridge 协议。
+6. 运行 python scripts/gallery.py serve 重新生成全局索引并查看。
 
 脚手架不会下载任何版权素材。当前静态查看器不支持骨骼动画播放。
 本地素材放到 data/，该目录默认由 Git 忽略。
