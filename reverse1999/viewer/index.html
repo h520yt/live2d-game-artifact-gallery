@@ -74,6 +74,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 .sg-host .sg-floating-body .controls button{margin:0 2px 5px 0}
 .sg-host #full-scene-stage{inset:0}
 .sg-host #detail-view .stage-toolbar{max-width:calc(100% - 370px)}
+.sg-host #full-scene-controls button.active{background:var(--sg-accent);color:var(--sg-bg);border-color:var(--sg-accent)}
 .sg-host #status{z-index:9;pointer-events:none}
 .sg-host .sg-catalog .note{margin-top:18px}
 @media(max-width:680px){.sg-host #detail-view .stage-toolbar{max-width:calc(100% - 20px)}}
@@ -109,6 +110,10 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   <div class="sg-detail-head">
     <button id="back-to-catalog" type="button">← 返回列表</button>
     <div class="sg-detail-identity"><strong id="detail-title">皮肤展示</strong><small id="detail-subtitle">完整场景 / 动态模型</small></div>
+    <div id="full-scene-controls" class="sg-detail-nav" hidden>
+      <button id="scene-view-image" type="button">完整场景</button>
+      <button id="scene-view-dynamic" type="button">动态模型</button>
+    </div>
     <div class="sg-detail-nav">
       <button id="prev-skin" type="button" aria-label="上一套皮肤">〈 上一个</button>
       <button id="next-skin" type="button" aria-label="下一套皮肤">下一个 〉</button>
@@ -136,14 +141,6 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
         <button id="view-model" type="button">动态模型</button>
       </div>
       <p class="note" id="jukebox-artwork-status">按皮肤 ID 对应原始静态立绘，独立于 Live2D / Spine 模型。</p>
-    </div>
-    <div id="full-scene-controls" hidden>
-      <h3>角色 + 背景完整场景</h3>
-      <div class="list">
-        <button id="scene-view-image" type="button">完整场景图</button>
-        <button id="scene-view-dynamic" type="button">Live2D 动态展示</button>
-      </div>
-      <p class="note">静态场景由本地原生 Live2D 角色和同皮肤 ID 的背景合成导出；并非官方直接提供的合成原画。</p>
     </div>
     <div id="scene-controls" hidden>
       <h3>完整皮肤展示</h3>
