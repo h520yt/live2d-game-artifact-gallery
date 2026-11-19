@@ -1,0 +1,48 @@
+name: Reverse 1999 Cubism dynamic drift timeline
+on:
+  push:
+    branches: [fix/reverse1999-live2d-drift]
+    paths:
+      - "reverse1999/viewer/index.html"
+      - "reverse1999/tests/live2d-drift-timeline.cjs"
+      - ".github/workflows/reverse1999-drift-timeline.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  timeline:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Get six real Cubism models
+        run: |
+          for id in 300306 308203 308804 311604; do
+            python reverse1999/scripts/sync.py jukebox "$id"
+          done
+          for id in 308303 315503; do
+            python reverse1999/scripts/sync.py unique "$id"
+          done
+          python reverse1999/scripts/sync.py manifest
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Screenshot and measure motion after load
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/reverse1999-drift-http.log 2>&1 &
+          node reverse1999/tests/live2d-drift-timeline.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reverse1999-drift-timeline
+          path: reverse1999/test-output/drift-timeline/
+          if-no-files-found: ignore
