@@ -751,8 +751,12 @@ async function finishCubismFraming(model,token,loadingText){
   $('canvas').style.opacity='0';
   userAdjustedFraming=false;
   fitSkin(model);
+  const expectedSequence=framingSequence+1;
   await stabilizeFraming(model,selected,token);
-  if(token!==requestId||active!==model)return;
+  // 新旧 resize / 重新定位可能并发运行。只有最后一轮校准能显露人物，
+  // 较早取消的请求不能提前把仍在移动的模型显示出来。
+  if(token!==requestId||active!==model||
+     expectedSequence!==framingSequence)return;
   $('canvas').style.opacity='1';
   hideMessage();
 }
@@ -764,7 +768,7 @@ function initInteraction(){
   };
   const area=$('stage-area');let drag=false,px=0,py=0;
   area.addEventListener('pointerdown',e=>{
-    if(!active)return;
+    if(!active||$('canvas').style.opacity==='0')return;
     userAdjustedFraming=true;
     ++framingSequence;
     drag=true;px=e.clientX;py=e.clientY;
@@ -779,7 +783,7 @@ function initInteraction(){
     try{active.focus(e.clientX-rect.left,e.clientY-rect.top)}catch(error){/* 不是每个模型都带视线参数 */}
   });
   area.addEventListener('wheel',e=>{
-    if(!active)return;
+    if(!active||$('canvas').style.opacity==='0')return;
     e.preventDefault();
     userAdjustedFraming=true;
     ++framingSequence;
