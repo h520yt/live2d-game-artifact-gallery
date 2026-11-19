@@ -7,7 +7,7 @@ const fs=require("node:fs");
 const path=require("node:path");
 const assert=require("node:assert/strict");
 const {chromium}=require("playwright");
-const ids=["300306","308203","308804","311604","308303","315503"];
+const ids=["312704","300306","308203","308804","311604","308303","315503"];
 const out=path.resolve(__dirname,"../test-output/drift-timeline");
 fs.mkdirSync(out,{recursive:true});
 const timings=[0,250,750,1250,2000,3000,5000,8000];
