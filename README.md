@@ -1,5 +1,42 @@
 # live2d-game-artifact-gallery
 
+## 重返未来：1999 · 完整场景图（角色＋专属背景，2026-11-19）
+
+已核对个人 fork [h520yt/Reverse-1999-CN-Asset](https://github.com/h520yt/Reverse-1999-CN-Asset)
+中 `singlebg/skin2dbg` 的 **12 个皮肤 ID**，以及相同 ID 的 `live2d/roles`
+模型目录。这些背景文件本身**没有人物**，因此不能直接当作完整场景图。
+现有 UNIQUE 模型继续正常播放；新增本机浏览器合成截图流程，导出真正包含人物＋背景的静态 PNG。
+
+```powershell
+git pull origin main
+# 一条命令：从个人 fork 补齐缺失模型，导出 12 张完整场景 PNG，并刷新索引
+node reverse1999/scripts/export_full_scenes.cjs all --download
+
+# 已经装好 12 套 UNIQUE 时，可省略 --download
+node reverse1999/scripts/export_full_scenes.cjs all
+
+# 可选：单套 / 4K 输出；--4k 会替换分辨率不足的旧图
+node reverse1999/scripts/export_full_scenes.cjs 308603 --4k
+node reverse1999/scripts/export_full_scenes.cjs all --4k
+
+python scripts/gallery.py serve --port 8000
+```
+
+浏览器打开 <http://127.0.0.1:8000/gallery/>，找到“重返未来：1999”。
+仅当 PNG 已实际生成且通过文件签名／尺寸校验时，卡片才显示「完整场景图」
+封面；进入对应皮肤，默认显示完整场景图，可切换「Live2D 动态展示」。
+没有成功合成的皮肤仍以原有模型显示，不把单独的背景冒充完整原画。
+静态 PNG 保存在 `reverse1999/data/full_scenes/<皮肤ID>.png`，被 Git 忽略。
+
+**环境**：需 Python 以及仓库已有的 Node/Playwright 依赖，浏览器缺失可执行
+`npx playwright install chromium`。首次使用 `--download` 会下载模型和背景；
+图片不会随 Git 提交，不能仅靠 `git pull` 在另一台电脑获得图片。
+导出使用浏览器的实际 WebGL 绘制结果；**它是本地渲染的场景组合图，不是官方直接提供的完整原画**，
+也不能保证与游戏内 Unity 粒子、遮挡和镜头完全一致。未在本会话中运行本机的 12 套素材实图验收。
+
+---
+
+
 ## 成熟画风筛选补充（2026-11-18）
 
 按实际画廊反馈，今后**先筛人物整体成熟感，再筛鞋履、服装与 Live2D 动作**，
