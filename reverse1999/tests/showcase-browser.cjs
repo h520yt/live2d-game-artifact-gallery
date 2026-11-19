@@ -55,10 +55,12 @@ async function main(){
     // 核对人物真实出现在最终合成图中，而不是被一张不透明 PNG 覆盖。
     await page.waitForTimeout(900); // 给 Spine WebGL 动画和背景图留出真实绘制帧
     const { PNG } = require('pngjs');
-    const fullImage = await page.screenshot({path:path.join(dir,'308603-showcase.png'),fullPage:true});
+    // fixed 模式下绝不能 fullPage：浏览器整页截图会把背后的卡片列表一起带进来。
+    const stage=page.locator('#spine-stage');
+    const fullImage = await stage.screenshot({path:path.join(dir,'308603-showcase.png')});
     await page.evaluate(()=>{sceneScale=0;updateSceneControls();});
     await page.waitForTimeout(550);
-    const backgroundOnly = await page.screenshot({path:path.join(dir,'308603-background-only.png'),fullPage:true});
+    const backgroundOnly = await stage.screenshot({path:path.join(dir,'308603-background-only.png')});
     await page.evaluate(()=>{sceneScale=1.8;updateSceneControls();});
     await page.waitForTimeout(220);
     const foreground = PNG.sync.read(fullImage);
@@ -66,18 +68,19 @@ async function main(){
     assert.equal(foreground.width,background.width);
     // 背景不能只有人物后面一小张贴纸：要求填充大部分舞台可见范围。
     let stageBackgroundPixels=0;
-    for(let y=130;y<Math.min(background.height,850);y++){
-      for(let x=330;x<Math.min(background.width,1150);x++){
+    // 裁剪到实际的舞台截图，而不是旧版三栏页面上硬编码的绝对像素。
+    for(let y=0;y<background.height;y+=2){
+      for(let x=0;x<background.width;x+=2){
         const i=(y*background.width+x)*4;
-        if(background.data[i]+background.data[i+1]+background.data[i+2]>200)stageBackgroundPixels++;
+        if(background.data[i]+background.data[i+1]+background.data[i+2]>240)stageBackgroundPixels++;
       }
     }
-    assert.ok(stageBackgroundPixels>90000,
-      '完整展示背景面积太小，亮色背景像素仅 '+stageBackgroundPixels);
+    assert.ok(stageBackgroundPixels>16000,
+      'Spine 商城背景颜色像素不足，背景可能未真正绘制：'+stageBackgroundPixels);
     result.backgroundVisiblePixels=stageBackgroundPixels;
     let modelPixels=0;
-    for(let y=210;y<Math.min(foreground.height,820);y++){
-      for(let x=500;x<Math.min(foreground.width,1120);x++){
+    for(let y=0;y<foreground.height;y+=2){
+      for(let x=0;x<foreground.width;x+=2){
         const i=(y*foreground.width+x)*4;
         const diff=Math.abs(foreground.data[i]-background.data[i])+
           Math.abs(foreground.data[i+1]-background.data[i+1])+
@@ -85,11 +88,11 @@ async function main(){
         if(diff>55)modelPixels++;
       }
     }
-    assert.ok(modelPixels>1500,'商城人物被背景遮挡：前景与纯背景差异像素太少: '+modelPixels);
+    assert.ok(modelPixels>400,'商城人物被背景遮挡：前景与纯背景差异像素太少: '+modelPixels);
     result.modelVisiblePixels=modelPixels;
     await page.locator('#viewer-tools summary').click();
     await page.locator('#scene-bg-toggle').click();
-    await page.screenshot({path:path.join(dir,'308603-foreground-only.png'),fullPage:true});
+    await stage.screenshot({path:path.join(dir,'308603-foreground-only.png')});
     await page.locator('#scene-bg-toggle').click();
     fs.writeFileSync(path.join(dir,'validation.json'),JSON.stringify(result,null,2));
     console.log('BROWSER-SMOKE-PASS',JSON.stringify(result));
