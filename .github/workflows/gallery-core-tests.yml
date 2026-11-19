@@ -16,6 +16,7 @@ on:
       - 'shared/gallery_bridge.js'
       - 'games/**'
       - 'tests/*.cjs'
+      - 'tests/fixtures/**'
       - 'azur_lane/viewer/index.html'
       - 'azur_lane/viewer/model_variants.js'
       - 'azur_lane/viewer/scroll_state.js'
