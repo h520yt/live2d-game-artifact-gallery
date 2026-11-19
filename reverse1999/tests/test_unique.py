@@ -22,6 +22,7 @@ class UniqueTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         self.patches = [
             mock.patch.object(unique, "DATA_DIR", self.root / "data" / "unique"),
+            mock.patch.object(unique, "ROOT", self.root),
             mock.patch.object(sync, "MANIFEST", self.root / "viewer" / "manifest.json"),
             mock.patch.object(sync, "DATA_DIR", self.root / "data" / "models"),
             mock.patch.object(spine, "DATA_DIR", self.root / "data" / "spine"),
@@ -91,12 +92,31 @@ class UniqueTests(unittest.TestCase):
         self.assertEqual(len(unique.collect_models(self.mapping)), 1)
         self.assertEqual(fetch.call_count, 7)  # 背景、配置、模型、贴图、2动作、1表情
         self.assertTrue(all(args[0].startswith(
-            "https://raw.githubusercontent.com/myssal/Reverse-1999-CN-Asset/master/")
+            "https://raw.githubusercontent.com/h520yt/Reverse-1999-CN-Asset/master/")
             for args, kwargs in fetch.call_args_list))
 
         # 再次执行只检查已经完整下载的文件，不重复发起任何网络请求。
         with mock.patch.object(spine, "download_file", side_effect=AssertionError("duplicate download")):
             unique.download_one(self.mapping, "313403")
+
+    def test_complete_scene_only_indexed_after_valid_png_export(self):
+        with mock.patch.object(spine, "download_file", side_effect=self.fake_download):
+            unique.download_one(self.mapping, "313403")
+        target = self.root / "data" / "full_scenes" / "313403.png"
+        target.parent.mkdir(parents=True, exist_ok=True)
+        self.assertIsNone(unique.complete_scene_image("313403"))
+        self.assertNotIn("full_scene", unique.collect_models(self.mapping)[0])
+
+        # 文件长度达到阈值也不代表 PNG 正确：必须验证签名和尺寸。
+        target.write_bytes(b"invalid" * 4000)
+        self.assertIsNone(unique.complete_scene_image("313403"))
+        header = (unique.PNG_SIGNATURE + b"\\x00" * 8 +
+                  (1920).to_bytes(4, "big") + (1080).to_bytes(4, "big"))
+        target.write_bytes(header + b"fixture" * 4000)
+        self.assertEqual(unique.complete_scene_image("313403"),
+                         "../data/full_scenes/313403.png")
+        self.assertEqual(unique.collect_models(self.mapping)[0]["full_scene"],
+                         "../data/full_scenes/313403.png")
 
     def test_incomplete_model_not_published(self):
         with mock.patch.object(spine, "download_file", side_effect=self.fake_download):
