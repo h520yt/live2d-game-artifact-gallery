@@ -4,7 +4,7 @@
   const $ = id => document.getElementById(id);
   const valid = id => /^c\d{3}_\d{2}$/.test(id);
   const stage = $("dc-stage"), canvas = $("dc-canvas");
-  const FORCE = PIXI.live2d.MotionPriority?.FORCE || 3;
+  const FORCE = globalThis.PIXI?.live2d?.MotionPriority?.FORCE || 3;
   let app = null, model = null, gallery = null, current = null, token = 0;
   let motions = [], expressions = [], drag = null;
   function status(message) { $("dc-status").textContent=message; $("dc-status").hidden=!message; }
@@ -51,6 +51,11 @@
     if (!valid(current.id)) {status("资源编号不合法");return;}
     if (!row.ready) {
       status("本地模型尚未安装。请运行：\npython games/destiny_child/scripts/sync.py --id "+current.id);
+      return;
+    }
+    // 避免缺少 Cubism 2 SDK / 专属适配器时触发难以定位的 undefined.from 异常。
+    if (!globalThis.Live2D || typeof globalThis.PIXI?.live2d?.Live2DModel?.from !== "function") {
+      status("Cubism 2 播放运行时未就绪。\n请在项目根目录运行：\npython games/destiny_child/scripts/sync.py --runtime-only\n然后刷新页面。");
       return;
     }
     status("正在加载动态模型…");

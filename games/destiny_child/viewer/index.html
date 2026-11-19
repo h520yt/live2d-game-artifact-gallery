@@ -24,7 +24,8 @@
 <option value="name">名称排序</option></select></div></div>
 <div id="items" class="sg-grid"></div>
 <p id="catalog-status" class="sg-list-note">首批20套；仅本地完整素材可以播放。缩略图是对应角色图标，不冒充人物＋背景完整场景。</p>
-<details class="sg-list-note"><summary>本地安装</summary><code>python games/destiny_child/scripts/sync.py --all</code></details>
+<details class="sg-list-note"><summary>本地安装</summary><code>python games/destiny_child/scripts/sync.py --all</code>
+<p>如果之前已经安装过模型，只需运行 <code>python games/destiny_child/scripts/sync.py --runtime-only</code> 补齐 Cubism 2 运行时。</p></details>
 </section>
 <main id="detail-view" class="sg-detail-overlay" hidden>
 <div class="sg-detail-head"><button id="back-to-catalog" type="button">← 返回列表</button>
@@ -36,8 +37,10 @@
 <div class="sg-floating-body"><p>点击触摸、右键攻击、拖动平移、滚轮缩放。</p>
 <div id="actions"></div><div id="expressions"></div><button id="reset-fit" type="button">恢复居中</button></div>
 </details></div></main>
+<!-- Cubism 2 必须先初始化官方 SDK，再加载 PIXI 和专用适配器；不能使用通用 Cubism 4 bundle。 -->
+<script src="../vendor/live2d.min.js"></script>
 <script src="../../../shared/vendor/pixi.min.js"></script>
-<script src="../../../shared/vendor/live2d.min.js"></script>
+<script src="../vendor/pixi-live2d-display-cubism2.min.js"></script>
 <script src="../../../shared/gallery_bridge.js"></script>
 <script src="../../../shared/skin_gallery.js"></script>
 <script src="viewer.js"></script>

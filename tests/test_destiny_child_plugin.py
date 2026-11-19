@@ -14,6 +14,22 @@ class DestinyChildTests(unittest.TestCase):
         self.assertIn('gallery/plugins.json',home)
         self.assertIn('knownGames.has(id)',home)
 
+    def test_cubism2_runtime_order_and_local_install(self):
+        html = (ROOT/"games/destiny_child/viewer/index.html").read_text(encoding="utf-8")
+        sdk = 'src="../vendor/live2d.min.js"'
+        pixi = 'src="../../../shared/vendor/pixi.min.js"'
+        adapter = 'src="../vendor/pixi-live2d-display-cubism2.min.js"'
+        self.assertLess(html.index(sdk), html.index(pixi))
+        self.assertLess(html.index(pixi), html.index(adapter))
+        self.assertNotIn('src="../../../shared/vendor/live2d.min.js"', html)
+        downloader = (ROOT/"games/destiny_child/scripts/sync.py").read_text(encoding="utf-8")
+        self.assertIn("--runtime-only", downloader)
+        self.assertIn("install_runtime(args.force)", downloader)
+        self.assertIn("RUNTIME_REVISION", downloader)
+        self.assertIn("games/*/vendor/", (ROOT/".gitignore").read_text(encoding="utf-8"))
+        viewer = (ROOT/"games/destiny_child/viewer/viewer.js").read_text(encoding="utf-8")
+        self.assertIn("typeof globalThis.PIXI?.live2d?.Live2DModel?.from", viewer)
+
     def test_manifest(self):
         manifest=json.loads((ROOT/"games/destiny_child/viewer/manifest.json").read_text(encoding="utf-8"))
         rows=manifest["assets"]

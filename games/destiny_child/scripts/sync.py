@@ -19,6 +19,17 @@ GAME = ROOT / "games" / "destiny_child"
 SOURCE_COMMIT = "63e43d034512946c5eb308754f18a1865382bdf6"
 BASE = "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/" + SOURCE_COMMIT + "/assets/live2d/"
 MANIFEST = GAME / "viewer" / "manifest.json"
+# 采用已验证的 Cubism 2 SDK + pixi-live2d-display Cubism 2 插件；
+# 第三方运行时仅下载到本地 vendor，不入库分发（遵循上游许可）。
+RUNTIME_REVISION = "4a2a6ce32185563fe48a8debd533780dfb9b392d"
+RUNTIME_BASE = (
+    "https://raw.githubusercontent.com/Live2D-DCG/Live2D-DCG.github.io/"
+    + RUNTIME_REVISION + "/vendor/"
+)
+RUNTIME_FILES = {
+    "live2d.min.js": ("Live2D", "Live2DModelWebGL"),
+    "pixi-live2d-display-cubism2.min.js": ("Live2DModel", "Cubism 2"),
+}
 ID_RE = re.compile(r"^c\d{3}_\d{2}$")
 NAME_RE = re.compile(r"^[A-Za-z0-9_.-]+$")
 
@@ -77,6 +88,30 @@ def valid(name: str, data: bytes) -> bool:
     return True
 
 
+def install_runtime(force: bool = False) -> None:
+    """补齐本地 Cubism 2 播放器。运行时有独立许可，不提交 Git 仓库。"""
+    vendor = GAME / "vendor"
+    for filename, markers in RUNTIME_FILES.items():
+        destination = vendor / filename
+        if destination.is_file() and not force:
+            try:
+                saved = destination.read_bytes()
+                if len(saved) > 10000 and all(
+                    marker.encode("ascii") in saved for marker in markers
+                ):
+                    print(f"  [运行时已有] {filename}")
+                    continue
+            except OSError:
+                pass
+        data = download(RUNTIME_BASE + filename)
+        if len(data) <= 10000 or not all(
+            marker.encode("ascii") in data for marker in markers
+        ):
+            raise ValueError(f"Cubism 2 运行时文件不完整：{filename}")
+        atomic_write_bytes(destination, data)
+        print(f"  [运行时已安装] {filename} ({len(data)} bytes)")
+
+
 def entries() -> list[dict]:
     manifest = json.loads(MANIFEST.read_text(encoding="utf-8"))
     if manifest.get("schema_version") != 1 or not isinstance(manifest.get("assets"), list):
@@ -117,10 +152,18 @@ def main(argv=None) -> int:
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--id", action="append", metavar="c001_14", help="指定模型，可重复")
     group.add_argument("--all", action="store_true", help="安装首批全部（默认）")
+    group.add_argument("--runtime-only", action="store_true", help="仅修复 Cubism 2 播放运行时")
     parser.add_argument("--plan", action="store_true", help="离线查看安装计划")
     parser.add_argument("--force", action="store_true", help="修复并覆盖已有文件")
     args = parser.parse_args(argv)
     try:
+        if args.runtime_only:
+            if args.plan:
+                print("运行时安装计划：" + ", ".join(RUNTIME_FILES))
+                return 0
+            install_runtime(args.force)
+            print("Cubism 2 播放运行时安装完成；请刷新浏览器。")
+            return 0
         rows = entries()
         requested = set(args.id) if args.id else {row["id"] for row in rows}
         absent = requested - {row["id"] for row in rows}
@@ -131,7 +174,9 @@ def main(argv=None) -> int:
         for row in todo:
             print(f"  {row['id']}  {row['title']}")
         if args.plan:
+            print("同时准备运行时：" + ", ".join(RUNTIME_FILES))
             return 0
+        install_runtime(args.force)
         failures = 0
         for row in todo:
             print(f"\n[安装] {row['id']} · {row['title']}")

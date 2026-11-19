@@ -10,6 +10,7 @@
 
 ```powershell
 python games/destiny_child/scripts/sync.py --plan
+python games/destiny_child/scripts/sync.py --runtime-only
 python games/destiny_child/scripts/sync.py --id c001_14
 python games/destiny_child/scripts/sync.py --all
 python scripts/gallery.py sync-index
@@ -18,5 +19,7 @@ python scripts/gallery.py serve
 ```
 
 在 `http://127.0.0.1:8000/gallery/` 选择「天命之子」。也可访问 `games/destiny_child/viewer/index.html`。
+
+播放器必须按 Cubism 2 SDK → PIXI 6 → `pixi-live2d-display-cubism2` 的顺序加载；不得引用 `shared/vendor/live2d.min.js`（该文件为 Cubism 4 适配器）。首次运行 `sync.py` 会下载两个 Cubism 2 运行时到 `games/destiny_child/vendor/`。已安装过模型时，只需执行 `--runtime-only`，不用重新下载所有模型。Cubism 2 SDK 为 Live2D Inc. 专有软件，请遵循其授权要求；运行时不纳入 Git 仓库。
 
 本地模型在 `games/destiny_child/data/`（Git 忽略）。下载成功与入口文件存在不等于浏览器逐套动画已验收。出错可运行 `python games/destiny_child/scripts/sync.py --id c001_14 --force`。原游戏资源版权归权利方所有，仅作个人合法本地欣赏。

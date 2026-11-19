@@ -42,3 +42,4 @@ gallery/*.tmp
 
 # 新游戏插件本地资源（版权素材不提交）
 games/*/data/
+games/*/vendor/
