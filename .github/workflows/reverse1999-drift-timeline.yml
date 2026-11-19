@@ -22,7 +22,7 @@ jobs:
           python-version: "3.11"
       - name: Get six real Cubism models
         run: |
-          for id in 300306 308203 308804 311604; do
+          for id in 312704 300306 308203 308804 311604; do
             python reverse1999/scripts/sync.py jukebox "$id"
           done
           for id in 308303 315503; do
