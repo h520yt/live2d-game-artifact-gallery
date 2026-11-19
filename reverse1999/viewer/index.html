@@ -266,6 +266,7 @@ function closeDetail(){
   ++poseToken;
   ++framingSequence;
   userAdjustedFraming=false;
+  $('canvas').style.opacity='1';
   if(resizeFitTimer!==null){
     clearTimeout(resizeFitTimer);
     resizeFitTimer=null;
@@ -593,6 +594,8 @@ function setupSceneControls(){
 
 async function selectModel(m, viewMode){
   selected=m;const token=++requestId;
+  // 保持 WebGL 正常渲染用于后台 Alpha 取样，但在首次构图完成前不显示旧位置。
+  $('canvas').style.opacity='0';
   $('detail-title').textContent=m.name+' · '+m.skin;
   $('detail-subtitle').textContent=String(m.id)+(m.full_scene?' · 完整场景可用':' · 动态资源');
   $('viewer-tools').open=false;
@@ -713,21 +716,30 @@ async function selectModel(m, viewMode){
     if(m.type==='scene-live2d'){
       try{model.motion('b_idle',0,FORCE);}catch(error){console.warn('Live2D 默认动作不可用:',error);}
     }
-    userAdjustedFraming=false;
-    fitSkin(model,m);
     setupControls(model);
-    await stabilizeFraming(model,m,token);
+    await finishCubismFraming(model,token);
     if(token!==requestId)return;
-    hideMessage();
     window.GalleryViewerBridge?.refresh();
   }catch(error){if(token!==requestId)return;console.error(error);message(`无法加载 Live2D 模型：${error.message}\n请确认下载完整，并查看浏览器控制台。`);}
 }
+async function finishCubismFraming(model,token,loadingText){
+  if(!model||active!==model||token!==requestId)return;
+  if(loadingText)message(loadingText);
+  // opacity=0 不影响 canvas WebGL 绘制与 drawImage 取样，
+  // 只防止首次未校准的头部裁切和数次自动位移被用户看见。
+  $('canvas').style.opacity='0';
+  userAdjustedFraming=false;
+  fitSkin(model);
+  await stabilizeFraming(model,selected,token);
+  if(token!==requestId||active!==model)return;
+  $('canvas').style.opacity='1';
+  hideMessage();
+}
+
 function initInteraction(){
   $('live2d-fit').onclick=()=>{
     if(!active)return;
-    userAdjustedFraming=false;
-    fitSkin(active,selected);
-    void stabilizeFraming(active,selected,requestId);
+    void finishCubismFraming(active,requestId,'正在重新定位人物…');
   };
   const area=$('stage-area');let drag=false,px=0,py=0;
   area.addEventListener('pointerdown',e=>{
@@ -765,9 +777,7 @@ function initInteraction(){
       if(!active||area.hidden)return;
       const next=area.clientWidth+'x'+area.clientHeight;
       if(next===lastFittedViewport)return;
-      userAdjustedFraming=false;
-      fitSkin(active,selected);
-      void stabilizeFraming(active,selected,requestId);
+      void finishCubismFraming(active,requestId,'正在适配新的舞台尺寸…');
     },180);
   });
 }
