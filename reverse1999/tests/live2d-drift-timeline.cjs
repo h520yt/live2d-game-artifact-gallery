@@ -104,8 +104,41 @@ async function snapshot(page,id,milliseconds) {
         const outcome={id,swingX,swingY,swingScale,movementX,movementY,
           earlyVisible,hiddenAfterReady,resizeStable,
           loading:stable.some(s=>s.statusVisible),errors};
+        // 真实调整浏览器宽度，只允许在布局稳定后做一次重新定位。
+        if(id==="308203"){
+          const seqBefore=afterResize.seq;
+          await page.setViewportSize({width:1366,height:900});
+          await page.waitForFunction(seq=>{
+            const stage=document.getElementById("stage-area");
+            return stage.clientWidth===1366&&framingSequence>seq&&
+              document.getElementById("status").hidden&&
+              getComputedStyle(document.getElementById("canvas")).opacity==="1";
+          },seqBefore,{timeout:15000});
+          const resized=await page.evaluate(()=>({
+            x:active.x,y:active.y,scale:active.scale.x,
+            bounds:visiblePixels(),seq:framingSequence,
+            width:document.getElementById("stage-area").clientWidth,
+            height:document.getElementById("stage-area").clientHeight
+          }));
+          await page.waitForTimeout(1100);
+          const settled=await page.evaluate(()=>({
+            x:active.x,y:active.y,scale:active.scale.x,seq:framingSequence,
+            bounds:visiblePixels()
+          }));
+          const br=settled.bounds;
+          outcome.actualResizeStable=Math.abs(resized.x-settled.x)<.5&&
+            Math.abs(resized.y-settled.y)<.5&&
+            Math.abs(resized.scale-settled.scale)<.0001&&
+            resized.seq===settled.seq&&!!br&&
+            br.left>resized.width*.018&&br.right<resized.width*.98&&
+            br.top>resized.height*.018&&br.bottom<resized.height*.98;
+          await page.locator("#stage-area").screenshot({
+            path:path.join(out,id+"-actual-resize.png"),animations:"disabled"
+          });
+        }
         console.log("DRIFT-RESULT",JSON.stringify(outcome));
-        if(swingX>1||swingY>1||swingScale>.005||outcome.loading||
+        if(outcome.actualResizeStable===false||
+          swingX>1||swingY>1||swingScale>.005||outcome.loading||
           earlyVisible||hiddenAfterReady||!resizeStable||
           movementX>stable[0].width*.12||movementY>stable[0].height*.16||
           errors.length||stable.some(s=>!s.bounds)){
