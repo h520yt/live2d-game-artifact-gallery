@@ -101,8 +101,14 @@ async function snapshot(page,id,milliseconds) {
           Math.abs(beforeResize.y-afterResize.y)<.5&&
           Math.abs(beforeResize.scale-afterResize.scale)<.0001&&
           beforeResize.frameSeq===afterResize.seq;
+        const finalRect=stable.at(-1).bounds;
+        const withinStage=!!finalRect&&
+          finalRect.top>stable.at(-1).height*.022&&
+          finalRect.bottom<stable.at(-1).height*.97&&
+          finalRect.left>stable.at(-1).width*.015&&
+          finalRect.right<stable.at(-1).width*.985;
         const outcome={id,swingX,swingY,swingScale,movementX,movementY,
-          earlyVisible,hiddenAfterReady,resizeStable,
+          earlyVisible,hiddenAfterReady,resizeStable,withinStage,
           loading:stable.some(s=>s.statusVisible),errors};
         // 真实调整浏览器宽度，只允许在布局稳定后做一次重新定位。
         if(id==="308203"){
@@ -137,7 +143,7 @@ async function snapshot(page,id,milliseconds) {
           });
         }
         console.log("DRIFT-RESULT",JSON.stringify(outcome));
-        if(outcome.actualResizeStable===false||
+        if(outcome.actualResizeStable===false||!withinStage||
           swingX>1||swingY>1||swingScale>.005||outcome.loading||
           earlyVisible||hiddenAfterReady||!resizeStable||
           movementX>stable[0].width*.12||movementY>stable[0].height*.16||
