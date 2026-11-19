@@ -14,7 +14,7 @@ main{display:grid;grid-template-columns:290px minmax(320px,1fr) 260px;height:cal
 aside{background:var(--panel);min-width:0;padding:1rem;overflow-y:auto}aside.left{border-right:1px solid var(--line)}aside.right{border-left:1px solid var(--line)}
 input{width:100%;border:1px solid var(--line);border-radius:9px;padding:.7rem;background:#0f1721;color:inherit;outline:none}input:focus{border-color:var(--accent)}
 .note{font-size:.78rem;color:var(--muted);line-height:1.6}.count{font-size:.8rem;color:var(--muted);margin:.7rem 0}
-#models{display:flex;flex-direction:column;gap:.45rem}button.item{width:100%;text-align:left;cursor:pointer;border-radius:8px;border:1px solid transparent;background:#1b2838;color:inherit;padding:.65rem .75rem}
+/* #models 的布局已交给 shared/skin_gallery.css 的 .sg-grid，禁止旧 flex 覆盖。 */button.item{width:100%;text-align:left;cursor:pointer;border-radius:8px;border:1px solid transparent;background:#1b2838;color:inherit;padding:.65rem .75rem}
 button.item:hover,button.item.active{border-color:var(--accent);background:#273747}
 button.item.not-downloaded{opacity:.72;border-style:dashed;border-color:#455568}
 button.item.not-downloaded:hover{opacity:1}
@@ -63,6 +63,27 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 <style>
 /* 1999 只保留引擎特有的舞台样式；目录和详情布局复用公共画廊。 */
 .sg-host #detail-view{display:flex;grid-template-columns:none;height:auto;min-height:0}
+/* 精确约束真实卡片容器：防止旧版查看器和后续插件的 ID 样式覆盖网格。 */
+.sg-host #models.sg-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(185px,1fr));
+  gap:17px;
+  align-items:stretch;
+}
+.sg-host #models .sg-card{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+.sg-host #models .sg-card-preview{
+  width:100%;
+  aspect-ratio:4/5;
+  min-height:0;
+  height:auto;
+}
+@media(max-width:680px){
+  .sg-host #models.sg-grid{grid-template-columns:repeat(auto-fill,minmax(145px,1fr));gap:10px}
+}
 .sg-host #detail-view[hidden]{display:none!important}
 .sg-host .sg-workspace{height:auto;min-height:0;display:block}
 .sg-host #detail-view section.stage{height:100%;min-height:0}
@@ -208,7 +229,9 @@ function galleryRows(){
         key,title:model.name||key,subtitle:model.skin||'默认衣着',
         // 4.1 新角色「佩施塔」也常被叫作“白雪公主”，作为搜索别名，不新增分类。
         searchText:[model.en,model.skin_en,key,model.name==='佩施塔'?'白雪 白雪公主':''].join(' '),
-        ready:true,preview:model.full_scene||null,
+        // 封面：完整合成图优先；点唱机已有本地人物原画仅作卡片缩略图，
+        // 绝不把裸背景误标成“角色＋背景完整成图”。
+        ready:true,preview:model.full_scene||model.artwork||null,
         status:model.full_scene?'完整场景图 · 可切换动态':
           model.type==='scene-live2d'||model.type==='showcase'?'动态场景':'动态模型',
         model,
