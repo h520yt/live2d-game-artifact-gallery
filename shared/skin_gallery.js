@@ -111,9 +111,16 @@
     }
     function navigate(offset) {
       const index = visible.findIndex(item => itemKey(item) === selectedKey);
-      if (index < 0 || !visible.length) return false;
-      const next = visible[(index + offset + visible.length) % visible.length];
-      return open(itemKey(next));
+      if (index < 0 || !visible.length || !Number.isFinite(offset) || offset === 0) return false;
+      // 已安装与待安装资源共享一个目录，但详情里“上一套/下一套”只能跳到可展示的资源。
+      // 否则 onOpen(false) 会把大舞台突然关掉，让用户以为页面崩溃。
+      const step=offset>0?1:-1;
+      for (let i=1;i<=visible.length;i++) {
+        const next=visible[(index+step*i+visible.length*2)%visible.length];
+        if (!next?.ready) continue;
+        return open(itemKey(next));
+      }
+      return false;
     }
     search.addEventListener("input",render);
     if (sort) sort.addEventListener("change",render);
