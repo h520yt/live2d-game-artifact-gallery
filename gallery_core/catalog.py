@@ -218,8 +218,25 @@ def _nikke(root: Path, manifest: Path, data: dict) -> list[dict]:
 
 def _reverse1999(root: Path, manifest: Path, data: dict) -> list[dict]:
     result = []
-    # unique/jukebox 是额外的筛选视图，非另一份已安装模型，避免重复计数。
-    for model in data.get("models", []):
+    # 1999 和其他游戏一样按一套衣着只展示一张卡片；不同引擎是同款的展示方式。
+    # 保留获选条目的原始 source_id:folder 深链，不修改具体游戏的 manifest。
+    def priority(entry: dict) -> int:
+        kind = str(entry.get("type") or "")
+        return (100 if entry.get("full_scene") else 0) + {
+            "scene-live2d": 50, "showcase": 35, "scene": 30,
+            "cubism": 25, "spine": 20, "artwork": 1,
+        }.get(kind, 0)
+
+    skin_models: dict[str, dict] = {}
+    for entry in data.get("models", []):
+        if not isinstance(entry, dict) or entry.get("id") is None:
+            continue
+        key = str(entry["id"])
+        old = skin_models.get(key)
+        if old is None or priority(entry) > priority(old):
+            skin_models[key] = entry
+
+    for model in skin_models.values():
         if not isinstance(model, dict) or model.get("id") is None:
             continue
         raw_id = str(model["id"])
