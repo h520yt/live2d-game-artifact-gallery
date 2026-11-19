@@ -24,6 +24,18 @@ class UnifiedGalleryLayoutTests(unittest.TestCase):
         self.assertNotIn('id="filter-latest"', page)
         self.assertNotIn('id="filter-tier68"', page)
 
+    def test_legacy_model_flex_rule_cannot_override_shared_grid(self):
+        """截图回归：旧 #models:flex 曾让每张 4:5 预览变成整屏宽度。"""
+        page = (ROOT / "reverse1999/viewer/index.html").read_text(encoding="utf-8")
+        shared_css = (ROOT / "shared/skin_gallery.css").read_text(encoding="utf-8")
+        self.assertNotRegex(page, r"#models\\s*\\{\\s*display\\s*:\\s*flex")
+        self.assertIn(".sg-host #models.sg-grid{", page)
+        self.assertIn("display:grid;", page)
+        self.assertIn("grid-template-columns:repeat(auto-fill,minmax(185px,1fr))", page)
+        self.assertIn(".sg-grid{display:grid;", shared_css)
+        self.assertIn("class=\"sg-grid\"", page)
+        self.assertIn("preview:model.full_scene||model.artwork||null", page)
+
     def test_1999_metadata_keeps_both_skin_types_in_single_grid(self):
         payload = json.loads((ROOT / "reverse1999/viewer/manifest.json").read_text(encoding="utf-8"))
         self.assertTrue(payload["unique"])
