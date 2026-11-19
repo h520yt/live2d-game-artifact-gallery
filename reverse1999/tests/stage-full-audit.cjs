@@ -7,7 +7,7 @@ const {chromium}=require("playwright");
 
 const ROOT=path.resolve(__dirname,"../test-output/stage-audit");
 const catalog=JSON.parse(fs.readFileSync(path.resolve(__dirname,"../viewer/manifest.json"),"utf8"));
-const ids=["308303","308603","315503","313403","306604","311604","308804"];
+const ids=["308203","308804","311604","308303","308603","315503","313403","306604"];
 const widths=[{width:1776,height:800},{width:1366,height:900}];
 fs.mkdirSync(ROOT,{recursive:true});
 
