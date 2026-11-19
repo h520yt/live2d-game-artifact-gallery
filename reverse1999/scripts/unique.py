@@ -92,6 +92,24 @@ def inspect_local(skin_id):
             "files": len(files)}
 
 
+def complete_scene_image(skin_id):
+    """仅登记实际存在且尺寸合理的「角色 + 同 ID 背景」合成 PNG。"""
+    sid = require_skin(skin_id)[0]
+    picture = ROOT / "data" / "full_scenes" / f"{sid}.png"
+    try:
+        if picture.stat().st_size < 24000:
+            return None
+        with picture.open("rb") as stream:
+            head = stream.read(24)
+        if (len(head) != 24 or head[:8] != PNG_SIGNATURE
+                or int.from_bytes(head[16:20], "big") < 640
+                or int.from_bytes(head[20:24], "big") < 640):
+            return None
+    except OSError:
+        return None
+    return f"../data/full_scenes/{sid}.png"
+
+
 def catalog():
     return [{
         "id": int(sid), "name": name, "skin": garment, "tier": "UNIQUE", "version": version,
@@ -168,7 +186,7 @@ def collect_models(mapping):
         if not info or sid not in lookup:
             continue
         record = lookup[sid]
-        results.append({
+        entry = {
             "type": "scene-live2d",
             "tier": "UNIQUE",
             "id": int(sid),
@@ -182,5 +200,9 @@ def collect_models(mapping):
             "version": version,
             "description": "Unique 最高档：官方同 ID 背景 + Cubism 原生动态衣着；不包含 Unity 全特效与编排",
             "motion_groups": info["motion_groups"],
-        })
+        }
+        full_scene = complete_scene_image(sid)
+        if full_scene:
+            entry["full_scene"] = full_scene
+        results.append(entry)
     return results
