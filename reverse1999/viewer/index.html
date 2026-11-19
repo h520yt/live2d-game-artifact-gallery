@@ -343,58 +343,11 @@ function fit(model){
   }
 }
 
-// 12 套 UNIQUE 的实测可见区域：基于 Chromium 1366x900、舞台 816x824，
-// 在基础模型边界适配后缩放 0.70 的状态下，对前景像素做差得到。
-//
-// 数值为 [left,top,right,bottom]。它们不是游戏美术文件中的角色原点：
-// Cubism 动态立绘含大量偏移的空白、装饰网格，不能直接把模型原点当视觉中心。
-// 将实际可见区域的中心移到画布中心，并在视觉上保持约 70% 的安全高度。
-// 不在浏览器里读取 WebGL 像素，避免卡顿或破坏动态模型绘制状态。
-const UNIQUE_FRAME_REFERENCE={
-  "302504":[331,19,491,404],     // 星锑
-  "306604":[288,90,508,412],     // 37
-  "308303":[214,40,562,420],    // 曲娘
-  "308603":[295,13,506,428],    // 露西
-  "310003":[297,29,507,425],    // 天使娜娜
-  "311003":[287,35,523,406],    // 梁月
-  "305305":[308,44,550,402],    // 牙仙
-  "314403":[377,57,535,396],    // 珐琅眼
-  "312003":[183,228,633,398],   // 诺谛卡
-  "310504":[316,83,521,405],    // 纸信圈儿
-  "315503":[248,50,631,426],    // 狩勋女巫红弩箭
-  "313403":[276,4,516,422]      // 贝丽尔
-};
-function fitSkin(model,skin){
+// 与具体衣着无关的初始适配。旧版本用 816×824 截图比例
+// 对每套 UNIQUE 单独写位置补偿，改为全屏舞台后坐标已失效；彻底取消。
+// 所有 Cubism（UNIQUE / 点唱机 / 普通模型）使用相同的像素校正流程。
+function fitSkin(model){
   fit(model);
-  if(skin?.type!=='scene-live2d')return;
-  const w=$('stage-area').clientWidth,h=$('stage-area').clientHeight;
-  if(!w||!h)return;
-  const initial=.70;
-  model.position.set(w/2+(model.x-w/2)*initial,
-                     h/2+(model.y-h/2)*initial);
-  model.scale.set(model.scale.x*initial);
-  const ref=UNIQUE_FRAME_REFERENCE[String(skin.id)];
-  if(!ref){
-    // 新加入的皮肤没做过视觉标定时，先用保守缩放展示。
-    return;
-  }
-  const [left,top,right,bottom]=ref;
-  const centerX=(left+right)/2/816*w;
-  const centerY=(top+bottom)/2/824*h;
-  const widthNorm=Math.max(.05,(right-left)/816);
-  const heightNorm=Math.max(.05,(bottom-top)/824);
-  const zoom=Math.min(.74/widthNorm,.72/heightNorm,1.60);
-  const prevX=model.x,prevY=model.y;
-  model.scale.set(model.scale.x*zoom);
-  model.position.set(w/2-(centerX-prevX)*zoom,
-                     h/2-(centerY-prevY)*zoom);
-  // 「虹色冠冕」的右侧宽场景中，人物头部相对于几何中心有额外上移。
-  // Chromium 1920x1080 测试发现无此修正时头部恰好贴到顶边；
-  // 仅在宽屏逐渐增加纵向补偿，不改变常规展示比例及其他皮肤。
-  if(String(skin.id)==='315503'){
-    const wide=Math.max(0,Math.min(1,(w/h-1.08)/.20));
-    model.y+=h*.070*wide;
-  }
 }
 
 // 不能只根据模型几何包围盒判断人物位置：许多 Cubism 衣着的外框
@@ -453,8 +406,7 @@ function visibleFramingTransform(bounds,width,height){
 
 async function stabilizeFraming(model,skin,token){
   const sequence=++framingSequence;
-  // UNIQUE 的 12 套已经有单独的逐角色视觉标定，先保持其既有构图。
-  if(skin?.type==='scene-live2d'&&UNIQUE_FRAME_REFERENCE[String(skin.id)])return;
+  // 所有 Cubism 都必须参与可见区域校正，不允许按档位跳过。
   const area=$('stage-area');
   const width=area.clientWidth,height=area.clientHeight;
   if(!width||!height)return;
