@@ -1,0 +1,53 @@
+name: Reverse 1999 selected Jukebox stage rendering
+on:
+  push:
+    paths:
+      - "reverse1999/viewer/index.html"
+      - "reverse1999/tests/jukebox-stage-browser.cjs"
+      - ".github/workflows/reverse1999-stage-render.yml"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  stage-311604:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      GITHUB_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Download target Cubism skin without requiring illustration availability
+        run: |
+          python reverse1999/scripts/sync.py jukebox 311604 || true
+          python reverse1999/scripts/sync.py manifest
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("reverse1999/viewer/manifest.json")
+          d=json.loads(p.read_text(encoding="utf-8"))
+          row=next((x for x in d["models"] if x.get("id")==311604), None)
+          assert row and row["type"]=="cubism", row
+          assert (p.parent / row["path"]).is_file(), row
+          print("Jukebox model ready",row["id"],row["name"])
+          PY
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install Chromium verification dependencies
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+      - name: Verify framing on two viewport sizes and save screenshots
+        run: |
+          python -m http.server 8000 --bind 127.0.0.1 > /tmp/reverse1999-stage-http.log 2>&1 &
+          node reverse1999/tests/jukebox-stage-browser.cjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: reverse1999-311604-stage-previews
+          path: reverse1999/test-output/stage-311604/
+          if-no-files-found: ignore
