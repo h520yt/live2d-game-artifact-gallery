@@ -818,7 +818,10 @@ async function start(){
         poses:{'商城展示':{skel:m.scene.skel,atlas:m.scene.atlas,version:m.scene.version}}
       };
     });
-    app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,antialias:true,autoDensity:true,resolution:Math.min(devicePixelRatio||1,2)});
+    // 允许在动态帧间读取透明 WebGL 像素，用于真实人物边界定位及场景截图。
+    app = new PIXI.Application({view:$('canvas'),resizeTo:$('stage-area'),backgroundAlpha:0,
+      antialias:true,autoDensity:true,preserveDrawingBuffer:true,
+      resolution:Math.min(devicePixelRatio||1,2)});
     initInteraction();setupSceneControls();
     galleryUi=SkinGallery.create({
       grid:$('models'),search:$('search'),sort:$('catalog-sort'),count:$('count'),
