@@ -26,9 +26,11 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 #stage-area{position:relative;width:100%;height:100%;min-height:0;touch-action:none;cursor:grab}#stage-area:active{cursor:grabbing}#canvas{position:relative;z-index:1;display:block;width:100%;height:100%}
 #live2d-background{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;z-index:0;pointer-events:none}
 #live2d-background[hidden]{display:none!important}
-#stage-area[hidden],#spine-stage[hidden],#artwork-stage[hidden]{display:none!important}
+#stage-area[hidden],#spine-stage[hidden],#artwork-stage[hidden],#full-scene-stage[hidden]{display:none!important}
 #artwork-stage{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:4.5rem 1.5rem 1.5rem;overflow:hidden;background:radial-gradient(ellipse at center,#273443,#101923 75%)}
 #artwork-image{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;filter:drop-shadow(0 8px 18px #0005)}
+#full-scene-stage{position:absolute;inset:0;background:#0b1017;display:flex;align-items:center;justify-content:center}
+#full-scene-image{width:100%;height:100%;object-fit:contain}
 #jukebox-view-controls[hidden]{display:none!important}
 #jukebox-view-controls button.active{border-color:var(--accent);background:#31404a;font-weight:650}
 #jukebox-view-controls button:disabled{opacity:.45;cursor:not-allowed}
@@ -77,6 +79,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   <section class="stage">
     <div class="stage-toolbar" id="model-info" hidden><div id="model-title" class="title"></div><div id="model-skin" class="subtitle"></div></div>
     <div id="stage-area"><img id="live2d-background" alt="这套衣着对应的专属背景" hidden><canvas id="canvas"></canvas></div>
+    <div id="full-scene-stage" hidden><img id="full-scene-image" alt="角色与对应衣着专属背景的完整合成场景图"></div>
     <div id="artwork-stage" hidden><img id="artwork-image" alt="该套衣着的完整高分辨率静态立绘"></div>
     <div id="spine-stage" hidden>
       <img id="showcase-background" alt="衣着专属背景" hidden>
@@ -92,6 +95,14 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
         <button id="view-model" type="button">动态模型</button>
       </div>
       <p class="note" id="jukebox-artwork-status">按皮肤 ID 对应原始静态立绘，独立于 Live2D / Spine 模型。</p>
+    </div>
+    <div id="full-scene-controls" hidden>
+      <h3>角色 + 背景完整场景</h3>
+      <div class="list">
+        <button id="scene-view-image" type="button">完整场景图</button>
+        <button id="scene-view-dynamic" type="button">Live2D 动态展示</button>
+      </div>
+      <p class="note">静态场景由本地原生 Live2D 角色和同皮肤 ID 的背景合成导出；并非官方直接提供的合成原画。</p>
     </div>
     <div id="scene-controls" hidden>
       <h3>完整皮肤展示</h3>
@@ -470,6 +481,13 @@ async function selectModel(m, viewMode){
   $('live2d-background').removeAttribute('src');
   $('artwork-stage').hidden=true;
   $('artwork-image').removeAttribute('src');
+  $('full-scene-stage').hidden=true;
+  $('full-scene-image').removeAttribute('src');
+  const hasFullScene=m.type==='scene-live2d'&&!!m.full_scene;
+  const showFullScene=hasFullScene&&viewMode!=='model';
+  $('full-scene-controls').hidden=!hasFullScene;
+  $('scene-view-image').classList.toggle('active',showFullScene);
+  $('scene-view-dynamic').classList.toggle('active',hasFullScene&&!showFullScene);
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
@@ -497,6 +515,17 @@ async function selectModel(m, viewMode){
   }
   if(artOnly){
     message('这套衣着只有原画；动态模型尚未安装，请运行 jukebox '+m.id);
+    return;
+  }
+  if(showFullScene){
+    $('stage-area').hidden=true;
+    $('spine-stage').hidden=true;
+    $('scene-controls').hidden=true;
+    $('full-scene-stage').hidden=false;
+    $('full-scene-image').src=m.full_scene;
+    $('model-skin').textContent=m.skin+' · 角色 + 背景完整场景图';
+    buttons($('poses'),[],()=>{});
+    hideMessage();
     return;
   }
   if(m.type==='spine'||m.type==='showcase'||m.type==='scene'){
@@ -619,6 +648,11 @@ async function start(){
     initInteraction();setupSceneControls();renderList();$('search').addEventListener('input',renderList);
     $('view-artwork').onclick=()=>{if(selected)selectModel(selected,'artwork');};
     $('view-model').onclick=()=>{if(selected&&selected.type!=='artwork')selectModel(selected,'model');};
+    $('scene-view-image').onclick=()=>{if(selected?.full_scene)selectModel(selected,'image');};
+    $('scene-view-dynamic').onclick=()=>{if(selected?.full_scene)selectModel(selected,'model');};
+    $('full-scene-image').onerror=()=>{
+      if(selected?.full_scene&&!$('full-scene-stage').hidden)selectModel(selected,'model');
+    };
     $('artwork-image').onerror=()=>{
       if(selected?.channel==='JUKEBOX'&&!$('artwork-stage').hidden)
         message('原画文件无法加载，请重新运行 jukebox-art '+selected.id+' 后刷新。');
@@ -633,7 +667,9 @@ async function start(){
         const model = models.find(item =>
           String(item.id) + ':' + String(item.folder || item.channel || item.skin || '') === asset);
         if (!model) return false;
-        selectModel(model, model.type === 'artwork' ? 'artwork' : 'model');
+        // 截图导出流程强制打开动态合成舞台；普通浏览优先查看完整成图。
+        const exporting=new URLSearchParams(location.search).get('export_scene')==='1';
+        selectModel(model, exporting?'model':(model.type==='artwork'?'artwork':undefined));
         return true;
       },
       listRoles: () => selected?.poses ? Object.keys(selected.poses) : [],
