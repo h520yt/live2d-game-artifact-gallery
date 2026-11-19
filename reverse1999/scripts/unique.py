@@ -63,7 +63,17 @@ def download_once(url, target, size=0):
     if target.is_file() and target.stat().st_size > 0:
         if not size or target.stat().st_size == size:
             return False
-    return spine.download_file(url, target, size)
+    try:
+        return spine.download_file(url, target, size)
+    except RuntimeError as exc:
+        prefix = BASE + "/"
+        if not url.startswith(prefix):
+            raise
+        # fork 的 raw 地址不可用时沿用已有安装器的 jsDelivr 回退策略。
+        relative = url[len(prefix):]
+        mirror = f"https://cdn.jsdelivr.net/gh/{SOURCE}@master/{relative}"
+        print(f"资源直链失败，尝试 fork CDN 镜像：{exc}")
+        return spine.download_file(mirror, target, size)
 
 
 def inspect_local(skin_id):
