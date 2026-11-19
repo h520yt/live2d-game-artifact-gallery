@@ -10,6 +10,7 @@
  *   node reverse1999/scripts/export_full_scenes.cjs all
  *   node reverse1999/scripts/export_full_scenes.cjs 308603
  *   node reverse1999/scripts/export_full_scenes.cjs all --download
+ *   node reverse1999/scripts/export_full_scenes.cjs all --4k
  *
  * 输出：reverse1999/data/full_scenes/<皮肤ID>.png（Git 忽略）
  */
@@ -26,7 +27,7 @@ const MANIFEST = path.join(GAME, "viewer", "manifest.json");
 const CATALOG = path.join(GAME, "viewer", "unique-catalog.json");
 const PNG = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 
-function validPng(filename) {
+function validPng(filename, minWidth = 640, minHeight = 640) {
   try {
     const stat = fs.statSync(filename);
     if (stat.size < 24000) return false;
@@ -34,7 +35,7 @@ function validPng(filename) {
     const head = Buffer.alloc(24);
     try { fs.readSync(fd, head, 0, 24, 0); } finally { fs.closeSync(fd); }
     return head.subarray(0, 8).equals(PNG) &&
-      head.readUInt32BE(16) >= 640 && head.readUInt32BE(20) >= 640;
+      head.readUInt32BE(16) >= minWidth && head.readUInt32BE(20) >= minHeight;
   } catch { return false; }
 }
 
@@ -89,6 +90,9 @@ async function main() {
   const target = args.find(x => !x.startsWith("--")) || "all";
   const download = args.includes("--download");
   const force = args.includes("--force");
+  const is4k = args.includes("--4k");
+  const width = is4k ? 3840 : 1920;
+  const height = is4k ? 2160 : 1080;
   const catalog = JSON.parse(fs.readFileSync(CATALOG, "utf8")).skins;
   const selected = target === "all" ? catalog :
     catalog.filter(row => String(row.id) === target);
@@ -96,9 +100,7 @@ async function main() {
 
   // 可选下载：只会从已核对的上游固定路径获取同一皮肤的资源。
   if (download) {
-    for (const row of selected) {
-      runPython(["reverse1999/scripts/sync.py", "unique", String(row.id)]);
-    }
+    runPython(["reverse1999/scripts/sync.py", "unique", target]);
   }
   // 下载完成后的清单已更新；离线模式沿用已有清单。
   const models = JSON.parse(fs.readFileSync(MANIFEST, "utf8")).models;
@@ -111,7 +113,7 @@ async function main() {
     console.log("先执行 python reverse1999/scripts/sync.py unique all，或加 --download 自动安装。");
   }
   const todo = selected.filter(row => available.has(String(row.id)) &&
-    (force || !validPng(path.join(OUTPUT, row.id + ".png"))));
+    (force || !validPng(path.join(OUTPUT, row.id + ".png"), width, height)));
   if (todo.length) fs.mkdirSync(OUTPUT, { recursive: true });
 
   let service = null, browser = null, failed = 0;
@@ -122,7 +124,7 @@ async function main() {
         "--enable-webgl", "--use-gl=angle", "--enable-unsafe-swiftshader"
       ] });
       const page = await browser.newPage({
-        viewport: { width: 1920, height: 1080 }, deviceScaleFactor: 1,
+        viewport: { width, height }, deviceScaleFactor: 1,
       });
       for (const row of todo) {
         const model = available.get(String(row.id));
@@ -155,7 +157,7 @@ async function main() {
           await page.locator("#stage-area").screenshot({
             path: temporary, animations: "disabled", timeout: 90000,
           });
-          if (!validPng(temporary)) throw new Error("导出的 PNG 尺寸或内容校验失败");
+          if (!validPng(temporary, width, height)) throw new Error("导出的 PNG 尺寸或内容校验失败");
           fs.renameSync(temporary, filename);
           console.log("[完成] " + row.id + " " + row.name + " · " + row.skin +
             " -> " + path.relative(ROOT, filename));
@@ -175,7 +177,7 @@ async function main() {
   runPython(["reverse1999/scripts/sync.py", "manifest"]);
   runPython(["scripts/gallery.py", "sync-index"]);
   console.log("完整场景导出完成，成功/复用：" +
-    selected.filter(row => validPng(path.join(OUTPUT, row.id + ".png"))).length +
+    selected.filter(row => validPng(path.join(OUTPUT, row.id + ".png"), width, height)).length +
     " / " + selected.length + "；失败：" + failed);
   console.log("打开 http://127.0.0.1:8000/gallery/（先执行 python scripts/gallery.py serve）");
   if (missing.length || failed) process.exitCode = 1;
