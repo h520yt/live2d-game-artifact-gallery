@@ -103,6 +103,9 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   padding:8px 12px;border-radius:8px;color:#d5c9ae;font-size:12px;line-height:1.55;
   pointer-events:none;white-space:normal}
 .sg-host #status{z-index:9;pointer-events:none}
+/* 统一画廊已有返回、切换和动作按钮，旧桥接条保留功能但不重复占舞台。 */
+.sg-host #gallery-bridge-toolbar{display:none!important}
+.sg-host #model-info{display:none!important}
 .sg-host .sg-catalog .note{margin-top:18px}
 @media(max-width:680px){.sg-host #detail-view .stage-toolbar{max-width:calc(100% - 20px)}}
 </style>
@@ -476,6 +479,24 @@ async function stabilizeFraming(model,skin,token){
       height*.5+(model.y-correction.cy)*zoom);
     model.scale.set(model.scale.x*zoom);
   }
+
+  // 先安全收进画面，再放大到适合欣赏的全身构图。
+  // 防止极端透明网格把非 UNIQUE 模型缩成舞台中央很小的一团。
+  if(token!==requestId||sequence!==framingSequence||active!==model)return;
+  const finalBounds=visiblePixels();
+  if(!finalBounds)return;
+  const visibleWidth=finalBounds.right-finalBounds.left;
+  const visibleHeight=finalBounds.bottom-finalBounds.top;
+  const safe=finalBounds.left>width*.07&&finalBounds.right<width*.93&&
+    finalBounds.top>height*.07&&finalBounds.bottom<height*.93;
+  if(!safe||visibleWidth<2||visibleHeight<2)return;
+  const zoom=Math.min(1.60,width*.68/visibleWidth,height*.66/visibleHeight);
+  if(zoom<=1.08)return;
+  const centerX=(finalBounds.left+finalBounds.right)*.5;
+  const centerY=(finalBounds.top+finalBounds.bottom)*.5;
+  model.position.set(width*.5+(model.x-centerX)*zoom,
+    height*.5+(model.y-centerY)*zoom);
+  model.scale.set(model.scale.x*zoom);
 }
 
 function disposeSpine(){
