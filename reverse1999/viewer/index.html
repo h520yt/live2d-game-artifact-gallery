@@ -131,7 +131,8 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   <p id="catalog-status" class="sg-list-note" role="status">同一衣着只展示一张卡片；没有完整场景图时仍可查看已安装的动态模型。</p>
   <details class="sg-list-note">
     <summary>资源安装说明</summary>
-    <p>UNIQUE 衣着：<code>python reverse1999/scripts/sync.py unique all</code>；
+    <p>佩施塔（白雪）角色原画：<code>python reverse1999/scripts/sync.py character-art 315901</code>；
+    UNIQUE 衣着：<code>python reverse1999/scripts/sync.py unique all</code>；
     点唱机衣着：<code>python reverse1999/scripts/sync.py jukebox all</code>；
     完整场景 PNG：<code>node reverse1999/scripts/export_full_scenes.cjs all</code>。</p>
   </details>
@@ -227,7 +228,6 @@ function galleryRows(){
     (m.type==='scene-live2d' ? 50 : m.type==='showcase' ? 35 :
      m.type==='cubism' ? 25 : m.type==='spine' ? 20 : 0);
   for (const model of models) {
-    if (model.type==='artwork') continue;
     const key=String(model.id);
     if (!/^\d{6}$/.test(key)) continue;
     const existing=found.get(key);
@@ -235,11 +235,13 @@ function galleryRows(){
       found.set(key,{
         key,title:model.name||key,subtitle:model.skin||'默认衣着',
         // 4.1 新角色「佩施塔」也常被叫作“白雪公主”，作为搜索别名，不新增分类。
-        searchText:[model.en,model.skin_en,key,model.name==='佩施塔'?'白雪 白雪公主':''].join(' '),
+        searchText:[model.en,model.skin_en,key,['315901','315902'].includes(key)?'白雪 白雪公主 佩施塔':''].join(' '),
         // 封面：完整合成图优先；点唱机已有本地人物原画仅作卡片缩略图，
         // 绝不把裸背景误标成“角色＋背景完整成图”。
         ready:true,preview:model.full_scene||model.artwork||null,
         status:model.full_scene?'完整场景图 · 可切换动态':
+          model.artwork&&model.type==='artwork'?'角色原画':
+          model.artwork_kind==='character-portrait'?'角色原画 · 可切换动态':
           model.type==='scene-live2d'||model.type==='showcase'?'动态场景':'动态模型',
         model,
       });
@@ -639,15 +641,18 @@ async function selectModel(m, viewMode){
   $('model-info').hidden=false;$('model-title').textContent=m.name;
   $('model-skin').textContent=`${m.skin} · ${m.en || m.folder}`;
   buttons($('motions'),[],()=>{});buttons($('expressions'),[],()=>{});
-  const jukebox=m.channel==='JUKEBOX', hasArt=jukebox&&!!m.artwork, artOnly=m.type==='artwork';
+  const jukebox=m.channel==='JUKEBOX', hasArt=!!m.artwork, artOnly=m.type==='artwork';
   // 原画和场景图是不同资产。没有专属背景时提供「静态原画」切换，
   // 不拿原画当模型背景叠加，避免出现两个人物的错误合成。
-  const showArt=hasArt&&viewMode==='artwork';
+  // 白雪原画和动态骨骼共用一张衣着卡片，首次打开先给原画。
+  // 点唱机维持原有默认模式，切换控件由是否有原画决定而非资源渠道。
+  const showArt=hasArt&&(viewMode==='artwork'||
+    (m.artwork_kind==='character-portrait'&&!hasFullScene&&!viewMode));
   $('jukebox-view-controls').hidden=!hasArt || hasFullScene;
   $('view-artwork').disabled=!hasArt;
   $('view-model').disabled=artOnly;
   $('view-artwork').classList.toggle('active',showArt);
-  $('view-model').classList.toggle('active',jukebox&&!showArt);
+  $('view-model').classList.toggle('active',hasArt&&!showArt);
   $('background-note').hidden=true;
   if(!m.background&&!m.scene?.background){
     $('background-note').textContent=hasArt
@@ -656,8 +661,8 @@ async function selectModel(m, viewMode){
     $('background-note').hidden=false;
   }
   $('jukebox-artwork-status').textContent=hasArt
-    ? '原画为本地独立高分辨率 WebP，保持原始比例；动态模型仍可切换。'
-    : '尚未安装原画：运行 python reverse1999/scripts/sync.py jukebox-art '+m.id;
+    ? '角色原画采用真实原图 WebP，保持原始比例；它不是与专属背景合成的场景图。'
+    : '尚未安装原画：可运行对应皮肤的原画下载命令。';
   if(showArt){
     $('stage-area').hidden=true;
     $('spine-stage').hidden=true;
@@ -666,7 +671,7 @@ async function selectModel(m, viewMode){
     $('artwork-stage').hidden=false;
     $('background-note').hidden=true;
     $('artwork-image').src=m.artwork;
-    $('model-skin').textContent=m.skin+' · 完整衣着原画（静态）';
+    $('model-skin').textContent=m.skin+' · 角色原画（静态，非场景合成图）';
     buttons($('poses'),[],()=>{});
     hideMessage();
     return;
@@ -896,8 +901,11 @@ async function start(){
       $('background-note').hidden=false;
     };
     $('artwork-image').onerror=()=>{
-      if(selected?.channel==='JUKEBOX'&&!$('artwork-stage').hidden)
-        message('原画文件无法加载，请重新运行 jukebox-art '+selected.id+' 后刷新。');
+      if(!selected?.artwork||$('artwork-stage').hidden)return;
+      const command=selected.artwork_kind==='character-portrait'
+        ? 'character-art ' : 'jukebox-art ';
+      message('角色原画无法加载，请运行 python reverse1999/scripts/sync.py '+
+        command+selected.id+' 后重新生成索引。');
     };
     // 不再按价格、档位、最新角色或点唱机创建独立分类入口。
     if(!models.length)message('目前没有本地模型或完整皮肤展示。\n试试：python reverse1999/scripts/sync.py showcase 308603');
