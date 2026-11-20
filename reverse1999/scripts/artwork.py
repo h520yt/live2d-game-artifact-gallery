@@ -10,6 +10,7 @@ import re
 import tempfile
 import urllib.error
 import urllib.request
+import urllib.parse
 from pathlib import Path
 
 CDN = "https://huiji-public.huijistatic.com/res1999/uploads"
@@ -74,10 +75,15 @@ def download(skin_id, target, sources=None):
     failures = []
     for url in (urls(skin_id) if sources is None else sources):
         try:
-            req = urllib.request.Request(url, headers={
-                "User-Agent": "Mozilla/5.0 (compatible; personal-art-gallery/1.0)",
-                "Referer": "https://res1999.huijiwiki.com/",
-            })
+            # Merui 角色原画和灰机维基是不同图源：Referer 不能固定成灰机，
+            # 否则原图服务器可能拒绝外站热链请求。
+            host = urllib.parse.urlparse(url).hostname
+            headers = {"User-Agent": "Mozilla/5.0 (compatible; personal-art-gallery/1.0)"}
+            if host in ("res1999.huijiwiki.com", "huiji-public.huijistatic.com"):
+                headers["Referer"] = "https://res1999.huijiwiki.com/"
+            elif host == "assets.merui.net":
+                headers["Referer"] = "https://uttu.merui.net/"
+            req = urllib.request.Request(url, headers=headers)
             with urllib.request.urlopen(req, timeout=50) as response:
                 image = response.read(MAX_BYTES + 1)
             size = dimensions(image)
