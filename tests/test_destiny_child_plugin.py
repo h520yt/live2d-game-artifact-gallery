@@ -30,6 +30,15 @@ class DestinyChildTests(unittest.TestCase):
         viewer = (ROOT/"games/destiny_child/viewer/viewer.js").read_text(encoding="utf-8")
         self.assertIn("typeof globalThis.PIXI?.live2d?.Live2DModel?.from", viewer)
 
+    def test_hidpi_canvas_rendering(self):
+        script = (ROOT/"games/destiny_child/viewer/viewer.js").read_text(encoding="utf-8")
+        self.assertIn("window.devicePixelRatio", script)
+        self.assertIn("resolution:pixelRatio", script)
+        self.assertIn("autoDensity:true", script)
+        self.assertIn("Math.min(2", script)
+        # 纹理源图仅为有限像素，不能通过增大画布缓冲区修改素材本身。
+        self.assertIn("app.renderer.resize(", script)
+
     def test_manifest(self):
         manifest=json.loads((ROOT/"games/destiny_child/viewer/manifest.json").read_text(encoding="utf-8"))
         rows=manifest["assets"]

@@ -23,3 +23,7 @@ python scripts/gallery.py serve
 播放器必须按 Cubism 2 SDK → PIXI 6 → `pixi-live2d-display-cubism2` 的顺序加载；不得引用 `shared/vendor/live2d.min.js`（该文件为 Cubism 4 适配器）。首次运行 `sync.py` 会下载两个 Cubism 2 运行时到 `games/destiny_child/vendor/`。已安装过模型时，只需执行 `--runtime-only`，不用重新下载所有模型。Cubism 2 SDK 为 Live2D Inc. 专有软件，请遵循其授权要求；运行时不纳入 Git 仓库。
 
 本地模型在 `games/destiny_child/data/`（Git 忽略）。下载成功与入口文件存在不等于浏览器逐套动画已验收。出错可运行 `python games/destiny_child/scripts/sync.py --id c001_14 --force`。原游戏资源版权归权利方所有，仅作个人合法本地欣赏。
+
+## 清晰度与显示说明
+
+本资源库部分角色的主纹理图集为 1024×1024（例如 `c001_14`），同一人物的部件共同占用该图集；这是源资源的细节上限，不能靠放大画布补出细节。展示柜使用 PIXI 的 `resolution = min(devicePixelRatio, 2)` 与 `autoDensity = true`，防止画布在高 DPI 显示器上被浏览器二次拉伸模糊。对资源本身的清晰度，建议按原生展示尺寸比较，并避免过度滚轮放大；与 NIKKE Spine 项目素材的像素密度不可直接等同。

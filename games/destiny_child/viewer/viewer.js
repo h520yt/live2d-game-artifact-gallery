@@ -61,8 +61,19 @@
     status("正在加载动态模型…");
     try {
       if (!app) {
-        app=new PIXI.Application({view:canvas,width:Math.max(1,stage.clientWidth),
-          height:Math.max(1,stage.clientHeight),transparent:true,antialias:true});
+        // Canvas 之前固定为 1x 缓冲区，浏览器/系统缩放后被拉伸会进一步模糊。
+        // 使用物理像素密度匹配视口，2x 上限防止 4K 屏显存开销失控；
+        // WebGL 坐标仍使用 CSS 逻辑像素，不改变动画骨骼的构图比例。
+        const pixelRatio = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
+        app=new PIXI.Application({
+          view:canvas,
+          width:Math.max(1,stage.clientWidth),
+          height:Math.max(1,stage.clientHeight),
+          resolution:pixelRatio,
+          autoDensity:true,
+          transparent:true,
+          antialias:true
+        });
       }
       const loaded=await PIXI.live2d.Live2DModel.from("../data/"+current.id+"/model.json",
         {autoInteract:false});
