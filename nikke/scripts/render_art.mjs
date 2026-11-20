@@ -52,7 +52,7 @@ try {
   for (const id of targets) {
     const dir = path.join(dataDir, id);
     const dest = path.join(dir, 'art_render.png');
-    if (!force && (fs.existsSync(dest) || ['art.png', 'art.webp', 'art.jpg'].some(name => fs.existsSync(path.join(dir, name))))) {
+    if (!force && fs.existsSync(dest)) {
       skipped++;
       console.log(id + ': 已有静态图，跳过');
       continue;
