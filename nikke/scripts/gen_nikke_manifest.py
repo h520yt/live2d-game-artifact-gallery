@@ -375,6 +375,12 @@ def main():
             "cover": cover_url(cid, fb),
             "art": static_art_url(cid),
             "scene": scene_bindings.get(cid),
+            "scene_preview": (
+                f"../data/{quote(cid)}/scene_preview.webp"
+                if os.path.isfile(os.path.join(rdir, "scene_preview.webp"))
+                and os.path.getsize(os.path.join(rdir, "scene_preview.webp")) > 0
+                else None
+            ),
         })
 
     os.makedirs(C.VIEWER_DIR, exist_ok=True)
