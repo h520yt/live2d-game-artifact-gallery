@@ -131,7 +131,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   <p id="catalog-status" class="sg-list-note" role="status">同一衣着只展示一张卡片；没有完整场景图时仍可查看已安装的动态模型。</p>
   <details class="sg-list-note">
     <summary>资源安装说明</summary>
-    <p>佩施塔（白雪）角色原画：<code>python reverse1999/scripts/sync.py character-art 315901</code>；
+    <p>佩施塔（白雪）初始与「童话出逃日」原画：<code>python reverse1999/scripts/sync.py character-art all</code>；
     UNIQUE 衣着：<code>python reverse1999/scripts/sync.py unique all</code>；
     点唱机衣着：<code>python reverse1999/scripts/sync.py jukebox all</code>；
     完整场景 PNG：<code>node reverse1999/scripts/export_full_scenes.cjs all</code>。</p>
@@ -241,6 +241,7 @@ function galleryRows(){
         ready:true,preview:model.full_scene||model.artwork||null,
         status:model.full_scene?'完整场景图 · 可切换动态':
           model.artwork&&model.type==='artwork'?'角色原画':
+          model.artwork_kind==='character-scene-portrait'?'角色＋原场景插画 · 可切换动态':
           model.artwork_kind==='character-portrait'?'角色原画 · 可切换动态':
           model.type==='scene-live2d'||model.type==='showcase'?'动态场景':'动态模型',
         model,
@@ -647,7 +648,7 @@ async function selectModel(m, viewMode){
   // 白雪原画和动态骨骼共用一张衣着卡片，首次打开先给原画。
   // 点唱机维持原有默认模式，切换控件由是否有原画决定而非资源渠道。
   const showArt=hasArt&&(viewMode==='artwork'||
-    (m.artwork_kind==='character-portrait'&&!hasFullScene&&!viewMode));
+    (m.artwork_kind?.startsWith('character-')&&!hasFullScene&&!viewMode));
   $('jukebox-view-controls').hidden=!hasArt || hasFullScene;
   $('view-artwork').disabled=!hasArt;
   $('view-model').disabled=artOnly;
@@ -661,7 +662,9 @@ async function selectModel(m, viewMode){
     $('background-note').hidden=false;
   }
   $('jukebox-artwork-status').textContent=hasArt
-    ? '角色原画采用真实原图 WebP，保持原始比例；它不是与专属背景合成的场景图。'
+    ? (m.artwork_kind==='character-scene-portrait'
+        ? '该原图本身带有该衣着的真实场景；静态原画和动态模型分别展示，不拆背景拼装。'
+        : '独立角色原画采用真实原图 WebP，保持原始比例；不是带背景的场景合成图。')
     : '尚未安装原画：可运行对应皮肤的原画下载命令。';
   if(showArt){
     $('stage-area').hidden=true;
@@ -671,7 +674,10 @@ async function selectModel(m, viewMode){
     $('artwork-stage').hidden=false;
     $('background-note').hidden=true;
     $('artwork-image').src=m.artwork;
-    $('model-skin').textContent=m.skin+' · 角色原画（静态，非场景合成图）';
+    $('model-skin').textContent=m.skin+
+      (m.artwork_kind==='character-scene-portrait'
+        ? ' · 原始角色＋对应场景静态插画'
+        : ' · 独立角色原画（非场景合成图）');
     buttons($('poses'),[],()=>{});
     hideMessage();
     return;
@@ -902,7 +908,7 @@ async function start(){
     };
     $('artwork-image').onerror=()=>{
       if(!selected?.artwork||$('artwork-stage').hidden)return;
-      const command=selected.artwork_kind==='character-portrait'
+      const command=selected.artwork_kind?.startsWith('character-')
         ? 'character-art ' : 'jukebox-art ';
       message('角色原画无法加载，请运行 python reverse1999/scripts/sync.py '+
         command+selected.id+' 后重新生成索引。');
