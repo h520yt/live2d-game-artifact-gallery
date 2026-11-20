@@ -14,9 +14,9 @@ NIKKE_DIR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(NIKKE_DIR / "scripts"))
 
 import config as C
-from gen_nikke_manifest import load_backgrounds, load_scene_bindings, scene_variant
+from gen_nikke_manifest import load_backgrounds, load_scene_bindings, static_scene_preview_url, scene_variant
 from install_backgrounds import load_catalog, canonical_filename, valid_image, scan_source
-from render_scene_previews import compose_preview, select_background, find_art
+from render_scene_previews import compose_preview, select_background, find_art, preview_is_current
 
 
 def image_bytes(color=(20, 70, 120), size=(640, 360)):
@@ -87,9 +87,13 @@ class BackgroundSceneTest(unittest.TestCase):
         self.assertEqual(backgrounds[0]["filename"], "CommanderRoom.png")
         with (self.root / "scene_bindings.json").open("w", encoding="utf-8") as out:
             json.dump({
-                "c090": {"background": "CommanderRoom.png", "evidence": "verified in gameplay"},
-                "c091": {"background": "CommanderRoom.png"},
-                "c092": {"background": "Missing.png", "evidence": "unavailable"}
+                "c090": {"background": "CommanderRoom.png", "evidence": "gameplay screenshot checked",
+                         "source_asset": "lobby/skin_c090_original", "confirmed": True},
+                "c091": {"background": "CommanderRoom.png", "evidence": "unsupported text-only note"},
+                "c092": {"background": "Missing.png", "evidence": "asset reference verified",
+                         "source_asset": "lobby/skin_c092_original", "confirmed": True},
+                "c093": {"background": "CommanderRoom.png", "evidence": "no explicit verification",
+                         "source_asset": "lobby/skin_c093_original", "confirmed": False}
             }, out)
         with patch.object(C, "BASE", str(self.root)):
             verified = load_scene_bindings(backgrounds)
@@ -123,8 +127,29 @@ class BackgroundSceneTest(unittest.TestCase):
         with Image.open(output) as result:
             self.assertEqual(result.size, (720, 1080))
         backgrounds = {"Ark.png": alt, "CommanderRoom.png": bg}
-        self.assertEqual(select_background({"scene": {"filename": "Ark.png"}}, backgrounds), alt)
-        self.assertEqual(select_background({"scene": None}, backgrounds), bg)
+        self.assertEqual(select_background({
+            "scene": {"filename": "Ark.png", "kind": "verified", "source_asset": "lobby/c090_02"}
+        }, backgrounds), alt)
+        self.assertIsNone(select_background({"scene": None}, backgrounds))
+        self.assertIsNone(select_background({"scene": {"filename": "CommanderRoom.png"}}, backgrounds))
+
+    def test_old_arbitrary_scene_preview_is_hidden(self):
+        cid = "c090"
+        rdir = self.root / cid
+        rdir.mkdir()
+        (rdir / "scene_preview.webp").write_bytes(b"old-random-preview")
+        scene = {"kind": "verified", "filename": "Ark.png", "source_asset": "lobby/c090"}
+        self.assertIsNone(static_scene_preview_url(cid, str(rdir), None))
+        self.assertIsNone(static_scene_preview_url(cid, str(rdir), scene))
+        metadata = rdir / "scene_preview.meta.json"
+        metadata.write_text(json.dumps({"filename": "CommanderRoom.png", "source_asset": "lobby/c090"}),
+                            encoding="utf-8")
+        self.assertFalse(preview_is_current(rdir / "scene_preview.webp", scene))
+        self.assertIsNone(static_scene_preview_url(cid, str(rdir), scene))
+        metadata.write_text(json.dumps({"filename": "Ark.png", "source_asset": "lobby/c090"}),
+                            encoding="utf-8")
+        self.assertTrue(preview_is_current(rdir / "scene_preview.webp", scene))
+        self.assertIn("scene_preview.webp", static_scene_preview_url(cid, str(rdir), scene))
 
 
 if __name__ == "__main__":
