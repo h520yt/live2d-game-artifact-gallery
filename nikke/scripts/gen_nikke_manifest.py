@@ -267,14 +267,44 @@ def load_scene_bindings(backgrounds):
             continue
         filename = entry.get("background")
         evidence = entry.get("evidence")
-        if not isinstance(filename, str) or not isinstance(evidence, str) or not evidence.strip():
+        source_asset = entry.get("source_asset")
+        # 单有随手写的备注不算证据；必须提供可追踪的原始资源标识并明确复核。
+        if (not isinstance(filename, str)
+                or not isinstance(evidence, str) or not evidence.strip()
+                or not isinstance(source_asset, str) or not source_asset.strip()
+                or entry.get("confirmed") is not True):
             continue
         if filename not in available:
             print(f"  [场景未安装] {cid}: {filename}")
             continue
         results[cid] = {"background": available[filename]["file"], "filename": filename,
-                        "evidence": evidence.strip(), "kind": "verified"}
+                        "source_asset": source_asset.strip(), "evidence": evidence.strip(),
+                        "kind": "verified"}
     return results
+
+
+def static_scene_preview_url(cid, rdir, scene):
+    """防止旧版本错误组合的残留 WebP 被误认为已核实的专属场景。
+
+    只有经过复核的绑定，且预览附带相同背景和源资源标识时，才允许出现在卡片。
+    """
+    if not scene or scene.get("kind") != "verified":
+        return None
+    image = os.path.join(rdir, "scene_preview.webp")
+    metadata = os.path.join(rdir, "scene_preview.meta.json")
+    if not os.path.isfile(image) or os.path.getsize(image) == 0 or not os.path.isfile(metadata):
+        return None
+    try:
+        with open(metadata, encoding="utf-8") as stream:
+            record = json.load(stream)
+    except (OSError, ValueError):
+        return None
+    if not isinstance(record, dict):
+        return None
+    if (record.get("filename") != scene["filename"]
+            or record.get("source_asset") != scene["source_asset"]):
+        return None
+    return f"../data/{quote(cid)}/scene_preview.webp"
 
 
 def load_backgrounds():
@@ -375,12 +405,7 @@ def main():
             "cover": cover_url(cid, fb),
             "art": static_art_url(cid),
             "scene": scene_bindings.get(cid),
-            "scene_preview": (
-                f"../data/{quote(cid)}/scene_preview.webp"
-                if os.path.isfile(os.path.join(rdir, "scene_preview.webp"))
-                and os.path.getsize(os.path.join(rdir, "scene_preview.webp")) > 0
-                else None
-            ),
+            "scene_preview": static_scene_preview_url(cid, rdir, scene_bindings.get(cid)),
         })
 
     os.makedirs(C.VIEWER_DIR, exist_ok=True)
