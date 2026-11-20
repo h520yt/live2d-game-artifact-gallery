@@ -4,6 +4,34 @@
 
 数据来源：myssal/Reverse-1999-CN-Asset（GitHub），使用它的 mappings/ArcanistMap.json 映射角色及皮肤。
 
+## 2026-11-20：佩施塔原画与场景合并至一个角色入口
+
+原先 `315901`「初始皮肤」只有人物原画，`315902`「童话出逃日」
+有真实人物＋楼梯场景原图。两条原本按不同皮肤 ID 生成两张卡片，
+现仅针对佩施塔合并为**一张角色卡片**，首页以「童话出逃日」场景作为封面；
+打开后可切换：
+
+- **完整场景**：`315902/scene.webp`，原始人物＋场景整体插画，不自行拼背景。
+- **角色原画**：`315901/artwork.webp`，原始人物立绘，不以场景截图冒充。
+- **动态模型**：优先用已安装的 `315902` 同衣着动态模型；若尚未安装，
+  仅回退到 `315901` 初始衣着的动态模型，并明确显示实际衣着名称。
+
+```powershell
+git pull origin main
+# 只改 UI：本地两张图已安装过，无需重新下载
+python scripts/gallery.py serve --port 8000
+# 若有图片缺失，再执行：
+# python reverse1999/scripts/sync.py character-art all
+# python -m unittest discover -s reverse1999/scripts -p "test_character_art.py"
+node reverse1999/scripts/test_skin_groups.cjs
+```
+
+访问 `http://127.0.0.1:8000/reverse1999/viewer/`，搜索「佩施塔」或「白雪」：
+应只有一张角色卡片，详情上方显示三个可选视图。
+其他人物仍按各自皮肤 ID 分开展示，精确资源链接仍然可打开原始骨骼。
+如果旧标签页仍缓存脚本，使用 `Ctrl+F5` 强制刷新。
+所有图片仍保存在本地，不提交至 Git。
+
 ## 2026-11-20：佩施塔（白雪）真实原画与「童话出逃日」场景接入
 
 之前只安装了动态 Spine，页面无法显示角色原画；现在角色初始衣着 `315901`
