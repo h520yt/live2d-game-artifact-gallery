@@ -65,14 +65,14 @@ def exists(path):
     return False
 
 
-def download(skin_id, target):
+def download(skin_id, target, sources=None):
     """验证后原子写入 WebP。下载失败时保留原模型及旧原画，不伪造完成状态。"""
     target = Path(target)
     if exists(target):
         return False
     target.parent.mkdir(parents=True, exist_ok=True)
     failures = []
-    for url in urls(skin_id):
+    for url in (urls(skin_id) if sources is None else sources):
         try:
             req = urllib.request.Request(url, headers={
                 "User-Agent": "Mozilla/5.0 (compatible; personal-art-gallery/1.0)",
