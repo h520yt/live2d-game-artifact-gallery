@@ -44,8 +44,20 @@ def image_file(skin_id):
     return DATA_DIR / require_skin(skin_id) / "artwork.webp"
 
 
+def selected_image(skin_id):
+    """优先真正带人物＋背景的已核实原图；退回独立人物图时不能冒充完整场景。"""
+    sid = require_skin(skin_id)
+    scene_file = DATA_DIR / sid / "scene.webp"
+    if sid in VERIFIED_SCENE_ART and artwork.exists(scene_file):
+        return scene_file, "character-scene-portrait"
+    portrait = image_file(sid)
+    if artwork.exists(portrait):
+        return portrait, "character-portrait"
+    return None
+
+
 def is_ready(skin_id):
-    return artwork.exists(image_file(skin_id))
+    return selected_image(skin_id) is not None
 
 
 def catalog():
@@ -59,15 +71,22 @@ def catalog():
 def download_one(skin_id):
     """从真实原始立绘图源下载并验证 WebP，失败时不登记任何新图。"""
     sid = require_skin(skin_id)
-    sources = artwork.urls(sid) + VERIFIED_FALLBACKS.get(sid, ())
-    candidates = ((VERIFIED_SCENE_ART[sid],) + sources
-                  if sid in VERIFIED_SCENE_ART else sources)
-    dest = image_file(sid)
-    artwork.download(sid, dest, sources=candidates)
+    if sid in VERIFIED_SCENE_ART:
+        scene_path = DATA_DIR / sid / "scene.webp"
+        try:
+            artwork.download(sid, scene_path, sources=(VERIFIED_SCENE_ART[sid],))
+        except RuntimeError as error:
+            print(f"[{sid}] 对应衣着的角色＋场景原图暂不可用：{error}")
     if not is_ready(sid):
+        sources = artwork.urls(sid) + VERIFIED_FALLBACKS.get(sid, ())
+        artwork.download(sid, image_file(sid), sources=sources)
+    selected = selected_image(sid)
+    if not selected:
         raise RuntimeError(f"{sid} 原画下载后校验未通过")
-    print(f"[{sid}] {SKINS[sid][0]} · {SKINS[sid][1]} 角色原画已就绪")
-    return dest
+    location, kind = selected
+    print(f"[{sid}] {SKINS[sid][0]} · {SKINS[sid][1]} 已安装 " +
+          ("角色与原场景图" if kind == "character-scene-portrait" else "人物立绘"))
+    return location
 
 
 def download(target):
@@ -90,17 +109,24 @@ def attach_artwork(models, mapping):
     seen = set()
     for model in models:
         sid = str(model.get("id"))
-        if sid not in SKINS or not is_ready(sid):
+        if sid not in SKINS:
             continue
-        model["artwork"] = f"../data/character_art/{sid}/artwork.webp"
-        model["artwork_kind"] = ("character-scene-portrait"
-                                 if sid in VERIFIED_SCENE_ART else "character-portrait")
+        chosen = selected_image(sid)
+        if not chosen:
+            continue
+        image, kind = chosen
+        model["artwork"] = f"../data/character_art/{sid}/{image.name}"
+        model["artwork_kind"] = kind
         seen.add(sid)
 
     # 本地只有真实原画而模型还没装时，也能使用同一个衣着 ID 查看静态原画。
     for sid, (name, garment) in SKINS.items():
-        if sid in seen or not is_ready(sid):
+        if sid in seen:
             continue
+        chosen = selected_image(sid)
+        if not chosen:
+            continue
+        image, kind = chosen
         entry = lookup.get(sid, {})
         models.append({
             "type": "artwork", "id": int(sid),
@@ -109,8 +135,7 @@ def attach_artwork(models, mapping):
             "en": entry.get("en") or "Perchta",
             "skin_en": entry.get("skin_en") or "",
             "folder": f"character_art_{sid}",
-            "artwork": f"../data/character_art/{sid}/artwork.webp",
-            "artwork_kind": ("character-scene-portrait"
-                             if sid in VERIFIED_SCENE_ART else "character-portrait"),
+            "artwork": f"../data/character_art/{sid}/{image.name}",
+            "artwork_kind": kind,
         })
     return models
