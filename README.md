@@ -3,6 +3,20 @@
 > **统一展示规范**：碧蓝航线、棕色尘埃 2、重返未来 1999 采用封面卡片→大舞台→原位返回；后续游戏脚手架直接复用 `shared/skin_gallery.css` / `shared/skin_gallery.js`，不按版本、价格或导入批次新增分类页。参见 [统一游戏画廊标准](docs/unified-game-gallery-standard.md)。
 
 
+## 重返未来：1999 · 佩施塔（白雪）角色原画（2026-11-20）
+
+已补初始衣着 `315901` 人物立绘与「童话出逃日」`315902` 的同皮肤
+**角色＋原场景插画**。图片存储在本机，不随 Git 同步：
+
+```powershell
+git pull origin main
+python reverse1999/scripts/sync.py character-art all
+python scripts/gallery.py serve --port 8000
+```
+
+在「重返未来：1999」搜索白雪或佩施塔，打开后默认显示已安装原画，
+可以切换已有的动态模型。具体说明见 [1999 模块](reverse1999/README.md)。
+
 ## 重返未来：1999 · 完整场景图（角色＋专属背景，2026-11-19）
 
 已核对个人 fork [h520yt/Reverse-1999-CN-Asset](https://github.com/h520yt/Reverse-1999-CN-Asset)
