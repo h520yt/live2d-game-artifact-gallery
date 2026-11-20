@@ -10,7 +10,8 @@
  *   node reverse1999/scripts/export_full_scenes.cjs all
  *   node reverse1999/scripts/export_full_scenes.cjs 308603
  *   node reverse1999/scripts/export_full_scenes.cjs all --download
- *   node reverse1999/scripts/export_full_scenes.cjs all --4k
+ *   node reverse1999/scripts/export_full_scenes.cjs all --force
+ *   node reverse1999/scripts/export_full_scenes.cjs all --1080p  // 仅旧设备兼容
  *
  * 输出：reverse1999/data/full_scenes/<皮肤ID>.png（Git 忽略）
  */
@@ -90,9 +91,10 @@ async function main() {
   const target = args.find(x => !x.startsWith("--")) || "all";
   const download = args.includes("--download");
   const force = args.includes("--force");
-  const is4k = args.includes("--4k");
-  const width = is4k ? 3840 : 1920;
-  const height = is4k ? 2160 : 1080;
+  // 默认以 4K 原生画布导出；老版 1080p 截图不会再被当作合格缓存。
+  const legacy1080 = args.includes("--1080p");
+  const width = legacy1080 ? 1920 : 3840;
+  const height = legacy1080 ? 1080 : 2160;
   const catalog = JSON.parse(fs.readFileSync(CATALOG, "utf8")).skins;
   const selected = target === "all" ? catalog :
     catalog.filter(row => String(row.id) === target);
@@ -110,7 +112,11 @@ async function main() {
   // 下载完成后的清单已更新；离线模式沿用已有清单。
   const models = JSON.parse(fs.readFileSync(MANIFEST, "utf8")).models;
   const available = new Map(models.filter(m => m.tier === "UNIQUE" &&
-    m.type === "scene-live2d").map(m => [String(m.id), m]));
+    m.type === "scene-live2d" && typeof m.background === "string" &&
+    m.background.includes("/unique/" + m.id + "/background.png") &&
+    typeof m.path === "string" &&
+    m.path.includes("/unique/" + m.id + "/cubism/"))
+    .map(m => [String(m.id), m]));
   const missing = selected.filter(row => !available.has(String(row.id)));
   if (missing.length) {
     console.log("尚未安装同 ID 背景和角色资源：" +
@@ -158,13 +164,48 @@ async function main() {
             "section.stage{position:fixed!important;inset:0!important}",
           ].join("") });
           await page.evaluate(() => window.dispatchEvent(new Event("resize")));
-          await page.waitForTimeout(1000);
+          // 导出不能只确认背景已加载：Pixi 舞台尺寸可能仍停留在旧布局，
+          // 或模型加载异常导致截图只有背景。必须核验真实画布和可见人物像素。
+          await page.waitForFunction(({ width, height }) => {
+            const canvas = document.getElementById("canvas");
+            const bg = document.getElementById("live2d-background");
+            const status = document.getElementById("status");
+            return canvas && canvas.width >= width * .95 && canvas.height >= height * .95 &&
+              bg && bg.complete && bg.naturalWidth > 0 && status.hidden;
+          }, { width, height }, { timeout: 45000 });
+          await page.waitForTimeout(400);
+          const metrics = await page.evaluate(() => {
+            const original = document.getElementById("canvas");
+            const bg = document.getElementById("live2d-background");
+            const probe = document.createElement("canvas");
+            probe.width = 320;
+            probe.height = 180;
+            const ctx = probe.getContext("2d", { willReadFrequently: true });
+            if (!ctx) throw new Error("无法检查人物绘制像素");
+            ctx.drawImage(original, 0, 0, probe.width, probe.height);
+            const pixels = ctx.getImageData(0, 0, probe.width, probe.height).data;
+            let visible = 0;
+            for (let i = 3; i < pixels.length; i += 4) {
+              if (pixels[i] > 55) visible++;
+            }
+            return { visible, canvasWidth: original.width, canvasHeight: original.height,
+              bgWidth: bg.naturalWidth, bgHeight: bg.naturalHeight };
+          });
+          if (metrics.visible < 180) {
+            throw new Error("人物画布基本透明，禁止把空白背景截图标为完整场景");
+          }
+          if (metrics.bgWidth < width || metrics.bgHeight < height) {
+            console.warn("[清晰度提示] " + row.id + " 原始背景仅 " +
+              metrics.bgWidth + "×" + metrics.bgHeight +
+              "；4K 导出不代表原始素材具有 4K 细节");
+          }
           await page.locator("#stage-area").screenshot({
             path: temporary, type: "png", animations: "disabled", timeout: 90000,
           });
           if (!validPng(temporary, width, height)) throw new Error("导出的 PNG 尺寸或内容校验失败");
           fs.renameSync(temporary, filename);
           console.log("[完成] " + row.id + " " + row.name + " · " + row.skin +
+            " · " + width + "×" + height + " · 人物有效采样像素 " + metrics.visible +
             " -> " + path.relative(ROOT, filename));
         } catch (error) {
           failed += 1;
