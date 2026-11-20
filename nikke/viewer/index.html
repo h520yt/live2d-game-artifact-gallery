@@ -107,6 +107,19 @@
     padding:.5rem .9rem; border-radius:4px; cursor:pointer; backdrop-filter:blur(6px); transition:.15s;
   }
   .back-btn:hover{border-color:var(--accent); color:var(--accent-lit)}
+  /* 同角色的外观在舞台内切换；不改变统一卡片列表。 */
+  .skin-switch{
+    position:absolute; top:4.1rem; left:1.4rem; z-index:8;
+    display:flex; align-items:center; gap:.5rem; padding:.4rem .55rem;
+    border:1px solid var(--line); border-radius:5px;
+    background:rgba(30,15,22,.88); color:var(--foam);
+    font:.7rem var(--mono); backdrop-filter:blur(8px);
+  }
+  .skin-switch[hidden]{display:none}
+  .skin-switch select{
+    min-width:12rem; max-width:min(55vw,22rem); padding:.3rem .4rem;
+    background:#22131d; color:var(--ivory); border:1px solid var(--line-lit);
+  }
   .stage{position:relative; overflow:hidden; height:100%}
   #player-container{position:absolute; inset:0}
   /* spine-player 自带控件的暗色适配 */
@@ -293,6 +306,10 @@
   <div id="stage-view">
     <button class="back-btn" id="back">← 返回列表</button>
     <div class="pose-tabs" id="pose-tabs"></div>
+    <div class="skin-switch" id="skin-switch" hidden>
+      <label for="skin-variant">角色皮肤</label>
+      <select id="skin-variant" aria-label="选择角色皮肤"></select>
+    </div>
     <div class="ver-badge" id="ver-badge"></div>
     <div class="motions" id="motion-panel"></div>
     <div class="stage">
@@ -541,6 +558,39 @@ function buildGrid(){
   reset();
 }
 
+// NIKKE 换装往往是独立骨骼与贴图，不应只替换 fb 模型的 png。
+function skinFamily(id){
+  const match = String(id || '').match(/^(c[0-9]{3})(?:_[0-9]{2})?$/i);
+  return match ? match[1].toLowerCase() : null;
+}
+
+function buildSkinSwitch(character){
+  const host = document.getElementById('skin-switch');
+  const select = document.getElementById('skin-variant');
+  const family = skinFamily(character.id);
+  const variants = family
+    ? manifest.characters.filter(c => c.category === 'character' && skinFamily(c.id) === family)
+    : [];
+  host.hidden = variants.length < 2;
+  select.replaceChildren();
+  if(host.hidden) return;
+  variants.sort((a,b) => a.id.localeCompare(b.id, undefined, {numeric:true}));
+  variants.forEach(variant => {
+    const option = document.createElement('option');
+    option.value = variant.id;
+    option.textContent = variant.name === variant.id
+      ? variant.id : variant.name + ' · ' + variant.id;
+    select.appendChild(option);
+  });
+  select.value = character.id;
+  select.onchange = () => {
+    const index = manifest.characters.findIndex(c => c.id === select.value);
+    if(index < 0 || index === current.idx) return;
+    const next = manifest.characters[index];
+    enterStage(index, next.poses[current.pose] ? current.pose : null);
+  };
+}
+
 function enterStage(i, preferPose){
   current.idx = i;
   const c = manifest.characters[i];
@@ -551,6 +601,7 @@ function enterStage(i, preferPose){
   document.getElementById('stage-view').style.display = 'block';
   window.NikkeArt?.onStageEnter?.();
   buildPoseTabs(c);
+  buildSkinSwitch(c);
   setTimeout(()=> loadPose(), 30);
 }
 
