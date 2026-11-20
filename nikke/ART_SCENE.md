@@ -84,3 +84,28 @@ EventScene 等真正带有角色、背景、效果层的素材入手。
 若无法找到某套皮肤的原始演出，不可拿无关背景顶替。
 
 所有游戏美术资源仅用于个人本地研究、预览，不随 Git 源码分发。
+
+
+## 原始动态场景候选核查
+
+为直接寻找游戏里的 Lobby Wallpaper / Burst 演出，新增**只读资源核查脚本**。
+它不自动将任何素材判定为官方配对，绝不修改现有皮肤场景绑定。
+
+先从你本机已提取的资料里定位：
+
+~~~powershell
+python nikke/scripts/audit_original_scenes.py --from-data
+~~~
+
+若本地有 NIKKE 客户端缓存，可限定 00/01 两桶扫描明文 UnityFS：
+
+~~~powershell
+python nikke/scripts/audit_original_scenes.py --scan-cache --cache-root "Q:\NIKKE_Assets" --buckets 00 01 --max-bundles 200
+~~~
+
+核查结果在 nikke/data/_original_scene_candidates.json，其中包含原始对象名、
+素材类型、客户端包位置、可能的角色 ID 提示，所有条目的 verified 均为 false。
+**名字中出现角色 ID 不代表已经确认这就是该皮肤的场景。**
+只有进一步核对出原版对应关系并提取齐全场景资源后，才允许将它接入展示柜。
+
+本脚本不会解密 NKAB 或跳过游戏权限，也不会上传素材。
