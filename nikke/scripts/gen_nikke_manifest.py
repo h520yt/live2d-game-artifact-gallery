@@ -207,6 +207,76 @@ def static_art_url(cid):
     return None
 
 
+SCENE_VARIANT_LABELS = {
+    "d": "白天",
+    "n": "夜晚",
+    "s": "黄昏",
+    "e": "活动",
+    "i": "特殊",
+    "r": "替代",
+}
+
+
+def load_background_locations():
+    """读取 Nikke-db 地点/背景关系；不是角色皮肤的专属场景映射。"""
+    path = os.path.join(C.BASE, "background_locations.json")
+    if not os.path.isfile(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as stream:
+            locations = json.load(stream)
+    except (OSError, ValueError) as error:
+        print(f"背景地点索引读取失败: {error}")
+        return {}
+    if not isinstance(locations, dict):
+        return {}
+    return {
+        filename.casefold(): str(location)
+        for location, filenames in locations.items()
+        if isinstance(filenames, list)
+        for filename in filenames
+        if isinstance(filename, str)
+    }
+
+
+def scene_variant(filename):
+    """识别背景图后缀标注的昼夜/黄昏，不把变体当成另一个地点。"""
+    stem = os.path.splitext(filename)[0]
+    match = re.search(r"_([dnseir])$", stem, re.I)
+    return SCENE_VARIANT_LABELS.get(match.group(1).lower(), "") if match else ""
+
+
+def load_scene_bindings(backgrounds):
+    """只有人工明确记录证据且图片已存在时，才给角色建立背景关联。"""
+    path = os.path.join(C.BASE, "scene_bindings.json")
+    if not os.path.isfile(path):
+        return {}
+    try:
+        with open(path, encoding="utf-8") as stream:
+            bindings = json.load(stream)
+    except (OSError, ValueError) as error:
+        print(f"皮肤场景绑定读取失败: {error}")
+        return {}
+    if not isinstance(bindings, dict):
+        return {}
+
+    available = {entry["filename"]: entry for entry in backgrounds}
+    results = {}
+    for cid, entry in bindings.items():
+        if not isinstance(cid, str) or not isinstance(entry, dict):
+            continue
+        filename = entry.get("background")
+        evidence = entry.get("evidence")
+        if not isinstance(filename, str) or not isinstance(evidence, str) or not evidence.strip():
+            continue
+        if filename not in available:
+            print(f"  [场景未安装] {cid}: {filename}")
+            continue
+        results[cid] = {"background": available[filename]["file"], "filename": filename,
+                        "evidence": evidence.strip(), "kind": "verified"}
+    return results
+
+
 def load_backgrounds():
     """从本地背景目录建索引：只有真实存在的文件才会进入查看器。"""
     folder = os.path.join(C.DATA_DIR, "backgrounds")
@@ -222,6 +292,7 @@ def load_backgrounds():
                 metadata = json.load(fp)
         except (ValueError, OSError) as err:
             print(f"背景元数据读取失败: {err}")
+    locations = load_background_locations()
     backgrounds = []
     for filename in sorted(os.listdir(folder)):
         base, ext = os.path.splitext(filename)
@@ -233,10 +304,14 @@ def load_backgrounds():
         info = metadata.get(filename, {})
         if not isinstance(info, dict):
             info = {}
+        variant = scene_variant(filename)
+        display_name = info.get("name") or base
         backgrounds.append({
             "id": base,
-            "name": info.get("name") or base,
-            "category": info.get("category") or "",
+            "filename": filename,
+            "name": display_name,
+            "category": info.get("category") or locations.get(filename.casefold(), "其他场景"),
+            "variant": variant,
             "file": "../data/backgrounds/" + quote(filename),
         })
     return backgrounds
@@ -261,6 +336,8 @@ def main():
     names = load_name_map()
     style_tags = load_style_tags()
     curated_batches = load_curated_batches()
+    backgrounds = load_backgrounds()
+    scene_bindings = load_scene_bindings(backgrounds)
     chars = []
     # 即使 data/ 暂时不存在，也生成空清单，避免展示柜误读仓库跟踪的旧数据。
     os.makedirs(C.DATA_DIR, exist_ok=True)
@@ -297,10 +374,10 @@ def main():
             "version": fb["version"],
             "cover": cover_url(cid, fb),
             "art": static_art_url(cid),
+            "scene": scene_bindings.get(cid),
         })
 
     os.makedirs(C.VIEWER_DIR, exist_ok=True)
-    backgrounds = load_backgrounds()
     json.dump({"characters": chars, "backgrounds": backgrounds}, open(C.MANIFEST_PATH, "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
     print(f"NIKKE 角色 {len(chars)} / 背景 {len(backgrounds)} -> {C.MANIFEST_PATH}")
