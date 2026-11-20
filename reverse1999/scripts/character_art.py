@@ -20,6 +20,12 @@ SKINS = {
     "315902": ("佩施塔", "童话出逃日"),
 }
 
+# 经资源图鉴核对：315902 的这张原始 WebP 本身包含角色和该套衣着的
+# 室内楼梯场景。先取它，避免误用人物透明底或任意拼接背景。
+VERIFIED_SCENE_ART = {
+    "315902": "https://assets.merui.net/headicon_img/315902.webp",
+}
+
 # 315901 素材已在 Merui 角色图鉴核实为佩施塔真实人物立绘
 # （1024px 级透明背景）。原尺寸维基 Portrait 优先；仅在不可用时回退。
 VERIFIED_FALLBACKS = {
@@ -53,7 +59,9 @@ def catalog():
 def download_one(skin_id):
     """从真实原始立绘图源下载并验证 WebP，失败时不登记任何新图。"""
     sid = require_skin(skin_id)
-    candidates = artwork.urls(sid) + VERIFIED_FALLBACKS.get(sid, ())
+    sources = artwork.urls(sid) + VERIFIED_FALLBACKS.get(sid, ())
+    candidates = ((VERIFIED_SCENE_ART[sid],) + sources
+                  if sid in VERIFIED_SCENE_ART else sources)
     dest = image_file(sid)
     artwork.download(sid, dest, sources=candidates)
     if not is_ready(sid):
@@ -85,7 +93,8 @@ def attach_artwork(models, mapping):
         if sid not in SKINS or not is_ready(sid):
             continue
         model["artwork"] = f"../data/character_art/{sid}/artwork.webp"
-        model["artwork_kind"] = "character-portrait"
+        model["artwork_kind"] = ("character-scene-portrait"
+                                 if sid in VERIFIED_SCENE_ART else "character-portrait")
         seen.add(sid)
 
     # 本地只有真实原画而模型还没装时，也能使用同一个衣着 ID 查看静态原画。
@@ -101,6 +110,7 @@ def attach_artwork(models, mapping):
             "skin_en": entry.get("skin_en") or "",
             "folder": f"character_art_{sid}",
             "artwork": f"../data/character_art/{sid}/artwork.webp",
-            "artwork_kind": "character-portrait",
+            "artwork_kind": ("character-scene-portrait"
+                             if sid in VERIFIED_SCENE_ART else "character-portrait"),
         })
     return models
