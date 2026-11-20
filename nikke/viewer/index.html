@@ -516,7 +516,7 @@ function buildGrid(){
           `<span class="badge">${c.version||''}</span>`+
           `<div class="style-tags">${(c.tags||[]).filter(t=>['御姐','腿部重点','黑丝','网袜','长筒袜','紧身裤','紧身衣','长靴','兔女郎','运动系','待复核'].includes(t)).slice(0,3).map(t=>`<i>${t}</i>`).join('')}</div>`+
           `<span class="batch-mark">${(c.batches||[]).map(b=>`批${b}`).join(' / ')}</span>`+
-          `<img loading="lazy" src="${c.cover||''}" alt="${c.name}">`+
+          `<img loading="lazy" src="${c.scene_preview||c.cover||''}" alt="${c.name}" title="${c.scene_preview ? '动态人物＋背景合成预览（非官方原版）' : '角色封面'}">`+
           `<div class="poses">${poseKeys.map(p=>`<i${p===ui.pose?' class="hl"':''}>${POSE_LABEL[p]||p}</i>`).join('')}</div>`+
         `</div>`+
         `<div class="name">${c.name}${c.name!==c.id?` · ${c.id}`:''}</div>`;
