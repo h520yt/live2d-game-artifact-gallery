@@ -64,7 +64,7 @@ def installed_ids():
 
 def main():
     parser = argparse.ArgumentParser(description="补齐 NIKKE 皮肤 Spine 资源")
-    parser.add_argument("--plan", "--dry-run", action="store_true", help="只列出待下载皮肤，不修改任何文件")
+    parser.add_argument("--plan", "--dry-run", action="store_true", help="只列出待下载皮肤，不下载模型（索引可能更新缓存）")
     parser.add_argument("--direct", action="store_true", help="直连 Nikke-db，不使用默认代理")
     parser.add_argument("--base", nargs="+", metavar="cNNN",
                         help="只查指定角色及其皮肤（例如 --base c090 c810）")
