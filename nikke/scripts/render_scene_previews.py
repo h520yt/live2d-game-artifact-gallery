@@ -1,4 +1,4 @@
-"""为 NIKKE 展柜生成静态人物＋背景卡片预览（不是官方原始配套海报）。
+"""只为来源已核实的 NIKKE 皮肤背景生成静态预览（不是原版动态场景）。
 
 运行前先准备已安装的背景及透明人物图（art.png 或 art_render.png）。
 不修改骨骼，不上传美术素材，输出位于 git 忽略的 nikke/data/。
@@ -16,21 +16,29 @@ import config as C
 ROOT = Path(C.DATA_DIR)
 MANIFEST = Path(C.MANIFEST_PATH)
 IMAGE_FILES = ("art.png", "art.webp", "art.jpg", "art_render.png")
-DEFAULT_BACKGROUNDS = ("CommanderRoom.png", "Ark.png", "Office.png")
 SIZE = (720, 1080)
 
 
 def select_background(character, backgrounds):
-    """经验证配置优先，其次通用场景。不给没有证据的皮肤伪造官方背景。"""
-    if not backgrounds:
+    """找不到原始素材证据关联就返回 None；绝不使用随机或默认背景。"""
+    scene = character.get("scene") or {}
+    if scene.get("kind") != "verified" or not scene.get("source_asset"):
         return None
-    verified = (character.get("scene") or {}).get("filename")
-    if verified and verified in backgrounds:
-        return backgrounds[verified]
-    for filename in DEFAULT_BACKGROUNDS:
-        if filename in backgrounds:
-            return backgrounds[filename]
-    return next(iter(backgrounds.values()))
+    filename = scene.get("filename")
+    return backgrounds.get(filename) if filename else None
+
+
+def preview_is_current(destination, scene):
+    """只有旧图对应同一个经核实的原始场景时才复用。"""
+    meta = destination.with_name("scene_preview.meta.json")
+    if not destination.is_file() or not meta.is_file():
+        return False
+    try:
+        record = json.loads(meta.read_text(encoding="utf-8"))
+    except (ValueError, OSError):
+        return False
+    return (record.get("filename") == scene.get("filename")
+            and record.get("source_asset") == scene.get("source_asset"))
 
 
 def find_art(character_id):
@@ -93,8 +101,8 @@ def main(argv=None):
                  for x in manifest.get("backgrounds", [])
                  if x.get("filename") and (ROOT / "backgrounds" / x["filename"]).is_file()}
     if not installed:
-        print("没有背景图片，请先运行 install_backgrounds.py")
-        return 1
+        print("未找到已安装背景；只有明确匹配并经核实的背景才能用于场景预览。")
+        return 0
 
     wanted = set(args.only)
     characters = [c for c in manifest.get("characters", []) if c.get("category") == "character"]
@@ -107,25 +115,32 @@ def main(argv=None):
             return 1
         characters = [c for c in characters if c["id"] in wanted]
 
-    stats = {"ready": 0, "skipped": 0, "missing_art": 0, "failed": 0}
+    stats = {"ready": 0, "skipped": 0, "unverified": 0, "missing_art": 0, "failed": 0}
     for character in characters:
         cid = character["id"]
+        scene = character.get("scene") or {}
+        bg = select_background(character, installed)
+        if bg is None:
+            stats["unverified"] += 1
+            continue
         art = find_art(cid)
         if not art:
             print(f"[缺少透明角色图] {cid}，先用 render_art.mjs 导出")
             stats["missing_art"] += 1
             continue
-        bg = select_background(character, installed)
         dest = ROOT / cid / "scene_preview.webp"
-        if dest.exists() and not args.force:
+        if not args.force and preview_is_current(dest, scene):
             stats["skipped"] += 1
             continue
         if args.plan:
-            print(f"[计划] {cid}: {art.name} + {bg.name}")
+            print(f"[已核实待生成] {cid}: {art.name} + {bg.name}")
             stats["ready"] += 1
             continue
         try:
             compose_preview(bg, art, dest)
+            record = {"filename": scene["filename"], "source_asset": scene["source_asset"]}
+            dest.with_name("scene_preview.meta.json").write_text(
+                json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             stats["ready"] += 1
             print(f"[完成] {cid}: {art.name} + {bg.name}")
         except (OSError, ValueError) as error:
