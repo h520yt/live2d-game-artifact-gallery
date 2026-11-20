@@ -13,14 +13,16 @@
 ```powershell
 git pull origin main
 # 一条命令：从个人 fork 补齐缺失模型，导出 12 张完整场景 PNG，并刷新索引
-node reverse1999/scripts/export_full_scenes.cjs all --download
+node reverse1999/scripts/export_full_scenes.cjs all --download --force
 
 # 已经装好 12 套 UNIQUE 时，可省略 --download
 node reverse1999/scripts/export_full_scenes.cjs all
 
-# 可选：单套 / 4K 输出；--4k 会替换分辨率不足的旧图
-node reverse1999/scripts/export_full_scenes.cjs 308603 --4k
-node reverse1999/scripts/export_full_scenes.cjs all --4k
+# 当前默认导出真实 4K 3840×2160；--force 重做此前可能模糊的缓存
+node reverse1999/scripts/export_full_scenes.cjs 308603 --force
+
+# 扫描每一套的场景分辨率、背景对应关系和动态模型贴图
+node reverse1999/scripts/audit_scene_quality.cjs
 
 python scripts/gallery.py serve --port 8000
 ```
@@ -30,6 +32,9 @@ python scripts/gallery.py serve --port 8000
 封面；进入对应皮肤，默认显示完整场景图，可切换「Live2D 动态展示」。
 没有成功合成的皮肤仍以原有模型显示，不把单独的背景冒充完整原画。
 静态 PNG 保存在 `reverse1999/data/full_scenes/<皮肤ID>.png`，被 Git 忽略。
+
+**清晰度修复**：旧版默认生成 1920×1080，现在默认使用 3840×2160 浏览器画布，且必须验证角色真实绘制像素，防止只导出背景。浏览器遇到旧版低清图会自动切到实时动态展示；重新执行 `--force` 后恢复完整场景图片。`audit_scene_quality.cjs` 只读取本机文件，不伪造任何背景。点唱机的独立角色原画不能直接当作动态模型背景；目前核实匹配的专属背景主要对应 12 套 UNIQUE。
+
 
 **环境**：需 Python 以及仓库已有的 Node/Playwright 依赖，浏览器缺失可执行
 `npx playwright install chromium`。首次使用 `--download` 会下载模型和背景；
