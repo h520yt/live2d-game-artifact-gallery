@@ -134,3 +134,56 @@ python nikke/scripts/install_skins.py --base c090 c810
 
 官方场景匹配需要先取得原始场景包或可信资产清单，验证 `ID → 场景资源 → 背景层／前景层`
 关系，再在现有展示器中还原。不能把不相关的背景随意拼成“原版场景”。
+
+## 6. 场景自动导入与人物背景合成（2026-11-20）
+
+已加入 Nikke-db 的 [341 项背景索引](https://github.com/Nikke-db/nikke-db-vue/blob/main/src/utils/json/backgroundImages.json)
+和 [30 个地点映射](https://github.com/Nikke-db/nikke-db-vue/blob/main/src/utils/json/locationBackgroundMappings.json)。
+这些 JSON 仅包含文件名，不含背景原图；可从其 [Background Image Pack 入口](https://github.com/Nikke-db/nikke-db-vue/blob/main/src/components/common/Spine/Tools/BackgroundImagePack.vue)
+取得供个人本地查看的背景素材包。
+
+在仓库根目录执行，替换为你实际下载的 ZIP 或已解压目录：
+
+~~~powershell
+git pull origin main
+python nikke/scripts/install_backgrounds.py --source "D:\Downloads\NIKKE-backgrounds.zip" --plan
+python nikke/scripts/install_backgrounds.py --source "D:\Downloads\NIKKE-backgrounds.zip"
+~~~
+
+可使用 --force 覆盖已安装背景。脚本只导入索引中有的图片，且校验文件内容；
+输出到 Git 忽略的 nikke/data/backgrounds，不将游戏原图提交仓库。
+此外可以尝试从客户端的明文 UnityFS 缓存中提取图片（会跳过 NKAB）：
+
+~~~powershell
+python nikke/scripts/install_backgrounds.py --scan-cache --cache-root "Q:\NIKKE_Assets" --max-bundles 200 --plan
+python nikke/scripts/install_backgrounds.py --scan-cache --cache-root "Q:\NIKKE_Assets" --buckets 00 01
+~~~
+
+背景安装后，打开 NIKKE 角色时默认显示实时 Spine＋背景，
+没有背景则自动退回透明模型。背景支持按地点切换和保存皮肤偏好。
+
+如需列表卡片显示完整人物＋背景，先启动本地 Web 服务：
+
+~~~powershell
+python -m http.server 8000
+~~~
+
+再打开第二个终端，在仓库根目录执行：
+
+~~~powershell
+python nikke/scripts/install_skins.py
+npm install --no-save playwright
+npx playwright install chromium
+node nikke/scripts/render_art.mjs --all
+python nikke/scripts/render_scene_previews.py --all
+python nikke/scripts/gen_nikke_manifest.py
+python -m unittest discover -s nikke/tests -v
+~~~
+
+进入 http://127.0.0.1:8000/nikke/viewer/ 查看。卡片采用本地生成的静态合成预览，
+点击后仍为真实 Spine 动画。缺透明角色图时打印缺失原因并保留旧卡片封面。
+
+**不要把一般背景组合误认为皮肤专属场景。** nikke/scene_bindings.json 目前为空，
+以后仅接受有 evidence 核验依据、且所引用背景真实存在的绑定。
+高级皮肤的 Burst / Live Wallpaper 原版动态场景（场景节点、特效、前后景）
+仍需另行提取与核对，尚未完成完整还原。
