@@ -37,9 +37,16 @@ function pngInfo(filename) {
     const head = Buffer.alloc(24);
     try { fs.readSync(fd, head, 0, head.length, 0); }
     finally { fs.closeSync(fd); }
-    if (!head.subarray(0, 8).equals(PNG)) return null;
-    return { width: head.readUInt32BE(16), height: head.readUInt32BE(20),
-      bytes: stats.size };
+    if (!head.subarray(0, 8).equals(PNG) || stats.size < 45) return null;
+    // 非零文件甚至有 PNG 头部，也可能只下载了一半；结尾需含 IEND。
+    const tail = Buffer.alloc(12);
+    const tailFd = fs.openSync(filename, "r");
+    try { fs.readSync(tailFd, tail, 0, 12, stats.size - 12); }
+    finally { fs.closeSync(tailFd); }
+    if (tail.subarray(4, 8).toString("ascii") !== "IEND") return null;
+    const width = head.readUInt32BE(16), height = head.readUInt32BE(20);
+    if (!width || !height) return null;
+    return { width, height, bytes: stats.size };
   } catch {
     return null;
   }
@@ -133,9 +140,22 @@ function main() {
       if (row.model?.problem) problems.push(row.type + ": " + row.model.problem);
     }
     if (full && full.status !== "4K") problems.push(full.status);
+    const qualityNotes = [];
+    for (const row of rows) {
+      if (row.model?.lowTextures?.length) {
+        qualityNotes.push("存在较小模型原生纹理（不一定是错误）：" +
+          row.model.lowTextures.slice(0, 3).join("、"));
+      }
+      if (typeof row.background === "object" && row.background &&
+          row.background.width < 1920 && row.background.height < 1080) {
+        qualityNotes.push("上游背景尺寸仅 " + row.background.width +
+          "×" + row.background.height + "，放大可能模糊");
+      }
+    }
     details.push({ id, name: variants[0].name || "", skin: variants[0].skin || "",
       verifiedBackgroundReady: confirmedBg, fullScene: full,
       noVerifiedBackground: !rows.some(x => x.verifiedSameSkin),
+      qualityNotes: [...new Set(qualityNotes)],
       problems: [...new Set(problems)], variants: rows });
   }
   details.sort((a, b) => Number(b.id) - Number(a.id));
@@ -154,6 +174,7 @@ function main() {
         item.verifiedBackgroundReady ? "专属背景就绪" : "未核实独立背景";
       console.log("[" + state + "] " + item.id + " " + item.name + " · " + item.skin);
       for (const problem of item.problems) console.log("   - " + problem);
+      for (const note of item.qualityNotes) console.log("   · 素材分辨率提醒：" + note);
     }
     console.log("说明：未核实背景不代表下载失败；禁止把角色原画或其他衣着的背景强行拼接。");
     console.log("修复旧版模糊截图：node reverse1999/scripts/export_full_scenes.cjs all --download --force");
