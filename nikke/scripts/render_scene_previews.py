@@ -34,11 +34,22 @@ def select_background(character, backgrounds):
 
 
 def find_art(character_id):
+    """优先真实透明的 Spine 导出帧；不要把不透明原画再叠到背景上。"""
     directory = ROOT / character_id
-    for filename in IMAGE_FILES:
+    for filename in ("art_render.png", "art.png", "art.webp", "art.jpg"):
         candidate = directory / filename
-        if candidate.is_file() and candidate.stat().st_size > 0:
+        if not candidate.is_file() or candidate.stat().st_size == 0:
+            continue
+        try:
+            with Image.open(candidate) as image:
+                if image.mode not in ("RGBA", "LA", "P"):
+                    continue
+                alpha = image.convert("RGBA").getchannel("A")
+                if alpha.getextrema()[0] == 255:
+                    continue
             return candidate
+        except OSError:
+            continue
     return None
 
 
