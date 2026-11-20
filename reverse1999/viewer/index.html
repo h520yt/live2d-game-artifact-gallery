@@ -141,6 +141,11 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
   <div class="sg-detail-head">
     <button id="back-to-catalog" type="button">← 返回列表</button>
     <div class="sg-detail-identity"><strong id="detail-title">皮肤展示</strong><small id="detail-subtitle">完整场景 / 动态模型</small></div>
+    <div id="character-view-controls" class="sg-detail-nav" hidden>
+      <button id="character-scene" type="button">完整场景</button>
+      <button id="character-portrait" type="button">角色原画</button>
+      <button id="character-dynamic" type="button">动态模型</button>
+    </div>
     <div id="jukebox-view-controls" class="sg-detail-nav" hidden>
       <button id="view-artwork" type="button">静态原画</button>
       <button id="view-model" type="button">动态模型</button>
@@ -205,6 +210,7 @@ section.stage{position:relative;min-height:0;height:100%;overflow:hidden;backgro
 <script src="../../shared/vendor/live2d.min.js"></script>
 <script src="../../shared/gallery_bridge.js"></script>
 <script src="../../shared/skin_gallery.js"></script>
+<script src="./skin_groups.js"></script>
 <script>
 'use strict';
 const $ = id => document.getElementById(id);
@@ -219,6 +225,7 @@ function message(value){$('status').hidden = false; $('status').textContent = va
 function hideMessage(){ $('status').hidden = true; }
 let galleryUi = null;
 let catalogRows = [];
+let activeCharacterGroup = null;
 
 // 统一按衣着 ID 合并：UNIQUE / 点唱机 / Spine / 68 元档位共用同一个画廊。
 // 同 ID 的独立商城骨骼不再重复生成第二张卡片，但精确资源链接仍可直达。
@@ -258,13 +265,17 @@ function galleryRows(){
       });
     }
   }
-  return [...found.values()].sort((a,b)=>Number(b.key)-Number(a.key));
+  // 佩施塔 315901 初始人物立绘 + 315902「童话出逃日」场景原图，
+  // 两张来源归为同一角色卡片；其他所有衣着仍按原 ID 逐条展示。
+  return Reverse1999SkinGroups.mergePerchta([...found.values()], models)
+    .sort((a,b)=>Number(b.key)-Number(a.key));
 }
 function renderList(){
   catalogRows=galleryRows();
   galleryUi?.setItems(catalogRows);
 }
 function closeDetail(){
+  activeCharacterGroup=null;
   ++requestId;
   ++poseToken;
   ++framingSequence;
@@ -288,7 +299,8 @@ function openCatalogRow(row){
     $('catalog-status').textContent='皮肤 '+row.title+'「'+row.subtitle+'」尚未安装。执行 python reverse1999/scripts/sync.py '+command+' '+row.key;
     return false;
   }
-  selectModel(row.model);
+  activeCharacterGroup=row.group||null;
+  selectModel(row.group?.playable||row.model);
   return true;
 }
 function buttons(container, names, onClick){
@@ -618,6 +630,12 @@ function setupSceneControls(){
 }
 
 async function selectModel(m, viewMode){
+  const group=activeCharacterGroup;
+  const characterMode=group
+    ? (['scene','portrait','model'].includes(viewMode) ? viewMode
+      : group.scene ? 'scene' : group.portrait ? 'portrait' : 'model')
+    : null;
+  if(group&&characterMode==='model'&&group.playable)m=group.playable;
   selected=m;const token=++requestId;
   // 保持 WebGL 正常渲染用于后台 Alpha 取样，但在首次构图完成前不显示旧位置。
   $('canvas').style.opacity='0';
@@ -634,8 +652,17 @@ async function selectModel(m, viewMode){
   $('artwork-image').removeAttribute('src');
   $('full-scene-stage').hidden=true;
   $('full-scene-image').removeAttribute('src');
-  const hasFullScene=!!m.full_scene;
+  const hasFullScene=!!m.full_scene&&!group;
   const showFullScene=hasFullScene&&viewMode!=='model'&&viewMode!=='artwork';
+  $('character-view-controls').hidden=!group;
+  $('character-scene').disabled=!group?.scene;
+  $('character-portrait').disabled=!group?.portrait;
+  $('character-dynamic').disabled=!group?.playable;
+  for(const [id,mode] of [['character-scene','scene'],
+                          ['character-portrait','portrait'],
+                          ['character-dynamic','model']]){
+    $(id).classList.toggle('active',characterMode===mode);
+  }
   $('full-scene-controls').hidden=!hasFullScene;
   $('scene-view-image').classList.toggle('active',showFullScene);
   $('scene-view-dynamic').classList.toggle('active',hasFullScene&&!showFullScene);
@@ -649,7 +676,7 @@ async function selectModel(m, viewMode){
   // 点唱机维持原有默认模式，切换控件由是否有原画决定而非资源渠道。
   const showArt=hasArt&&(viewMode==='artwork'||
     (m.artwork_kind?.startsWith('character-')&&!hasFullScene&&!viewMode));
-  $('jukebox-view-controls').hidden=!hasArt || hasFullScene;
+  $('jukebox-view-controls').hidden=!!group||!hasArt||hasFullScene;
   $('view-artwork').disabled=!hasArt;
   $('view-model').disabled=artOnly;
   $('view-artwork').classList.toggle('active',showArt);
@@ -666,6 +693,30 @@ async function selectModel(m, viewMode){
         ? '该原图本身带有该衣着的真实场景；静态原画和动态模型分别展示，不拆背景拼装。'
         : '独立角色原画采用真实原图 WebP，保持原始比例；不是带背景的场景合成图。')
     : '尚未安装原画：可运行对应皮肤的原画下载命令。';
+  if(group&&characterMode!=='model'){
+    const source=characterMode==='scene'?group.scene:group.portrait;
+    if(source){
+      // 原图是独立静态资源，不拉伸 Spine 动画，也不把初始衣着人物
+      // 塞进「童话出逃日」的楼梯背景里拼假画。
+      $('stage-area').hidden=true;
+      $('spine-stage').hidden=true;
+      $('spine-stage').classList.remove('showcase');
+      $('scene-controls').hidden=true;
+      $('artwork-stage').hidden=false;
+      $('background-note').hidden=true;
+      $('artwork-image').src=source;
+      $('detail-title').textContent='佩施塔 · '+
+        (characterMode==='scene'?'童话出逃日':'初始皮肤');
+      $('detail-subtitle').textContent=characterMode==='scene'
+        ? '315902 · 角色与专属场景原图'
+        : '315901 · 角色原画';
+      $('model-skin').textContent=characterMode==='scene'
+        ? '童话出逃日 · 原始人物＋场景插画' : '初始皮肤 · 独立角色原画';
+      buttons($('poses'),[],()=>{});
+      hideMessage();
+      return;
+    }
+  }
   if(showArt){
     $('stage-area').hidden=true;
     $('spine-stage').hidden=true;
@@ -683,8 +734,14 @@ async function selectModel(m, viewMode){
     return;
   }
   if(artOnly){
-    message('这套衣着只有原画；动态模型尚未安装，请运行 jukebox '+m.id);
+    message(group
+      ? '当前仅有原画，动态模型尚未安装。可运行 python reverse1999/scripts/sync.py download 315901。'
+      : '这套衣着只有原画；动态模型尚未安装，请运行 jukebox '+m.id);
     return;
+  }
+  if(group&&characterMode==='model'){
+    $('detail-title').textContent='佩施塔 · '+m.skin;
+    $('detail-subtitle').textContent=m.id+' · 对应衣着动态模型';
   }
   if(showFullScene){
     $('stage-area').hidden=true;
@@ -875,6 +932,9 @@ async function start(){
     $('back-to-catalog').onclick=()=>galleryUi.close();
     $('prev-skin').onclick=()=>galleryUi.navigate(-1);
     $('next-skin').onclick=()=>galleryUi.navigate(1);
+    $('character-scene').onclick=()=>{if(activeCharacterGroup?.scene&&selected)selectModel(selected,'scene');};
+    $('character-portrait').onclick=()=>{if(activeCharacterGroup?.portrait&&selected)selectModel(selected,'portrait');};
+    $('character-dynamic').onclick=()=>{if(activeCharacterGroup?.playable)selectModel(activeCharacterGroup.playable,'model');};
     $('view-artwork').onclick=()=>{if(selected)selectModel(selected,'artwork');};
     $('view-model').onclick=()=>{if(selected&&selected.type!=='artwork')selectModel(selected,'model');};
     $('scene-view-image').onclick=()=>{if(selected?.full_scene)selectModel(selected,'image');};
@@ -907,7 +967,12 @@ async function start(){
       $('background-note').hidden=false;
     };
     $('artwork-image').onerror=()=>{
-      if(!selected?.artwork||$('artwork-stage').hidden)return;
+      if($('artwork-stage').hidden)return;
+      if(activeCharacterGroup){
+        message('佩施塔角色原画或场景原图加载失败，请执行 python reverse1999/scripts/sync.py character-art all 后刷新。');
+        return;
+      }
+      if(!selected?.artwork)return;
       const command=selected.artwork_kind?.startsWith('character-')
         ? 'character-art ' : 'jukebox-art ';
       message('角色原画无法加载，请运行 python reverse1999/scripts/sync.py '+
@@ -923,8 +988,18 @@ async function start(){
         if (!model) return false;
         // 源 ID 仍可指向精确的 Spine / Cubism 变体；画廊主列表仅去重显示。
         const exporting=new URLSearchParams(location.search).get('export_scene')==='1';
-        galleryUi.open(String(model.id));
-        if(selected!==model||exporting)selectModel(model,exporting?'model':undefined);
+        const key=['315901','315902'].includes(String(model.id))
+          ? '315902' : String(model.id);
+        if(!galleryUi.open(key))return false;
+        // 精确深链依然可以直达某个骨骼变体；普通点击封面默认场景图。
+        if(exporting){
+          activeCharacterGroup=null;
+          selectModel(model,'model');
+        }else if(key==='315902'&&model.type!=='artwork'){
+          selectModel(model,'model');
+        }else if(key!=='315902'&&selected!==model){
+          selectModel(model);
+        }
         return true;
       },
       listRoles: () => selected?.poses ? Object.keys(selected.poses) : [],
