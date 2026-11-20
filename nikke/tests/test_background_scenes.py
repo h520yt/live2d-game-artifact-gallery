@@ -16,7 +16,7 @@ sys.path.insert(0, str(NIKKE_DIR / "scripts"))
 import config as C
 from gen_nikke_manifest import load_backgrounds, load_scene_bindings, scene_variant
 from install_backgrounds import load_catalog, canonical_filename, valid_image, scan_source
-from render_scene_previews import compose_preview, select_background
+from render_scene_previews import compose_preview, select_background, find_art
 
 
 def image_bytes(color=(20, 70, 120), size=(640, 360)):
@@ -95,6 +95,18 @@ class BackgroundSceneTest(unittest.TestCase):
             verified = load_scene_bindings(backgrounds)
         self.assertEqual(set(verified), {"c090"})
         self.assertIn("background", verified["c090"])
+
+    def test_opaque_art_does_not_mask_scene_background(self):
+        import render_scene_previews
+        model_dir = self.root / "c090"
+        model_dir.mkdir()
+        Image.new("RGB", (640, 360), (40, 50, 60)).save(model_dir / "art.png")
+        with patch.object(render_scene_previews, "ROOT", self.root):
+            self.assertIsNone(find_art("c090"))
+            transparent = Image.new("RGBA", (640, 360), (0, 0, 0, 0))
+            transparent.paste((200, 100, 120, 255), (100, 10, 500, 350))
+            transparent.save(model_dir / "art_render.png")
+            self.assertEqual(find_art("c090").name, "art_render.png")
 
     def test_image_composition_and_verified_preference(self):
         self.bgdir.mkdir()
