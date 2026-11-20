@@ -609,7 +609,8 @@ function setupSceneControls(){
   $('scene-zoom-out').onclick=()=>{sceneScale=Math.max(.3,sceneScale/1.12);updateSceneControls();};
   $('scene-reset').onclick=()=>{if(selected?.type==='showcase')resetSceneControls(selected);};
   $('showcase-background').onerror=()=>{
-    if(selected?.type==='showcase')message('商城背景 PNG 加载失败，请重新运行 showcase 下载命令。');
+    if((selected?.type==='showcase'||selected?.type==='scene')&&!$('spine-stage').hidden)
+      message('对应商城背景 PNG 加载失败，请重新运行本衣着的资源下载命令。');
   };
 }
 
@@ -648,10 +649,10 @@ async function selectModel(m, viewMode){
   $('view-artwork').classList.toggle('active',showArt);
   $('view-model').classList.toggle('active',jukebox&&!showArt);
   $('background-note').hidden=true;
-  if(!m.background&&!hasFullScene){
+  if(!m.background&&!m.scene?.background){
     $('background-note').textContent=hasArt
-      ? '这套衣着尚无对应的专属场景背景；当前仅展示动态模型。可在上方切换独立原画。'
-      : '这套衣着尚无对应的专属场景背景；当前仅展示动态模型。';
+      ? '尚未核实这套衣着的同 ID 专属背景，因此动态模型保持透明底；独立原画可单独查看，不会混入其他衣着背景。'
+      : '尚未核实这套衣着的同 ID 专属背景，动态模型不使用其他皮肤的背景。';
     $('background-note').hidden=false;
   }
   $('jukebox-artwork-status').textContent=hasArt
@@ -867,8 +868,26 @@ async function start(){
     $('view-model').onclick=()=>{if(selected&&selected.type!=='artwork')selectModel(selected,'model');};
     $('scene-view-image').onclick=()=>{if(selected?.full_scene)selectModel(selected,'image');};
     $('scene-view-dynamic').onclick=()=>{if(selected?.full_scene)selectModel(selected,'model');};
+    // 旧导出器默认为 1080p；大屏上放大后显著模糊。
+    // 低于 4K 的缓存只作为旧文件保留，页面优先实时渲染人物及同 ID 背景。
+    $('full-scene-image').onload=()=>{
+      const image=$('full-scene-image');
+      if(!selected?.full_scene||$('full-scene-stage').hidden)return;
+      if(image.naturalWidth>=3840&&image.naturalHeight>=2160)return;
+      const oldWidth=image.naturalWidth,oldHeight=image.naturalHeight;
+      const model=selected;
+      void selectModel(model,'model');
+      $('background-note').textContent='旧版完整场景图仅 '+oldWidth+'×'+oldHeight+
+        '，为避免放大模糊已切换实时动态展示。运行 node reverse1999/scripts/export_full_scenes.cjs '+
+        model.id+' --force 可重新导出 4K 图像。';
+      $('background-note').hidden=false;
+    };
     $('full-scene-image').onerror=()=>{
-      if(selected?.full_scene&&!$('full-scene-stage').hidden)selectModel(selected,'model');
+      if(!selected?.full_scene||$('full-scene-stage').hidden)return;
+      const model=selected;
+      void selectModel(model,'model');
+      $('background-note').textContent='完整场景 PNG 不存在或加载失败，已切换实时动态展示。运行 4K 导出命令可重新生成。';
+      $('background-note').hidden=false;
     };
     $('live2d-background').onerror=()=>{
       if(!selected?.background||$('stage-area').hidden)return;
