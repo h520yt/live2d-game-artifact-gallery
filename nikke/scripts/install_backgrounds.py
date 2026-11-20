@@ -151,7 +151,7 @@ def scan_local_cache(catalog, output_dir, *, cache_root=None, buckets=None, max_
                 continue
             with path.open("rb") as stream:
                 head = stream.read(7)
-            if head == b"NKAB":
+            if head.startswith(b"NKAB"):
                 report["encrypted"] = report.get("encrypted", 0) + 1
                 continue
             if head != b"UnityFS":
@@ -165,20 +165,23 @@ def scan_local_cache(catalog, output_dir, *, cache_root=None, buckets=None, max_
                 for obj in env.objects:
                     if obj.type.name != "Texture2D":
                         continue
-                    data = obj.read()
-                    canonical = canonical_filename(data.m_Name + ".png", catalog)
-                    if not canonical:
-                        canonical = canonical_filename(data.m_Name, catalog)
-                    if not canonical:
-                        continue
-                    target = Path(output_dir) / canonical
-                    if target.is_file() and target.stat().st_size > 0 and not force:
-                        report["existing"] = report.get("existing", 0) + 1
-                        continue
-                    with io.BytesIO() as stream:
-                        data.image.save(stream, format="PNG")
-                        payload = stream.getvalue()
-                    install_one(canonical, payload, catalog, output_dir, plan=plan, force=force, report=report)
+                    try:
+                        data = obj.read()
+                        canonical = canonical_filename(data.m_Name + ".png", catalog)
+                        if not canonical:
+                            canonical = canonical_filename(data.m_Name, catalog)
+                        if not canonical:
+                            continue
+                        target = Path(output_dir) / canonical
+                        if target.is_file() and target.stat().st_size > 0 and not force:
+                            report["existing"] = report.get("existing", 0) + 1
+                            continue
+                        with io.BytesIO() as stream:
+                            data.image.save(stream, format="PNG")
+                            payload = stream.getvalue()
+                        install_one(canonical, payload, catalog, output_dir, plan=plan, force=force, report=report)
+                    except Exception:
+                        report["texture_errors"] = report.get("texture_errors", 0) + 1
             except Exception:
                 report["bundle_errors"] = report.get("bundle_errors", 0) + 1
         print(f"  [缓存扫描] {folder.name}；已检查明文包 {processed}；匹配 {report.get('matched', 0)}", flush=True)
