@@ -22,6 +22,7 @@ import scene
 import showcase
 import unique
 import jukebox
+import character_art
 
 SOURCE = "myssal/Reverse-1999-CN-Asset"
 SOURCE_ROOT = "live2d/roles"
@@ -241,6 +242,9 @@ def generate_manifest(mapping):
               (m.get("type") == "scene-live2d" and str(m.get("id")) in unique_ids)]
     models.extend(unique_models)
     models.extend(jukebox.collect_models(mapping))
+    # 佩施塔（白雪）角色原画单独下载，按同一衣着 ID 附在现有动态模型上。
+    # 独立原画不充当 skin2dbg 专属背景，避免混入错误的场景组合。
+    character_art.attach_artwork(models, mapping)
     # 完整场景是图片资产而非新一套皮肤：只给现有衣着附加展示方式。
     # 68 元档位、最新角色以及以后加入的衣着统一沿用此关联规则。
     for entry in models:
@@ -249,14 +253,15 @@ def generate_manifest(mapping):
             entry["full_scene"] = image
     models.sort(key=lambda x: (str(x["name"]), str(x["skin"]), str(x["folder"]), str(x.get("type", ""))))
     MANIFEST.parent.mkdir(parents=True, exist_ok=True)
-    output = {"source": SOURCE, "models": models, "unique": unique.catalog(), "jukebox": jukebox.catalog()}
+    output = {"source": SOURCE, "models": models, "unique": unique.catalog(),
+              "jukebox": jukebox.catalog(), "character_art": character_art.catalog()}
     MANIFEST.write_text(json.dumps(output, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"已生成索引：{MANIFEST}，包含 {len(models)} 套模型")
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description="重返未来：1999 动态角色资源按需下载与预览")
-    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime", "scene", "showcase", "unique", "jukebox", "jukebox-art"],
+    parser.add_argument("action", choices=["list", "download", "manifest", "audit", "setup-runtime", "scene", "showcase", "unique", "jukebox", "jukebox-art", "character-art"],
                         help="查看目录、下载资源、点唱机典藏光碟衣着 / UNIQUE 衣着批量下载、更新本地索引")
     parser.add_argument("target", nargs="?", help="指定皮肤 ID，unique / jukebox 可使用 all 批量下载")
     parser.add_argument("--search", default="", help="list 按角色名、皮肤名或 ID 搜索")
@@ -293,6 +298,17 @@ def main(argv=None):
             else:
                 try:
                     unique.download(mapping, args.target)
+                finally:
+                    generate_manifest(mapping)
+        elif args.action == "character-art":
+            if not args.target or args.target == "list":
+                for row in character_art.catalog():
+                    state = "已下载" if row["artwork_downloaded"] else "待下载"
+                    print(f'{row["id"]} {row["name"]} · {row["skin"]}：原画{state}')
+                print("下载佩施塔初始原画：python reverse1999/scripts/sync.py character-art 315901")
+            else:
+                try:
+                    character_art.download(args.target)
                 finally:
                     generate_manifest(mapping)
         elif args.action == "jukebox-art":
