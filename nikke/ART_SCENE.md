@@ -92,3 +92,45 @@ python nikke/scripts/gen_nikke_manifest.py
 目录 `nikke/data/` 已被 .gitignore 忽略；不会把受版权保护的大型图片直接提交到 Git。
 
 **注意：** 不是每个角色都有独立官方原画文件，也不是每套皮肤都有专属背景；本工具明确区分「官方独立原图」与「Spine 渲染帧」。原画仅根据本地文件是否存在决定显示，无法自动核实图片出处。
+
+## 5. 角色换装模型与完整场景（2026-11-20）
+
+NIKKE 的角色换装通常是独立 Spine 资源，例如 `c090` 和 `c090_02`，
+不能把一个角色的骨骼文件与另一个皮肤的 png 图集强行互换。
+
+本项目增加了“同角色皮肤切换”，仅在本地已经存在两套以上同家族模型时显示。
+模型仍保留完整的 fb / cover / aim 姿态和动作，切换时会销毁旧 Spine Player 再加载新资源，
+不建立新的首页分类。
+
+**补齐现有精选角色的其他皮肤（在项目根目录执行）：**
+
+```powershell
+git pull origin main
+python nikke/scripts/install_skins.py --plan
+python nikke/scripts/install_skins.py
+python -m unittest discover -s nikke/tests -v
+```
+
+也支持仅安装某个角色家族的皮肤：
+
+```powershell
+python nikke/scripts/install_skins.py --base c090 c810 --plan
+python nikke/scripts/install_skins.py --base c090 c810
+```
+
+`--all-indexed` 扩大为 Nikke-db 索引中全部皮肤，**没有人工外观审核**，不作为默认操作。
+这些命令只会查到上游 `l2d.json` 已列出的换装，**不是 NIKKE 全皮肤的完整目录**；
+下载失败、索引缺项或后续新增皮肤需继续补来源。
+
+### 背景与专属大厅演出的区别
+
+1. **普通大厅／剧情背景**：背景本身通常是独立的图片资源；可按本文第 3 节放进
+   `nikke/data/backgrounds/` 供任意 Spine 角色选择。这属于“自选组合”，不能标为官方配套皮肤。
+2. **高级抽奖皮肤的 Burst／Lobby 演出**：可能是独立的 `eventscene`、`skillcut`、
+   `livewallpaperprefabs` 等 Unity 资源，常包含自己的角色动作、背景、遮罩或特效层。
+   它们不等于常规 `fb` 模型的附加 png，不能只凭同角色 ID 推断配对。
+3. **当前状态**：角色模型换装切换已接入；旧版背景图库继续可用，
+   但**官方专属场景的自动提取、正确配对和多层还原尚未完成**。不能声称全部完整场景已支持。
+
+官方场景匹配需要先取得原始场景包或可信资产清单，验证 `ID → 场景资源 → 背景层／前景层`
+关系，再在现有展示器中还原。不能把不相关的背景随意拼成“原版场景”。
