@@ -4,6 +4,27 @@
 
 数据来源：myssal/Reverse-1999-CN-Asset（GitHub），使用它的 mappings/ArcanistMap.json 映射角色及皮肤。
 
+## 2026-11-20：完整场景模糊与动态缺背景的统一修复
+
+从项目根目录执行：
+
+```powershell
+git pull origin main
+# 先检查每套衣着的图片尺寸、专属背景和模型文件
+node reverse1999/scripts/audit_scene_quality.cjs
+
+# 用原生 4K WebGL 画布重建 12 套 UNIQUE 的角色＋同ID专属背景截图
+node reverse1999/scripts/export_full_scenes.cjs all --download --force
+
+# 再次审计；之后运行原有展柜服务
+node reverse1999/scripts/audit_scene_quality.cjs
+python scripts/gallery.py serve --port 8000
+```
+
+旧版默认 1080p 截图在大屏放大后可能模糊，现默认 4K；即使之前导出了相同大小的劣质截图，`--force` 也会重新渲染。每次导出校验画布原生分辨率、人物非透明像素和同衣着背景，不能只截一张背景就通过。当前原始图片与模型贴图的分辨率上限仍由上游素材决定，不保证经 4K 导出即可新增纹理细节。
+
+**关于部分动态皮肤缺背景**：已核实 12 套 UNIQUE 有同 ID 的专属 `singlebg/skin2dbg` 背景；点唱机共 32 套的原画主要是独立含人物的图片，不是可透明叠加的独立场景背景。因此缺少可核实的专属背景时保留动态透明底并标明原因，不能从其他皮肤随机借图。审计脚本分开报告“已确认背景但本地文件损坏”和“尚无已核实背景”，避免误判。
+
 ## 快速上手（Windows PowerShell，仓库根目录执行）
 
     python reverse1999/scripts/sync.py list --search 佩施塔
