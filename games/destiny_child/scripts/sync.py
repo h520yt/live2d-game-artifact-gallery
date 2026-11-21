@@ -3,13 +3,18 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
 import time
+from http.client import IncompleteRead
+from io import BytesIO
 from pathlib import Path
-from urllib.error import HTTPError, URLError
+from urllib.error import HTTPError
 from urllib.request import Request, urlopen
+
+from PIL import Image
 
 ROOT = Path(__file__).resolve().parents[3]
 sys.path.insert(0, str(ROOT))
@@ -42,50 +47,87 @@ def safe_file(value: object) -> str:
 
 def dependencies(settings: dict) -> list[str]:
     """从真实 Cubism 2 配置提取模型、纹理、动作、表情文件。"""
-    names = {"model.json", "icon.png", safe_file(settings["model"])}
-    names.update(safe_file(value) for value in settings.get("textures", []))
+    model = safe_file(settings["model"])
+    textures = settings["textures"]
+    if not model.endswith(".moc") or not isinstance(textures, list) or not textures:
+        raise ValueError("模型未声明 Cubism 2 MOC 或纹理")
+    textures = [safe_file(value) for value in textures]
+    if any(not name.endswith(".png") or name == "icon.png" for name in textures):
+        raise ValueError("模型声明了无效纹理")
+    names = {"icon.png", model, *textures}
     for actions in settings.get("motions", {}).values():
-        names.update(safe_file(action["file"]) for action in actions)
+        for action in actions:
+            motion = safe_file(action["file"])
+            if not motion.endswith(".mtn"):
+                raise ValueError(f"不是 Cubism 2 动作：{motion}")
+            names.add(motion)
+            if action.get("sound"):
+                names.add(safe_file(action["sound"]))
     names.update(safe_file(item["file"]) for item in settings.get("expressions", []))
     for key in ("physics", "pose"):
         if settings.get(key):
             names.add(safe_file(settings[key]))
-    if not any(name.endswith(".png") and name != "icon.png" for name in names):
-        raise ValueError("模型未声明纹理")
+    if "model.json" in names:
+        raise ValueError("配置不能引用自身")
     return sorted(names)
 
 
-def download(url: str) -> bytes:
+def download(url: str, name: str | None = None, digest: str | None = None) -> bytes:
     for attempt in range(3):
         try:
             request = Request(url, headers={"User-Agent": "live2d-game-artifact-gallery"})
             with urlopen(request, timeout=35) as response:
                 content = response.read()
-            if len(content) < 8:
-                raise ValueError("资源数据太短")
+            if len(content) < 8 or (name is not None and not valid(name, content, digest)):
+                raise ValueError(f"资源数据不完整或格式无效：{url}")
             return content
         except HTTPError as error:
             if error.code in (404, 410) or attempt == 2:
                 raise
-        except (URLError, TimeoutError, ValueError):
+        except (OSError, IncompleteRead, ValueError):
             if attempt == 2:
                 raise
         time.sleep(attempt * 2 + 1)
     raise RuntimeError("下载失败")
 
 
-def valid(name: str, data: bytes) -> bool:
+def valid(name: str, data: bytes, digest: str | None = None) -> bool:
     if len(data) < 8 or data[:64].lstrip().lower().startswith(b"<!doctype html"):
         return False
+    if digest is not None and hashlib.sha256(data).hexdigest() != digest:
+        return False
     if name.endswith(".png"):
-        return data.startswith(b"\x89PNG\r\n\x1a\n") and len(data) >= 24
+        if not data.endswith(b"\x00\x00\x00\x00IEND\xaeB\x60\x82"):
+            return False
+        try:
+            with Image.open(BytesIO(data), formats=["PNG"]) as image:
+                image.verify()
+            return True
+        except (OSError, SyntaxError, ValueError, Image.DecompressionBombError):
+            return False
+    if name.endswith(".moc"):
+        return data.startswith(b"moc")
+    if name.endswith(".mtn"):
+        return data.startswith(b"# Live2D Animator Motion Data") and b"=" in data
     if name.endswith(".json"):
         try:
-            json.loads(data.decode("utf-8-sig"))
+            payload = json.loads(data.decode("utf-8-sig"))
+            if not isinstance(payload, dict):
+                return False
+            if name == "model.json":
+                dependencies(payload)
             return True
-        except (ValueError, UnicodeDecodeError):
+        except (ValueError, KeyError, TypeError, AttributeError):
             return False
     return True
+
+
+def installed(path: Path, digest: str | None = None) -> bytes | None:
+    if path.is_file():
+        data = path.read_bytes()
+        if valid(path.name, data, digest):
+            return data
+    return None
 
 
 def install_runtime(force: bool = False) -> None:
@@ -127,31 +169,37 @@ def install(row: dict, force: bool) -> None:
     asset_id = row["id"]
     folder = GAME / "data" / asset_id
     url = BASE + asset_id + "/"
-    model_bytes = download(url + "model.json")
+    digests = row.get("metadata", {}).get("file_sha256", {})
+    model_path = folder / "model.json"
+    model_digest = digests.get("model.json")
+    saved_model = None if force else installed(model_path, model_digest)
+    model_bytes = saved_model
+    if saved_model is None:
+        model_bytes = download(url + model_path.name, model_path.name, model_digest)
     settings = json.loads(model_bytes.decode("utf-8-sig"))
     names = dependencies(settings)
+    if digests and set(digests) != {*names, model_path.name}:
+        raise ValueError(f"{asset_id} 的校验清单与模型依赖不一致")
     copied = 0
     for name in names:
         path = folder / name
-        if name != "model.json" and not force and path.is_file() and valid(name, path.read_bytes()):
-            print(f"    已有：{name}")
+        digest = digests.get(name)
+        if not force and installed(path, digest) is not None:
             continue
-        content = model_bytes if name == "model.json" else download(url + name)
-        if not valid(name, content):
-            raise ValueError(f"{asset_id}: {name} 文件无效")
-        atomic_write_bytes(path, content)
+        atomic_write_bytes(path, download(url + name, name, digest))
         copied += 1
-        print(f"    写入：{name}（{len(content)} 字节）")
-    if any(not (folder / name).is_file() or not valid(name, (folder / name).read_bytes()) for name in names):
-        raise ValueError("安装后文件校验失败")
-    print(f"  完成：{asset_id}，本次更新 {copied}/{len(names)} 个文件")
+        print(f"    写入：{name}（{path.stat().st_size} 字节）")
+    if saved_model is None:
+        atomic_write_bytes(model_path, model_bytes)
+        copied += 1
+    print(f"  完成：{asset_id}，本次更新 {copied}/{len(names) + 1} 个文件")
 
 
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Destiny Child Live2D 下载器")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--id", action="append", metavar="c001_14", help="指定模型，可重复")
-    group.add_argument("--all", action="store_true", help="安装首批全部（默认）")
+    group.add_argument("--all", action="store_true", help="安装清单全部（默认）")
     group.add_argument("--runtime-only", action="store_true", help="仅修复 Cubism 2 播放运行时")
     parser.add_argument("--plan", action="store_true", help="离线查看安装计划")
     parser.add_argument("--force", action="store_true", help="修复并覆盖已有文件")
@@ -182,12 +230,12 @@ def main(argv=None) -> int:
             print(f"\n[安装] {row['id']} · {row['title']}")
             try:
                 install(row, args.force)
-            except (OSError, ValueError, KeyError, TypeError, HTTPError, URLError) as error:
+            except (OSError, ValueError, KeyError, TypeError, IncompleteRead) as error:
                 failures += 1
                 print(f"[失败] {row['id']}: {error}", file=sys.stderr)
         print(f"安装结束：成功 {len(todo) - failures}，失败 {failures}")
         return int(failures > 0)
-    except (OSError, ValueError, KeyError, TypeError) as error:
+    except (OSError, ValueError, KeyError, TypeError, IncompleteRead) as error:
         print("执行失败：" + str(error), file=sys.stderr)
         return 1
 

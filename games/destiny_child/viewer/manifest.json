@@ -540,6 +540,1119 @@
         "skin": "Lovely",
         "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c440_02/icon.png"
       }
+    },
+    {
+      "id": "c447_11",
+      "title": "Miriam · Original",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c447_11/model.json"
+        ]
+      },
+      "preview": "../data/c447_11/icon.png",
+      "tags": [
+        "Live2D",
+        "黑丝",
+        "职业装"
+      ],
+      "required_files": [
+        "../data/c447_11/model.json",
+        "../data/c447_11/c447_11_attack.mtn",
+        "../data/c447_11/c447_11_hit.mtn",
+        "../data/c447_11/c447_11_idle.mtn",
+        "../data/c447_11/idle.exp.json",
+        "../data/c447_11/model.moc",
+        "../data/c447_11/serious.exp.json",
+        "../data/c447_11/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c447_11/icon.png"
+      ],
+      "metadata": {
+        "character": "Miriam",
+        "skin": "Original",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c447_11/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c447_11"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "28797b753ee96358ed4d244e6787723c3928544fc78a1d6e337ca969be441a8e",
+          "c447_11_attack.mtn": "8e8a4d837f19adeeac964c7e5680c2329a297ace08d600d2fb02ac039382f854",
+          "c447_11_hit.mtn": "ec663903c7a36d3db000fa0e61ea39589ed4f06e7193652660ab6eefbfa578f1",
+          "c447_11_idle.mtn": "f3ae092161968e168813c1370658369c2c02ef8355e106175478d9b56fe614ee",
+          "icon.png": "b23fc8d1a2944e75218ed56f668f8c1c78b3150e40b13068174b094e9c0e2eb8",
+          "idle.exp.json": "05e1cccc69e7c6ae9a8cef87c8ba78792698110fa4c7e34a50c7c66b3ce5bde9",
+          "model.moc": "148119ea7143f259399ad1bee46f01a84b490b43d636f205516edb8e7b0395b6",
+          "serious.exp.json": "ad2f65914fe3301db0b2805ff299cec26bb7154b11cee0af25a2a8dbdf3399a0",
+          "texture_00.png": "9b577e9574e7177263b0fab9ca84e3d611af9200525e0bac8c50f30ccaf8330f"
+        }
+      }
+    },
+    {
+      "id": "c474_10",
+      "title": "Hephaestus · Teacher",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c474_10/model.json"
+        ]
+      },
+      "preview": "../data/c474_10/icon.png",
+      "tags": [
+        "Live2D",
+        "深色丝袜",
+        "职业装"
+      ],
+      "required_files": [
+        "../data/c474_10/model.json",
+        "../data/c474_10/c474_10_attack.mtn",
+        "../data/c474_10/c474_10_hit.mtn",
+        "../data/c474_10/c474_10_idle.mtn",
+        "../data/c474_10/idle.exp.json",
+        "../data/c474_10/model.moc",
+        "../data/c474_10/serious.exp.json",
+        "../data/c474_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c474_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Hephaestus",
+        "skin": "Teacher",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c474_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c474_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "861ce2e9454cab875f02410e8ee2f5e56fd05b9f19a343225a0e07191472989b",
+          "c474_10_attack.mtn": "1ec042640238c3ce1fb41f13290f765d71a04117a4d8d96209a99aa55da6961b",
+          "c474_10_hit.mtn": "e673f18154d31d6119da8a9a8e402d021fb2a3174f9fc8f944fff20b0f3cc4f7",
+          "c474_10_idle.mtn": "0385b2ebca267209556a7a0ff8946854bf4e7adf0be96fcdeb19dd6b215320e0",
+          "icon.png": "aad23f59625eb7a6e9ae25a61d079b63cbcddf3a1fc36cb9248f190f02ea7500",
+          "idle.exp.json": "8fbd6bd2559d09d5f613511c0bec1280aff45790690f9f3a6b4cdd71ce07adbb",
+          "model.moc": "d3fb2313e9c18135f000f0c110dac5a44ede3c4674b8f96352dac58b510cd92f",
+          "serious.exp.json": "0cdc069faaeb002b1a81137c82bd65e06540ad94bf61e9ff424ffac52c0c71e5",
+          "texture_00.png": "550e283b7d3269c7fce162993c96b94e8b2f5ca6aef03b06ed4ac4e2c685e3d7"
+        }
+      }
+    },
+    {
+      "id": "c534_10",
+      "title": "Legend · Original",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c534_10/model.json"
+        ]
+      },
+      "preview": "../data/c534_10/icon.png",
+      "tags": [
+        "Live2D",
+        "黑丝",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c534_10/model.json",
+        "../data/c534_10/angry.exp.json",
+        "../data/c534_10/c534_10_attack.mtn",
+        "../data/c534_10/c534_10_banner.mtn",
+        "../data/c534_10/c534_10_hit.mtn",
+        "../data/c534_10/c534_10_idle.mtn",
+        "../data/c534_10/idle.exp.json",
+        "../data/c534_10/model.moc",
+        "../data/c534_10/smile.exp.json",
+        "../data/c534_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c534_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Legend",
+        "skin": "Original",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c534_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c534_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "ce5829071cef27eabf1dec95ce70ff649837cf494281b5938c2c5ac5ddf1b783",
+          "angry.exp.json": "e1c9c4b2f4daf2e487e6e89230cca4593ef50c5568e64d78206d0fd421e8eb93",
+          "c534_10_attack.mtn": "1734415d313e6cffa071beae582da79656848449562ddb635e43f2bc15c55de4",
+          "c534_10_banner.mtn": "0a35c73cc7298f7157dee55f72478149c59517fc7a4bfe2f6c5b969f63227a14",
+          "c534_10_hit.mtn": "aaa223a8207dfc00d672dc62ecd56ba34388d462284dd4d99eb4e01c28a66455",
+          "c534_10_idle.mtn": "0a35c73cc7298f7157dee55f72478149c59517fc7a4bfe2f6c5b969f63227a14",
+          "icon.png": "ca62e2223cf26cd533fe5221019fe2d836d035e30a39101c2dd3f22817fd0b70",
+          "idle.exp.json": "a95cff8d6a48931c6ffb17849d5a1046e1f52b765087c751558461347ab7117d",
+          "model.moc": "d13f1e976ba21b1470f1eda2c13bee7bbef426b920341d183dd9684b618a3ef3",
+          "smile.exp.json": "6b7add5f99ec1b223c0b6e152d44aaa8d62651d1c4385eef97e8cd21acd67254",
+          "texture_00.png": "aafdd94f7d06e8243876bb7714076ddabdb72a31e12e85b6ce4507fa074084d8"
+        }
+      }
+    },
+    {
+      "id": "c064_02",
+      "title": "Medusa · Conquering",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c064_02/model.json"
+        ]
+      },
+      "preview": "../data/c064_02/icon.png",
+      "tags": [
+        "Live2D",
+        "黑丝",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c064_02/model.json",
+        "../data/c064_02/c064_02_attack.mtn",
+        "../data/c064_02/c064_02_hit.mtn",
+        "../data/c064_02/c064_02_idle.mtn",
+        "../data/c064_02/model.moc",
+        "../data/c064_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c064_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Medusa",
+        "skin": "Conquering",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c064_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c064_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "fe24a1d7b018246c2fedf641e33cc5890742ca598da56a6093100a5f2a70c153",
+          "c064_02_attack.mtn": "125d3bb1f69b95bc63ed0575134b1f0b4044b99c847ff2225bab34674fc88734",
+          "c064_02_hit.mtn": "e12b5b28ef7595363fdbbb50486b50f4f82ac45741a5f4f8a33cb800d8f0f509",
+          "c064_02_idle.mtn": "1423bb1e74364813671daa81e64116d1642bbc7d2b4d3f354f22a630dcf954e7",
+          "icon.png": "6564cbab8e5c3b6f2cbf397e1181862de6c72be3d6ebe967d3b6b5f701d92a0c",
+          "model.moc": "11a43d862e0fa5c13d7087b8f787efea5066bfb896425e87463f1f4007375a8b",
+          "texture_00.png": "df1dd4e15cc0742b24ff8577865f99dd1c8afff79ab9c5c6e67ab1522796db3f"
+        }
+      }
+    },
+    {
+      "id": "c198_02",
+      "title": "Zelos · Turncoat",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c198_02/model.json"
+        ]
+      },
+      "preview": "../data/c198_02/icon.png",
+      "tags": [
+        "Live2D",
+        "深色丝袜",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c198_02/model.json",
+        "../data/c198_02/c198_02_attack.mtn",
+        "../data/c198_02/c198_02_hit.mtn",
+        "../data/c198_02/c198_02_idle.mtn",
+        "../data/c198_02/model.moc",
+        "../data/c198_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c198_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Zelos",
+        "skin": "Turncoat",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c198_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c198_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "62d94ab10550be598c1cf7eeecf416f8d929172d6028fa7d6c690204e512f582",
+          "c198_02_attack.mtn": "134ae3ee7b1b074b7babb71c5951553e7da5c5cf36ce8d88ff2c93b39c810c27",
+          "c198_02_hit.mtn": "2a9fc024c6a42c34a5cd7d782f1f9bd471c8979048743ac22118744cd337225e",
+          "c198_02_idle.mtn": "23c5b2f3c09ac14e7abfc8cdbb5f1b7255495bd41eb13ca33f3be7cedf563643",
+          "icon.png": "5eb4082f82a27ed45e3f88394af7dfe40977d757b6cbf7fe4536352db2c18ad7",
+          "model.moc": "39fcc6af6bf4b6a9425a411fdf985b918fb085edb5ffe381155c72a53ff7416e",
+          "texture_00.png": "114fc0194d30c1698d552475ee14c7e3c26eeb69fee636811be04d8344c44c08"
+        }
+      }
+    },
+    {
+      "id": "c244_02",
+      "title": "Chun Li · Dress",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c244_02/model.json"
+        ]
+      },
+      "preview": "../data/c244_02/icon.png",
+      "tags": [
+        "Live2D",
+        "深色丝袜",
+        "长靴"
+      ],
+      "required_files": [
+        "../data/c244_02/model.json",
+        "../data/c244_02/c244_02_attack.mtn",
+        "../data/c244_02/c244_02_hit.mtn",
+        "../data/c244_02/c244_02_idle.mtn",
+        "../data/c244_02/model.moc",
+        "../data/c244_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c244_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Chun Li",
+        "skin": "Dress",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c244_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c244_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "8f160b11af712b098267fc2cde488a4af121274b3291f5a6b753e352a80cf005",
+          "c244_02_attack.mtn": "181260263b6444fcbbb5737dcaeed4de2e5367fef02b4cfb95a55140bc7a7344",
+          "c244_02_hit.mtn": "295843a097d2b7b40889ce74420660a4a104bda932cde443e8c41bec519848fa",
+          "c244_02_idle.mtn": "d49d2788220ab7ee794b8030ec51fb581306e64f0ee74701e77615d339e1c239",
+          "icon.png": "229110c7cac00f43a71ec9e9022671218b4f85fd210ccf740ddb9750e7b6a51a",
+          "model.moc": "c3d798a37acbcf7b5192923cc2d4b41dcebffda802982214fb94f74638dd884e",
+          "texture_00.png": "b40e37dd3a008da9baa487a31ce689d7e44da0ea0e8c371be8cb70fbe665d4d7"
+        }
+      }
+    },
+    {
+      "id": "c452_02",
+      "title": "Leifang · Vermilion Bird",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c452_02/model.json"
+        ]
+      },
+      "preview": "../data/c452_02/icon.png",
+      "tags": [
+        "Live2D",
+        "深色丝袜",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c452_02/model.json",
+        "../data/c452_02/c452_02_attack.mtn",
+        "../data/c452_02/c452_02_hit.mtn",
+        "../data/c452_02/c452_02_idle.mtn",
+        "../data/c452_02/model.moc",
+        "../data/c452_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c452_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Leifang",
+        "skin": "Vermilion Bird",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c452_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c452_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "5ca5989fd81eac2d289507600274bd7dfe6aa01ed8958c3c6af842d9ed7347d5",
+          "c452_02_attack.mtn": "de4f0d434d32faf855afa152ab18bdbf40a8b72071ad88dc072384cb2d859c3b",
+          "c452_02_hit.mtn": "c0552814be814960a5ecfd84a6824443b933c43c4303fb63d15619e97d18560a",
+          "c452_02_idle.mtn": "95c22dab8e4bfad797cf003e1a1b7847021edf63d254e02ce4aba195d6ee917c",
+          "icon.png": "296747e968ba444808d1e3d48b24c61b573e09eb3f52986facb4a0adde0c98a9",
+          "model.moc": "f4ba1155c4f5d238aa77cbc1dec55633025dcb387fb106e83aee4462021dd148",
+          "texture_00.png": "bcd1e6f6eb4ed74dc62b5ec1b57c9ecb730036ac5471ad498eb2e96701f6229e"
+        }
+      }
+    },
+    {
+      "id": "c334_02",
+      "title": "Lisa · Disillusioned",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c334_02/model.json"
+        ]
+      },
+      "preview": "../data/c334_02/icon.png",
+      "tags": [
+        "Live2D",
+        "黑丝",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c334_02/model.json",
+        "../data/c334_02/c334_02_attack.mtn",
+        "../data/c334_02/c334_02_hit.mtn",
+        "../data/c334_02/c334_02_idle.mtn",
+        "../data/c334_02/model.moc",
+        "../data/c334_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c334_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Lisa",
+        "skin": "Disillusioned",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c334_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c334_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "d7b936a611befa1fc261b1c987ba07670e71a86450934346515df95f33938d9b",
+          "c334_02_attack.mtn": "ef29fd7c9cf2e2e96827731339f4a4fdb2d3b8f9e6f79ad98e4ef4e816fffcbb",
+          "c334_02_hit.mtn": "a0b81ec92f9643637ba35d6f5222e4d6c51456daad5e4d98c67117071bb34d7a",
+          "c334_02_idle.mtn": "2dff82b65d2fad419a50249692afb8a5dc7810eece77f7ea374134700b5c360a",
+          "icon.png": "71bd9c633f9933b392a0678204eabfba65723890c46939f2291acaada8a9327f",
+          "model.moc": "b4d26796377b385baafa19a44cfa29e870a6db824bd60be3a497c7fcafba1e7e",
+          "texture_00.png": "cf91884226463d60306aa2c6d5496591eb622f0a994a0e6cb396381e0d1302cb"
+        }
+      }
+    },
+    {
+      "id": "c335_02",
+      "title": "Hathor · Extinction",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c335_02/model.json"
+        ]
+      },
+      "preview": "../data/c335_02/icon.png",
+      "tags": [
+        "Live2D",
+        "深色丝袜",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c335_02/model.json",
+        "../data/c335_02/angry.exp.json",
+        "../data/c335_02/c335_02_attack.mtn",
+        "../data/c335_02/c335_02_banner.mtn",
+        "../data/c335_02/c335_02_hit.mtn",
+        "../data/c335_02/c335_02_idle.mtn",
+        "../data/c335_02/idle.exp.json",
+        "../data/c335_02/model.moc",
+        "../data/c335_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c335_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Hathor",
+        "skin": "Extinction",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c335_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c335_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "9ad42565cc89ae82de5474e00b5f578b1c97cf5b8f1b28581d4f1f9e32af7fde",
+          "angry.exp.json": "23157ca9233717ac8b7509bde849889ea46b991099d1f25d6e676c608cfbbc95",
+          "c335_02_attack.mtn": "899015ffbc021b421a8cd35b73de038b8782f255b1a6c1cc7eebff324309a0ae",
+          "c335_02_banner.mtn": "24d5585223293790ba5bc660da72e9df915041049305afb4cc5ec18390710299",
+          "c335_02_hit.mtn": "96045f1605a205ad4142406b7fb0fd38620feffdbb7cd99bb59c4beb1d125440",
+          "c335_02_idle.mtn": "0a799f71473a9988d11e3c20555a158049e34328c5f928f41c6faf49805a52e7",
+          "icon.png": "3d8816cd8f5154e01b0c6a661eec065fa4257337c04402661bad712fcedd28b0",
+          "idle.exp.json": "99f6e1f565fae75f855b9e9b3e82e4d9be42cda5885cbcb6b06f7f71e5f65789",
+          "model.moc": "1ec862bc1598c0e564162f1e14fc7945d08078813cef05659cce9cf6ef7151fd",
+          "texture_00.png": "d55b2dcb4124a102f44af4c77d57ddd93ea0de2ba749182b064f06c19d121b94"
+        }
+      }
+    },
+    {
+      "id": "c482_02",
+      "title": "Theophano · Quirky",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c482_02/model.json"
+        ]
+      },
+      "preview": "../data/c482_02/icon.png",
+      "tags": [
+        "Live2D",
+        "黑丝",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c482_02/model.json",
+        "../data/c482_02/c482_02_attack.mtn",
+        "../data/c482_02/c482_02_banner.mtn",
+        "../data/c482_02/c482_02_hit.mtn",
+        "../data/c482_02/c482_02_idle.mtn",
+        "../data/c482_02/model.moc",
+        "../data/c482_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c482_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Theophano",
+        "skin": "Quirky",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c482_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c482_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "195b6796946af23d048099d92f05750378f5033b52bb23655bcc860fb430c76a",
+          "c482_02_attack.mtn": "7a9f783609faa765a0a4fd3d1f91f57c5b270d1d6312aefa0ce2e3cf1ac71ebf",
+          "c482_02_banner.mtn": "dc2b6aa01f219e17b6050310e569188aae4fb265963478927668fbe4b876549f",
+          "c482_02_hit.mtn": "4759ea55bdd3fb86979ec67ae251cb9af8b142ad4fd4d7f275319b6b98e70779",
+          "c482_02_idle.mtn": "dc2b6aa01f219e17b6050310e569188aae4fb265963478927668fbe4b876549f",
+          "icon.png": "6e95f42d21fa8f170ad6f347bbf83c93de541d124c940ed745a311e205d3de92",
+          "model.moc": "ffcefbdd81ac89748fa34a6676c62790debb5948af877a240b497233ddf55d3c",
+          "texture_00.png": "9a944afe80712db2590e07d5cc9394fb2a33a33992ad41c0c301e5fe90b9c148"
+        }
+      }
+    },
+    {
+      "id": "c043_10",
+      "title": "Hera · Shooting Star",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c043_10/model.json"
+        ]
+      },
+      "preview": "../data/c043_10/icon.png",
+      "tags": [
+        "Live2D",
+        "深色长袜",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c043_10/model.json",
+        "../data/c043_10/c043_10_attack.mtn",
+        "../data/c043_10/c043_10_hit.mtn",
+        "../data/c043_10/c043_10_idle.mtn",
+        "../data/c043_10/model.moc",
+        "../data/c043_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c043_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Hera",
+        "skin": "Shooting Star",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c043_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c043_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "3ac104dc7ab7f913ed628d2dff0922ab500a21bb9b2c953f853c4b8cee28c34f",
+          "c043_10_attack.mtn": "ce576580d032088e00ae84226367da191a3587d950e45d22d1bdf064bc0df1ce",
+          "c043_10_hit.mtn": "5bf70e6296c5f5eebe67eb6834a203b73ff1bed0255535fdb66540b0da570056",
+          "c043_10_idle.mtn": "38aa4388a9833a6f5f50e13198190ed932fa8f30010a06ee3d8d82f2ef5e586a",
+          "icon.png": "212b3c677a8bef794ae5aac7e29299740a72ea4eb3baaf41ae009f272dd1018c",
+          "model.moc": "49772a9c48d7fd02c842c54868a276d09ba374e6275495ea9028d73432ad5983",
+          "texture_00.png": "c9c1f9ac370d7449d6dc8d51251834df6b1f5af11e2a0f12fa0f2938f1f83827"
+        }
+      }
+    },
+    {
+      "id": "c539_10",
+      "title": "Belial · Executioner",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c539_10/model.json"
+        ]
+      },
+      "preview": "../data/c539_10/icon.png",
+      "tags": [
+        "Live2D",
+        "深色长袜",
+        "礼服",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c539_10/model.json",
+        "../data/c539_10/angry.exp.json",
+        "../data/c539_10/c539_10_attack.mtn",
+        "../data/c539_10/c539_10_hit.mtn",
+        "../data/c539_10/c539_10_idle.mtn",
+        "../data/c539_10/haha.exp.json",
+        "../data/c539_10/idle.exp.json",
+        "../data/c539_10/model.moc",
+        "../data/c539_10/smile.exp.json",
+        "../data/c539_10/texture_00.png",
+        "../data/c539_10/texture_01.png"
+      ],
+      "optional_files": [
+        "../data/c539_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Belial",
+        "skin": "Executioner",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c539_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c539_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ],
+          "texture_01.png": [
+            512,
+            512
+          ]
+        },
+        "file_sha256": {
+          "model.json": "d9a999b676c5b5efd8afefdc034f77191bc8e2649d5bac7b911f6ad6baa13468",
+          "angry.exp.json": "571793eca501c304a1dd3c721b2c16f54cee36dbf861dc6337d3aa764fd6892c",
+          "c539_10_attack.mtn": "344a6b8224715cc16e41e035ab7303ec6ca9698f2bb79494d9ffd56c196770f2",
+          "c539_10_hit.mtn": "ee7f51d6752eb2a8add956d59bc631128eff266b571e3cc2ef7da449323a6143",
+          "c539_10_idle.mtn": "ba35150bf779834963bba55b2d40d5f3b674fce95d4f35d0bc99b60c8742ac27",
+          "haha.exp.json": "8c5963e8855dfaa3a3dd0451694eb60ae242cdcff6554e973dd96af0aa46a8ff",
+          "icon.png": "c1adb93774ca2916e0ff93385cbc959f2861637273032972aeecb1a7c67691d4",
+          "idle.exp.json": "295549a2cae4a1ce2111ca9c2b3e5dadafc81b87a2b60968c4ab4c07211fac55",
+          "model.moc": "fd997040b6d237956ad44cecb41808c6030f4ed338446f4720ad1e29156da5ac",
+          "smile.exp.json": "5902a377a6691fcf2230d1a6fa432b2a16175458a776b2d39553c297c4e5a08c",
+          "texture_00.png": "ab2468b7b3492dab0641ea63307cb23b19094dfc2cf7281cb0c37e7f4ba8bb03",
+          "texture_01.png": "7cf4450bc8fb37a4b432ccdaf0c91cb2096b4e30397794e7ce191b152f9b2c53"
+        }
+      }
+    },
+    {
+      "id": "c447_10",
+      "title": "Miriam · Punishing",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c447_10/model.json"
+        ]
+      },
+      "preview": "../data/c447_10/icon.png",
+      "tags": [
+        "Live2D",
+        "过膝靴",
+        "成熟系"
+      ],
+      "required_files": [
+        "../data/c447_10/model.json",
+        "../data/c447_10/c447_10_attack.mtn",
+        "../data/c447_10/c447_10_hit.mtn",
+        "../data/c447_10/c447_10_idle.mtn",
+        "../data/c447_10/model.moc",
+        "../data/c447_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c447_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Miriam",
+        "skin": "Punishing",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c447_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c447_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "77ff5c69617531acd1f10bcf8da83371e0693eab1abd18977730712d342fdfb1",
+          "c447_10_attack.mtn": "27d347fa51f3e9f30223ebc67697a7f9495512e46a6e7c837ec8f0dcc15a6fbb",
+          "c447_10_hit.mtn": "5b87fa99280fd5b0219def2d67017069ca5137e2d95f769117711e18f1c232ea",
+          "c447_10_idle.mtn": "026772e058268006f37ddf5d2ecf8e92047ab65a204f3905089f8200d61f64ab",
+          "icon.png": "d6eb38f7876860d238a0c5d955c1ed696e92d1aaa030ad4c34e656f7271008ac",
+          "model.moc": "fc8fc6a6093fe90699d8dd0d8f2b578c8eaefe21f65b220651e6cf9ecf4bd068",
+          "texture_00.png": "1e758797bbf557c5ef3d85211da75587ea4d8ce8fdf8664a56a2f4b3d6728d97"
+        }
+      }
+    },
+    {
+      "id": "c227_02",
+      "title": "Mafdet · Dogmatic",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c227_02/model.json"
+        ]
+      },
+      "preview": "../data/c227_02/icon.png",
+      "tags": [
+        "Live2D",
+        "长靴",
+        "制服"
+      ],
+      "required_files": [
+        "../data/c227_02/model.json",
+        "../data/c227_02/c227_02_attack.mtn",
+        "../data/c227_02/c227_02_hit.mtn",
+        "../data/c227_02/c227_02_idle.mtn",
+        "../data/c227_02/c227_02_idle_ls.mtn",
+        "../data/c227_02/model.moc",
+        "../data/c227_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c227_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Mafdet",
+        "skin": "Dogmatic",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c227_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c227_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "09224c0b232f11dcf26e8e9e8f5a2cf87e82b2008f4c089984fb7eeb252bac5d",
+          "c227_02_attack.mtn": "c066c10e1b25044d20b5543d4342d9fafc49f349f832f7afcb637dbb2905d42e",
+          "c227_02_hit.mtn": "a20644fda722bbb0e8c1fd4a10c3c4f90e754cbf6670192d30e1012c3fc72edb",
+          "c227_02_idle.mtn": "1a2805b9b55467f90c79daaebe3dd3a353a4bba10a2dc8517f146f4105da595d",
+          "c227_02_idle_ls.mtn": "43384a1e8857bb93ede17581f9a9ea7ba0d3bbadb113459c83634c658522d3bd",
+          "icon.png": "e41931332a5474dd62a2ebb8f02be8565b0b71273b93f43e344654d826357bb4",
+          "model.moc": "1b4aaa062bfc89700bbe97223ce355c6d47ba8ef1ac0481d3be7b1381b0087d3",
+          "texture_00.png": "456134092c7df1e1c6dc7fd46ea11f6358686de496fecca798e47d25c3493a4f"
+        }
+      }
+    },
+    {
+      "id": "c308_02",
+      "title": "Kubaba · Revenge",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c308_02/model.json"
+        ]
+      },
+      "preview": "../data/c308_02/icon.png",
+      "tags": [
+        "Live2D",
+        "长靴",
+        "成熟系"
+      ],
+      "required_files": [
+        "../data/c308_02/model.json",
+        "../data/c308_02/c308_02_attack.mtn",
+        "../data/c308_02/c308_02_hit.mtn",
+        "../data/c308_02/c308_02_idle.mtn",
+        "../data/c308_02/model.moc",
+        "../data/c308_02/texture_00.png",
+        "../data/c308_02/texture_01.png"
+      ],
+      "optional_files": [
+        "../data/c308_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Kubaba",
+        "skin": "Revenge",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c308_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c308_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ],
+          "texture_01.png": [
+            512,
+            512
+          ]
+        },
+        "file_sha256": {
+          "model.json": "15bae44ad70ef8a854cdfd96b7c25080df1a5d5b373d5fffddd2db7c5fef2922",
+          "c308_02_attack.mtn": "94976790824a637b062ff51e6e7d78074ee950d98bfdcb4a9462e62fb6b25960",
+          "c308_02_hit.mtn": "2440c6489b2e78b032cbec84d80194d5d8ceac6ee5934ac61bfedc2e159f1203",
+          "c308_02_idle.mtn": "2a225c18ef2581b212b919e0ef1669276d9fbacdbd6a1b75b56fc9dac0974a8a",
+          "icon.png": "8a3067b55c95c80a7dfc2f9a05683dd13ca5550208824ffb1c889baad118d7c4",
+          "model.moc": "a252e2265db365ee43c9c5fa41a72a4974b4e062cc8005bd8fdbf0000e8980b4",
+          "texture_00.png": "0e14e6a5244ef87597d9b609a465f029aeef058bbc72f555592fad60cdaf3777",
+          "texture_01.png": "cf0129e6310afe2fb6e822b75cbe4c9dbcec8c345e095d8ad38f1f047203203f"
+        }
+      }
+    },
+    {
+      "id": "c354_10",
+      "title": "Demeter · Mad Nurse",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c354_10/model.json"
+        ]
+      },
+      "preview": "../data/c354_10/icon.png",
+      "tags": [
+        "Live2D",
+        "过膝靴",
+        "职业装"
+      ],
+      "required_files": [
+        "../data/c354_10/model.json",
+        "../data/c354_10/c354_10_attack.mtn",
+        "../data/c354_10/c354_10_hit.mtn",
+        "../data/c354_10/c354_10_idle.mtn",
+        "../data/c354_10/model.moc",
+        "../data/c354_10/texture_00.png",
+        "../data/c354_10/texture_01.png"
+      ],
+      "optional_files": [
+        "../data/c354_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Demeter",
+        "skin": "Mad Nurse",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c354_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c354_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ],
+          "texture_01.png": [
+            512,
+            512
+          ]
+        },
+        "file_sha256": {
+          "model.json": "ebba8683fa3b5287b7a24cbd43e911b8b213292c7c5eb27dbc7aecb6161bafe2",
+          "c354_10_attack.mtn": "462bbd4beb50101df433bb631631899179bc2aabf42810e15262eac6f8546514",
+          "c354_10_hit.mtn": "067af12f01652fb76c7ec7ba2ca14959333703df885efc43cbf2380fd18e1047",
+          "c354_10_idle.mtn": "cb44b29514861e9d7c16a265c3a43cb9588eee2dcd9b409a09ffa794f3e26fa9",
+          "icon.png": "cea7c9f47c8f9044a7250e6ebdc5231a867e7076be02d3d02f0ba0caf13fc016",
+          "model.moc": "726d1b513ab0229dd56eb3d5364e5ce38be652d07d17565978292db4cc0ce8ee",
+          "texture_00.png": "5ed411b252cddc337726a1b5b705154e36afdc32ae9a0e1c3147b702822b55a0",
+          "texture_01.png": "550b43b658f2f167a1921d5bc4df80d0c7959f8da081a78f1fb77af3d84ff1d5"
+        }
+      }
+    },
+    {
+      "id": "c467_02",
+      "title": "Ziva · Burning",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c467_02/model.json"
+        ]
+      },
+      "preview": "../data/c467_02/icon.png",
+      "tags": [
+        "Live2D",
+        "过膝靴",
+        "成熟系"
+      ],
+      "required_files": [
+        "../data/c467_02/model.json",
+        "../data/c467_02/c467_02_attack.mtn",
+        "../data/c467_02/c467_02_banner.mtn",
+        "../data/c467_02/c467_02_hit.mtn",
+        "../data/c467_02/c467_02_idle.mtn",
+        "../data/c467_02/idle.exp.json",
+        "../data/c467_02/model.moc",
+        "../data/c467_02/pain.exp.json",
+        "../data/c467_02/serious.exp.json",
+        "../data/c467_02/texture_00.png",
+        "../data/c467_02/texture_01.png"
+      ],
+      "optional_files": [
+        "../data/c467_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Ziva",
+        "skin": "Burning",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c467_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c467_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ],
+          "texture_01.png": [
+            512,
+            512
+          ]
+        },
+        "file_sha256": {
+          "model.json": "eb24307da0549a72cb0166274f8bc065e55fc843ee787dae0477636b20b3d41c",
+          "c467_02_attack.mtn": "79829fcf98cab4da5207747a9cd4291c5767debd30c37cd2646c78aa18f5aff2",
+          "c467_02_banner.mtn": "2f1e8171cb351b7faccb1163e366771b6051a713e51c9f46d53330ccc2d0ae0c",
+          "c467_02_hit.mtn": "474d7faca21cdeeee2819734ffe3fa56e6795b12b797f381c49e37825ffce9f3",
+          "c467_02_idle.mtn": "2f1e8171cb351b7faccb1163e366771b6051a713e51c9f46d53330ccc2d0ae0c",
+          "icon.png": "57bd0f6619b91d4b1c18406847c9ec0928cb027a36f8888d37e1f24e4d623a2c",
+          "idle.exp.json": "25686d389e8e6d716ca28cf759fb469a410e8c541efe81ac7bf3875c86dc4c7c",
+          "model.moc": "e00ebd8ec3d000365b51180dfc23a9bfbda4425310e8af755da6796dd3b9118b",
+          "pain.exp.json": "c186bd8ffd3332a68d7294ed9d6f6bd1fd876c0d2e03c392e91da72fc970a306",
+          "serious.exp.json": "5c503ba1f0673f3bb5fe725db5730368cd18107431666c8add344e93b2eaa8e4",
+          "texture_00.png": "3cecb93ff13ee5d7f4acdfd46237f3793cc0f025b9edfb18a1199103e58625f6",
+          "texture_01.png": "3c369eb2f7493464ac608e31bbc033e42a660f59e96db4e4e509cf45c17b74b1"
+        }
+      }
+    },
+    {
+      "id": "c520_02",
+      "title": "Ishimi · False",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c520_02/model.json"
+        ]
+      },
+      "preview": "../data/c520_02/icon.png",
+      "tags": [
+        "Live2D",
+        "过膝靴",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c520_02/model.json",
+        "../data/c520_02/c520_02_attack.mtn",
+        "../data/c520_02/c520_02_hit.mtn",
+        "../data/c520_02/c520_02_idle.mtn",
+        "../data/c520_02/model.moc",
+        "../data/c520_02/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c520_02/icon.png"
+      ],
+      "metadata": {
+        "character": "Ishimi",
+        "skin": "False",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c520_02/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c520_02"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "ffca9148b427a18ccddacf4797fcc41604cd76a9c7ea9050b98a6cc7a45530bd",
+          "c520_02_attack.mtn": "1a2a0b1219fbd987798b6bbdb02c4aaeca8fe56351bd9a21b8c32ed1efeb9568",
+          "c520_02_hit.mtn": "6886721e300c6d8346bba6bbc86e60fdc5d002fa7172d2edbc380ff5465599b2",
+          "c520_02_idle.mtn": "47e7bb44aa81bb07390d8365aef493868352476175c7cf1f065eb8c2bd2ac90d",
+          "icon.png": "15b4035f59e048ba29687504022565f0df25931d4182e285c7584fddb368484a",
+          "model.moc": "1df29fa6748d93480ddc444c91d1a00671e4c92def8ef4661ceaf870c51bbd3b",
+          "texture_00.png": "26dbdbd4f9e5b291c4fa92d5533cad01ee7145598fbaecf5d2fb04152e99dda5"
+        }
+      }
+    },
+    {
+      "id": "c510_10",
+      "title": "Krsnik · Smoker",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c510_10/model.json"
+        ]
+      },
+      "preview": "../data/c510_10/icon.png",
+      "tags": [
+        "Live2D",
+        "职业装",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c510_10/model.json",
+        "../data/c510_10/c510_10_attack.mtn",
+        "../data/c510_10/c510_10_hit.mtn",
+        "../data/c510_10/c510_10_idle.mtn",
+        "../data/c510_10/model.moc",
+        "../data/c510_10/texture_00.png"
+      ],
+      "optional_files": [
+        "../data/c510_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Krsnik",
+        "skin": "Smoker",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c510_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c510_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ]
+        },
+        "file_sha256": {
+          "model.json": "5f6dddf78f477e6d64bf4a0aeb762e4aff736a5dc2838b80f6647e3b2dc03fee",
+          "c510_10_attack.mtn": "1edf7989ebd415fcbeca856e0714284abf313a38ab59115b1f2e74e68c40f0a5",
+          "c510_10_hit.mtn": "7cb28e724b62587ff5ff84d067661d5b5484af3a90a25ff9b4b2924fc0c699c0",
+          "c510_10_idle.mtn": "56956c8fa55f0d6976760a3f47adc41fee793f052dc6e3faea2365c2b746fe6f",
+          "icon.png": "e6009f8da56a57d82235691e0de2250466480ee0eaca3d3d6dfe9e91effdb264",
+          "model.moc": "2e9752118dd83fb6872e902c01977debe5df55daa0b76f9d6af847d9f17c3ad6",
+          "texture_00.png": "7cc8c54d2e093523b4ac1491336d5c10fe8b0c9bd2a91bd6eddbe3d2592bf50c"
+        }
+      }
+    },
+    {
+      "id": "c420_10",
+      "title": "Katherine · Wild Crimson",
+      "renderer": "cubism",
+      "roles": {
+        "model": [
+          "../data/c420_10/model.json"
+        ]
+      },
+      "preview": "../data/c420_10/icon.png",
+      "tags": [
+        "Live2D",
+        "礼服",
+        "高跟鞋"
+      ],
+      "required_files": [
+        "../data/c420_10/model.json",
+        "../data/c420_10/c420_10_attack.mtn",
+        "../data/c420_10/c420_10_hit.mtn",
+        "../data/c420_10/c420_10_idle.mtn",
+        "../data/c420_10/model.moc",
+        "../data/c420_10/texture_00.png",
+        "../data/c420_10/texture_01.png"
+      ],
+      "optional_files": [
+        "../data/c420_10/icon.png"
+      ],
+      "metadata": {
+        "character": "Katherine",
+        "skin": "Wild Crimson",
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c420_10/icon.png",
+        "source": {
+          "repository": "https://github.com/Pelom777/DestinyChildLive2D",
+          "revision": "63e43d034512946c5eb308754f18a1865382bdf6",
+          "id": "c420_10"
+        },
+        "texture_sizes": {
+          "texture_00.png": [
+            1024,
+            1024
+          ],
+          "texture_01.png": [
+            512,
+            512
+          ]
+        },
+        "file_sha256": {
+          "model.json": "948a2670d7617b6c1dc1f6fb5d648847a14fc0fd3a3bbb7d360fc61a6e62c468",
+          "c420_10_attack.mtn": "dccebef60bb6867eee5e3e07dca57c4aeea4a406b96ed044e2e44c822387cd35",
+          "c420_10_hit.mtn": "dea0ca638effd2a5d80e716ea689ff4eea8f71a8bc4b44cd745f847b78efc2ac",
+          "c420_10_idle.mtn": "c7c78c35a6183b91cdf21373838ea2e6f882c40685b0adc6dca2bdbdc8a7034f",
+          "icon.png": "c4545ada24f91206ca5f7c30491bc4e86dcd6da480c443e6f34f00e43b909a29",
+          "model.moc": "0b526c8e883e8e196512b5ffff8e7a0edb4cb46f70855dcf1b489efb9d1e6961",
+          "texture_00.png": "8da289de7f7d994af5dba7bbdde071944d65854c5b1389e652eb99cdd09b8126",
+          "texture_01.png": "d8a3518f88901d4fc7211aadea51617dfff90c38f942ff1dd441e05e32ea81b3"
+        }
+      }
     }
   ]
 }
