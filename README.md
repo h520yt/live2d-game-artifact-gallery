@@ -1,5 +1,21 @@
 # live2d-game-artifact-gallery
 
+## 碧蓝航线 · 第九批成熟 Live2D 候选（2026-11-22）
+
+已对照已收录的 2～8 批及 `viewer/manifest.json` 去重，第九批登记 20 条、启用 16 条安装候选、4 条因脚部/造型风险暂缓。仅核实外部 L2D/立绘资源名与皮肤元数据，鞋履与全动作尚未在本机逐项验收。
+
+```powershell
+git pull --ff-only origin main
+python azur_lane/scripts/install_batch9.py --plan
+python azur_lane/scripts/install_batch9.py
+python scripts/gallery.py serve --port 8000
+```
+
+完整候选和验收规则：[第九批说明](azur_lane/docs/2026-11-22-batch9-mature-live2d.md)。
+
+---
+
+
 > **统一展示规范**：碧蓝航线、棕色尘埃 2、重返未来 1999 采用封面卡片→大舞台→原位返回；后续游戏脚手架直接复用 `shared/skin_gallery.css` / `shared/skin_gallery.js`，不按版本、价格或导入批次新增分类页。参见 [统一游戏画廊标准](docs/unified-game-gallery-standard.md)。
 
 
