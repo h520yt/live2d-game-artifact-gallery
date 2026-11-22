@@ -1,0 +1,372 @@
+{
+  "landmarks": {
+    "fore": [
+      [
+        [
+          852,
+          385
+        ],
+        [
+          301,
+          573
+        ]
+      ],
+      [
+        [
+          878,
+          489
+        ],
+        [
+          284,
+          626
+        ]
+      ],
+      [
+        [
+          875,
+          560
+        ],
+        [
+          290,
+          691
+        ]
+      ],
+      [
+        [
+          782,
+          637
+        ],
+        [
+          397,
+          721
+        ]
+      ],
+      [
+        [
+          762,
+          510
+        ],
+        [
+          443,
+          624
+        ]
+      ],
+      [
+        [
+          699,
+          548
+        ],
+        [
+          548,
+          643
+        ]
+      ],
+      [
+        [
+          607,
+          424
+        ],
+        [
+          590,
+          569
+        ]
+      ],
+      [
+        [
+          567,
+          474
+        ],
+        [
+          629,
+          596
+        ]
+      ],
+      [
+        [
+          704,
+          571
+        ],
+        [
+          518,
+          685
+        ]
+      ],
+      [
+        [
+          520,
+          535
+        ],
+        [
+          704,
+          632
+        ]
+      ],
+      [
+        [
+          417,
+          589
+        ],
+        [
+          802,
+          693
+        ]
+      ],
+      [
+        [
+          402,
+          647
+        ],
+        [
+          841,
+          727
+        ]
+      ],
+      [
+        [
+          427,
+          694
+        ],
+        [
+          815,
+          774
+        ]
+      ],
+      [
+        [
+          500,
+          713
+        ],
+        [
+          735,
+          799
+        ]
+      ],
+      [
+        [
+          646,
+          661
+        ],
+        [
+          537,
+          755
+        ]
+      ]
+    ],
+    "rear": [
+      [
+        [
+          580,
+          308
+        ],
+        [
+          266,
+          431
+        ]
+      ],
+      [
+        [
+          606,
+          373
+        ],
+        [
+          272,
+          505
+        ]
+      ],
+      [
+        [
+          602,
+          467
+        ],
+        [
+          290,
+          552
+        ]
+      ],
+      [
+        [
+          542,
+          544
+        ],
+        [
+          377,
+          577
+        ]
+      ],
+      [
+        [
+          536,
+          424
+        ],
+        [
+          429,
+          463
+        ]
+      ],
+      [
+        [
+          484,
+          469
+        ],
+        [
+          544,
+          477
+        ]
+      ],
+      [
+        [
+          374,
+          361
+        ],
+        [
+          589,
+          416
+        ]
+      ],
+      [
+        [
+          343,
+          418
+        ],
+        [
+          628,
+          447
+        ]
+      ],
+      [
+        [
+          495,
+          482
+        ],
+        [
+          519,
+          523
+        ]
+      ],
+      [
+        [
+          309,
+          472
+        ],
+        [
+          693,
+          497
+        ]
+      ],
+      [
+        [
+          237,
+          550
+        ],
+        [
+          770,
+          563
+        ]
+      ],
+      [
+        [
+          212,
+          615
+        ],
+        [
+          812,
+          610
+        ]
+      ],
+      [
+        [
+          242,
+          660
+        ],
+        [
+          801,
+          647
+        ]
+      ],
+      [
+        [
+          313,
+          669
+        ],
+        [
+          735,
+          659
+        ]
+      ],
+      [
+        [
+          420,
+          630
+        ],
+        [
+          589,
+          620
+        ]
+      ]
+    ]
+  },
+  "patches": {
+    "ArtMesh13": {
+      "measuredTilePixels": 24760,
+      "donorWeightMean": 0.9699,
+      "majorityDonorTilePixels": 24026
+    },
+    "ArtMesh214": {
+      "measuredTilePixels": 1910,
+      "donorWeightMean": 0.9995,
+      "majorityDonorTilePixels": 1909
+    },
+    "ArtMesh230": {
+      "measuredTilePixels": 2579,
+      "donorWeightMean": 1.0,
+      "majorityDonorTilePixels": 2579
+    },
+    "ArtMesh231": {
+      "measuredTilePixels": 2517,
+      "donorWeightMean": 1.0,
+      "majorityDonorTilePixels": 2517
+    },
+    "ArtMesh232": {
+      "measuredTilePixels": 2772,
+      "donorWeightMean": 1.0,
+      "majorityDonorTilePixels": 2772
+    },
+    "ArtMesh233": {
+      "measuredTilePixels": 2884,
+      "donorWeightMean": 1.0,
+      "majorityDonorTilePixels": 2884
+    },
+    "ArtMesh234": {
+      "measuredTilePixels": 3813,
+      "donorWeightMean": 0.9982,
+      "majorityDonorTilePixels": 3808
+    },
+    "ArtMesh235": {
+      "measuredTilePixels": 734,
+      "donorWeightMean": 0.9843,
+      "majorityDonorTilePixels": 723
+    },
+    "ArtMesh18": {
+      "measuredTilePixels": 24608,
+      "donorWeightMean": 0.9668,
+      "majorityDonorTilePixels": 23793
+    },
+    "ArtMesh156": {
+      "measuredTilePixels": 6551,
+      "donorWeightMean": 1.0,
+      "majorityDonorTilePixels": 6551
+    }
+  },
+  "attachments": {
+    "ArtMesh13": {
+      "measuredTilePixels": 100603,
+      "donorWeightMean": 0.9595,
+      "majorityDonorTilePixels": 96517
+    },
+    "ArtMesh18": {
+      "measuredTilePixels": 89355,
+      "donorWeightMean": 0.96,
+      "majorityDonorTilePixels": 85768
+    }
+  }
+}

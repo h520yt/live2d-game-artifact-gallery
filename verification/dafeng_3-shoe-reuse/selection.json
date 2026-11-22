@@ -1,0 +1,12 @@
+{
+  "dafeng": {
+    "fore": ["ArtMesh34"],
+    "rear": ["ArtMesh193", "ArtMesh194"],
+    "context": ["ArtMesh182", "ArtMesh183", "ArtMesh135", "ArtMesh98", "ArtMesh170", "ArtMesh138", "ArtMesh184", "ArtMesh162", "ArtMesh24", "ArtMesh158"]
+  },
+  "baifeng": {
+    "fore": ["ArtMesh13", "ArtMesh214", "ArtMesh230", "ArtMesh231", "ArtMesh232", "ArtMesh233", "ArtMesh234", "ArtMesh235"],
+    "rear": ["ArtMesh18", "ArtMesh156"],
+    "context": ["ArtMesh12", "ArtMesh217", "ArtMesh223", "ArtMesh229"]
+  }
+}

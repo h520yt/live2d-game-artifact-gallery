@@ -7,6 +7,12 @@
         "enabled": true,
         "file": "baifeng_3/outfit_01_final_repaint.json",
         "backup": "baifeng_3/outfit_01_shell.json"
+      },
+      {
+        "id": "outfit_02",
+        "name": "换装 02 · 大凤原生皮鞋",
+        "enabled": true,
+        "file": "baifeng_3/outfit_02_dafeng_loafers.json"
       }
     ]
   }

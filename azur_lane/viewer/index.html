@@ -358,8 +358,11 @@
     .motions .m-list{width:min(320px,calc(100vw - var(--s2)*2));grid-template-columns:repeat(2,minmax(0,1fr));max-height:70vh}
   }
   @media(max-width:460px){
-    .stage-controls:has(.outfit-panel:not([hidden])){top:calc(var(--s4) + 3rem)}
-    .outfit-panel select{max-width:calc(100vw - 10.5rem);text-overflow:ellipsis}
+    .stage-controls:has(.outfit-panel:not([hidden])){top:calc(var(--s4) + 3rem);left:var(--s2)}
+    .stage-controls .motions{flex:none}
+    .outfit-panel{min-width:0}
+    .outfit-panel .m-toggle{max-width:100%}
+    .outfit-panel select{min-width:0;text-overflow:ellipsis}
   }
 
   /* Live2D 前景图层控制器：默认折叠，不遮挡角色舞台。 */

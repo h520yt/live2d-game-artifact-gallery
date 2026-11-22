@@ -1,0 +1,240 @@
+{
+  "unit": "detail framebuffer px. Compare angles and ratios across separately zoomed cameras.",
+  "landmarkMethod": "Manual screen landmarks on default-pose WebGL and isolated ArtMesh renderings.",
+  "poses": {
+    "dafeng_3": {
+      "fore": {
+        "heelToeLandmarks": [
+          [
+            868,
+            571
+          ],
+          [
+            404,
+            665
+          ]
+        ],
+        "axisLength": 473.4,
+        "angleClockwiseFromImageRight": 168.5
+      },
+      "rear": {
+        "heelToeLandmarks": [
+          [
+            601,
+            479
+          ],
+          [
+            217,
+            632
+          ]
+        ],
+        "axisLength": 413.4,
+        "angleClockwiseFromImageRight": 158.3
+      }
+    },
+    "baifeng_3": {
+      "fore": {
+        "heelToeLandmarks": [
+          [
+            322,
+            679
+          ],
+          [
+            827,
+            727
+          ]
+        ],
+        "axisLength": 507.3,
+        "angleClockwiseFromImageRight": 5.4
+      },
+      "rear": {
+        "heelToeLandmarks": [
+          [
+            300,
+            449
+          ],
+          [
+            793,
+            627
+          ]
+        ],
+        "axisLength": 524.1,
+        "angleClockwiseFromImageRight": 19.9
+      }
+    }
+  },
+  "overlaps": {
+    "ArtMesh34/ArtMesh135": {
+      "pixels": 14078,
+      "shareOfFirstAlphaGT127": 0.1601
+    },
+    "ArtMesh193/ArtMesh170": {
+      "pixels": 49498,
+      "shareOfFirstAlphaGT127": 0.6439
+    },
+    "ArtMesh194/ArtMesh170": {
+      "pixels": 26828,
+      "shareOfFirstAlphaGT127": 0.877
+    },
+    "ArtMesh13/ArtMesh12": {
+      "pixels": 22695,
+      "shareOfFirstAlphaGT127": 0.2535
+    },
+    "ArtMesh18/ArtMesh217": {
+      "pixels": 9575,
+      "shareOfFirstAlphaGT127": 0.094
+    }
+  },
+  "outsoleSections": {
+    "dafeng_3/fore/forefoot": {
+      "framebufferSegment": [
+        [
+          480,
+          710
+        ],
+        [
+          480,
+          728
+        ]
+      ],
+      "projectedThickness": 18,
+      "thicknessToAxisPercent": 3.8
+    },
+    "dafeng_3/rear/forefoot": {
+      "framebufferSegment": [
+        [
+          278,
+          668
+        ],
+        [
+          278,
+          682
+        ]
+      ],
+      "projectedThickness": 14,
+      "thicknessToAxisPercent": 3.4
+    },
+    "baifeng_3/fore/forefoot": {
+      "framebufferSegment": [
+        [
+          747,
+          777
+        ],
+        [
+          747,
+          798
+        ]
+      ],
+      "projectedThickness": 21,
+      "thicknessToAxisPercent": 4.1
+    },
+    "baifeng_3/rear/forefoot": {
+      "framebufferSegment": [
+        [
+          775,
+          641
+        ],
+        [
+          775,
+          653
+        ]
+      ],
+      "projectedThickness": 12,
+      "thicknessToAxisPercent": 2.3
+    },
+    "dafeng_3/fore/heel": {
+      "framebufferSegment": [
+        [
+          784,
+          594
+        ],
+        [
+          784,
+          639
+        ]
+      ],
+      "projectedThickness": 45,
+      "thicknessToAxisPercent": 9.5
+    },
+    "dafeng_3/rear/heel": {
+      "framebufferSegment": [
+        [
+          543,
+          511
+        ],
+        [
+          543,
+          538
+        ]
+      ],
+      "projectedThickness": 27,
+      "thicknessToAxisPercent": 6.5
+    },
+    "baifeng_3/fore/heel": {
+      "framebufferSegment": [
+        [
+          347,
+          698
+        ],
+        [
+          347,
+          718
+        ]
+      ],
+      "projectedThickness": 20,
+      "thicknessToAxisPercent": 3.9
+    }
+  },
+  "nonRigidDeformation": {
+    "ArtMesh34": {
+      "parameter": "Param28",
+      "samples": [
+        {
+          "value": 0,
+          "edgeLengthRatioPercentiles": {
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        },
+        {
+          "value": 30,
+          "edgeLengthRatioPercentiles": {
+            "p10": 0.6605,
+            "p50": 0.9542,
+            "p90": 1.3988
+          }
+        }
+      ]
+    },
+    "ArtMesh193": {
+      "parameter": "youjiaoxuanzhuan",
+      "samples": [
+        {
+          "value": -30,
+          "edgeLengthRatioPercentiles": {
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        },
+        {
+          "value": 0,
+          "edgeLengthRatioPercentiles": {
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        },
+        {
+          "value": 30,
+          "edgeLengthRatioPercentiles": {
+            "p10": 1.0,
+            "p50": 1.0,
+            "p90": 1.0
+          }
+        }
+      ]
+    }
+  }
+}

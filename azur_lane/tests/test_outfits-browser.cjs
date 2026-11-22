@@ -15,6 +15,7 @@ const control = "qiye_10";
 const outfitIndex = require("../config/outfits/index.json");
 const outfitEntry = outfitIndex.models[target].find(entry => entry.id === "outfit_01");
 const outfit = require(path.resolve(__dirname, "../config/outfits", outfitEntry.backup));
+const nativeLoafersName = "换装 02 · 大凤原生皮鞋";
 const viewport = {width: 1440, height: 1000};
 const mime = {
   ".html": "text/html", ".js": "text/javascript", ".css": "text/css",
@@ -170,21 +171,14 @@ async function interactions(page) {
   const outfitSelect = page.locator("#outfit-select");
   await page.getByText("Sunshower Fox Bride", {exact: true}).click();
   await outfitSelect.waitFor({state: "visible"});
-  assert.deepEqual(await outfitSelect.locator("option").allTextContents(), ["原始装扮", "换装 01 · 黑丝皮鞋"]);
+  assert.deepEqual(await outfitSelect.locator("option").allTextContents(),
+    ["原始装扮", "换装 01 · 黑丝皮鞋", nativeLoafersName]);
   assert.equal(await outfitSelect.inputValue(), "original");
 
   await outfitSelect.selectOption("outfit_01");
   await page.getByText("换装加载失败，可重试", {exact: true}).waitFor();
   assert.equal(await outfitSelect.inputValue(), "original");
-  await page.evaluate(() => {
-    app.stop();
-    current.autoUpdate = false;
-    current.deltaTime = 0;
-    const core = current.internalModel.coreModel;
-    core._model.parameters.values.set(core._model.parameters.defaultValues);
-    core.saveParameters();
-    core.update();
-  });
+  await freezeDefaultPose(page);
   const original = await snapshot(page, true);
   await outfitSelect.selectOption("outfit_01");
   await page.waitForFunction(() => current?.textures.length === 3);
@@ -226,6 +220,68 @@ async function interactions(page) {
   await page.waitForFunction(() => current?.textures.length === 3);
   assert.deepEqual(await snapshot(page), moved, "outfit selection changed the camera or motion clock");
   await page.locator("#motion-panel .m-toggle").click();
+}
+
+async function freezeDefaultPose(page) {
+  await page.evaluate(() => {
+    app.stop();
+    current.autoUpdate = false;
+    current.deltaTime = 0;
+    const core = current.internalModel.coreModel;
+    const params = core._model.parameters;
+    params.values.set(params.defaultValues);
+    core.saveParameters();
+    core.update();
+  });
+}
+
+async function nativeLoafers(browser) {
+  const page = await browser.newPage({viewport});
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
+  try {
+    await setup(page, "");
+    await page.getByText("Sunshower Fox Bride", {exact: true}).click();
+    const select = page.locator("#outfit-select");
+    await select.waitFor({state: "visible"});
+    assert.equal(await select.inputValue(), "original");
+    assert.equal(await select.locator('option[value="outfit_02"]').textContent(), nativeLoafersName);
+    await freezeDefaultPose(page);
+    const original = await snapshot(page, true);
+    const capture = async id => {
+      await select.selectOption(id);
+      await page.locator("#outfit-status").waitFor({state: "hidden"});
+      assert.equal(await select.inputValue(), id);
+      assert.equal(await page.evaluate(() => current.textures.length), id === "original" ? 2 : 3);
+      return snapshot(page, true);
+    };
+    const currentOutfit = await capture("outfit_01");
+    const dressed = await capture("outfit_02");
+    assert.equal(dressed.glError, 0);
+    assert.equal(dressed.fingerprints[0], original.fingerprints[0]);
+    assert.notEqual(dressed.fingerprints[1], original.fingerprints[1]);
+    assert.notEqual(dressed.fingerprints[1], currentOutfit.fingerprints[1]);
+    assert.deepEqual(await capture("outfit_01"), currentOutfit);
+    assert.deepEqual(await capture("original"), original);
+    assert.deepEqual(await capture("outfit_02"), dressed);
+    await assertNarrowControls(page);
+    assert.deepEqual(errors, []);
+  } finally {
+    await page.close();
+  }
+}
+
+async function assertNarrowControls(page) {
+  for (const width of [390, 320]) {
+    await page.setViewportSize({width, height: 844});
+    const boxes = await page.evaluate(() => {
+      const rect = selector => document.querySelector(selector).getBoundingClientRect().toJSON();
+      return {outfit: rect("#outfit-panel"), motion: rect("#motion-panel .m-toggle"), back: rect("#l2d-back")};
+    });
+    assert.ok(boxes.motion.left >= 0 && boxes.outfit.right <= width, `controls overflow at ${width}px`);
+    assert.ok(boxes.motion.right < boxes.outfit.left && boxes.motion.top >= boxes.back.bottom,
+      `stage controls overlap at ${width}px`);
+  }
 }
 
 async function allMotions(page) {
@@ -416,6 +472,7 @@ async function test() {
     args: ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"],
   });
   try {
+    await nativeLoafers(browser);
     const page = await browser.newPage({viewport});
     const errors = [];
     page.on("pageerror", error => errors.push(error.message));
@@ -443,15 +500,7 @@ async function test() {
     await select.waitFor({state: "visible"});
     assert.equal(await select.inputValue(), "original");
 
-    for (const width of [390, 320]) {
-      await page.setViewportSize({width, height: 844});
-      const boxes = await page.evaluate(() => {
-        const rect = selector => document.querySelector(selector).getBoundingClientRect().toJSON();
-        return {outfit: rect("#outfit-panel"), motion: rect("#motion-panel .m-toggle"), back: rect("#l2d-back")};
-      });
-      assert.ok(boxes.motion.left >= 0 && boxes.outfit.right <= width);
-      assert.ok(boxes.motion.right < boxes.outfit.left && boxes.motion.top >= boxes.back.bottom);
-    }
+    await assertNarrowControls(page);
     assert.deepEqual(errors, []);
     await debugMode(browser);
     console.log(JSON.stringify(results));

@@ -1,0 +1,18 @@
+{
+  "ArtMesh34": {
+    "texturePixelsWithAlphaAndUV": 98615,
+    "overlapPixelsByDrawable": {}
+  },
+  "ArtMesh193": {
+    "texturePixelsWithAlphaAndUV": 82540,
+    "overlapPixelsByDrawable": {
+      "ArtMesh182": 82540
+    }
+  },
+  "ArtMesh194": {
+    "texturePixelsWithAlphaAndUV": 33018,
+    "overlapPixelsByDrawable": {
+      "ArtMesh183": 33018
+    }
+  }
+}

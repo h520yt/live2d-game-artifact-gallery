@@ -1,0 +1,8073 @@
+{
+  "motions": {
+    "main_3": {
+      "file": "motions/main_3.motion3.json",
+      "duration": 16.333,
+      "fps": 30.0,
+      "totalCurves": 315,
+      "curveTargets": {
+        "Parameter": 315
+      },
+      "samples": 616,
+      "relatedTracks": {
+        "Param11": {
+          "pointBounds": [
+            -2.8,
+            0.0
+          ],
+          "segments": 27
+        },
+        "Param12": {
+          "pointBounds": [
+            -7.854,
+            0.0
+          ],
+          "segments": 25
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            5.0
+          ],
+          "segments": 13
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -16.864,
+            16.0
+          ],
+          "segments": 23
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 18
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 46
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 12
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -5.558,
+            6.737
+          ],
+          "segments": 47
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -6.622,
+            8.688
+          ],
+          "segments": 47
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -11.06,
+            15.004
+          ],
+          "segments": 50
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -6.622,
+            8.688
+          ],
+          "segments": 47
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -11.06,
+            15.004
+          ],
+          "segments": 50
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "idle": {
+      "file": "motions/idle.motion3.json",
+      "duration": 13.4,
+      "fps": 30.0,
+      "totalCurves": 309,
+      "curveTargets": {
+        "Parameter": 309
+      },
+      "samples": 464,
+      "relatedTracks": {
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -4.0,
+            4.0
+          ],
+          "segments": 6
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            0.0,
+            5.0
+          ],
+          "segments": 4
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -0.447,
+            0.68
+          ],
+          "segments": 25
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -1.087,
+            1.51
+          ],
+          "segments": 39
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -2.272,
+            2.144
+          ],
+          "segments": 35
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -1.087,
+            1.51
+          ],
+          "segments": 39
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -2.272,
+            2.144
+          ],
+          "segments": 35
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "touch_body": {
+      "file": "motions/touch_body.motion3.json",
+      "duration": 15.767,
+      "fps": 30.0,
+      "totalCurves": 315,
+      "curveTargets": {
+        "Parameter": 315
+      },
+      "samples": 584,
+      "relatedTracks": {
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            15.94
+          ],
+          "segments": 9
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            -0.864,
+            1.037
+          ],
+          "segments": 10
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            10.74
+          ],
+          "segments": 7
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 11
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            -3.42,
+            7.693
+          ],
+          "segments": 15
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            5.76
+          ],
+          "segments": 11
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            -26.0,
+            9.523
+          ],
+          "segments": 15
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            -21.0,
+            0.0
+          ],
+          "segments": 13
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            -15.0,
+            30.0
+          ],
+          "segments": 22
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            -30.0,
+            30.0
+          ],
+          "segments": 16
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 19
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            1.5
+          ],
+          "segments": 11
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 13
+        },
+        "Param8": {
+          "pointBounds": [
+            -5.3,
+            0.0
+          ],
+          "segments": 10
+        },
+        "Param9": {
+          "pointBounds": [
+            -5.3,
+            0.0
+          ],
+          "segments": 10
+        },
+        "Param10": {
+          "pointBounds": [
+            -0.794,
+            0.72
+          ],
+          "segments": 13
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -10.583,
+            12.0
+          ],
+          "segments": 17
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 21
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 23
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            6.203
+          ],
+          "segments": 11
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -3.79,
+            4.015
+          ],
+          "segments": 38
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -5.448,
+            4.911
+          ],
+          "segments": 41
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -8.906,
+            9.388
+          ],
+          "segments": 41
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -5.448,
+            4.911
+          ],
+          "segments": 41
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -8.906,
+            9.388
+          ],
+          "segments": 41
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "mission": {
+      "file": "motions/mission.motion3.json",
+      "duration": 5.833,
+      "fps": 30.0,
+      "totalCurves": 309,
+      "curveTargets": {
+        "Parameter": 309
+      },
+      "samples": 219,
+      "relatedTracks": {
+        "ParamZDTSX": {
+          "pointBounds": [
+            -0.36,
+            7.38
+          ],
+          "segments": 11
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            -8.0,
+            0.0
+          ],
+          "segments": 11
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            10.0
+          ],
+          "segments": 6
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            -17.0,
+            30.0
+          ],
+          "segments": 12
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            -1.44,
+            1.58
+          ],
+          "segments": 11
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            -2.28,
+            2.0
+          ],
+          "segments": 11
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            -2.0,
+            0.84
+          ],
+          "segments": 11
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            -2.0,
+            0.0
+          ],
+          "segments": 11
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            -13.0,
+            9.0
+          ],
+          "segments": 11
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -15.0,
+            7.0
+          ],
+          "segments": 11
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            1.0
+          ],
+          "segments": 11
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -2.0,
+            5.0
+          ],
+          "segments": 11
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -2.495,
+            1.638
+          ],
+          "segments": 15
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -2.509,
+            1.97
+          ],
+          "segments": 16
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -3.954,
+            3.772
+          ],
+          "segments": 16
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -2.509,
+            1.97
+          ],
+          "segments": 16
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -3.954,
+            3.772
+          ],
+          "segments": 16
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "touch_special": {
+      "file": "motions/touch_special.motion3.json",
+      "duration": 10.767,
+      "fps": 30.0,
+      "totalCurves": 317,
+      "curveTargets": {
+        "Parameter": 317
+      },
+      "samples": 388,
+      "relatedTracks": {
+        "mohuheijiaodu": {
+          "pointBounds": [
+            -15.0,
+            10.0
+          ],
+          "segments": 8
+        },
+        "Param11": {
+          "pointBounds": [
+            -1.593,
+            0.0
+          ],
+          "segments": 11
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            1.086
+          ],
+          "segments": 11
+        },
+        "Param14": {
+          "pointBounds": [
+            -5.64,
+            0.0
+          ],
+          "segments": 7
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            19.0
+          ],
+          "segments": 6
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 9
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            11.0
+          ],
+          "segments": 10
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -1.784,
+            2.033
+          ],
+          "segments": 28
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -3.2,
+            1.916
+          ],
+          "segments": 28
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -4.94,
+            3.961
+          ],
+          "segments": 31
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -3.2,
+            1.916
+          ],
+          "segments": 28
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -4.94,
+            3.961
+          ],
+          "segments": 31
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "main_1": {
+      "file": "motions/main_1.motion3.json",
+      "duration": 9.0,
+      "fps": 30.0,
+      "totalCurves": 313,
+      "curveTargets": {
+        "Parameter": 313
+      },
+      "samples": 321,
+      "relatedTracks": {
+        "JIAODUz": {
+          "pointBounds": [
+            -30.0,
+            0.0
+          ],
+          "segments": 5
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 11
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 12
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            -9.46,
+            11.0
+          ],
+          "segments": 8
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -3.075,
+            4.296
+          ],
+          "segments": 22
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -3.191,
+            5.279
+          ],
+          "segments": 22
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -7.015,
+            9.284
+          ],
+          "segments": 27
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -3.191,
+            5.279
+          ],
+          "segments": 22
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -7.015,
+            9.284
+          ],
+          "segments": 27
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "home": {
+      "file": "motions/home.motion3.json",
+      "duration": 12.167,
+      "fps": 30.0,
+      "totalCurves": 315,
+      "curveTargets": {
+        "Parameter": 315
+      },
+      "samples": 456,
+      "relatedTracks": {
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 11
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 9
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            -1.955,
+            7.38
+          ],
+          "segments": 17
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            -20.0,
+            0.0
+          ],
+          "segments": 13
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            -8.0,
+            0.0
+          ],
+          "segments": 17
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            10.0
+          ],
+          "segments": 10
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            -17.0,
+            30.0
+          ],
+          "segments": 17
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            -5.1,
+            1.58
+          ],
+          "segments": 18
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            -5.1,
+            11.659
+          ],
+          "segments": 17
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            -16.1,
+            9.523
+          ],
+          "segments": 18
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            -14.0,
+            0.0
+          ],
+          "segments": 17
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            -13.0,
+            24.938999
+          ],
+          "segments": 20
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            -30.0,
+            30.0
+          ],
+          "segments": 9
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 14
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            1.5
+          ],
+          "segments": 12
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 13
+        },
+        "Param8": {
+          "pointBounds": [
+            -7.0,
+            0.0
+          ],
+          "segments": 11
+        },
+        "Param9": {
+          "pointBounds": [
+            -7.558,
+            0.0
+          ],
+          "segments": 11
+        },
+        "Param10": {
+          "pointBounds": [
+            -0.5,
+            1.86
+          ],
+          "segments": 9
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -15.0,
+            7.0
+          ],
+          "segments": 15
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 15
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            6.0
+          ],
+          "segments": 16
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 6
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -4.202,
+            5.991
+          ],
+          "segments": 29
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -6.171,
+            8.022
+          ],
+          "segments": 29
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -10.639,
+            12.554
+          ],
+          "segments": 30
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -6.171,
+            8.022
+          ],
+          "segments": 29
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -10.639,
+            12.554
+          ],
+          "segments": 30
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "mail": {
+      "file": "motions/mail.motion3.json",
+      "duration": 13.5,
+      "fps": 30.0,
+      "totalCurves": 315,
+      "curveTargets": {
+        "Parameter": 315
+      },
+      "samples": 483,
+      "relatedTracks": {
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            4.0
+          ],
+          "segments": 6
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            -5.0,
+            0.0
+          ],
+          "segments": 7
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            5.0
+          ],
+          "segments": 7
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            -5.0,
+            0.0
+          ],
+          "segments": 7
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -18.0,
+            17.0
+          ],
+          "segments": 19
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -2.0,
+            7.814
+          ],
+          "segments": 13
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -8.221,
+            10.0
+          ],
+          "segments": 21
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            -7.0,
+            11.0
+          ],
+          "segments": 18
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -4.443,
+            5.245
+          ],
+          "segments": 33
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -5.36,
+            5.836
+          ],
+          "segments": 33
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -9.107,
+            10.894
+          ],
+          "segments": 33
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -5.36,
+            5.836
+          ],
+          "segments": 33
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -9.107,
+            10.894
+          ],
+          "segments": 33
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "login": {
+      "file": "motions/login.motion3.json",
+      "duration": 14.833,
+      "fps": 30.0,
+      "totalCurves": 315,
+      "curveTargets": {
+        "Parameter": 315
+      },
+      "samples": 574,
+      "relatedTracks": {
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 18
+        },
+        "Param14": {
+          "pointBounds": [
+            -30.0,
+            0.0
+          ],
+          "segments": 7
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 6
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            -1.955,
+            3.6
+          ],
+          "segments": 11
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            -20.0,
+            0.0
+          ],
+          "segments": 9
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            -3.17,
+            0.0
+          ],
+          "segments": 11
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 11
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            -5.1,
+            1.04
+          ],
+          "segments": 13
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            -5.1,
+            11.659
+          ],
+          "segments": 11
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            -16.1,
+            9.523
+          ],
+          "segments": 12
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            -14.0,
+            0.0
+          ],
+          "segments": 11
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            -11.0,
+            24.938999
+          ],
+          "segments": 16
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            -30.0,
+            30.0
+          ],
+          "segments": 13
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 14
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            1.5
+          ],
+          "segments": 12
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 12
+        },
+        "Param8": {
+          "pointBounds": [
+            -8.454,
+            0.0
+          ],
+          "segments": 17
+        },
+        "Param9": {
+          "pointBounds": [
+            -9.961,
+            0.0
+          ],
+          "segments": 17
+        },
+        "Param10": {
+          "pointBounds": [
+            -0.48,
+            1.903
+          ],
+          "segments": 15
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.3
+          ],
+          "segments": 3
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -30.0,
+            0.0
+          ],
+          "segments": 7
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 12
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 23
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            -17.0,
+            15.0
+          ],
+          "segments": 17
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -3.661,
+            2.718
+          ],
+          "segments": 30
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -4.145,
+            2.614
+          ],
+          "segments": 38
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -6.656,
+            5.917
+          ],
+          "segments": 41
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -4.145,
+            2.614
+          ],
+          "segments": 38
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -6.656,
+            5.917
+          ],
+          "segments": 41
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "mission_complete": {
+      "file": "motions/mission_complete.motion3.json",
+      "duration": 8.0,
+      "fps": 30.0,
+      "totalCurves": 314,
+      "curveTargets": {
+        "Parameter": 314
+      },
+      "samples": 274,
+      "relatedTracks": {
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 6
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 9
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            -11.0,
+            13.925
+          ],
+          "segments": 6
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -0.25,
+            0.367
+          ],
+          "segments": 19
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -0.375,
+            0.456
+          ],
+          "segments": 19
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -0.28,
+            0.982
+          ],
+          "segments": 20
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -0.375,
+            0.456
+          ],
+          "segments": 19
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -0.28,
+            0.982
+          ],
+          "segments": 20
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "touch_head": {
+      "file": "motions/touch_head.motion3.json",
+      "duration": 7.0,
+      "fps": 30.0,
+      "totalCurves": 309,
+      "curveTargets": {
+        "Parameter": 309
+      },
+      "samples": 266,
+      "relatedTracks": {
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            4.02
+          ],
+          "segments": 11
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.884
+          ],
+          "segments": 11
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            -12.0,
+            0.0
+          ],
+          "segments": 11
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            2.58
+          ],
+          "segments": 11
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            -5.28,
+            0.0
+          ],
+          "segments": 11
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            -12.0,
+            2.0
+          ],
+          "segments": 10
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -7.0,
+            26.0
+          ],
+          "segments": 12
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -5.82,
+            10.0
+          ],
+          "segments": 11
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -4.542,
+            3.0
+          ],
+          "segments": 16
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            -15.0,
+            21.0
+          ],
+          "segments": 9
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -2.831,
+            3.107
+          ],
+          "segments": 18
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -4.161,
+            5.419
+          ],
+          "segments": 18
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -8.493,
+            8.27
+          ],
+          "segments": 20
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -4.161,
+            5.419
+          ],
+          "segments": 18
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -8.493,
+            8.27
+          ],
+          "segments": 20
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "complete": {
+      "file": "motions/complete.motion3.json",
+      "duration": 15.833,
+      "fps": 30.0,
+      "totalCurves": 310,
+      "curveTargets": {
+        "Parameter": 310
+      },
+      "samples": 554,
+      "relatedTracks": {
+        "JIAODUz": {
+          "pointBounds": [
+            -19.0,
+            10.0
+          ],
+          "segments": 8
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            8.0
+          ],
+          "segments": 16
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -8.28,
+            5.0
+          ],
+          "segments": 20
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            20.0
+          ],
+          "segments": 8
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -5.71,
+            5.135
+          ],
+          "segments": 42
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -4.82,
+            5.384
+          ],
+          "segments": 42
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -9.735,
+            9.217
+          ],
+          "segments": 42
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -4.82,
+            5.384
+          ],
+          "segments": 42
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -9.735,
+            9.217
+          ],
+          "segments": 42
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "main_2": {
+      "file": "motions/main_2.motion3.json",
+      "duration": 9.333,
+      "fps": 30.0,
+      "totalCurves": 310,
+      "curveTargets": {
+        "Parameter": 310
+      },
+      "samples": 309,
+      "relatedTracks": {
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            30.0
+          ],
+          "segments": 6
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            14.14
+          ],
+          "segments": 8
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            -2.768,
+            1.037
+          ],
+          "segments": 10
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            10.74
+          ],
+          "segments": 7
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            27.0
+          ],
+          "segments": 7
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            12.88
+          ],
+          "segments": 8
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            -15.0,
+            0.0
+          ],
+          "segments": 10
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            -17.76,
+            0.0
+          ],
+          "segments": 7
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            14.0
+          ],
+          "segments": 6
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -9.0,
+            12.0
+          ],
+          "segments": 14
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 16
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 15
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -0.037,
+            -0.037
+          ],
+          "segments": 1
+        }
+      }
+    },
+    "wedding": {
+      "file": "motions/wedding.motion3.json",
+      "duration": 30.433,
+      "fps": 30.0,
+      "totalCurves": 317,
+      "curveTargets": {
+        "Parameter": 317
+      },
+      "samples": 1079,
+      "relatedTracks": {
+        "zhuahenjiaodu": {
+          "pointBounds": [
+            0.0,
+            17.809999
+          ],
+          "segments": 15
+        },
+        "JIAODUz": {
+          "pointBounds": [
+            -18.0,
+            17.0
+          ],
+          "segments": 30
+        },
+        "ParamBodyAngleX": {
+          "pointBounds": [
+            -10.0,
+            10.0
+          ],
+          "segments": 27
+        },
+        "ParamBodyAngleY": {
+          "pointBounds": [
+            -8.28,
+            10.0
+          ],
+          "segments": 31
+        },
+        "tuihouyi": {
+          "pointBounds": [
+            -9.46,
+            11.0
+          ],
+          "segments": 17
+        },
+        "zuodatuishangxia": {
+          "pointBounds": [
+            -5.568,
+            6.518
+          ],
+          "segments": 75
+        },
+        "zdtwl": {
+          "pointBounds": [
+            -6.353,
+            7.282
+          ],
+          "segments": 76
+        },
+        "zxtwl": {
+          "pointBounds": [
+            -10.697,
+            11.639
+          ],
+          "segments": 77
+        },
+        "ydtwl": {
+          "pointBounds": [
+            -6.353,
+            7.282
+          ],
+          "segments": 76
+        },
+        "yxtwl": {
+          "pointBounds": [
+            -10.697,
+            11.639
+          ],
+          "segments": 77
+        },
+        "jiaoshusuosi": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "MB_jizhongxianjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "mohuheijiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXUANZ": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZTDKS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param11": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param12": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param13": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param14": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Paramtmd": {
+          "pointBounds": [
+            30.0,
+            30.0
+          ],
+          "segments": 1
+        },
+        "ParamZDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamDTDSF": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZXTDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamZJSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param28": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYDTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youdatuishensuo": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYXTSX": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYZDSS": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "youjiaoxuanzhuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamXZM": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xiebianhua": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "ParamYTQHTCQH": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "tuoxie": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "chatui": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param8": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param9": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "Param10": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEx": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "JIAOXIEY": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "jiaoxiejd": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "zubiqiehuan": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        },
+        "xinfenjiaodu": {
+          "pointBounds": [
+            0.0,
+            0.0
+          ],
+          "segments": 1
+        }
+      }
+    }
+  },
+  "parameterDefinitions": {
+    "touch_drag1": {
+      "id": "touch_drag1",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        0.10000000149011612,
+        1
+      ]
+    },
+    "touch_drag2": {
+      "id": "touch_drag2",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        0.10000000149011612,
+        0.5,
+        0.5300000309944153,
+        0.5600000023841858,
+        0.6399999856948853,
+        0.7900000214576721,
+        1
+      ]
+    },
+    "Paramring": {
+      "id": "Paramring",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "jiezhigg": {
+      "id": "jiezhigg",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "lianhei": {
+      "id": "lianhei",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        1
+      ]
+    },
+    "xianzhikuan": {
+      "id": "xianzhikuan",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "youbianfaxiuzheng": {
+      "id": "youbianfaxiuzheng",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zuobiyiyaobai": {
+      "id": "zuobiyiyaobai",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "SWBZX": {
+      "id": "SWBZX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "SWBZY": {
+      "id": "SWBZY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "SWBZJD": {
+      "id": "SWBZJD",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "SWBZDX": {
+      "id": "SWBZDX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "shouwangtuceng": {
+      "id": "shouwangtuceng",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "YOUSHOUBUZHENGx": {
+      "id": "YOUSHOUBUZHENGx",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "YOUSHOUBUZHENGY": {
+      "id": "YOUSHOUBUZHENGY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfabuzheng": {
+      "id": "houfabuzheng",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "MYBJD": {
+      "id": "MYBJD",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "jiaoshusuosi": {
+      "id": "jiaoshusuosi",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "hjgtmd": {
+      "id": "hjgtmd",
+      "min": 0,
+      "max": 30,
+      "default": 5.699999809265137,
+      "keys": [
+        0,
+        5.699999809265137,
+        30
+      ]
+    },
+    "fsxtmd": {
+      "id": "fsxtmd",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "MB_jizhongxianjiaodu": {
+      "id": "MB_jizhongxianjiaodu",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "MB_jizhongxiandaxiao": {
+      "id": "MB_jizhongxiandaxiao",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "MB_xiantiaojiyaA": {
+      "id": "MB_xiantiaojiyaA",
+      "min": 0,
+      "max": 1,
+      "default": 0.20000000298023224,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "MB_xiantiaobianhuaA": {
+      "id": "MB_xiantiaobianhuaA",
+      "min": 0,
+      "max": 1,
+      "default": 0.25,
+      "keys": [
+        0,
+        0.5,
+        1
+      ]
+    },
+    "MB_xiantiaoshousuoA": {
+      "id": "MB_xiantiaoshousuoA",
+      "min": 0,
+      "max": 1,
+      "default": 0.699999988079071,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "MB_xiantiaojiyaB": {
+      "id": "MB_xiantiaojiyaB",
+      "min": 0,
+      "max": 1,
+      "default": 0.30000001192092896,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "MB_xiantiaobianhuaB": {
+      "id": "MB_xiantiaobianhuaB",
+      "min": 0,
+      "max": 1,
+      "default": 0.5,
+      "keys": [
+        0,
+        0.5,
+        1
+      ]
+    },
+    "MB_xiantiaoshousuoB": {
+      "id": "MB_xiantiaoshousuoB",
+      "min": 0,
+      "max": 1,
+      "default": 0.800000011920929,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "MB_xiantiaojiyaC": {
+      "id": "MB_xiantiaojiyaC",
+      "min": 0,
+      "max": 1,
+      "default": 0.4000000059604645,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "MB_xiantiaobianhuaC": {
+      "id": "MB_xiantiaobianhuaC",
+      "min": 0,
+      "max": 1,
+      "default": 0.75,
+      "keys": [
+        0,
+        0.5,
+        1
+      ]
+    },
+    "MB_xiantiaoshousuoC": {
+      "id": "MB_xiantiaoshousuoC",
+      "min": 0,
+      "max": 1,
+      "default": 0.8999999761581421,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "mohuheijiaodu": {
+      "id": "mohuheijiaodu",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mohuheiwzX": {
+      "id": "mohuheiwzX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mohuheiwzY": {
+      "id": "mohuheiwzY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "sjjiemian": {
+      "id": "sjjiemian",
+      "min": 0,
+      "max": 2,
+      "default": 0,
+      "keys": [
+        0,
+        1,
+        1.3899999856948853,
+        1.399999976158142,
+        2
+      ]
+    },
+    "mohuhei": {
+      "id": "mohuhei",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "mohuliang": {
+      "id": "mohuliang",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    },
+    "xxing": {
+      "id": "xxing",
+      "min": 0,
+      "max": 2,
+      "default": 0,
+      "keys": [
+        0,
+        1,
+        2
+      ]
+    },
+    "xioaxxs": {
+      "id": "xioaxxs",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "xiaoxits": {
+      "id": "xiaoxits",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        5,
+        10
+      ]
+    },
+    "xiaoxits2": {
+      "id": "xiaoxits2",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        5,
+        10
+      ]
+    },
+    "xiaoxits3": {
+      "id": "xiaoxits3",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        5,
+        10
+      ]
+    },
+    "xiaoxits4": {
+      "id": "xiaoxits4",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        5,
+        10
+      ]
+    },
+    "xiaoxits5": {
+      "id": "xiaoxits5",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        5,
+        10
+      ]
+    },
+    "youjianxs": {
+      "id": "youjianxs",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        0.10000000149011612,
+        1
+      ]
+    },
+    "xinfengxz": {
+      "id": "xinfengxz",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "youjiantc": {
+      "id": "youjiantc",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        5,
+        10
+      ]
+    },
+    "youjianX": {
+      "id": "youjianX",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "youjianY": {
+      "id": "youjianY",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "ParamS": {
+      "id": "ParamS",
+      "min": 0,
+      "max": 60,
+      "default": 0,
+      "keys": [
+        0,
+        30,
+        60
+      ]
+    },
+    "ParamSJS": {
+      "id": "ParamSJS",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamSJX": {
+      "id": "ParamSJX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamSJY": {
+      "id": "ParamSJY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Paramz": {
+      "id": "Paramz",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZPX": {
+      "id": "ParamZPX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZPY": {
+      "id": "ParamZPY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamQX": {
+      "id": "ParamQX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamDX": {
+      "id": "ParamDX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamSJCX": {
+      "id": "ParamSJCX",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamPCCX": {
+      "id": "ParamPCCX",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZTDX": {
+      "id": "ParamZTDX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZTDY": {
+      "id": "ParamZTDY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamXUANZ": {
+      "id": "ParamXUANZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZTDKS": {
+      "id": "ParamZTDKS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param11": {
+      "id": "Param11",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param12": {
+      "id": "Param12",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param13": {
+      "id": "Param13",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param14": {
+      "id": "Param14",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Paramtmd": {
+      "id": "Paramtmd",
+      "min": 0,
+      "max": 30,
+      "default": 30,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "dengrutmd": {
+      "id": "dengrutmd",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "cj1": {
+      "id": "cj1",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "Param31": {
+      "id": "Param31",
+      "min": 0,
+      "max": 30,
+      "default": 30,
+      "keys": [
+        0,
+        15,
+        22.5,
+        30
+      ]
+    },
+    "Param19": {
+      "id": "Param19",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "shoujikai": {
+      "id": "shoujikai",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        15,
+        30
+      ]
+    },
+    "DRX": {
+      "id": "DRX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "DRY": {
+      "id": "DRY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "DRJD": {
+      "id": "DRJD",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "DRDX": {
+      "id": "DRDX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "CHANGJINGX": {
+      "id": "CHANGJINGX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "CHANGJINGY": {
+      "id": "CHANGJINGY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "qiangdaxiao": {
+      "id": "qiangdaxiao",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "menkaibi": {
+      "id": "menkaibi",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        1.5,
+        15,
+        30
+      ]
+    },
+    "qjbaimu": {
+      "id": "qjbaimu",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "beijingbaimu": {
+      "id": "beijingbaimu",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "mhshou": {
+      "id": "mhshou",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "mgysx": {
+      "id": "mgysx",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mgysy": {
+      "id": "mgysy",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mgysjd": {
+      "id": "mgysjd",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mgzsx": {
+      "id": "mgzsx",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mgzsy": {
+      "id": "mgzsy",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "mgzsjd": {
+      "id": "mgzsjd",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "shoudaxiao": {
+      "id": "shoudaxiao",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "dh1": {
+      "id": "dh1",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "dh2": {
+      "id": "dh2",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "dh3": {
+      "id": "dh3",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "Param16": {
+      "id": "Param16",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "Param17": {
+      "id": "Param17",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "Param18": {
+      "id": "Param18",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "Param15": {
+      "id": "Param15",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamM1": {
+      "id": "ParamM1",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamM2": {
+      "id": "ParamM2",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamML1": {
+      "id": "ParamML1",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamMBQ": {
+      "id": "ParamMBQ",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamMBQ3": {
+      "id": "ParamMBQ3",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamMQY": {
+      "id": "ParamMQY",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamMBZ": {
+      "id": "ParamMBZ",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamQUAN": {
+      "id": "ParamQUAN",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamM12QH": {
+      "id": "ParamM12QH",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        14.899999618530273,
+        15,
+        30
+      ]
+    },
+    "maotouqiehuan": {
+      "id": "maotouqiehuan",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        15,
+        15.100000381469727,
+        30
+      ]
+    },
+    "ParamMTY": {
+      "id": "ParamMTY",
+      "min": -60,
+      "max": 60,
+      "default": -30,
+      "keys": [
+        -60,
+        -36,
+        -30,
+        0,
+        30,
+        60
+      ]
+    },
+    "ParamMDZYXGQH": {
+      "id": "ParamMDZYXGQH",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMMZ": {
+      "id": "ParamMMZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMMX": {
+      "id": "ParamMMX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMMY": {
+      "id": "ParamMMY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMWBBD": {
+      "id": "ParamMWBBD",
+      "min": -30,
+      "max": 30,
+      "default": -30,
+      "keys": [
+        -30,
+        -16.399999618530273,
+        0,
+        30
+      ]
+    },
+    "ParamWBQH": {
+      "id": "ParamWBQH",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZY": {
+      "id": "ParamZY",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamEDZ": {
+      "id": "ParamEDZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param23": {
+      "id": "Param23",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamEDY": {
+      "id": "ParamEDY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param24": {
+      "id": "Param24",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamTX": {
+      "id": "ParamTX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Parammjdy": {
+      "id": "Parammjdy",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param25": {
+      "id": "Param25",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMSQ": {
+      "id": "ParamMSQ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMQS": {
+      "id": "ParamMQS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param26": {
+      "id": "Param26",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param27": {
+      "id": "Param27",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMHT": {
+      "id": "ParamMHT",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param22": {
+      "id": "Param22",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMMDYJ": {
+      "id": "ParamMMDYJ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param21": {
+      "id": "Param21",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZJZY": {
+      "id": "ParamZJZY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZJ": {
+      "id": "ParamZJ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZZZZ": {
+      "id": "ParamZZZZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZHHH": {
+      "id": "ParamZHHH",
+      "min": -30,
+      "max": 30,
+      "default": -30,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMZDDX": {
+      "id": "ParamMZDDX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamMZDDY": {
+      "id": "ParamMZDDY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param7": {
+      "id": "Param7",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZDTSX": {
+      "id": "ParamZDTSX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        -15,
+        0,
+        30
+      ]
+    },
+    "ParamDTDSF": {
+      "id": "ParamDTDSF",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zuoxiaotuituceng": {
+      "id": "zuoxiaotuituceng",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZXTSX": {
+      "id": "ParamZXTSX",
+      "min": -30,
+      "max": 4,
+      "default": 0,
+      "keys": [
+        -30,
+        -22,
+        -15,
+        0,
+        4
+      ]
+    },
+    "ParamZXTDSS": {
+      "id": "ParamZXTDSS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamZJSX": {
+      "id": "ParamZJSX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param28": {
+      "id": "Param28",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamYDTSX": {
+      "id": "ParamYDTSX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youdatuishensuo": {
+      "id": "youdatuishensuo",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamYXTSX": {
+      "id": "ParamYXTSX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamYZDSS": {
+      "id": "ParamYZDSS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youjiaoxuanzhuan": {
+      "id": "youjiaoxuanzhuan",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamXZM": {
+      "id": "ParamXZM",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "xiebianhua": {
+      "id": "xiebianhua",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamYTQHTCQH": {
+      "id": "ParamYTQHTCQH",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "tuoxie": {
+      "id": "tuoxie",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        1.5,
+        30
+      ]
+    },
+    "chatui": {
+      "id": "chatui",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "Param8": {
+      "id": "Param8",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param9": {
+      "id": "Param9",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param10": {
+      "id": "Param10",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "JIAOXIEx": {
+      "id": "JIAOXIEx",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "JIAOXIEY": {
+      "id": "JIAOXIEY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "jiaoxiejd": {
+      "id": "jiaoxiejd",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamYSBDXZ": {
+      "id": "ParamYSBDXZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamYSBDSS": {
+      "id": "ParamYSBDSS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamYSBXZ": {
+      "id": "ParamYSBXZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youxiabishensuo": {
+      "id": "youxiabishensuo",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youxiabituceng": {
+      "id": "youxiabituceng",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "Param20": {
+      "id": "Param20",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        -15,
+        0,
+        30
+      ]
+    },
+    "youshouzituceng": {
+      "id": "youshouzituceng",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        -15,
+        0,
+        30
+      ]
+    },
+    "ParamYSZXZ": {
+      "id": "ParamYSZXZ",
+      "min": -30,
+      "max": 30,
+      "default": 15,
+      "keys": [
+        -30,
+        15,
+        30
+      ]
+    },
+    "youshouxiushensuo": {
+      "id": "youshouxiushensuo",
+      "min": -30,
+      "max": 0,
+      "default": 0,
+      "keys": [
+        -30,
+        0
+      ]
+    },
+    "youshou1xuanz": {
+      "id": "youshou1xuanz",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youshoudonghua": {
+      "id": "youshoudonghua",
+      "min": -30,
+      "max": 30,
+      "default": -15,
+      "keys": [
+        -30,
+        -15,
+        0,
+        15,
+        30
+      ]
+    },
+    "youshoubianhua": {
+      "id": "youshoubianhua",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youshoure": {
+      "id": "youshoure",
+      "min": 0,
+      "max": 30,
+      "default": 30,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "youshou1": {
+      "id": "youshou1",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "youshou2": {
+      "id": "youshou2",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        15,
+        30
+      ]
+    },
+    "youshou3": {
+      "id": "youshou3",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "youshou8": {
+      "id": "youshou8",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "youshou9": {
+      "id": "youshou9",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "shubentmd": {
+      "id": "shubentmd",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "shubendonghua": {
+      "id": "shubendonghua",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "shouji": {
+      "id": "shouji",
+      "min": 0,
+      "max": 30,
+      "default": 30,
+      "keys": [
+        0,
+        22.5,
+        30
+      ]
+    },
+    "fgx1": {
+      "id": "fgx1",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "fgx2": {
+      "id": "fgx2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "fgx3": {
+      "id": "fgx3",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "zubiqiehuan": {
+      "id": "zubiqiehuan",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZSBDXZ": {
+      "id": "ParamZSBDXZ",
+      "min": -80,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -80,
+        -40,
+        0,
+        30
+      ]
+    },
+    "ParamZSBDSS": {
+      "id": "ParamZSBDSS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zuoxiabixuanzhuan": {
+      "id": "zuoxiabixuanzhuan",
+      "min": -30,
+      "max": 30,
+      "default": -30,
+      "keys": [
+        -30,
+        -15,
+        0,
+        0.10000000149011612,
+        30
+      ]
+    },
+    "xbxzbc": {
+      "id": "xbxzbc",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZQBSS": {
+      "id": "ParamZQBSS",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param29": {
+      "id": "Param29",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zuoshoutuceng": {
+      "id": "zuoshoutuceng",
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "ParamZSXZ": {
+      "id": "ParamZSXZ",
+      "min": -60,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -60,
+        -30,
+        0,
+        30
+      ]
+    },
+    "zuoshoudonghua": {
+      "id": "zuoshoudonghua",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        -15,
+        -6.5,
+        -6.099999904632568,
+        -6,
+        0,
+        30
+      ]
+    },
+    "zuosoubianhua": {
+      "id": "zuosoubianhua",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zhuahengtmd": {
+      "id": "zhuahengtmd",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "zhuahenjiaodu": {
+      "id": "zhuahenjiaodu",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zhuashenshensuo": {
+      "id": "zhuashenshensuo",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "MB_xingfengTMD": {
+      "id": "MB_xingfengTMD",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "xinfenjiaodu": {
+      "id": "xinfenjiaodu",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "MB_xingfengyaobai": {
+      "id": "MB_xingfengyaobai",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        1
+      ]
+    },
+    "xinfengxuanzhuan": {
+      "id": "xinfengxuanzhuan",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "xinfengX": {
+      "id": "xinfengX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "xinfengY": {
+      "id": "xinfengY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "RXTMD": {
+      "id": "RXTMD",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "zuoshoure": {
+      "id": "zuoshoure",
+      "min": 0,
+      "max": 30,
+      "default": 30,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZS1": {
+      "id": "ParamZS1",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "ParamZS2": {
+      "id": "ParamZS2",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "Param4": {
+      "id": "Param4",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "zuoshou8": {
+      "id": "zuoshou8",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "zuoshou9": {
+      "id": "zuoshou9",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "Param30": {
+      "id": "Param30",
+      "min": 0,
+      "max": 30,
+      "default": 30,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "xiongliekai": {
+      "id": "xiongliekai",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        15,
+        30
+      ]
+    },
+    "youxijitmd": {
+      "id": "youxijitmd",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        14.899999618530273,
+        15,
+        30
+      ]
+    },
+    "youxijitoushi": {
+      "id": "youxijitoushi",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youxijizuojian": {
+      "id": "youxijizuojian",
+      "min": -30,
+      "max": 0,
+      "default": 0,
+      "keys": [
+        -30,
+        0
+      ]
+    },
+    "youxijiyoujian": {
+      "id": "youxijiyoujian",
+      "min": -30,
+      "max": 0,
+      "default": 0,
+      "keys": [
+        -30,
+        -6,
+        0
+      ]
+    },
+    "ParamJB": {
+      "id": "ParamJB",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamAngleX": {
+      "id": "ParamAngleX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamAngleY": {
+      "id": "ParamAngleY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "JIAODUz": {
+      "id": "JIAODUz",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamNeckZ": {
+      "id": "ParamNeckZ",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamBodyAngleX": {
+      "id": "ParamBodyAngleX",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "ParamBodyAngleY": {
+      "id": "ParamBodyAngleY",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "ParamBodyAngleZ": {
+      "id": "ParamBodyAngleZ",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        -5,
+        0,
+        10
+      ]
+    },
+    "Param6": {
+      "id": "Param6",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "tuihouyi": {
+      "id": "tuihouyi",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "difabuzheng": {
+      "id": "difabuzheng",
+      "min": -30,
+      "max": 0,
+      "default": 0,
+      "keys": [
+        -30,
+        0
+      ]
+    },
+    "ParamBreath": {
+      "id": "ParamBreath",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "sdzuiqie": {
+      "id": "sdzuiqie",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        0.5,
+        0.699999988079071,
+        1
+      ]
+    },
+    "ParamMouthForm": {
+      "id": "ParamMouthForm",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        -0.5,
+        0,
+        0.5,
+        1
+      ]
+    },
+    "ParamMouthOpenY": {
+      "id": "ParamMouthOpenY",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "ParamMouthOpenYSD": {
+      "id": "ParamMouthOpenYSD",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "yaguan": {
+      "id": "yaguan",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "tushe": {
+      "id": "tushe",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        -0.5,
+        -0.10000000149011612,
+        0,
+        0.20000000298023224,
+        1
+      ]
+    },
+    "ParamEyeLOpen": {
+      "id": "ParamEyeLOpen",
+      "min": 0,
+      "max": 1.2999999523162842,
+      "default": 1,
+      "keys": [
+        0,
+        1,
+        1.2999999523162842
+      ]
+    },
+    "ParamEyeLSmile": {
+      "id": "ParamEyeLSmile",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "ParamEyeROpen": {
+      "id": "ParamEyeROpen",
+      "min": 0,
+      "max": 1.2999999523162842,
+      "default": 1,
+      "keys": [
+        0,
+        1,
+        1.2999999523162842
+      ]
+    },
+    "ParamEyeRSmile": {
+      "id": "ParamEyeRSmile",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "ParamEyeBallX": {
+      "id": "ParamEyeBallX",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        1
+      ]
+    },
+    "ParamEyeBallY": {
+      "id": "ParamEyeBallY",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        1
+      ]
+    },
+    "ParamBrowLForm": {
+      "id": "ParamBrowLForm",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        -0.6000000238418579,
+        -0.3199999928474426,
+        0,
+        1
+      ]
+    },
+    "ParamBrowLAngle": {
+      "id": "ParamBrowLAngle",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        0.6699999570846558,
+        1
+      ]
+    },
+    "ParamBrowRForm": {
+      "id": "ParamBrowRForm",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        -0.6000000238418579,
+        -0.30000001192092896,
+        0,
+        1
+      ]
+    },
+    "ParamBrowRAngle": {
+      "id": "ParamBrowRAngle",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        0.6699999570846558,
+        1
+      ]
+    },
+    "lianhong": {
+      "id": "lianhong",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "yanjingxs": {
+      "id": "yanjingxs",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "Lyanjingbg": {
+      "id": "Lyanjingbg",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "Ryanjingbg": {
+      "id": "Ryanjingbg",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "SYJXS": {
+      "id": "SYJXS",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "yanjingx": {
+      "id": "yanjingx",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "yanjingY": {
+      "id": "yanjingY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "saoguantmd": {
+      "id": "saoguantmd",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "saoguangjd": {
+      "id": "saoguangjd",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "yanjingpianshaoguang": {
+      "id": "yanjingpianshaoguang",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "tuiyanjing": {
+      "id": "tuiyanjing",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        -1,
+        0,
+        1
+      ]
+    },
+    "maoexians": {
+      "id": "maoexians",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        2,
+        8,
+        10
+      ]
+    },
+    "lmaoe1": {
+      "id": "lmaoe1",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "lmaoe2": {
+      "id": "lmaoe2",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "rmaoe1": {
+      "id": "rmaoe1",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "rmaoe2": {
+      "id": "rmaoe2",
+      "min": -10,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        -10,
+        0,
+        10
+      ]
+    },
+    "ParamEyeBallDisplay2": {
+      "id": "ParamEyeBallDisplay2",
+      "min": 0,
+      "max": 1,
+      "default": 1,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "baiyanbq": {
+      "id": "baiyanbq",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "han": {
+      "id": "han",
+      "min": 0,
+      "max": 10,
+      "default": 0,
+      "keys": [
+        0,
+        0.20000000298023224,
+        0.699999988079071,
+        1,
+        10
+      ]
+    },
+    "ParamMouthADisplay": {
+      "id": "ParamMouthADisplay",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": [
+        0,
+        1
+      ]
+    },
+    "ParamEyeLGG": {
+      "id": "ParamEyeLGG",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamEyeRGG": {
+      "id": "ParamEyeRGG",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "jizhongxianDH": {
+      "id": "jizhongxianDH",
+      "min": 0,
+      "max": 3,
+      "default": 0,
+      "keys": [
+        0,
+        1,
+        2,
+        3
+      ]
+    },
+    "jingfuhao": {
+      "id": "jingfuhao",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        3,
+        30
+      ]
+    },
+    "wuliTF": {
+      "id": "wuliTF",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "wuliXB": {
+      "id": "wuliXB",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "youbiwulikaiguang": {
+      "id": "youbiwulikaiguang",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        0,
+        30
+      ]
+    },
+    "wuliYF": {
+      "id": "wuliYF",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "zuodatuishangxia": {
+      "id": "zuodatuishangxia",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zdtwl": {
+      "id": "zdtwl",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "zxtwl": {
+      "id": "zxtwl",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ydtwl": {
+      "id": "ydtwl",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "yxtwl": {
+      "id": "yxtwl",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfahdj1": {
+      "id": "houfahdj1",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfahdj2": {
+      "id": "houfahdj2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHairFront1": {
+      "id": "ParamHairFront1",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHairFront2": {
+      "id": "ParamHairFront2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHairFront3": {
+      "id": "ParamHairFront3",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHairFront4": {
+      "id": "ParamHairFront4",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair1": {
+      "id": "ParamHair1",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair2": {
+      "id": "ParamHair2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair3": {
+      "id": "ParamHair3",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair4": {
+      "id": "ParamHair4",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair5": {
+      "id": "ParamHair5",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair6": {
+      "id": "ParamHair6",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamHair7": {
+      "id": "ParamHair7",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfa1": {
+      "id": "houfa1",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfa2": {
+      "id": "houfa2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfa3": {
+      "id": "houfa3",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfa4": {
+      "id": "houfa4",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "houfa5": {
+      "id": "houfa5",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "houfa6": {
+      "id": "houfa6",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamXX": {
+      "id": "ParamXX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamRYWLX": {
+      "id": "ParamRYWLX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamXY": {
+      "id": "ParamXY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamRYWLY": {
+      "id": "ParamRYWLY",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param": {
+      "id": "Param",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param2": {
+      "id": "Param2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param3": {
+      "id": "Param3",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "lingzi": {
+      "id": "lingzi",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "Param5": {
+      "id": "Param5",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youbiwuli1": {
+      "id": "youbiwuli1",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "youbiwuli2": {
+      "id": "youbiwuli2",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": [
+        -30,
+        0,
+        30
+      ]
+    },
+    "ParamKSX": {
+      "id": "ParamKSX",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamBrowLY": {
+      "id": "ParamBrowLY",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    },
+    "ParamBrowLX": {
+      "id": "ParamBrowLX",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    },
+    "ParamBrowRY": {
+      "id": "ParamBrowRY",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    },
+    "ParamBrowRX": {
+      "id": "ParamBrowRX",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    },
+    "ParamMYDSF": {
+      "id": "ParamMYDSF",
+      "min": -30,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamYZAX": {
+      "id": "ParamYZAX",
+      "min": 0,
+      "max": 30,
+      "default": 0,
+      "keys": []
+    },
+    "ParamCheek": {
+      "id": "ParamCheek",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    },
+    "ParamH": {
+      "id": "ParamH",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "keys": []
+    }
+  },
+  "physics": {
+    "meta": {
+      "PhysicsSettingCount": 12,
+      "TotalInputCount": 24,
+      "TotalOutputCount": 40,
+      "VertexCount": 111,
+      "EffectiveForces": {
+        "Gravity": {
+          "X": 0,
+          "Y": -1
+        },
+        "Wind": {
+          "X": 0,
+          "Y": 0
+        }
+      },
+      "PhysicsDictionary": [
+        {
+          "Id": "PhysicsSetting1",
+          "Name": "总OP上下"
+        },
+        {
+          "Id": "PhysicsSetting2",
+          "Name": "总OP左右"
+        },
+        {
+          "Id": "PhysicsSetting3",
+          "Name": "蝴蝶结"
+        },
+        {
+          "Id": "PhysicsSetting4",
+          "Name": "腿GG"
+        },
+        {
+          "Id": "PhysicsSetting5",
+          "Name": "猫X"
+        },
+        {
+          "Id": "PhysicsSetting6",
+          "Name": "猫Y"
+        },
+        {
+          "Id": "PhysicsSetting7",
+          "Name": "刘海"
+        },
+        {
+          "Id": "PhysicsSetting8",
+          "Name": "发丝"
+        },
+        {
+          "Id": "PhysicsSetting9",
+          "Name": "后发"
+        },
+        {
+          "Id": "PhysicsSetting10",
+          "Name": "右臂"
+        },
+        {
+          "Id": "PhysicsSetting11",
+          "Name": "双腿x"
+        },
+        {
+          "Id": "PhysicsSetting12",
+          "Name": "双腿y"
+        }
+      ]
+    },
+    "relatedInputsOutputs": [
+      {
+        "id": "PhysicsSetting11",
+        "inputs": [
+          "ParamAngleX",
+          "ParamAngleY"
+        ],
+        "outputs": [
+          "zdtwl",
+          "zxtwl",
+          "ydtwl",
+          "yxtwl"
+        ]
+      },
+      {
+        "id": "PhysicsSetting12",
+        "inputs": [
+          "ParamAngleY"
+        ],
+        "outputs": [
+          "zuodatuishangxia"
+        ]
+      }
+    ]
+  }
+}

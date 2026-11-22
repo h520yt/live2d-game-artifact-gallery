@@ -1,0 +1,25 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>白凤 · 大凤原生鞋履适配验证</title>
+<style>
+  html { color-scheme: dark; font: 14px system-ui; background: #252934; }
+  body { margin: 0; }
+  nav { display: flex; gap: 8px; padding: 8px; }
+  canvas { display: block; }
+  body.capture nav { display: none; }
+</style>
+<nav>
+  <button data-model="dafeng_3">大凤原装</button>
+  <button data-model="baifeng_3" data-outfit="original">白凤原装</button>
+  <button data-model="baifeng_3" data-outfit="current">白凤现版换装</button>
+  <button data-model="baifeng_3" data-outfit="trial">白凤隔离试验</button>
+  <button id="zoom">足部近景</button>
+  <output></output>
+</nav>
+<canvas id="view"></canvas>
+<script src="../../shared/vendor/live2dcubismcore.min.js"></script>
+<script src="../../shared/vendor/pixi.min.js"></script>
+<script src="../../shared/vendor/live2d.min.js"></script>
+<script src="../../shared/cubism_outfits.js"></script>
+<script>window.dafengShoes = ['ArtMesh34', 'ArtMesh193', 'ArtMesh194'];</script>
+<script src="preview.js"></script>

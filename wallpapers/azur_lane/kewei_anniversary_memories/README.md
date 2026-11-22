@@ -1,6 +1,6 @@
 # 可畏 · 纪念印记
 
-《碧蓝航线》的可畏换装「纪念印记」（Anniversary Memories），本地 Live2D 模型 `kewei_6`，皮肤 ID `207055`。截图里的动作面板与该模型的 45 个动作一一对应，其中包含 11 个 `idle` 变体、19 个 `touch_idle` 变体和 `effect`。壁纸播放截图所选的 `idle5`，以原速的 50% 静音循环，每轮约 40 秒。
+《碧蓝航线》的可畏换装「纪念印记」（Anniversary Memories），本地 Live2D 模型 `kewei_6`，皮肤 ID `207055`。截图里的动作面板与该模型的 45 个动作一一对应，其中包含 11 个 `idle` 变体、19 个 `touch_idle` 变体和 `effect`。壁纸播放截图所选的 `idle5`，以原速的三分之一静音循环，每轮约 60 秒。
 
 ## 导入 Wallpaper Engine
 

@@ -1,0 +1,32 @@
+{
+  "chrome": "157.0.8103.79",
+  "webgl": "no errors",
+  "pageErrors": [],
+  "originalRestoredByteIdentically": true,
+  "trialReselectedByteIdentically": true,
+  "previewButtonsVerified": true,
+  "full": {
+    "changedPixelCount": 3587,
+    "changedPixelBounds": [
+      653,
+      652,
+      753,
+      725
+    ],
+    "rgbDeltaGreaterThan8": 3217,
+    "alphaChangedPixelCount": 0,
+    "outsideFootPixelChanges": 0
+  },
+  "detail": {
+    "changedPixelCount": 112056,
+    "changedPixelBounds": [
+      283,
+      377,
+      841,
+      801
+    ],
+    "rgbDeltaGreaterThan8": 100302,
+    "alphaChangedPixelCount": 0,
+    "outsideFootPixelChanges": 0
+  }
+}

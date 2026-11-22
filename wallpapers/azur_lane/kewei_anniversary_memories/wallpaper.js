@@ -2,7 +2,7 @@
   'use strict';
 
   const motionName = 'idle5';
-  const playbackSpeed = 0.5;
+  const playbackSpeed = 1 / 3;
   const maxPixels = 3840 * 2160;
   const canvas = document.getElementById('wallpaper');
   const status = document.getElementById('error');
