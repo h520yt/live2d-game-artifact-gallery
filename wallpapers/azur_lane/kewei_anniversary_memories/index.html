@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>可畏 · 纪念印记</title>
+  <style>
+    html, body { margin: 0; overflow: hidden; background: #252829; }
+    canvas { display: block; width: 100vw; height: 100vh; }
+    #error { position: fixed; inset: 0; margin: 0; place-content: center;
+      padding: 2rem; color: #fff; text-align: center; font: 16px system-ui, sans-serif; }
+    #error:not([hidden]) { display: grid; }
+  </style>
+  <script defer src="vendor/live2dcubismcore.min.js"></script>
+  <script defer src="vendor/pixi.min.js"></script>
+  <script defer src="vendor/live2d.min.js"></script>
+  <script defer src="model.bundle.js"></script>
+  <script defer src="wallpaper.js"></script>
+</head>
+<body>
+  <canvas id="wallpaper" aria-label="可畏 · 纪念印记 Live2D 动态壁纸"></canvas>
+  <p id="error" hidden role="alert"></p>
+</body>
+</html>
