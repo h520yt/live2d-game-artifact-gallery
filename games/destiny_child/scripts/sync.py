@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""下载《天命之子》 Cubism 2 Live2D 模型到本地，不提交游戏资源。"""
+"""下载《天命之子》 Cubism 2 Live2D 模型及已配对场景到本地。"""
 from __future__ import annotations
 
 import argparse
@@ -12,6 +12,7 @@ from http.client import IncompleteRead
 from io import BytesIO
 from pathlib import Path
 from urllib.error import HTTPError
+from urllib.parse import urlsplit
 from urllib.request import Request, urlopen
 
 from PIL import Image
@@ -195,6 +196,29 @@ def install(row: dict, force: bool) -> None:
     print(f"  完成：{asset_id}，本次更新 {copied}/{len(names) + 1} 个文件")
 
 
+def install_background(row: dict, force: bool, completed: set[str]) -> None:
+    paths = row.get("roles", {}).get("background")
+    if not paths:
+        return
+    path, = paths
+    name = safe_file(path.removeprefix("../data/backgrounds/"))
+    if path != f"../data/backgrounds/{name}" or not re.fullmatch(r"[\w-]+\.png", name):
+        raise ValueError(f"背景路径无效：{path}")
+    if name in completed:
+        return
+    info = row["metadata"]["background"]
+    url = info["url"]
+    source = urlsplit(url)
+    if source.scheme != "https" or not source.hostname or not re.fullmatch(r"[0-9a-f]{64}", info["sha256"]):
+        raise ValueError(f"背景来源或校验码无效：{name}")
+    destination = GAME / "data" / "backgrounds" / name
+    digest = info["sha256"]
+    if force or installed(destination, digest) is None:
+        atomic_write_bytes(destination, download(url, name, digest))
+        print(f"  [背景已安装] {name}")
+    completed.add(name)
+
+
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Destiny Child Live2D 下载器")
     group = parser.add_mutually_exclusive_group()
@@ -226,10 +250,12 @@ def main(argv=None) -> int:
             return 0
         install_runtime(args.force)
         failures = 0
+        backgrounds = set()
         for row in todo:
             print(f"\n[安装] {row['id']} · {row['title']}")
             try:
                 install(row, args.force)
+                install_background(row, args.force, backgrounds)
             except (OSError, ValueError, KeyError, TypeError, IncompleteRead) as error:
                 failures += 1
                 print(f"[失败] {row['id']}: {error}", file=sys.stderr)

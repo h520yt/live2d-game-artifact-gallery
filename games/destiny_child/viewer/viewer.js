@@ -133,9 +133,30 @@
   }
   function clear() {
     token++;drag=null;motions=[];expressions=[];modelBounds=null;
+    stage.querySelector(".dc-background")?.remove();
     $("actions").replaceChildren();$("expressions").replaceChildren();
     if (model) { const old=model;model=null;app.stage.removeChild(old);old.destroy(); }
     window.GalleryViewerBridge?.refresh();
+  }
+  async function showBackground(asset, requestId) {
+    const src = asset.roles?.background?.[0];
+    if (typeof src !== "string" || !/^\.\.\/data\/backgrounds\/[\w-]+\.png$/.test(src)) return;
+    const image = new Image();
+    image.alt = "";
+    image.src = src;
+    try {
+      await image.decode();
+    } catch {
+      return; // 背景是可选文件。
+    }
+    if (requestId !== token) return;
+    const background = document.createElement("div");
+    background.className = "dc-background";
+    background.style.setProperty("--dc-scene", `url("${src}")`);
+    background.append(image);
+    stage.prepend(background);
+    const label = asset.metadata?.background?.label;
+    if (label) $("detail").textContent += " · " + label;
   }
   function play(name) {
     if (!model || !motions.includes(name)) return false;
@@ -174,6 +195,7 @@
       return;
     }
     status("正在加载动态模型…");
+    showBackground(current, requestId);
     let loaded;
     try {
       if (!app) {

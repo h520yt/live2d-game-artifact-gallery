@@ -62,3 +62,18 @@ python scripts/gallery.py serve
 Chrome WebGL 回归测试覆盖全部 40 套、3 种视口和 DPR 1、1.25、1.5、2。默认边界、待机、拖动缩放、动作切换及返回列表的滚动恢复均通过。首页入口、统一目录的模型深链和 20 张新增卡片图标另行通过浏览器检查。
 
 排除示例包括 Zelos 的相近换色 `c198_10`、首批婚纱的进化变体 `c374_01`、首张图集只有 512×512 且呈现细节较弱的 Lisa · Battlesuit `c002_02`，以及外观偏幼的 Aria 造型。Brigid · Scarlet `c290_02` 的可见轮廓在 1303×551 视口中超出现有居中测试容差。Kalaratri 的 `c445_10` 和 `c445_11` 在 Pelom777 的表情文件含非法 JSON 数字，未进入正式目录。
+
+## 游戏场景背景
+
+已为 5 套模型匹配 4 张原版场景图。PNG 来自日服官方更新公告，发布尺寸为 640×1024。公告将这些图片列为可更换的主界面背景，展示柜根据角色和剧情关系配对。
+
+| 模型 | 场景 | 配对依据 |
+| --- | --- | --- |
+| `c294_02` Bathory · Bloody、`c394_02` Bathory · Supreme Courtesan | 巴托里领域的哥特教堂 | 官方以 Bathory 命名该场景 |
+| `c447_11` Miriam · Original | 米莉娅姆的家 | 官方以 Miriam 命名该住宅 |
+| `c447_10` Miriam · Punishing | 米莉娅姆的领域 | 官方以 Miriam 命名该场景 |
+| `c363_02` Lupin · Vanguard | 怪盗 PHAN+IC 据点 | 官方剧情确认 Lupin 是该怪盗团成员 |
+
+来源见 [4 月 8 日背景更新](https://blog.destiny-child.jp/archives/28661359.html)、[5 月 20 日背景更新](https://blog.destiny-child.jp/archives/29135883.html)和 [PHAN+IC 剧情介绍](https://blog.destiny-child.jp/archives/24479607.html)。
+
+常规 `sync.py --all` 或单套 `--id` 安装会按 SHA-256 校验并补齐本地背景，共用的图片只下载一次。舞台按原比例显示竖版原图，横屏两侧使用同图的模糊延伸。背景缺失时仍可在默认舞台播放模型。

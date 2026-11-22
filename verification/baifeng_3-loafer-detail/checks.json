@@ -1,0 +1,60 @@
+{
+  "defaultCamera": [
+    720,
+    467,
+    0.144,
+    0.144
+  ],
+  "detailCamera": [
+    225,
+    -89.5,
+    0.43199999999999994,
+    0.43199999999999994
+  ],
+  "framebuffer": [
+    2880,
+    1868
+  ],
+  "pose": "2a8039b9c9fb5320d35a980337c41e041882bc03603dce7e466f2c83b9e6d38b",
+  "drawCalls": 398,
+  "drawSequence": "b1fe761881e8f9278987b456ee39b898a252ef3ea08ff4ccbb55474d063fb5bf",
+  "original": "e8a271d0aca64712dcad780f60fcceffd54736980880dafe6af9fa25d7fe02de",
+  "changedAtlasAlphaTexels": 0,
+  "changedOutsidePaintTiles": 0,
+  "changedAtlasRgbTexels": 43743,
+  "originalModelFilesVerified": 88,
+  "restoredOriginalFramesVerified": 2,
+  "fullFrameComparison": {
+    "structure": {
+      "changedPixels": 16061,
+      "changedOutsideFootCrop": 0,
+      "changedBounds": [
+        1663,
+        1269,
+        1878,
+        1421
+      ]
+    },
+    "final": {
+      "changedPixels": 8321,
+      "changedOutsideFootCrop": 0,
+      "changedBounds": [
+        1750,
+        1277,
+        1878,
+        1408
+      ]
+    }
+  },
+  "baselineSha256": {
+    "outfit_01_loafers.json": "d97dbeaf32c16a2301102915442396f697f921185b5f8c15e32bff0ac7a52732",
+    "outfit_01_loafers.png": "a20c947f2505ff9d6cfc2a724748015de91f3e50d66667790510f84dca50904e"
+  },
+  "changedAnkleOverlayTexels": 0,
+  "finalDetailBoundsLimit": [
+    1742,
+    1273,
+    1882,
+    1424
+  ]
+}

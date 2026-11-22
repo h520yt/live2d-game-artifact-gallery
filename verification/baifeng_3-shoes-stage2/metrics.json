@@ -1,0 +1,595 @@
+{
+  "defaultFramebufferRGB": {
+    "count": 81,
+    "maxRGBDifference": 1,
+    "totalPixels": 411600
+  },
+  "verifiedOriginalFiles": 88,
+  "browserSubmittedIsolatedSole": {
+    "63": {
+      "rig-before": {
+        "max": 1.6615,
+        "triangle": [
+          6,
+          11,
+          12
+        ],
+        "median": 1.09895,
+        "supports": [
+          [
+            9.182171821594238,
+            0.6864831447601318
+          ],
+          [
+            6.925331115722656,
+            -0.21731841564178467
+          ]
+        ],
+        "paintedTriangles": 32
+      },
+      "rig-after": {
+        "max": 1.18491,
+        "triangle": [
+          6,
+          11,
+          12
+        ],
+        "median": 1.03524,
+        "supports": [
+          [
+            9.182171821594238,
+            0.6864831447601318
+          ],
+          [
+            6.925331115722656,
+            -0.21731841564178467
+          ]
+        ],
+        "paintedTriangles": 32
+      }
+    },
+    "306": {
+      "rig-before": {
+        "max": 1.70758,
+        "triangle": [
+          6,
+          11,
+          12
+        ],
+        "median": 1.08948,
+        "supports": [
+          [
+            8.871671676635742,
+            5.666362285614014
+          ],
+          [
+            7.6768293380737305,
+            2.988330841064453
+          ]
+        ],
+        "paintedTriangles": 32
+      },
+      "rig-after": {
+        "max": 1.19454,
+        "triangle": [
+          6,
+          11,
+          12
+        ],
+        "median": 1.03676,
+        "supports": [
+          [
+            8.871671676635742,
+            5.666362285614014
+          ],
+          [
+            7.6768293380737305,
+            2.988330841064453
+          ]
+        ],
+        "paintedTriangles": 32
+      }
+    }
+  },
+  "sweepSoleSelectedFrames": {
+    "63": {
+      "Param71": 12.93286,
+      "oldMedian": 1.099,
+      "newMedian": 1.0352,
+      "oldMax": 1.6615,
+      "newMax": 1.1849,
+      "triangle6_11_12": [
+        1.6615,
+        1.1849
+      ],
+      "maxOffsetBySupportSpan": 0.04593
+    },
+    "64": {
+      "Param71": 14.11072,
+      "oldMedian": 1.0931,
+      "newMedian": 1.0332,
+      "oldMax": 1.4964,
+      "newMax": 1.1493,
+      "triangle6_11_12": [
+        1.4964,
+        1.1493
+      ],
+      "maxOffsetBySupportSpan": 0.03791
+    },
+    "65": {
+      "Param71": 15.28858,
+      "oldMedian": 1.078,
+      "newMedian": 1.0292,
+      "oldMax": 1.3606,
+      "newMax": 1.1156,
+      "triangle6_11_12": [
+        1.3606,
+        1.1156
+      ],
+      "maxOffsetBySupportSpan": 0.02987
+    },
+    "66": {
+      "Param71": 16.46643,
+      "oldMedian": 1.0569,
+      "newMedian": 1.0215,
+      "oldMax": 1.2468,
+      "newMax": 1.0838,
+      "triangle6_11_12": [
+        1.2468,
+        1.0838
+      ],
+      "maxOffsetBySupportSpan": 0.0218
+    },
+    "67": {
+      "Param71": 17.64429,
+      "oldMedian": 1.0419,
+      "newMedian": 1.0156,
+      "oldMax": 1.1642,
+      "newMax": 1.0546,
+      "triangle6_11_12": [
+        1.1502,
+        1.0536
+      ],
+      "maxOffsetBySupportSpan": 0.01427
+    },
+    "68": {
+      "Param71": 18.82214,
+      "oldMedian": 1.026,
+      "newMedian": 1.0103,
+      "oldMax": 1.1476,
+      "newMax": 1.0496,
+      "triangle6_11_12": [
+        1.0676,
+        1.0251
+      ],
+      "maxOffsetBySupportSpan": 0.01315
+    },
+    "69": {
+      "Param71": 20,
+      "oldMedian": 1.008,
+      "newMedian": 1.003,
+      "oldMax": 1.1161,
+      "newMax": 1.0396,
+      "triangle6_11_12": [
+        1.0081,
+        1.0032
+      ],
+      "maxOffsetBySupportSpan": 0.01065
+    },
+    "70": {
+      "Param71": 20,
+      "oldMedian": 1.0057,
+      "newMedian": 1.0022,
+      "oldMax": 1.0807,
+      "newMax": 1.0279,
+      "triangle6_11_12": [
+        1.0058,
+        1.0023
+      ],
+      "maxOffsetBySupportSpan": 0.00759
+    },
+    "71": {
+      "Param71": 20,
+      "oldMedian": 1.0034,
+      "newMedian": 1.0013,
+      "oldMax": 1.0471,
+      "newMax": 1.0166,
+      "triangle6_11_12": [
+        1.0035,
+        1.0014
+      ],
+      "maxOffsetBySupportSpan": 0.00454
+    },
+    "72": {
+      "Param71": 20,
+      "oldMedian": 1.0011,
+      "newMedian": 1.0004,
+      "oldMax": 1.0153,
+      "newMax": 1.0055,
+      "triangle6_11_12": [
+        1.0011,
+        1.0005
+      ],
+      "maxOffsetBySupportSpan": 0.00151
+    },
+    "73": {
+      "Param71": 20,
+      "oldMedian": 1.0011,
+      "newMedian": 1.0004,
+      "oldMax": 1.0151,
+      "newMax": 1.0054,
+      "triangle6_11_12": [
+        1.0011,
+        1.0005
+      ],
+      "maxOffsetBySupportSpan": 0.00151
+    },
+    "74": {
+      "Param71": 20,
+      "oldMedian": 1.0034,
+      "newMedian": 1.0013,
+      "oldMax": 1.0456,
+      "newMax": 1.0163,
+      "triangle6_11_12": [
+        1.0034,
+        1.0014
+      ],
+      "maxOffsetBySupportSpan": 0.00451
+    },
+    "75": {
+      "Param71": 20,
+      "oldMedian": 1.0057,
+      "newMedian": 1.0021,
+      "oldMax": 1.0763,
+      "newMax": 1.0272,
+      "triangle6_11_12": [
+        1.0057,
+        1.0023
+      ],
+      "maxOffsetBySupportSpan": 0.0075
+    },
+    "76": {
+      "Param71": 20,
+      "oldMedian": 1.0078,
+      "newMedian": 1.003,
+      "oldMax": 1.106,
+      "newMax": 1.0376,
+      "triangle6_11_12": [
+        1.0079,
+        1.0031
+      ],
+      "maxOffsetBySupportSpan": 0.01046
+    },
+    "77": {
+      "Param71": 18.8457,
+      "oldMedian": 1.0266,
+      "newMedian": 1.0085,
+      "oldMax": 1.1386,
+      "newMax": 1.0488,
+      "triangle6_11_12": [
+        1.076,
+        1.0286
+      ],
+      "maxOffsetBySupportSpan": 0.01402
+    },
+    "78": {
+      "Param71": 17.66784,
+      "oldMedian": 1.0455,
+      "newMedian": 1.0153,
+      "oldMax": 1.1733,
+      "newMax": 1.0605,
+      "triangle6_11_12": [
+        1.16,
+        1.0572
+      ],
+      "maxOffsetBySupportSpan": 0.01916
+    },
+    "79": {
+      "Param71": 16.48999,
+      "oldMedian": 1.0552,
+      "newMedian": 1.0219,
+      "oldMax": 1.2565,
+      "newMax": 1.0868,
+      "triangle6_11_12": [
+        1.2565,
+        1.0868
+      ],
+      "maxOffsetBySupportSpan": 0.02683
+    },
+    "80": {
+      "Param71": 15.31213,
+      "oldMedian": 1.0564,
+      "newMedian": 1.023,
+      "oldMax": 1.37,
+      "newMax": 1.1182,
+      "triangle6_11_12": [
+        1.37,
+        1.1182
+      ],
+      "maxOffsetBySupportSpan": 0.03462
+    },
+    "81": {
+      "Param71": 14.13428,
+      "oldMedian": 1.0562,
+      "newMedian": 1.0254,
+      "oldMax": 1.5056,
+      "newMax": 1.1513,
+      "triangle6_11_12": [
+        1.5056,
+        1.1513
+      ],
+      "maxOffsetBySupportSpan": 0.04243
+    },
+    "82": {
+      "Param71": 12.95642,
+      "oldMedian": 1.0646,
+      "newMedian": 1.0254,
+      "oldMax": 1.6698,
+      "newMax": 1.1864,
+      "triangle6_11_12": [
+        1.6698,
+        1.1864
+      ],
+      "maxOffsetBySupportSpan": 0.05023
+    },
+    "306": {
+      "Param71": 12.6183,
+      "oldMedian": 1.0895,
+      "newMedian": 1.0368,
+      "oldMax": 1.7076,
+      "newMax": 1.1945,
+      "triangle6_11_12": [
+        1.7076,
+        1.1945
+      ],
+      "maxOffsetBySupportSpan": 0.04903
+    },
+    "307": {
+      "Param71": 13.66982,
+      "oldMedian": 1.0766,
+      "newMedian": 1.0312,
+      "oldMax": 1.5528,
+      "newMax": 1.1624,
+      "triangle6_11_12": [
+        1.5528,
+        1.1624
+      ],
+      "maxOffsetBySupportSpan": 0.04207
+    },
+    "308": {
+      "Param71": 14.72135,
+      "oldMedian": 1.062,
+      "newMedian": 1.0257,
+      "oldMax": 1.4234,
+      "newMax": 1.132,
+      "triangle6_11_12": [
+        1.4234,
+        1.132
+      ],
+      "maxOffsetBySupportSpan": 0.03512
+    },
+    "309": {
+      "Param71": 15.77287,
+      "oldMedian": 1.0476,
+      "newMedian": 1.019,
+      "oldMax": 1.3136,
+      "newMax": 1.1031,
+      "triangle6_11_12": [
+        1.3136,
+        1.1031
+      ],
+      "maxOffsetBySupportSpan": 0.02818
+    },
+    "310": {
+      "Param71": 16.8244,
+      "oldMedian": 1.0332,
+      "newMedian": 1.0123,
+      "oldMax": 1.2192,
+      "newMax": 1.0756,
+      "triangle6_11_12": [
+        1.2192,
+        1.0756
+      ],
+      "maxOffsetBySupportSpan": 0.02126
+    },
+    "311": {
+      "Param71": 17.87592,
+      "oldMedian": 1.0175,
+      "newMedian": 1.0075,
+      "oldMax": 1.1373,
+      "newMax": 1.0495,
+      "triangle6_11_12": [
+        1.1373,
+        1.0495
+      ],
+      "maxOffsetBySupportSpan": 0.01436
+    },
+    "312": {
+      "Param71": 18.92744,
+      "oldMedian": 1.0089,
+      "newMedian": 1.0035,
+      "oldMax": 1.0655,
+      "newMax": 1.0246,
+      "triangle6_11_12": [
+        1.0655,
+        1.0246
+      ],
+      "maxOffsetBySupportSpan": 0.00748
+    },
+    "313": {
+      "Param71": 19.97897,
+      "oldMedian": 1.0018,
+      "newMedian": 1.0008,
+      "oldMax": 1.0244,
+      "newMax": 1.0088,
+      "triangle6_11_12": [
+        1.0026,
+        1.0011
+      ],
+      "maxOffsetBySupportSpan": 0.00243
+    },
+    "314": {
+      "Param71": 20,
+      "oldMedian": 1.0036,
+      "newMedian": 1.0014,
+      "oldMax": 1.0481,
+      "newMax": 1.0172,
+      "triangle6_11_12": [
+        1.0036,
+        1.0014
+      ],
+      "maxOffsetBySupportSpan": 0.00476
+    },
+    "315": {
+      "Param71": 20,
+      "oldMedian": 1.0054,
+      "newMedian": 1.002,
+      "oldMax": 1.0721,
+      "newMax": 1.0257,
+      "triangle6_11_12": [
+        1.0054,
+        1.0022
+      ],
+      "maxOffsetBySupportSpan": 0.00709
+    },
+    "316": {
+      "Param71": 20,
+      "oldMedian": 1.0071,
+      "newMedian": 1.0027,
+      "oldMax": 1.0962,
+      "newMax": 1.0342,
+      "triangle6_11_12": [
+        1.0072,
+        1.0029
+      ],
+      "maxOffsetBySupportSpan": 0.00942
+    },
+    "317": {
+      "Param71": 20,
+      "oldMedian": 1.0084,
+      "newMedian": 1.0035,
+      "oldMax": 1.1175,
+      "newMax": 1.0415,
+      "triangle6_11_12": [
+        1.0086,
+        1.0034
+      ],
+      "maxOffsetBySupportSpan": 0.01173
+    },
+    "318": {
+      "Param71": 20,
+      "oldMedian": 1.0098,
+      "newMedian": 1.0041,
+      "oldMax": 1.1396,
+      "newMax": 1.0491,
+      "triangle6_11_12": [
+        1.0099,
+        1.0039
+      ],
+      "maxOffsetBySupportSpan": 0.01412
+    },
+    "319": {
+      "Param71": 20,
+      "oldMedian": 1.0111,
+      "newMedian": 1.0047,
+      "oldMax": 1.1625,
+      "newMax": 1.0568,
+      "triangle6_11_12": [
+        1.0113,
+        1.0045
+      ],
+      "maxOffsetBySupportSpan": 0.01656
+    },
+    "320": {
+      "Param71": 20,
+      "oldMedian": 1.0102,
+      "newMedian": 1.0043,
+      "oldMax": 1.1458,
+      "newMax": 1.0511,
+      "triangle6_11_12": [
+        1.0103,
+        1.0041
+      ],
+      "maxOffsetBySupportSpan": 0.01478
+    },
+    "321": {
+      "Param71": 20,
+      "oldMedian": 1.0091,
+      "newMedian": 1.0038,
+      "oldMax": 1.1287,
+      "newMax": 1.0453,
+      "triangle6_11_12": [
+        1.0093,
+        1.0037
+      ],
+      "maxOffsetBySupportSpan": 0.01295
+    },
+    "322": {
+      "Param71": 18.30156,
+      "oldMedian": 1.0313,
+      "newMedian": 1.0111,
+      "oldMax": 1.1192,
+      "newMax": 1.0422,
+      "triangle6_11_12": [
+        1.1123,
+        1.0413
+      ],
+      "maxOffsetBySupportSpan": 0.0139
+    },
+    "323": {
+      "Param71": 16.60311,
+      "oldMedian": 1.0432,
+      "newMedian": 1.0172,
+      "oldMax": 1.245,
+      "newMax": 1.0834,
+      "triangle6_11_12": [
+        1.245,
+        1.0834
+      ],
+      "maxOffsetBySupportSpan": 0.02527
+    },
+    "324": {
+      "Param71": 14.90467,
+      "oldMedian": 1.0486,
+      "newMedian": 1.0202,
+      "oldMax": 1.4122,
+      "newMax": 1.129,
+      "triangle6_11_12": [
+        1.4122,
+        1.129
+      ],
+      "maxOffsetBySupportSpan": 0.03666
+    },
+    "325": {
+      "Param71": 13.20622,
+      "oldMedian": 1.0598,
+      "newMedian": 1.0238,
+      "oldMax": 1.6299,
+      "newMax": 1.1784,
+      "triangle6_11_12": [
+        1.6299,
+        1.1784
+      ],
+      "maxOffsetBySupportSpan": 0.04806
+    }
+  },
+  "dominantShapeSwitchBaseline": {
+    "touch_body": [
+      55,
+      63,
+      83,
+      91,
+      297,
+      306,
+      326,
+      336
+    ],
+    "touch_drag9": [
+      8,
+      16,
+      25,
+      312,
+      325
+    ]
+  }
+}

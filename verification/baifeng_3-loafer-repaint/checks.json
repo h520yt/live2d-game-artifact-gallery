@@ -1,0 +1,53 @@
+{
+  "defaultCamera": [
+    720,
+    467,
+    0.144,
+    0.144
+  ],
+  "detailCamera": [
+    225,
+    -89.5,
+    0.43199999999999994,
+    0.43199999999999994
+  ],
+  "framebuffer": [
+    2880,
+    1868
+  ],
+  "pose": "2a8039b9c9fb5320d35a980337c41e041882bc03603dce7e466f2c83b9e6d38b",
+  "drawCalls": 398,
+  "drawSequence": "b1fe761881e8f9278987b456ee39b898a252ef3ea08ff4ccbb55474d063fb5bf",
+  "original": "e8a271d0aca64712dcad780f60fcceffd54736980880dafe6af9fa25d7fe02de",
+  "changedAtlasAlphaTexels": 0,
+  "changedOutsidePaintTiles": 0,
+  "changedAtlasRgbTexels": 107629,
+  "originalModelFilesVerified": 88,
+  "restoredOriginalFramesVerified": 2,
+  "fullFrameComparison": {
+    "structure": {
+      "changedPixels": 16605,
+      "changedOutsideFootCrop": 0,
+      "changedBounds": [
+        1663,
+        1269,
+        1878,
+        1421
+      ]
+    },
+    "final": {
+      "changedPixels": 16591,
+      "changedOutsideFootCrop": 0,
+      "changedBounds": [
+        1663,
+        1269,
+        1878,
+        1421
+      ]
+    }
+  },
+  "baselineSha256": {
+    "outfit_01_repaint.json": "86b1b6e0531091cee3b3207f6aab5e39cd443ddfbdabacf411de154706e4536d",
+    "outfit_01_repaint.png": "2f1534ebbef9f8a28dfca0fa2ef2e6760d6ce1dfec6bd006592b5fa8af75437f"
+  }
+}

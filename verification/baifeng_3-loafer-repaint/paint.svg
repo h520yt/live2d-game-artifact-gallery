@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="290" viewBox="0 0 280 290">
+  <style>
+    .rubber { fill: url(#rubber); }
+    .front-quarter { fill: url(#frontQuarter); }
+    .rear-quarter { fill: url(#rearQuarter); }
+    .front-apron { fill: url(#frontApron); }
+    .rear-apron { fill: url(#rearApron); }
+    .front-saddle { fill: url(#frontSaddle); }
+    .rear-saddle { fill: url(#rearSaddle); }
+    .hardware { stroke: url(#silver); }
+    .structure .rubber { fill: #202329; }
+    .structure .front-quarter, .structure .rear-quarter { fill: #3b4049; }
+    .structure .front-apron, .structure .rear-apron { fill: #555c68; }
+    .structure .front-saddle, .structure .rear-saddle { fill: #303540; }
+    .structure .hardware { stroke: #a2a8b2; }
+    .structure .finish { display: none; }
+  </style>
+  <defs>
+    <linearGradient id="rubber" x2=".14" y2="1">
+      <stop stop-color="#25242a"/><stop offset=".55" stop-color="#18191e"/>
+      <stop offset=".83" stop-color="#101116"/><stop offset="1" stop-color="#090a0d"/>
+    </linearGradient>
+    <linearGradient id="frontQuarter" gradientUnits="userSpaceOnUse" x1="114" y1="179" x2="100" y2="224">
+      <stop stop-color="#07080c"/><stop offset=".24" stop-color="#1f232b"/>
+      <stop offset=".44" stop-color="#373c46"/><stop offset=".64" stop-color="#1d222b"/>
+      <stop offset=".85" stop-color="#111417"/><stop offset="1" stop-color="#08090c"/>
+    </linearGradient>
+    <linearGradient id="rearQuarter" gradientUnits="userSpaceOnUse" x1="112" y1="125" x2="91" y2="151">
+      <stop stop-color="#111318"/><stop offset=".3" stop-color="#292e39"/>
+      <stop offset=".66" stop-color="#181b23"/><stop offset="1" stop-color="#0b0c10"/>
+    </linearGradient>
+    <linearGradient id="frontApron" gradientUnits="userSpaceOnUse" x1="202" y1="187" x2="185" y2="244">
+      <stop stop-color="#090b11"/><stop offset=".31" stop-color="#20242d"/>
+      <stop offset=".53" stop-color="#363b46"/><stop offset=".72" stop-color="#161920"/>
+      <stop offset=".91" stop-color="#090b10"/><stop offset="1" stop-color="#13171d"/>
+    </linearGradient>
+    <linearGradient id="rearApron" gradientUnits="userSpaceOnUse" x1="200" y1="142" x2="168" y2="187">
+      <stop stop-color="#10131b"/><stop offset=".41" stop-color="#353a45"/>
+      <stop offset=".72" stop-color="#15181f"/><stop offset="1" stop-color="#0a0b10"/>
+    </linearGradient>
+    <linearGradient id="frontSaddle" gradientUnits="userSpaceOnUse" x1="129" y1="222" x2="164" y2="172">
+      <stop stop-color="#090b0f"/><stop offset=".22" stop-color="#242831"/>
+      <stop offset=".42" stop-color="#111419"/><stop offset=".66" stop-color="#414853"/>
+      <stop offset=".80" stop-color="#656e7a"/><stop offset=".91" stop-color="#242a32"/>
+      <stop offset="1" stop-color="#0c1016"/>
+    </linearGradient>
+    <linearGradient id="rearSaddle" gradientUnits="userSpaceOnUse" x1="136" y1="161" x2="163" y2="121">
+      <stop stop-color="#090b0f"/><stop offset=".29" stop-color="#292e39"/>
+      <stop offset=".53" stop-color="#171b22"/><stop offset=".76" stop-color="#57606e"/>
+      <stop offset="1" stop-color="#12161d"/>
+    </linearGradient>
+    <linearGradient id="silver" gradientUnits="userSpaceOnUse" x1="-5" y1="-6" x2="-2" y2="6">
+      <stop stop-color="#727d8b"/><stop offset=".18" stop-color="#fbfcfa"/>
+      <stop offset=".36" stop-color="#929eae"/><stop offset=".49" stop-color="#555d68"/>
+      <stop offset=".63" stop-color="#dbe3ec"/><stop offset=".78" stop-color="#a3abb7"/>
+      <stop offset="1" stop-color="#58616c"/>
+    </linearGradient>
+    <linearGradient id="frontReflection" gradientUnits="userSpaceOnUse" x1="166" y1="197" x2="223" y2="227">
+      <stop stop-color="#d8e1ee" stop-opacity="0"/>
+      <stop offset=".32" stop-color="#bfd0e8" stop-opacity=".62"/>
+      <stop offset=".65" stop-color="#f3f6ff" stop-opacity=".82"/>
+      <stop offset="1" stop-color="#d4dff4" stop-opacity=".12"/>
+    </linearGradient>
+    <linearGradient id="rearReflection" gradientUnits="userSpaceOnUse" x1="165" y1="139" x2="221" y2="185">
+      <stop stop-color="#bdc8dd" stop-opacity="0"/>
+      <stop offset=".42" stop-color="#ebf1fc" stop-opacity=".77"/>
+      <stop offset=".74" stop-color="#cad6e8" stop-opacity=".52"/>
+      <stop offset="1" stop-color="#c6d5e9" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="toeLight">
+      <stop stop-color="#fafaff" stop-opacity=".91"/><stop offset=".36" stop-color="#dbe1ec" stop-opacity=".60"/>
+      <stop offset="1" stop-color="#abbad1" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-.5" y="-.5" width="2" height="2"><feGaussianBlur stdDeviation="1.7"/></filter>
+    <filter id="edge-soft" x="-.6" y="-.6" width="2.2" height="2.2"><feGaussianBlur stdDeviation=".58"/></filter>
+
+    <path id="frontApronShape" d="M 149,166 C 161,175 176,182 193,191 C 216,201 236,209 244,218 Q 249,224 246,232 C 239,240 222,245 207,246 C 189,248 177,243 164,235 C 148,226 137,217 130,211 Q 141,200 148,188 Q 155,177 149,166 Z"/>
+    <path id="rearApronShape" d="M 150,109 C 164,124 179,135 194,142 C 216,151 232,167 236,182 Q 237,190 230,195 C 223,201 211,202 202,199 C 191,196 182,190 169,186 C 155,180 147,166 142,154 Q 138,146 145,137 Q 153,130 154,122 Q 156,117 150,109 Z"/>
+    <clipPath id="frontApronClip"><use href="#frontApronShape"/></clipPath>
+    <clipPath id="rearApronClip"><use href="#rearApronShape"/></clipPath>
+
+    <path id="frontLip" d="M 39,174 C 47,181 60,184 79,188 C 101,194 119,200 134,202 C 143,203 147,194 150,185 Q 154,176 149,166"/>
+    <path id="rearLip" d="M 34,82 C 42,94 65,106 87,116 C 108,125 124,134 136,136 C 147,137 153,130 154,122 Q 155,117 151,110"/>
+    <path id="frontSeam" d="M 146,219 C 161,232 178,243 196,245 C 213,248 235,239 243,232 Q 247,227 245,223"/>
+    <path id="rearSeam" d="M 152,169 C 163,184 175,186 189,193 C 202,201 219,203 231,193 Q 235,190 236,186"/>
+    <path id="frontWelt" d="M 33,205 C 42,217 62,219 83,224 C 107,229 129,242 152,248 C 176,256 188,257 206,253 C 228,249 245,239 249,229"/>
+    <path id="rearWelt" d="M 30,116 C 35,126 49,129 67,134 C 95,143 112,155 129,174 C 139,186 151,190 164,192 C 179,194 185,200 201,204 C 218,208 231,201 237,192"/>
+    <path id="frontBit" d="M -5.25,-4.15 Q -6.15,-5.42 -8.12,-5.47 L -12.56,-5.49 Q -15.62,-5.3 -16.36,-3.37 L -16.15,2.88 Q -15.58,5.13 -13.04,5.34 L -7.54,5.42 Q -5.26,5.08 -4.45,3.02 L -4.53,-2.57 Z M 5.3,-3.32 Q 6.06,-5.48 8.64,-5.58 L 13.5,-5.36 Q 16.31,-5.22 16.77,-3.12 L 16.61,2.94 Q 15.84,5.19 13.37,5.41 L 7.79,5.32 Q 5.57,5.04 4.86,3.03 L 4.83,-2.18 Z M -4.3,.12 C -1.69,-.78 1.85,-.84 4.92,-.14"/>
+    <path id="rearBit" d="M -4.62,-3.44 Q -5.56,-4.74 -7.47,-4.67 L -11.22,-4.7 Q -13.77,-4.52 -14.1,-2.79 L -13.91,2.1 Q -13.57,4.06 -11.26,4.37 L -6.91,4.49 Q -4.66,4.07 -4.05,2.44 L -4.08,-2.24 Z M 4.13,-2.92 Q 4.64,-4.61 7.27,-4.83 L 11.74,-4.72 Q 13.99,-4.38 14.23,-2.59 L 14.06,2.02 Q 13.55,3.95 11.42,4.22 L 6.99,4.37 Q 4.67,4.02 4.06,2.55 L 3.88,-1.71 Z M -4.2,-.06 Q -.19,-.76 4.02,-.28"/>
+  </defs>
+
+  <g id="fore-paint" clip-path="url(#frontClip)">
+    <rect class="rubber" x="27" y="160" width="230" height="111"/>
+    <path d="M 31,165 L 127,181 L 148,162 L 232,202 L 251,219 L 250,228 C 240,243 217,251 199,253 C 176,257 161,251 142,244 C 113,233 97,226 76,222 C 55,219 42,214 38,209 C 30,202 30,186 31,165 Z" class="front-quarter"/>
+    <path class="finish" d="M 40,183 C 60,188 76,191 98,198 C 120,205 132,211 142,220 C 124,216 110,209 91,204 C 72,199 56,195 41,193 Z" fill="#798995" opacity=".27" filter="url(#soft)"/>
+    <path class="finish" d="M 40,182 C 46,189 47,199 47,209 Q 44,206 41,201 Q 38,191 40,182 Z" fill="#8a96a4" opacity=".32" filter="url(#edge-soft)"/>
+    <path d="M 45,181 C 53,188 53,203 56,215" fill="none" stroke="#101218" stroke-width="2.05"/>
+    <path class="finish" d="M 46,182 C 54,188 54,202 57,214" fill="none" stroke="#5d6471" stroke-width=".75" stroke-dasharray="1 1.5"/>
+
+    <use href="#frontApronShape" fill="none" stroke="#0a0c12" stroke-width="2.3"/>
+    <use href="#frontApronShape" class="front-apron"/>
+    <g class="finish" clip-path="url(#frontApronClip)">
+      <path d="M 158,187 C 171,191 178,198 196,202 C 212,205 229,213 235,223 C 222,218 217,217 204,216 C 185,215 173,208 163,199 Z" fill="url(#frontReflection)" opacity=".63" filter="url(#soft)"/>
+      <path d="M 176,195 C 187,199 193,201 201,202 C 212,204 222,210 227,215 Q 216,212 209,212 C 197,212 188,205 176,195 Z" fill="url(#frontReflection)" opacity=".83" filter="url(#edge-soft)"/>
+      <ellipse cx="229" cy="230" rx="15.8" ry="7.5" transform="rotate(-24 229 230)" fill="url(#toeLight)" opacity=".88"/>
+      <path d="M 152,226 C 170,235 181,240 196,240 C 209,241 219,240 230,235" fill="none" stroke="#788598" stroke-width="2.5" opacity=".29" filter="url(#edge-soft)"/>
+    </g>
+    <use href="#frontSeam" fill="none" stroke="#080a0e" stroke-width="2.25"/>
+    <use href="#frontSeam" class="finish" fill="none" stroke="#68717f" stroke-width=".92" transform="translate(0 -.8)"/>
+    <use href="#frontSeam" class="finish" fill="none" stroke="#9b9fa9" stroke-width=".68" stroke-dasharray="1.08 1.52" transform="translate(0 -2.12)" opacity=".66"/>
+
+    <use href="#frontLip" fill="none" stroke="#06070b" stroke-width="6"/>
+    <use href="#frontLip" fill="none" stroke="#39373b" stroke-width="1.7" transform="translate(0 .9)"/>
+    <use href="#frontLip" class="finish" fill="none" stroke="#a6a4ad" stroke-width=".77" transform="translate(0 1.65)" opacity=".68"/>
+    <use href="#frontLip" class="finish" fill="none" stroke="#9694a0" stroke-width=".59" stroke-dasharray="1 1.45" transform="translate(0 3.1)" opacity=".49"/>
+
+    <path d="M 155,170 Q 162,173 171,179 Q 165,187 159,199 C 153,210 148,220 140,227 Q 132,226 124,221 C 134,211 140,202 144,193 Q 150,178 155,170 Z" class="front-saddle" stroke="#090b10" stroke-width="1.43"/>
+    <path d="M 155,173 Q 151,181 146,194 Q 139,210 128,221 M 168,179 C 163,186 159,196 155,203 Q 148,217 140,224" fill="none" stroke="#737a86" stroke-width=".75" opacity=".68"/>
+    <path class="finish" d="M 151.7,181.4 Q 155,179.8 159.5,183.5 L 157.5,187 Q 154.8,184.1 150.4,184.3 Z" fill="#edf0f8" opacity=".77" filter="url(#edge-soft)"/>
+
+    <g transform="matrix(.556 -.831 .831 .556 146.9 199.3)">
+      <path d="M -18,-4.8 Q -15,-5.8 -12,-4.4 L -9.4,-3.6 L -9.8,4.1 L -14,5 Q -16.5,5.2 -18,3.6 Z M 13.8,-4.9 L 18,-5 L 18.4,3.5 Q 17,5.4 13.7,4.8 L 11.1,4.4 L 11.3,-4 Z" fill="#11151b" stroke="#080a0e" stroke-width="1.05"/>
+      <path class="finish" d="M -17,-3.8 L -12.4,-3.3 M 13.6,-4 L 17.4,-4.0" fill="none" stroke="#6c7682" stroke-width=".68"/>
+      <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+        <use href="#frontBit" stroke="#07090d" stroke-width="3.65" transform="translate(.35 .72)"/>
+        <use href="#frontBit" class="hardware" stroke-width="2.3"/>
+        <path d="M -4.48,-2.28 L -4.41,2.18 M 4.79,-2.05 L 4.85,2.11 M -1.38,-.48 L 1.21,-.57" class="hardware" stroke-width="3.03"/>
+        <path class="finish" d="M -15.82,-3.95 L -14.65,-4.84 M -7.7,5.15 L -6.26,4.61 M 6.61,-4.96 L 7.95,-5.2 M 15.17,4.66 L 16.05,3.72" stroke="#e8eff6" stroke-width="1.12"/>
+        <path class="finish" d="M -2.7,-1.13 L -2.35,.73 M 2.54,-1.28 L 2.92,.55" stroke="#98a2af" stroke-width=".9"/>
+        <path class="finish" d="M -13.2,-5.13 Q -11.6,-5.75 -9.4,-5.37 M -15.86,-3.4 Q -16.7,-2.04 -16.33,.2 M -5.15,-3.1 Q -4.5,-1.85 -4.5,-.5 M -2.1,-.34 L 1.6,-.48 M 6.7,-5.08 Q 8.5,-5.74 10.1,-5.68 M 15.55,-3.83 Q 16.44,-3.14 16.44,-1.74 M 13.9,4.78 L 11.8,5.26" stroke="#f7f9fd" stroke-width=".86"/>
+        <path class="finish" d="M -12,5.28 L -9.8,5.26 M 5.6,3.65 L 6.5,4.58 M -2.8,.8 L -.4,.56" stroke="#4e5866" stroke-width=".72"/>
+      </g>
+    </g>
+
+    <g fill="none">
+      <use href="#frontWelt" stroke="#08090c" stroke-width="3.05"/>
+      <use href="#frontWelt" stroke="#54545e" stroke-width="1.15" transform="translate(0 1.52)"/>
+      <use href="#frontWelt" class="finish" stroke="#81848e" stroke-width=".63" stroke-dasharray="1.15 1.65" transform="translate(0 .38)" opacity=".76"/>
+      <path d="M 36,214 Q 45,225 73,228 L 76,226 M 156,254 C 183,263 215,260 240,245" stroke="#06070a" stroke-width="1.25"/>
+      <path class="finish" d="M 39,216 Q 52,224 70,226 M 174,257 Q 207,261 230,249" stroke="#595a63" stroke-width=".65" opacity=".63"/>
+    </g>
+  </g>
+
+  <g id="rear-paint" clip-path="url(#rearClip)">
+    <rect class="rubber" x="24" y="75" width="225" height="142"/>
+    <path d="M 27,75 L 77,98 L 128,118 L 146,101 L 178,123 L 224,149 L 244,177 L 240,188 C 234,201 216,205 202,204 C 187,202 176,194 164,192 C 148,190 140,185 132,175 C 114,154 102,148 86,141 C 64,132 47,130 36,123 C 25,117 28,93 27,75 Z" class="rear-quarter"/>
+    <path class="finish" d="M 35,94 C 50,112 68,114 90,125 C 116,137 129,151 145,175 C 127,160 111,144 89,135 C 67,125 45,118 34,107 Z" fill="#778897" opacity=".26" filter="url(#soft)"/>
+    <path d="M 38,92 C 42,101 41,114 46,125" fill="none" stroke="#0e1118" stroke-width="1.62"/>
+    <path class="finish" d="M 39,93 C 44,102 42,114 47,124" fill="none" stroke="#686e7c" stroke-width=".68" opacity=".68"/>
+
+    <use href="#rearApronShape" fill="none" stroke="#0a0c11" stroke-width="2.0"/>
+    <use href="#rearApronShape" class="rear-apron"/>
+    <g class="finish" clip-path="url(#rearApronClip)">
+      <path d="M 163,134 C 174,139 182,141 193,148 C 204,154 215,163 220,174 Q 207,169 201,163 C 189,153 175,151 163,134 Z" fill="url(#rearReflection)" opacity=".68" filter="url(#soft)"/>
+      <path d="M 174,140 C 182,143 186,144 193,149 Q 202,155 207,162 C 202,159 196,156 191,155 Q 181,150 174,140 Z" fill="url(#rearReflection)" opacity=".73" filter="url(#edge-soft)"/>
+      <ellipse cx="222.5" cy="184.5" rx="13" ry="6.7" transform="rotate(-28 222.5 184.5)" fill="url(#toeLight)" opacity=".69"/>
+      <path d="M 179,183 C 191,187 200,194 213,194 Q 224,194 232,185" fill="none" stroke="#708196" stroke-width="2.1" opacity=".29" filter="url(#edge-soft)"/>
+    </g>
+    <use href="#rearSeam" fill="none" stroke="#090b10" stroke-width="2.0"/>
+    <use href="#rearSeam" class="finish" fill="none" stroke="#636b7a" stroke-width=".8" transform="translate(0 -.79)"/>
+    <use href="#rearSeam" class="finish" fill="none" stroke="#929aa9" stroke-width=".62" stroke-dasharray=".94 1.33" transform="translate(0 -1.85)" opacity=".59"/>
+
+    <use href="#rearLip" fill="none" stroke="#08090d" stroke-width="5.1"/>
+    <use href="#rearLip" fill="none" stroke="#3d3a3e" stroke-width="1.38" transform="translate(0 .77)"/>
+    <use href="#rearLip" class="finish" fill="none" stroke="#aaa6af" stroke-width=".72" transform="translate(0 1.5)" opacity=".59"/>
+    <use href="#rearLip" class="finish" fill="none" stroke="#90939e" stroke-width=".53" stroke-dasharray=".93 1.32" transform="translate(0 2.65)" opacity=".47"/>
+
+    <path d="M 159,117 L 173,129 C 166,132 161,140 158,146 Q 153,155 146,163 Q 140,162 133,157 C 139,150 143,143 147,134 Q 153,122 159,117 Z" class="rear-saddle" stroke="#0a0c11" stroke-width="1.3"/>
+    <path d="M 159,119 Q 153,125 149,135 Q 144,148 136,157 M 170,128 Q 161,136 156,147 Q 151,156 146,160" fill="none" stroke="#737b89" stroke-width=".67" opacity=".64"/>
+    <path class="finish" d="M 156,124.5 L 161.1,126.3 L 158.7,130.8 Q 156.9,129.1 153.7,129 Z" fill="#e4ecfa" opacity=".61" filter="url(#edge-soft)"/>
+
+    <g transform="matrix(.514 -.857 .857 .514 151.4 141.5)">
+      <path d="M -15,-3.5 Q -12,-4.55 -8.7,-3.1 L -8.8,3.6 L -13,4.2 L -15.3,3 Z M 10,-3.6 Q 13.2,-4.7 15.8,-3.7 L 16,3.3 Q 13.4,4.3 10.7,3.8 Z" fill="#0d1117" stroke="#06090e" stroke-width="1"/>
+      <path class="finish" d="M -14,-3.25 L -10,-3.1 M 11.8,-3.4 L 14.8,-3.67" fill="none" stroke="#656f7d" stroke-width=".62"/>
+      <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+        <use href="#rearBit" stroke="#080a10" stroke-width="3.24" transform="translate(.3 .6)"/>
+        <use href="#rearBit" class="hardware" stroke-width="1.95"/>
+        <path d="M -4.02,-1.85 L -4.02,1.68 M 3.91,-1.72 L 4.01,1.64 M -1.18,-.43 L 1.0,-.53" class="hardware" stroke-width="2.55"/>
+        <path class="finish" d="M -2.22,-.82 L -1.95,.5 M 2.12,-.92 L 2.29,.41" stroke="#8a96a5" stroke-width=".75"/>
+        <path class="finish" d="M -12.1,-4.36 L -9.8,-4.75 M -13.87,-2.52 L -14,-.78 M -7.8,4.43 L -6.72,4.24 M -1.5,-.37 L 1.05,-.5 M 5.42,-4.48 L 7.72,-4.76 M 13.55,-3.23 L 14.06,-2 M 11.42,3.93 L 9.65,4.32" stroke="#f1f5fa" stroke-width=".74"/>
+      </g>
+    </g>
+
+    <g fill="none">
+      <use href="#rearWelt" stroke="#090a0f" stroke-width="2.72"/>
+      <use href="#rearWelt" stroke="#51535d" stroke-width=".99" transform="translate(0 1.4)"/>
+      <use href="#rearWelt" class="finish" stroke="#787d89" stroke-width=".58" stroke-dasharray="1 1.5" transform="translate(0 .39)" opacity=".69"/>
+      <path d="M 33,122 Q 43,130 56,132 M 191,203 Q 220,215 233,199" stroke="#06070a" stroke-width="1.08"/>
+      <path class="finish" d="M 36,124 Q 45,130 54,130 M 199,206 Q 218,210 230,201" stroke="#62636d" stroke-width=".61" opacity=".62"/>
+    </g>
+  </g>
+</svg>

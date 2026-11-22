@@ -1,0 +1,13 @@
+{
+  "models": {
+    "baifeng_3": [
+      {
+        "id": "outfit_01",
+        "name": "换装 01 · 黑丝皮鞋",
+        "enabled": true,
+        "file": "baifeng_3/outfit_01_final_repaint.json",
+        "backup": "baifeng_3/outfit_01_shell.json"
+      }
+    ]
+  }
+}

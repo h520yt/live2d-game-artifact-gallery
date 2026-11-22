@@ -284,7 +284,6 @@
     .toolbar .controls .search{flex:1;min-width:0}
     .grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--s3)}
     .card .thumb{aspect-ratio:4/5}
-    .motions{width:150px;top:var(--s2);right:var(--s2)}
   }
   @media(max-width:560px){
     header{gap:var(--s2)}
@@ -294,13 +293,17 @@
     .card .thumb{aspect-ratio:4/5}
   }
   /* 动作面板：右上角窄抽屉 + 紧凑网格，适合长动作列表 */
-  .motions{
+  .stage-controls{
     position:absolute;top:var(--s4);right:var(--s4);z-index:5;
+    display:flex;justify-content:flex-end;align-items:flex-start;gap:var(--s2);
+    pointer-events:none;
+  }
+  .motions{
     display:flex;flex-direction:column;align-items:flex-end;gap:var(--s2);
     pointer-events:none;
   }
   /* 折叠开关：显示动作数量，点击展开/收起 */
-  .motions .m-toggle{
+  .m-toggle{
     font-family:var(--mono);font-size:var(--fx2);letter-spacing:.08em;
     background:rgba(8,20,32,.86);border:1px solid var(--line-lit);color:var(--foam);
     padding:.5rem .9rem;border-radius:var(--r2);cursor:pointer;transition:.15s var(--ease);
@@ -309,7 +312,12 @@
     box-shadow:var(--sh2);
     pointer-events:auto;
   }
-  .motions .m-toggle:hover{border-color:var(--brass);color:var(--brass-lit)}
+  .m-toggle:hover,.m-toggle:focus-within{border-color:var(--brass);color:var(--brass-lit)}
+  .outfit-panel{pointer-events:auto;position:relative}
+  .outfit-panel[hidden]{display:none}
+  .outfit-panel select{font:inherit;color:var(--brass);background:#101e2b;border:0;border-radius:var(--r1)}
+  .outfit-status{position:absolute;top:100%;margin-top:var(--s2);right:0;padding:.4rem .6rem;
+    background:#101e2b;border-radius:var(--r1);color:var(--ivory);font-size:var(--fx2);white-space:nowrap}
   .motions .m-toggle .caret{transition:transform .2s;font-size:.66rem;opacity:.8}
   .motions.open .m-toggle{border-color:var(--brass);color:var(--brass-lit)}
   .motions.open .m-toggle .caret{transform:rotate(180deg)}
@@ -319,6 +327,7 @@
   }
   /* 展开的按钮网格：窄侧栏，两列 chip，可滚动 */
   .motions .m-list{
+    position:absolute;top:100%;right:0;margin-top:var(--s2);
     display:none;grid-template-columns:repeat(2,minmax(0,1fr));gap:.42rem;
     width:min(360px,calc(100vw - var(--page-x)*2));
     max-height:calc(100vh - var(--header-h) - var(--s4)*3 - 2.6rem);overflow-y:auto;
@@ -344,9 +353,13 @@
   .motions .mbtn:hover{border-color:var(--brass);color:var(--brass-lit);background:rgba(29,77,99,.95)}
   .motions .mbtn.on{background:var(--brass);color:var(--abyss);border-color:var(--brass);font-weight:600;box-shadow:var(--sh1)}
   @media(max-width:720px){
-    .motions{top:var(--s2);left:auto;right:var(--s2);bottom:auto;align-items:flex-end}
+    .stage-controls{top:var(--s2);right:var(--s2)}
     .motions .m-toggle{justify-content:center}
     .motions .m-list{width:min(320px,calc(100vw - var(--s2)*2));grid-template-columns:repeat(2,minmax(0,1fr));max-height:70vh}
+  }
+  @media(max-width:460px){
+    .stage-controls:has(.outfit-panel:not([hidden])){top:calc(var(--s4) + 3rem)}
+    .outfit-panel select{max-width:calc(100vw - 10.5rem);text-overflow:ellipsis}
   }
 
   /* Live2D 前景图层控制器：默认折叠，不遮挡角色舞台。 */
@@ -436,7 +449,13 @@
           <label for="l2d-variant-select">模型形态</label>
           <select id="l2d-variant-select" aria-label="切换同一皮肤的普通与 HX 模型"></select>
         </div>
-        <div class="motions" id="motion-panel"></div>
+        <div class="stage-controls">
+          <div class="motions" id="motion-panel"></div>
+          <div class="outfit-panel" id="outfit-panel" hidden>
+            <label class="m-toggle">换装 <select id="outfit-select"></select></label>
+            <small class="outfit-status" id="outfit-status" role="status" hidden></small>
+          </div>
+        </div>
         <div class="layer-tools" id="artmesh-tools" aria-label="Live2D 前景图层控制"></div>
         <div class="stage-hint">
           <b>拖拽</b> 平移 · <b>滚轮</b> 缩放 · <b>移动鼠标</b> 视线跟随<br>
@@ -508,6 +527,7 @@
 <script src="../../shared/vendor/live2dcubismcore.min.js"></script>
 <script src="../../shared/vendor/pixi.min.js"></script>
 <script src="../../shared/vendor/live2d.min.js"></script>
+<script src="../../shared/cubism_outfits.js"></script>
 <script src="artmesh_visibility.js"></script>
 <script src="scene_gallery.js"></script>
 <script src="../../shared/gallery_bridge.js"></script>
@@ -522,6 +542,14 @@ let stageToken = 0;           // 退出舞台时取消尚未执行的延迟模�
 let loadToken = 0;              // 递增令牌：只让最后一次点击的结果生效
 const modelCache = new Map();  // path -> Live2DModel，避免重复加载
 const CACHE_MAX = 12;          // 最多缓存模型数，超出销毁最旧的（防内存爆）
+const outfitsURL = new URL('../config/outfits/index.json', location.href);
+const shoeParams = new URLSearchParams(location.search);
+const shoeDebugModule = shoeParams.has('shoe_debug')
+  ? import('./shoe_debug.js').catch(error => console.warn('鞋履调试加载失败', error))
+  : null;
+let outfitDefinitions = {};
+let outfitController = null;
+let shoeDebug = null;
 const CARD_COLS_KEY = 'azurlane.cardColumns';
 const CARD_COL_OPTIONS = [
   ['auto', '自动列数'], ['3', '每行 3 个'], ['4', '每行 4 个'], ['5', '每行 5 个'],
@@ -546,8 +574,23 @@ function cacheModel(path, model){
   }
 }
 
+async function loadOutfitDefinitions(){
+  try {
+    const response = await fetch(outfitsURL);
+    if (!response.ok) throw new Error('HTTP ' + response.status);
+    return (await response.json()).models || {};
+  } catch (error) {
+    console.warn('换装配置加载失败', error);
+    return {};
+  }
+}
+
 async function boot(){
-  manifest = await (await fetch('manifest.json')).json();
+  [manifest, outfitDefinitions] = await Promise.all([
+    fetch('manifest.json').then(response => response.json()),
+    loadOutfitDefinitions(),
+  ]);
+  await shoeDebugModule;
   modelGroups = AzurModelVariants.groupModels(manifest.models);
   setupCardColumns();
   buildL2dGrid();
@@ -804,6 +847,7 @@ function exitStage(){
   document.getElementById('l2d-variant-tools').hidden = true;
   window.GalleryViewerBridge?.refresh();
   AzurArtmeshVisibility.clearPanel();
+  clearOutfitPanel();
   if(current){ app.stage.removeChild(current); current = null; }
   document.getElementById('l2d-stage-view').style.display = 'none';
   document.getElementById('l2d-grid-view').style.display = 'block';
@@ -848,6 +892,7 @@ async function selectShip(i){
 
   // 从舞台移除当前模型（缓存的不销毁，仅隐藏）
   AzurArtmeshVisibility.clearPanel();
+  clearOutfitPanel();
   if(current){ app.stage.removeChild(current); current = null; }
 
   // 命中缓存：瞬间显示
@@ -858,6 +903,7 @@ async function selectShip(i){
     app.stage.addChild(cached);
     layoutModel(cached);
     buildMotionPanel(cached);
+    buildOutfitPanel(cached, manifest.models[i].name);
     AzurArtmeshVisibility.mount(cached, manifest.models[i].name, 'artmesh-tools');
     loading.style.display = 'none';
     window.GalleryViewerBridge?.refresh();
@@ -898,9 +944,59 @@ async function selectShip(i){
   layoutModel(model);
   fixSolidMask(model);           // 变身皮肤纯色遮罩修复(仅异常模型触发)
   buildMotionPanel(model);
+  buildOutfitPanel(model, manifest.models[i].name);
   AzurArtmeshVisibility.mount(model, manifest.models[i].name, 'artmesh-tools');
   loading.style.display = 'none';
   window.GalleryViewerBridge?.refresh();
+}
+
+function clearOutfitPanel(){
+  shoeDebug?.hide();
+  shoeDebug = null;
+  outfitController?.select('original');
+  outfitController = null;
+  $('outfit-panel').hidden = true;
+  $('outfit-select').onchange = null;
+}
+
+function buildOutfitPanel(model, name){
+  let definitions = outfitDefinitions[name];
+  if (name === 'baifeng_3' && (shoeDebugModule || shoeParams.has('shoe_backup'))) {
+    definitions = definitions?.map(option => option.backup ? {...option, file: option.backup} : option);
+    if (shoeDebugModule && definitions?.[0]) {
+      shoeDebug = window.AzurShoeDebug?.attach(model, app.view, new URL(definitions[0].file, outfitsURL));
+    }
+  }
+  const controller = CubismOutfits.attach(model, definitions, outfitsURL);
+  if (!controller) return;
+  outfitController = controller;
+  const select = $('outfit-select');
+  const status = $('outfit-status');
+  const panel = $('outfit-panel');
+  let applied = 'original';
+  let latest = 0;
+  select.replaceChildren(new Option('原始装扮', applied),
+    ...controller.options.map(({id, name}) => new Option(name, id)));
+  select.value = applied;
+  status.hidden = true;
+  panel.hidden = false;
+  select.onchange = async () => {
+    const request = ++latest;
+    const id = select.value;
+    status.textContent = '换装加载中…';
+    status.hidden = id === 'original';
+    try {
+      if (await controller.select(id)) applied = id;
+      if (outfitController === controller && request === latest) await shoeDebug?.apply();
+      if (outfitController === controller && request === latest) status.hidden = true;
+    } catch (error) {
+      console.warn('换装资源加载失败', error);
+      if (outfitController !== controller || request !== latest) return;
+      select.value = applied;
+      status.textContent = '换装加载失败，可重试';
+      status.hidden = false;
+    }
+  };
 }
 
 // 动作面板：折叠开关 + 紧凑网格；按前缀分组（主要/IDLE/TOUCH/其他），点击播放

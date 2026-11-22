@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="290" viewBox="0 0 280 290">
+  <defs>
+    <linearGradient id="frontLeather" gradientUnits="userSpaceOnUse" x1="147" y1="174" x2="120" y2="236">
+      <stop stop-color="#201d26"/><stop offset=".23" stop-color="#3b3540"/>
+      <stop offset=".49" stop-color="#332e36"/><stop offset=".76" stop-color="#211e27"/>
+      <stop offset="1" stop-color="#130f17"/>
+    </linearGradient>
+    <linearGradient id="rearLeather" gradientUnits="userSpaceOnUse" x1="171" y1="140" x2="143" y2="179">
+      <stop stop-color="#383641"/><stop offset=".24" stop-color="#36323a"/>
+      <stop offset=".54" stop-color="#29262f"/><stop offset="1" stop-color="#151119"/>
+    </linearGradient>
+    <linearGradient id="frontVamp" gradientUnits="userSpaceOnUse" x1="197" y1="191" x2="179" y2="239">
+      <stop stop-color="#3f3d45"/><stop offset=".2" stop-color="#5a535e"/>
+      <stop offset=".45" stop-color="#443d49"/><stop offset=".76" stop-color="#26222c"/>
+      <stop offset="1" stop-color="#25202a"/>
+    </linearGradient>
+    <linearGradient id="rearVamp" gradientUnits="userSpaceOnUse" x1="186" y1="140" x2="167" y2="184">
+      <stop stop-color="#46434c"/><stop offset=".32" stop-color="#53505b"/>
+      <stop offset=".59" stop-color="#302b35"/><stop offset="1" stop-color="#221e27"/>
+    </linearGradient>
+    <linearGradient id="sole" x1="0" x2="0" y1="0" y2="1">
+      <stop stop-color="#231e23"/><stop offset=".65" stop-color="#191417"/><stop offset="1" stop-color="#100e13"/>
+    </linearGradient>
+    <linearGradient id="edge" x1="0" x2="1" y1="0" y2="0">
+      <stop stop-color="#76605d"/><stop offset=".24" stop-color="#56464c"/>
+      <stop offset=".64" stop-color="#63525a"/><stop offset="1" stop-color="#51484e"/>
+    </linearGradient>
+    <linearGradient id="strap" x1="0" x2="1" y1="0" y2="0">
+      <stop stop-color="#1a161e"/><stop offset=".32" stop-color="#3d3541"/>
+      <stop offset=".65" stop-color="#554b58"/><stop offset="1" stop-color="#302a34"/>
+    </linearGradient>
+    <linearGradient id="metal" x1=".15" x2=".8" y1="0" y2="1">
+      <stop stop-color="#a08369"/><stop offset=".29" stop-color="#dbc6a0"/>
+      <stop offset=".56" stop-color="#ad916e"/><stop offset=".8" stop-color="#7e604f"/>
+      <stop offset="1" stop-color="#b5997a"/>
+    </linearGradient>
+    <radialGradient id="glint">
+      <stop stop-color="#cec4d6" stop-opacity=".56"/><stop offset=".34" stop-color="#bdb8ce" stop-opacity=".34"/>
+      <stop offset="1" stop-color="#9894ad" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="bounce">
+      <stop stop-color="#b18f72" stop-opacity=".32"/><stop offset="1" stop-color="#af9a77" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="1.5"/></filter>
+    <filter id="fine"><feGaussianBlur stdDeviation=".65"/></filter>
+
+    <path id="frontOutline" d="M 40,174 Q 43,177 48,179 C 63,186 83,189 101,194 C 113,197 125,201 134,202 C 143,202 146,195 149,187 C 152,180 153,174 149,166 C 159,172 173,181 189,190 C 205,199 223,204 236,214 C 246,220 251,227 247,236 C 242,247 226,253 211,257 C 195,262 179,261 162,257 C 132,250 109,236 88,231 Q 80,229 75,229 L 74,232 Q 56,229 44,224 C 35,221 32,215 33,208 C 34,194 37,182 40,174 Z"/>
+    <path id="rearOutline" d="M 34,81 C 43,94 65,105 87,115 C 105,123 122,133 135,135 C 146,137 153,131 154,122 C 155,118 153,114 150,109 C 160,120 176,132 190,141 C 207,149 220,156 230,170 C 238,180 241,191 235,199 C 227,208 211,210 196,207 C 181,205 177,198 164,196 C 148,194 138,189 130,180 C 113,161 105,151 88,144 C 72,138 65,134 57,132 L 56,135 Q 42,133 36,128 C 28,122 28,111 31,99 Z"/>
+    <clipPath id="frontClip"><use href="#frontOutline"/></clipPath>
+    <clipPath id="rearClip"><use href="#rearOutline"/></clipPath>
+  </defs>
+
+  <g id="fore-paint" clip-path="url(#frontClip)">
+    <rect x="27" y="160" width="230" height="111" fill="url(#sole)"/>
+    <path d="M 30,165 L 65,169 L 132,180 L 145,161 L 166,168 L 235,202 L 257,220 L 250,226 C 239,244 215,250 196,253 C 174,255 158,250 140,243 C 113,232 95,225 75,221 C 55,218 44,214 39,209 C 30,201 31,186 30,165 Z" fill="url(#frontLeather)"/>
+    <path d="M 149,166 C 158,173 176,182 195,191 C 217,202 238,208 246,220 Q 251,225 247,233 C 234,239 217,242 203,241 C 178,239 166,223 147,213 C 140,209 136,206 133,203 C 144,201 147,193 150,184 Q 154,175 149,166 Z" fill="url(#frontVamp)"/>
+    <ellipse cx="197" cy="212" rx="42" ry="10" transform="rotate(21 197 212)" fill="url(#glint)"/>
+    <ellipse cx="212" cy="219" rx="28" ry="8" transform="rotate(19 212 219)" fill="url(#glint)" opacity=".4"/>
+    <path d="M 164,187 C 184,199 201,198 217,209 C 224,212 231,217 232,220 C 223,216 214,213 202,210 C 184,205 176,198 164,187 Z" fill="#b7aeba" opacity=".32" filter="url(#soft)"/>
+    <path d="M 164,184 C 178,193 192,197 205,202" fill="none" stroke="#c3aeb8" stroke-width="1.2" stroke-linecap="round" opacity=".25" filter="url(#fine)"/>
+    <ellipse cx="69" cy="193" rx="27" ry="11" transform="rotate(18 69 193)" fill="url(#bounce)"/>
+    <ellipse cx="235" cy="235" rx="25" ry="7" transform="rotate(-24 235 235)" fill="url(#bounce)"/>
+    <path d="M 40,173 C 46,180 58,181 79,187 C 99,192 119,200 134,202 C 143,202 147,194 150,185 Q 154,173 148,166" fill="none" stroke="#140f18" stroke-width="4.6"/>
+    <path d="M 40,176 C 49,182 57,184 79,189 C 98,194 120,202 134,204 C 144,204 149,195 152,185" fill="none" stroke="#8b727d" stroke-opacity=".74" stroke-width="1.2"/>
+    <path d="M 46,181 C 53,189 51,204 55,214 M 48,182 C 58,190 55,204 59,215" fill="none" stroke="#94808a" stroke-opacity=".29" stroke-width=".75"/>
+    <path d="M 140,196 C 148,203 157,207 162,209 C 151,217 148,225 145,232 C 137,232 129,229 124,225 C 124,216 131,206 140,196 Z" fill="#1d1721" opacity=".8" filter="url(#fine)"/>
+    <path d="M 154,171 Q 162,175 169,180 C 162,185 159,194 155,201 C 151,211 145,220 139,226 Q 131,225 125,220 C 133,211 139,204 144,193 Q 150,180 154,171 Z" fill="url(#strap)" stroke="#1b151e" stroke-width="1.1"/>
+    <path d="M 155,173 C 151,179 149,187 146,193 Q 140,208 129,220 M 166,180 Q 159,189 155,199 Q 147,215 139,224" fill="none" stroke="#967986" stroke-width=".75" stroke-opacity=".69"/>
+    <path d="M 132,207 L 139,199 Q 140,197 142,198 L 149,202 Q 151,203 149,206 L 142,215 Q 140,216 138,215 L 132,212 Q 130,210 132,207 Z M 134,208 L 140,201 Q 141,200 142,201 L 147,204 L 140,213 L 134,210 Q 133,210 134,208 Z" fill="url(#metal)" fill-rule="evenodd" stroke="#593f3c" stroke-width=".55"/>
+    <path d="M 136,205 L 142,208 M 141,199 L 145,201" stroke="#dfc49e" stroke-width="1.05" stroke-linecap="round" opacity=".84"/>
+    <path d="M 36,206 C 43,217 63,218 83,223 C 107,228 127,240 151,247 C 169,253 180,255 196,254 C 220,252 240,241 247,230" fill="none" stroke="#150f17" stroke-width="2.5"/>
+    <path d="M 36,208 C 44,218 63,220 83,225 C 108,231 130,242 151,249 C 169,255 182,257 196,256 C 220,254 242,243 248,231" fill="none" stroke="url(#edge)" stroke-width="1.45"/>
+    <path d="M 46,222 Q 56,226 73,228 M 181,259 Q 206,260 223,252" fill="none" stroke="#6d5653" stroke-width=".85" opacity=".65"/>
+    <path d="M 153,235 C 171,244 181,247 196,247 Q 224,245 238,235" fill="none" stroke="#a09198" stroke-width=".75" stroke-dasharray="1.2 1.35" opacity=".37"/>
+  </g>
+
+  <g id="rear-paint" clip-path="url(#rearClip)">
+    <rect x="24" y="75" width="225" height="142" fill="url(#sole)"/>
+    <path d="M 27,75 L 77,99 L 132,117 L 146,100 L 177,123 L 225,150 L 245,177 L 238,190 C 231,200 217,205 203,203 C 188,202 179,193 164,191 C 147,189 140,185 132,175 C 115,154 105,148 87,141 C 64,132 47,130 36,123 C 26,117 28,93 27,75 Z" fill="url(#rearLeather)"/>
+    <path d="M 150,109 C 168,128 181,135 196,143 C 218,151 234,172 237,181 C 235,191 221,197 208,197 C 194,196 184,189 173,184 C 160,177 151,157 139,148 L 132,136 C 145,139 152,132 154,122 Q 155,117 150,109 Z" fill="url(#rearVamp)"/>
+    <ellipse cx="193" cy="160" rx="35" ry="7" transform="rotate(35 193 160)" fill="url(#glint)" opacity=".76"/>
+    <ellipse cx="220" cy="188" rx="18" ry="7" transform="rotate(-18 220 188)" fill="url(#bounce)"/>
+    <path d="M 172,136 C 182,143 191,144 200,152 C 206,157 212,161 215,165 C 203,160 198,154 191,151 C 183,147 177,144 172,136 Z" fill="#b7aebd" opacity=".3" filter="url(#soft)"/>
+    <path d="M 34,80 C 43,94 65,106 89,116 C 110,125 126,134 136,135 C 147,136 153,130 154,122 Q 155,116 150,109" fill="none" stroke="#171019" stroke-width="4"/>
+    <path d="M 34,83 C 42,96 65,108 88,118 C 110,128 125,136 136,137 C 146,138 154,132 156,124" fill="none" stroke="#86727f" stroke-width="1.05" opacity=".69"/>
+    <path d="M 158,117 L 171,128 C 166,130 163,135 159,141 C 155,148 151,156 147,162 Q 139,161 134,156 C 139,151 143,142 147,135 C 150,129 154,121 158,117 Z" fill="url(#strap)" stroke="#1c1620" stroke-width="1.0"/>
+    <path d="M 158,119 Q 153,123 148,135 Q 142,149 136,156 M 169,128 C 161,134 159,142 154,150" fill="none" stroke="#ab8b95" stroke-width=".68" opacity=".58"/>
+    <path d="M 140,146 L 146,137 Q 147,136 149,137 L 155,141 Q 157,142 155,144 L 150,153 Q 148,155 146,153 L 141,151 Q 138,149 140,146 Z M 142,147 L 147,139 L 153,143 L 148,152 L 142,149 Q 141,148 142,147 Z" fill="url(#metal)" fill-rule="evenodd" stroke="#563e3b" stroke-width=".5"/>
+    <path d="M 144,143 L 149,147" stroke="#d7bc96" stroke-width=".9" stroke-linecap="round" opacity=".8"/>
+    <path d="M 31,116 C 37,127 49,128 66,133 C 90,140 109,151 129,175 C 139,186 150,190 163,191 C 179,192 186,200 201,203 C 215,206 230,200 237,191" fill="none" stroke="#170f18" stroke-width="2.3"/>
+    <path d="M 32,119 C 39,128 50,130 67,135 C 89,142 107,151 127,175 C 138,187 147,191 163,193 C 180,195 186,202 201,205 C 215,208 230,202 237,193" fill="none" stroke="url(#edge)" stroke-width="1.25"/>
+    <path d="M 174,185 C 188,190 194,199 208,199 Q 222,199 229,191" fill="none" stroke="#8e7e88" stroke-width=".65" stroke-dasharray="1 1.2" opacity=".4"/>
+  </g>
+
+  <path id="fore-keep" fill="white" d="M 40,174 L 31,164 V 0 H 280 V 168 H 149 C 159,172 173,181 189,190 C 205,199 223,204 236,214 C 246,220 251,227 247,236 C 242,247 226,253 211,257 C 195,262 179,261 162,257 C 132,250 109,236 88,231 Q 80,229 75,229 L 74,232 Q 56,229 44,224 C 35,221 32,215 33,208 C 34,194 37,182 40,174 Z"/>
+  <path id="rear-keep" fill="white" d="M 34,81 L 24,0 H 280 V 109 H 150 C 160,120 176,132 190,141 C 207,149 220,156 230,170 C 238,180 241,191 235,199 C 227,208 211,210 196,207 C 181,205 177,198 164,196 C 148,194 138,189 130,180 C 113,161 105,151 88,144 C 72,138 65,134 57,132 L 56,135 Q 42,133 36,128 C 28,122 28,111 31,99 Z"/>
+</svg>

@@ -1,0 +1,47 @@
+{
+  "units": "reference atlas texels",
+  "views": {
+    "ArtMesh13": {
+      "boundaryBefore": [
+        38,
+        92,
+        352,
+        233
+      ],
+      "boundaryAfter": [
+        38,
+        92,
+        352,
+        233
+      ],
+      "maxUpperRidgeRise": 9,
+      "xAtMax": 244,
+      "oldYAtMax": 140,
+      "newYAtMax": 131,
+      "controlPointCount": 35,
+      "changedCoverageTexels": 8
+    },
+    "ArtMesh18": {
+      "boundaryBefore": [
+        57,
+        66,
+        323,
+        231
+      ],
+      "boundaryAfter": [
+        57,
+        63,
+        323,
+        231
+      ],
+      "maxUpperRidgeRise": 7,
+      "xAtMax": 256,
+      "oldYAtMax": 151,
+      "newYAtMax": 144,
+      "controlPointCount": 35,
+      "changedCoverageTexels": 407
+    }
+  },
+  "verifiedOriginalModelFiles": 88,
+  "toeHeelSoleBuckleAndOtherViewsByteIdentical": true
+}

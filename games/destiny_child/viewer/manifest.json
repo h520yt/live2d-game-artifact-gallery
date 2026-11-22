@@ -170,6 +170,9 @@
       "roles": {
         "model": [
           "../data/c294_02/model.json"
+        ],
+        "background": [
+          "../data/backgrounds/bathory_universe.png"
         ]
       },
       "preview": "../data/c294_02/icon.png",
@@ -182,12 +185,23 @@
         "../data/c294_02/texture_00.png"
       ],
       "optional_files": [
-        "../data/c294_02/icon.png"
+        "../data/c294_02/icon.png",
+        "../data/backgrounds/bathory_universe.png"
       ],
       "metadata": {
         "character": "Bathory",
         "skin": "Bloody",
-        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c294_02/icon.png"
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c294_02/icon.png",
+        "background": {
+          "label": "巴托里领域 · 哥特教堂",
+          "url": "https://livedoor.blogimg.jp/destinychild/imgs/9/2/92b2a2ae.png",
+          "reference": "https://blog.destiny-child.jp/archives/28661359.html",
+          "sha256": "f6d275141ec5f4c69f1645e7548891f7f4838d5bcfda414056b3dafa2b52b721",
+          "size": [
+            640,
+            1024
+          ]
+        }
       }
     },
     {
@@ -197,6 +211,9 @@
       "roles": {
         "model": [
           "../data/c394_02/model.json"
+        ],
+        "background": [
+          "../data/backgrounds/bathory_universe.png"
         ]
       },
       "preview": "../data/c394_02/icon.png",
@@ -209,12 +226,23 @@
         "../data/c394_02/texture_00.png"
       ],
       "optional_files": [
-        "../data/c394_02/icon.png"
+        "../data/c394_02/icon.png",
+        "../data/backgrounds/bathory_universe.png"
       ],
       "metadata": {
         "character": "Bathory",
         "skin": "Supreme Courtesan",
-        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c394_02/icon.png"
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c394_02/icon.png",
+        "background": {
+          "label": "巴托里领域 · 哥特教堂",
+          "url": "https://livedoor.blogimg.jp/destinychild/imgs/9/2/92b2a2ae.png",
+          "reference": "https://blog.destiny-child.jp/archives/28661359.html",
+          "sha256": "f6d275141ec5f4c69f1645e7548891f7f4838d5bcfda414056b3dafa2b52b721",
+          "size": [
+            640,
+            1024
+          ]
+        }
       }
     },
     {
@@ -494,6 +522,9 @@
       "roles": {
         "model": [
           "../data/c363_02/model.json"
+        ],
+        "background": [
+          "../data/backgrounds/phan_ic_hideout.png"
         ]
       },
       "preview": "../data/c363_02/icon.png",
@@ -506,12 +537,23 @@
         "../data/c363_02/texture_00.png"
       ],
       "optional_files": [
-        "../data/c363_02/icon.png"
+        "../data/c363_02/icon.png",
+        "../data/backgrounds/phan_ic_hideout.png"
       ],
       "metadata": {
         "character": "Lupin",
         "skin": "Vanguard",
-        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c363_02/icon.png"
+        "thumbnail_url": "https://raw.githubusercontent.com/Pelom777/DestinyChildLive2D/63e43d034512946c5eb308754f18a1865382bdf6/assets/live2d/c363_02/icon.png",
+        "background": {
+          "label": "怪盗 PHAN+IC 据点",
+          "url": "https://livedoor.blogimg.jp/destinychild/imgs/9/e/9e1de001.png",
+          "reference": "https://blog.destiny-child.jp/archives/29135883.html",
+          "sha256": "c7a6fcf58b07b1bccc0b50a392ea6338263c9aeac9411c863bbca305579927e8",
+          "size": [
+            640,
+            1024
+          ]
+        }
       }
     },
     {
@@ -548,6 +590,9 @@
       "roles": {
         "model": [
           "../data/c447_11/model.json"
+        ],
+        "background": [
+          "../data/backgrounds/miriam_home.png"
         ]
       },
       "preview": "../data/c447_11/icon.png",
@@ -567,7 +612,8 @@
         "../data/c447_11/texture_00.png"
       ],
       "optional_files": [
-        "../data/c447_11/icon.png"
+        "../data/c447_11/icon.png",
+        "../data/backgrounds/miriam_home.png"
       ],
       "metadata": {
         "character": "Miriam",
@@ -594,6 +640,16 @@
           "model.moc": "148119ea7143f259399ad1bee46f01a84b490b43d636f205516edb8e7b0395b6",
           "serious.exp.json": "ad2f65914fe3301db0b2805ff299cec26bb7154b11cee0af25a2a8dbdf3399a0",
           "texture_00.png": "9b577e9574e7177263b0fab9ca84e3d611af9200525e0bac8c50f30ccaf8330f"
+        },
+        "background": {
+          "label": "米莉娅姆的家",
+          "url": "https://livedoor.blogimg.jp/destinychild/imgs/5/8/58922d3e.png",
+          "reference": "https://blog.destiny-child.jp/archives/29135883.html",
+          "sha256": "bb5d4b6864bf0233f5e54d7ea7a140bb19a70d37caff543e6ecf9d3b38fe5e89",
+          "size": [
+            640,
+            1024
+          ]
         }
       }
     },
@@ -1211,6 +1267,9 @@
       "roles": {
         "model": [
           "../data/c447_10/model.json"
+        ],
+        "background": [
+          "../data/backgrounds/miriam_cosmo_field.png"
         ]
       },
       "preview": "../data/c447_10/icon.png",
@@ -1228,7 +1287,8 @@
         "../data/c447_10/texture_00.png"
       ],
       "optional_files": [
-        "../data/c447_10/icon.png"
+        "../data/c447_10/icon.png",
+        "../data/backgrounds/miriam_cosmo_field.png"
       ],
       "metadata": {
         "character": "Miriam",
@@ -1253,6 +1313,16 @@
           "icon.png": "d6eb38f7876860d238a0c5d955c1ed696e92d1aaa030ad4c34e656f7271008ac",
           "model.moc": "fc8fc6a6093fe90699d8dd0d8f2b578c8eaefe21f65b220651e6cf9ecf4bd068",
           "texture_00.png": "1e758797bbf557c5ef3d85211da75587ea4d8ce8fdf8664a56a2f4b3d6728d97"
+        },
+        "background": {
+          "label": "米莉娅姆的领域",
+          "url": "https://livedoor.blogimg.jp/destinychild/imgs/d/9/d9cd7d5a.png",
+          "reference": "https://blog.destiny-child.jp/archives/28661359.html",
+          "sha256": "c74b782c7fc7f71deb64068ada57dff12eb638de9b33b6733b6a9630794f6959",
+          "size": [
+            640,
+            1024
+          ]
         }
       }
     },

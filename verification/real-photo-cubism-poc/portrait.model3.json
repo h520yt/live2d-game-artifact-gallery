@@ -1,0 +1,19 @@
+{
+  "Version": 3,
+  "FileReferences": {
+    "Moc": "portrait.moc3",
+    "Textures": [
+      "portrait-texture.png"
+    ]
+  },
+  "Groups": [
+    {
+      "Target": "Parameter",
+      "Name": "EyeBlink",
+      "Ids": [
+        "ParamEyeLOpen",
+        "ParamEyeROpen"
+      ]
+    }
+  ]
+}

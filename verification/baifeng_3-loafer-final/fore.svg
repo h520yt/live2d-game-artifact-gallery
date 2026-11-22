@@ -1,0 +1,162 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290">
+  <style>
+    .quarter { fill: url(#quarter); } .apron { fill: url(#apron); }
+    .roll { fill: url(#roll); } .rubber { fill: url(#rubber); }
+    .tongue { fill: url(#tongue); } .band { fill: url(#band); }
+    .near-metal { stroke: url(#nearMetal); } .far-metal { stroke: url(#farMetal); }
+    .connector { fill: url(#linkMetal); }
+    .structure .quarter { fill: #353840; } .structure .apron { fill: #565c67; }
+    .structure .roll { fill: #41444e; } .structure .rubber { fill: #24262e; }
+    .structure .tongue { fill: #454955; } .structure .band { fill: #313540; }
+    .structure .near-metal, .structure .far-metal { stroke: #aeb2bc; }
+    .structure .connector { fill: #a9a2ab; }
+    .structure .finish { display: none; }
+  </style>
+  <defs>
+    <linearGradient id="quarter" gradientUnits="userSpaceOnUse" x1="114" y1="188" x2="104" y2="231">
+      <stop stop-color="#1c1b20"/><stop offset=".34" stop-color="#0a0b10"/>
+      <stop offset=".57" stop-color="#08090d"/><stop offset=".83" stop-color="#211c1d"/><stop offset="1" stop-color="#151317"/>
+    </linearGradient>
+    <linearGradient id="apron" gradientUnits="userSpaceOnUse" x1="209" y1="188" x2="192" y2="245">
+      <stop stop-color="#08080b"/><stop offset=".23" stop-color="#1b1516"/>
+      <stop offset=".46" stop-color="#090911"/><stop offset=".67" stop-color="#242537"/>
+      <stop offset=".88" stop-color="#181822"/><stop offset="1" stop-color="#0c0b0e"/>
+    </linearGradient>
+    <linearGradient id="roll" gradientUnits="userSpaceOnUse" x1="203" y1="216" x2="187" y2="250">
+      <stop stop-color="#100f15"/><stop offset=".42" stop-color="#09090d"/>
+      <stop offset=".69" stop-color="#25242c"/><stop offset=".81" stop-color="#0b0a0d"/><stop offset="1" stop-color="#151417"/>
+    </linearGradient>
+    <linearGradient id="rubber" gradientUnits="userSpaceOnUse" x1="132" y1="222" x2="125" y2="251">
+      <stop stop-color="#16161b"/><stop offset=".45" stop-color="#25242e"/>
+      <stop offset=".84" stop-color="#1e1d23"/><stop offset="1" stop-color="#101015"/>
+    </linearGradient>
+    <linearGradient id="rollFade" gradientUnits="userSpaceOnUse" x1="112" y1="0" x2="169" y2="0">
+      <stop stop-color="white" stop-opacity="0"/><stop offset="1" stop-color="white"/>
+    </linearGradient>
+    <mask id="rollBlend"><rect x="108" y="202" width="150" height="61" fill="url(#rollFade)"/></mask>
+    <linearGradient id="tongue" gradientUnits="userSpaceOnUse" x1="151" y1="174" x2="137" y2="203">
+      <stop stop-color="#1f202a"/><stop offset=".23" stop-color="#2f3443"/>
+      <stop offset=".45" stop-color="#13151d"/><stop offset=".8" stop-color="#08090c"/><stop offset="1" stop-color="#1c1a20"/>
+    </linearGradient>
+    <linearGradient id="band" gradientUnits="userSpaceOnUse" x1="166" y1="182" x2="135" y2="220">
+      <stop stop-color="#161416"/><stop offset=".28" stop-color="#323544"/><stop offset=".47" stop-color="#161820"/>
+      <stop offset=".70" stop-color="#0c0c10"/><stop offset="1" stop-color="#17151a"/>
+    </linearGradient>
+    <linearGradient id="mainShine" gradientUnits="userSpaceOnUse" x1="179" y1="203" x2="240" y2="236">
+      <stop stop-color="#a9a8d0" stop-opacity="0"/><stop offset=".33" stop-color="#a6b4d9" stop-opacity=".42"/>
+      <stop offset=".61" stop-color="#e0e7ff" stop-opacity=".83"/><stop offset=".78" stop-color="#f9f8ff"/>
+      <stop offset=".94" stop-color="#cfd5e9" stop-opacity=".78"/><stop offset="1" stop-color="#b4b6ca" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="farRim" gradientUnits="userSpaceOnUse" x1="174" y1="188" x2="244" y2="226">
+      <stop stop-color="#e5bea9" stop-opacity=".06"/><stop offset=".61" stop-color="#dcbdb1" stop-opacity=".68"/>
+      <stop offset="1" stop-color="#a9867d" stop-opacity=".06"/>
+    </linearGradient>
+    <linearGradient id="nearMetal" gradientUnits="userSpaceOnUse" x1="141" y1="198" x2="153" y2="209">
+      <stop stop-color="#41434c"/><stop offset=".17" stop-color="#fbf4e9"/>
+      <stop offset=".31" stop-color="#9c97a0"/><stop offset=".49" stop-color="#5d5a61"/>
+      <stop offset=".74" stop-color="#cecbd1"/><stop offset=".87" stop-color="#fff8e7"/><stop offset="1" stop-color="#6e6969"/>
+    </linearGradient>
+    <linearGradient id="farMetal" gradientUnits="userSpaceOnUse" x1="164" y1="181" x2="174" y2="194">
+      <stop stop-color="#59555b"/><stop offset=".22" stop-color="#fbf2dc"/>
+      <stop offset=".34" stop-color="#b5adb0"/><stop offset=".52" stop-color="#5e5a62"/>
+      <stop offset=".79" stop-color="#eee5db"/><stop offset="1" stop-color="#8e8180"/>
+    </linearGradient>
+    <linearGradient id="linkMetal" gradientUnits="userSpaceOnUse" x1="157.1" y1="193.3" x2="160.2" y2="197">
+      <stop stop-color="#7c7377"/><stop offset=".27" stop-color="#e8dede"/>
+      <stop offset=".46" stop-color="#eee7e3"/><stop offset=".74" stop-color="#918998"/><stop offset="1" stop-color="#534c53"/>
+    </linearGradient>
+    <filter id="glow" x="-.45" y="-.55" width="1.9" height="2.1"><feGaussianBlur stdDeviation="2.25"/></filter>
+    <filter id="soft" x="-.45" y="-.55" width="1.9" height="2.1"><feGaussianBlur stdDeviation=".7"/></filter>
+    <path id="apronEdge" d="M 151,208 C 165,218 180,229 194,234 C 210,240 229,238 240,230 Q 245,226 244,222"/>
+    <path id="apronShape" d="M 149,165 C 164,176 179,184 196,193 C 217,202 237,211 244,219 Q 248,225 241,231 C 228,241 210,241 194,236 C 179,230 164,220 150,210 L 137,208 Q 146,193 150,182 Q 153,171 149,165 Z"/>
+    <clipPath id="apronClip"><use href="#apronShape"/></clipPath>
+    <path id="welt" d="M 33,204 C 43,215 61,216 80,220 C 105,226 128,236 150,243 C 171,250 187,254 206,251 C 227,248 243,238 249,227"/>
+    <path id="lip" d="M 39,174 C 47,181 60,184 79,188 C 101,194 119,200 134,202 C 143,203 147,194 150,185 Q 154,176 149,166"/>
+    <path id="heelJoin" d="M 44,180 C 51,186 52,193 55,202 Q 58,211 62,213"/>
+    <path id="nearFrame" d="M 144.6,195.6 Q 146.4,193.5 148.5,194.6 L 157.2,199.8 Q 159.4,201.1 158.1,203.2 L 150.7,212.3 Q 149.6,214.6 147.1,213.9 L 138.5,208.9 Q 136.1,207.8 137.2,205.6 Z"/>
+    <path id="farFrame" d="M 163.6,182.8 Q 165.1,181.1 167.1,181.9 L 174.3,186.2 Q 177.1,187.5 177.1,189.2 Q 177.2,190.4 175.8,191.2 L 170.8,194.6 Q 169.2,195.5 167.4,194.4 L 160.7,190.2 Q 158.7,189.1 159.8,187.4 Z"/>
+    <path id="coupling" d="M 153.1,197.3 Q 154.2,195.7 156.7,194.9 L 161.7,190.2 Q 162.6,189.5 164.1,189.8 L 165.2,190.8 Q 164.9,191.9 163.7,192.9 L 158.9,197.4 Q 157.7,198.7 155.6,198.9 Z"/>
+  </defs>
+  <g clip-path="url(#frontClip)">
+    <rect x="27" y="157" width="230" height="110" class="quarter"/>
+    <path d="M 135,211 C 169,208 216,205 247,217 L 254,229 L 241,244 C 218,256 192,258 166,251 C 144,244 128,234 113,229 Z" class="roll" mask="url(#rollBlend)"/>
+    <path d="M 32,177 C 45,177 53,190 56,202 C 60,216 55,219 36,218 L 29,209 Z" fill="#0b0b10" opacity=".53"/>
+    <path class="finish" d="M 41,181 C 45,187 45,192 44,198 C 43,203 42,206 44,212 C 39,209 36,204 36,196 Q 37,188 41,181 Z"
+          fill="#91858b" opacity=".47" filter="url(#soft)"/>
+    <path class="finish" d="M 52,190 C 66,194 78,194 96,201 C 112,207 122,209 130,219 C 119,218 105,216 90,210 C 75,205 65,203 58,203 Z"
+          fill="#807984" opacity=".25" filter="url(#glow)"/>
+    <use href="#heelJoin" fill="none" stroke="#07080c" stroke-width="1.45"/>
+    <use href="#heelJoin" class="finish" fill="none" stroke="#6e6570" stroke-width=".51" transform="translate(1 0)" opacity=".51"/>
+
+    <use href="#apronShape" fill="none" stroke="#08080b" stroke-width="1.64"/>
+    <use href="#apronShape" class="apron"/>
+    <g class="finish" clip-path="url(#apronClip)">
+      <path d="M 171,197 C 181,204 187,206 195,206 C 204,217 216,220 231,224 Q 239,226 238,229 C 224,236 205,235 190,225 Z"
+            fill="url(#mainShine)" opacity=".64" filter="url(#glow)"/>
+      <path d="M 187,215 Q 194,212 198,207 C 203,219 218,225 236,229 C 227,233 213,233 202,230 Q 190,224 186,218 Z"
+            fill="url(#mainShine)" opacity=".91" filter="url(#soft)"/>
+      <path d="M 193,216 Q 196,212 198,210 C 206,222 219,227 233,229 C 224,232 215,232 206,230 Q 197,225 193,216 Z"
+            fill="url(#mainShine)" opacity=".77" filter="url(#soft)"/>
+      <path d="M 174,187 C 192,195 218,204 235,215 Q 241,219 243,223" fill="none"
+            stroke="url(#farRim)" stroke-width="1.1" filter="url(#soft)"/>
+    </g>
+    <use href="#apronEdge" fill="none" stroke="#08080d" stroke-width="2.3"/>
+    <use href="#apronEdge" class="finish" fill="none" stroke="#8b8791" stroke-width=".71" transform="translate(0 -.9)" opacity=".67"/>
+    <use href="#apronEdge" class="finish" fill="none" stroke="#79727c" stroke-width=".58" stroke-dasharray="1 1.34" transform="translate(0 1.53)" opacity=".64"/>
+    <path class="finish" d="M 189,241 C 208,246 220,243 233,236 C 229,241 224,243 216,244 Q 200,246 189,241 Z"
+          fill="#d5dbea" opacity=".66" filter="url(#soft)"/>
+    <path class="finish" d="M 222,242 Q 226,241 230,239 L 231,240 Q 228,242 223,243 Z M 242,232 Q 245,229 246,230 L 246,233 Q 245,235 244,235 Z"
+          fill="#e3e1e4" opacity=".83"/>
+
+    <path d="M 32,203 C 43,215 61,216 80,220 C 105,226 128,236 150,243 C 171,250 187,254 206,251 C 227,248 243,238 249,227 L 253,261 H 29 Z" class="rubber"/>
+    <g fill="none">
+      <use href="#welt" stroke="#050509" stroke-width="2.85"/>
+      <use href="#welt" stroke="#414049" stroke-width="1.2" transform="translate(0 1.77)"/>
+      <use href="#welt" class="finish" stroke="#79717a" stroke-width=".68" transform="translate(0 .29)" opacity=".61"/>
+      <use href="#welt" class="finish" stroke="#8c8590" stroke-width=".46" stroke-dasharray=".9 1.12" transform="translate(0 1.2)" opacity=".48"/>
+      <path d="M 36,213 Q 44,221 76,227 L 75,231 M 146,250 C 173,261 204,261 228,249" stroke="#0c0b10" stroke-width=".9" opacity=".8"/>
+    </g>
+
+    <use href="#lip" fill="none" stroke="#09090d" stroke-width="5.1"/>
+    <use href="#lip" fill="none" stroke="#36323a" stroke-width="1.72" transform="translate(0 1.18)"/>
+    <use href="#lip" class="finish" fill="none" stroke="#989095" stroke-width=".61" transform="translate(0 1.2)" opacity=".63"/>
+    <use href="#lip" class="finish" fill="none" stroke="#77717a" stroke-width=".47" stroke-dasharray=".9 1.57" transform="translate(0 2.67)" opacity=".56"/>
+
+    <path d="M 149,165 C 157,170 166,175 176,184 C 162,188 148,202 139,210 Q 131,206 134,200 C 141,195 147,185 149,175 Z"
+          class="tongue" stroke="#08090c" stroke-width="1.36"/>
+    <path class="finish" d="M 150,170 C 156,173 161,177 167,181 Q 169,185 165,188 C 159,181 153,178 149,177 Z"
+          fill="#ced6f1" opacity=".74" filter="url(#soft)"/>
+    <path class="finish" d="M 149,171 Q 151,170 154,173 L 156.2,175.5 L 153.7,176.5 Q 151.8,173.8 149,173.4 Z"
+          fill="#fff8eb" opacity=".86"/>
+    <path class="finish" d="M 147.5,179 C 145,188 141,195 135,201" fill="none" stroke="#70707b" stroke-width=".68" opacity=".69"/>
+
+    <path d="M 170,179 Q 179,185 183,192 C 170,195 159,204 154,212 Q 148,221 141,226 L 124,219 Q 132,210 143,199 C 152,190 160,184 170,179 Z"
+          class="band" stroke="#08090e" stroke-width="1.47"/>
+    <path d="M 171,180.4 Q 178,185.6 180.4,190.9 C 166,194.8 153,206 142,224 M 129,219 Q 135,211 144,204"
+          fill="none" stroke="#595761" stroke-width=".64" opacity=".64"/>
+    <path class="finish" d="M 149,199 C 153,194 160,190 166,189 Q 171,191 166,195 C 158,196 154,201 151,203 Z"
+          fill="#e3ddec" opacity=".68" filter="url(#soft)"/>
+    <path class="finish" d="M 166,190.9 Q 168,189.4 170,189.9 L 171.9,191.4 Q 169.5,192.3 168,194 L 164.5,193 Z"
+          fill="#fff1e4" opacity=".79"/>
+    <path d="M 141,205 L 149,210 Q 146,215 139,223 L 128,217 Q 134,210 141,205 Z M 169,181.5 L 175,186.7 L 171,193.4 L 164.5,189 Z"
+          fill="#17161b" stroke="#0a090d" stroke-width="1.04"/>
+    <path class="finish" d="M 130,217 L 138,221.4 Q 144,215 145.8,212.8" fill="none" stroke="#70646e" stroke-width=".57" opacity=".65"/>
+    <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <use href="#nearFrame" transform="translate(.5 .85)" stroke="#040408" stroke-width="4.07"/>
+      <use href="#farFrame" transform="translate(.48 .72)" stroke="#050509" stroke-width="3.54"/>
+      <use href="#nearFrame" stroke="#51494c" stroke-width="3.22"/>
+      <use href="#farFrame" stroke="#4b464c" stroke-width="2.77"/>
+      <use href="#nearFrame" class="near-metal" stroke-width="2.07"/>
+      <use href="#farFrame" class="far-metal" stroke-width="1.79"/>
+      <path d="M 139.4,205.86 L 146.6,210.0 M 164,185 L 171.5,189" stroke="#151318" stroke-width="1.01" opacity=".84"/>
+    </g>
+    <use href="#coupling" class="connector" stroke="#403a40" stroke-width=".84" stroke-linejoin="round"/>
+    <g class="finish" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M 138.2,205.1 Q 137,206.8 138.8,207.8 L 144.1,210.8 M 146.3,195.05 Q 147.2,194.35 148.8,195.3 L 153.5,198.1 M 157.5,202.7 L 152.4,209 M 147,213.35 Q 149.4,214.3 150.7,212.0
+        M 162.5,184.1 L 164.4,182.4 Q 165.6,181.8 167.9,182.9 M 169.8,184.2 L 174.1,186.7 M 174.9,190.6 L 171.7,193
+        M 154.3,197.1 Q 156.1,195.6 157.4,195.4 L 162.6,191" stroke="#fff8e9" stroke-width=".77"/>
+      <path d="M 144.5,196.6 L 140.3,201.7 M 153.4,201 L 156.1,202.1 M 169.1,193.8 Q 169.8,194.7 171,193.7 M 159.7,196 L 162.7,193.8" stroke="#787987" stroke-width=".65"/>
+      <path d="M 160.7,190.1 Q 160.8,189.0 162.1,188.9 M 153,197.5 Q 152.7,198.5 154.2,198.9" stroke="#c5b8b7" stroke-width="1.1"/>
+    </g>
+  </g>
+</svg>

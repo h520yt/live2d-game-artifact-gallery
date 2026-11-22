@@ -1,0 +1,127 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 290">
+  <style>
+    :where(#front-assembly) .hardware { stroke: url(#frontAlloy); }
+    :where(#rear-assembly) .hardware { stroke: url(#rearAlloy); }
+  </style>
+  <defs>
+    <linearGradient id="frontSaddle" gradientUnits="userSpaceOnUse" x1="162" y1="178" x2="129" y2="239">
+      <stop stop-color="#22232b"/><stop offset=".15" stop-color="#424550"/>
+      <stop offset=".39" stop-color="#1e2028"/><stop offset=".63" stop-color="#17191f"/>
+      <stop offset="1" stop-color="#090a0d"/>
+    </linearGradient>
+    <linearGradient id="rearSaddle" gradientUnits="userSpaceOnUse" x1="168" y1="125" x2="135" y2="170">
+      <stop stop-color="#262934"/><stop offset=".22" stop-color="#414452"/>
+      <stop offset=".46" stop-color="#20232c"/><stop offset=".75" stop-color="#11141a"/>
+      <stop offset="1" stop-color="#080a0d"/>
+    </linearGradient>
+    <linearGradient id="frontAlloy" gradientUnits="userSpaceOnUse" x1="143" y1="192" x2="154" y2="208">
+      <stop stop-color="#fbf3e6"/><stop offset=".27" stop-color="#d9d9e0"/>
+      <stop offset=".43" stop-color="#797b86"/><stop offset=".56" stop-color="#c3bbc0"/>
+      <stop offset=".78" stop-color="#f8eee1"/><stop offset="1" stop-color="#85838b"/>
+    </linearGradient>
+    <linearGradient id="rearAlloy" gradientUnits="userSpaceOnUse" x1="147" y1="137" x2="158" y2="153">
+      <stop stop-color="#efe4d8"/><stop offset=".23" stop-color="#faf8fb"/>
+      <stop offset=".40" stop-color="#8d8790"/><stop offset=".68" stop-color="#d5cfd2"/>
+      <stop offset=".87" stop-color="#f8efe4"/><stop offset="1" stop-color="#7d7c85"/>
+    </linearGradient>
+    <linearGradient id="frontMainShine" gradientUnits="userSpaceOnUse" x1="168" y1="199" x2="236" y2="231">
+      <stop stop-color="#9a92a7" stop-opacity="0"/>
+      <stop offset=".46" stop-color="#b2accc" stop-opacity=".45"/>
+      <stop offset=".76" stop-color="#fff0ee" stop-opacity=".96"/>
+      <stop offset="1" stop-color="#e9bbc1" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="rearMainShine" gradientUnits="userSpaceOnUse" x1="166" y1="145" x2="224" y2="183">
+      <stop stop-color="#9aa1ba" stop-opacity="0"/>
+      <stop offset=".46" stop-color="#b8b1d5" stop-opacity=".50"/>
+      <stop offset=".77" stop-color="#fcefe6" stop-opacity=".89"/>
+      <stop offset="1" stop-color="#d8cbd1" stop-opacity="0"/>
+    </linearGradient>
+    <path id="frontApronShape" d="M 149,166 C 161,175 176,182 193,191 C 216,201 236,209 244,218 Q 249,224 244,230 C 236,240 217,246 199,241 C 181,236 169,223 153,213 L 137,211 Q 147,199 153,185 Q 156,178 149,166 Z"/>
+    <path id="rearApronShape" d="M 150,109 C 164,124 179,135 194,142 C 216,151 232,167 236,182 Q 237,187 232,191 C 221,199 207,200 192,192 C 179,184 164,176 153,161 L 142,154 Q 138,146 145,137 Q 153,130 154,122 Q 156,117 150,109 Z"/>
+    <path id="frontSeam" d="M 153,211 C 169,221 180,233 199,239 C 216,244 235,238 242,229 Q 245,225 244,221"/>
+    <path id="rearSeam" d="M 153,159 C 164,174 179,182 192,190 C 207,198 222,196 232,189 Q 235,186 234,183"/>
+    <path id="frontFarFrame" d="M 158.3,188.1 Q 159.3,187.1 160.2,187.9 L 166.1,192.5 Q 167.1,193.3 166.3,194.4 L 159.2,202.4 Q 158.2,203.6 157,202.8 L 150.6,198.8 Q 149.5,198.1 150.4,197 Z"/>
+    <path id="frontNearFrame" d="M 147,201 Q 148,200 149.1,200.7 L 155.8,205 Q 156.9,205.7 156.1,206.9 L 148.3,216 Q 147.5,217 146.2,216.4 L 139.4,212.8 Q 138.3,212.2 139.1,211.1 Z"/>
+    <path id="rearFarFrame" d="M 158.6,132.6 Q 159.4,131.8 160.2,132.4 L 165.4,136.3 Q 166.3,136.9 165.6,137.9 L 159.2,145 Q 158.4,145.9 157.3,145.2 L 152,141.7 Q 151.1,141.1 151.9,140.1 Z"/>
+    <path id="rearNearFrame" d="M 148.7,144.8 Q 149.6,143.8 150.5,144.4 L 155.9,147.8 Q 156.9,148.4 156.2,149.3 L 149.9,157 Q 149.2,157.9 148.2,157.4 L 142.3,154.1 Q 141.3,153.5 142.1,152.6 Z"/>
+    <path id="frontBridge" d="M 150.5,202.1 Q 151.5,199.8 154.7,198.7 L 156.9,200.2 Q 156.6,202.1 153.5,205 Z"/>
+    <path id="rearBridge" d="M 152.3,145.4 Q 153.5,143.4 156.1,142.5 L 158.4,143.7 Q 157.4,146 155,147.6 Z"/>
+  </defs>
+
+  <g id="front-vamp-detail" class="finish" clip-path="url(#frontApronClip)">
+    <path d="M 164,194 C 179,198 191,208 207,209 C 221,210 230,216 236,222 C 226,226 211,225 199,221 C 185,216 173,210 164,194 Z"
+          fill="url(#frontMainShine)" opacity=".67" filter="url(#soft)"/>
+    <path d="M 178,204 C 191,211 200,212 212,212 C 222,213 229,217 233,221 C 225,223 215,222 206,220 C 192,217 184,211 178,204 Z"
+          fill="url(#frontMainShine)" opacity=".90" filter="url(#edge-soft)"/>
+    <ellipse cx="229.5" cy="231" rx="11.7" ry="4.6" transform="rotate(-15 229.5 231)" fill="url(#toeLight)" opacity=".53"/>
+    <path d="M 159,218 C 177,228 188,235 204,237 Q 224,240 237,231" fill="none" stroke="#8d8191" stroke-width="1.65" opacity=".24" filter="url(#edge-soft)"/>
+  </g>
+  <g id="rear-vamp-detail" class="finish" clip-path="url(#rearApronClip)">
+    <path d="M 164,141 C 177,147 185,158 198,163 Q 213,166 222,177 C 213,177 205,175 195,171 C 179,165 171,155 164,141 Z"
+          fill="url(#rearMainShine)" opacity=".66" filter="url(#soft)"/>
+    <path d="M 179,152 Q 187,160 200,163 Q 212,168 218,175 Q 208,175 197,168 Q 186,163 179,152 Z"
+          fill="url(#rearMainShine)" opacity=".82" filter="url(#edge-soft)"/>
+    <ellipse cx="225" cy="185" rx="8.9" ry="3.7" transform="rotate(-22 225 185)" fill="url(#toeLight)" opacity=".42"/>
+    <path d="M 172,176 C 183,182 197,191 209,193 Q 224,194 231,187" fill="none" stroke="#838092" stroke-width="1.5" opacity=".20" filter="url(#edge-soft)"/>
+  </g>
+
+  <g id="front-assembly">
+    <!-- The far edge crests the vamp and the near edge turns down into the quarter. -->
+    <path d="M 177,183.6 C 166.2,194.2 143.8,222.9 139.8,241.1" fill="none" stroke="#06070a" stroke-width="3.2" opacity=".69"/>
+    <path d="M 158.7,173 Q 166.7,177.1 176.3,183.7 C 168.8,189.1 163.3,197 156.6,204.6 C 148.7,214.6 141.9,228 138.9,241.1 Q 130.5,238.7 120.7,234.4 C 123.7,222.4 131.8,211 140.5,201.4 C 148.3,192.7 154.3,182.5 158.7,173 Z"
+          class="front-saddle" stroke="#090a0d" stroke-width=".92"/>
+    <path d="M 159,174.5 C 153.9,185.1 148.5,193.3 141.9,201.7 C 133.1,211.5 125.6,222.7 122.1,234.2 M 175.3,184 C 163.5,193.5 145,219.1 140,240.3"
+          fill="none" stroke="#68616a" stroke-width=".63" opacity=".58"/>
+    <path class="finish" d="M 160,176 Q 166.8,177.4 171.6,182.5 Q 165.5,183.5 158.1,190.9 L 156.1,190.1 Z"
+          fill="#d4c6cc" opacity=".23" filter="url(#edge-soft)"/>
+    <!-- Folded leather keepers return through the end bars of the frames. -->
+    <path d="M 162.9,181.8 Q 167.1,183.3 170.4,187.4 L 162.9,195 L 156.8,190.7 Z M 143.4,208.4 L 149.5,212.5 Q 145.9,216.5 140.3,222.2 L 134.4,218.8 Q 138.6,213.2 143.4,208.4 Z"
+          fill="#17171e" stroke="#07090c" stroke-width="1.12"/>
+    <path d="M 162.8,183.2 Q 166.5,184.5 168.9,187.5 M 136,218.6 L 140.2,221.1" fill="none" stroke="#64616b" stroke-width=".59"/>
+    <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+      <use href="#frontFarFrame" transform="translate(.45 .66)" stroke="#07080c" stroke-width="3.36"/>
+      <use href="#frontNearFrame" transform="translate(.51 .65)" stroke="#07080c" stroke-width="3.65"/>
+      <use href="#frontFarFrame" stroke="#34313a" stroke-width="2.7"/>
+      <use href="#frontNearFrame" stroke="#34313a" stroke-width="2.9"/>
+      <use href="#frontFarFrame" class="hardware" stroke-width="1.71"/>
+      <use href="#frontNearFrame" class="hardware" stroke-width="1.92"/>
+      <path d="M 157.1,190.4 L 162.6,194.4 M 141.3,209.6 L 147.2,213" stroke="#201e25" stroke-width="1.05"/>
+    </g>
+    <use href="#frontBridge" fill="#9b929a" stroke="#2c292f" stroke-width="1.02" stroke-linejoin="round"/>
+    <g class="finish" fill="none" stroke-linecap="round">
+      <path d="M 159.1,187.8 L 164,191.5 M 165.9,194.6 L 160.7,201 M 140.2,210.7 L 145.4,203.9 M 150.1,201.8 L 154.7,204.5 M 153.3,210.7 L 148.6,216 M 151.5,201.8 L 154.6,199.6"
+            stroke="url(#frontAlloy)" stroke-width=".98"/>
+      <path d="M 158.7,188.05 L 162.6,191.1 M 140.15,210.98 L 142.9,207.45 M 155.1,207.1 L 152.9,209.7"
+            stroke="#fff7ed" stroke-width=".58"/>
+    </g>
+  </g>
+
+  <g id="rear-assembly">
+    <path d="M 176.1,132 C 166.7,138 151,157.6 141.9,174.2" fill="none" stroke="#06080b" stroke-width="2.8" opacity=".68"/>
+    <path d="M 163.2,122.7 Q 169.4,127.1 175.6,131.9 C 169.4,136.2 164.2,142.7 158.6,149.6 C 151.3,158.4 146,167.9 141.1,175.1 L 128.9,165.8 C 133.8,156.2 139.9,148.2 147.5,140.1 Q 157.2,130.2 163.2,122.7 Z"
+          class="rear-saddle" stroke="#090b10" stroke-width=".85"/>
+    <path d="M 163.7,124 C 157.8,132.1 152.2,137 148.3,141 C 140.6,149.3 134.5,157.3 130,166.3 M 174.5,131.9 Q 168.9,135.9 159.5,148.3 Q 149.9,159.5 142,173.6"
+          fill="none" stroke="#7a707b" stroke-width=".56" opacity=".56"/>
+    <path class="finish" d="M 164.2,125 C 166.8,125.5 169.5,128.5 171.2,129.6 Q 166.8,130.1 160.4,136.6 L 158.9,135.6 Z"
+          fill="#c6cbd7" opacity=".24" filter="url(#edge-soft)"/>
+    <path d="M 162.9,127 L 168.7,130.9 Q 166.7,133.9 161.5,138.9 L 156.4,135.6 Z M 145.7,150.4 L 151,153.4 Q 147.6,159.1 143.3,163.3 L 137.9,160.2 Z"
+          fill="#15171e" stroke="#08090d" stroke-width=".93"/>
+    <path d="M 163.3,128.2 L 167.3,130.9 M 139.2,160.1 L 143,162.4" fill="none" stroke="#65606d" stroke-width=".53"/>
+    <g fill="none" stroke-linejoin="round" stroke-linecap="round">
+      <use href="#rearFarFrame" transform="translate(.41 .57)" stroke="#07080c" stroke-width="3.02"/>
+      <use href="#rearNearFrame" transform="translate(.46 .55)" stroke="#07080c" stroke-width="3.10"/>
+      <use href="#rearFarFrame" stroke="#36313b" stroke-width="2.38"/>
+      <use href="#rearNearFrame" stroke="#36313b" stroke-width="2.52"/>
+      <use href="#rearFarFrame" class="hardware" stroke-width="1.53"/>
+      <use href="#rearNearFrame" class="hardware" stroke-width="1.62"/>
+      <path d="M 157.7,134.7 L 162.2,138 M 144.1,151.5 L 149.1,154.5" stroke="#242129" stroke-width=".97"/>
+    </g>
+    <use href="#rearBridge" fill="#a3989f" stroke="#302d32" stroke-width=".86" stroke-linejoin="round"/>
+    <g class="finish" fill="none" stroke-linecap="round">
+      <path d="M 159.5,132.43 L 163.5,135.1 M 165.3,138.3 L 160.2,144.1 M 142.8,151.7 L 147.8,145.9 M 151.2,144.9 L 154.9,147.4 M 154.7,151 L 150.3,156.5 M 153.3,145.27 L 155.9,143.46"
+            stroke="url(#rearAlloy)" stroke-width=".88"/>
+      <path d="M 159.1,132.74 L 161.9,134.69 M 143.1,151.45 L 145.8,148.25 M 149.4,156.81 L 147.6,156.31"
+            stroke="#fff4e9" stroke-width=".53"/>
+    </g>
+  </g>
+</svg>

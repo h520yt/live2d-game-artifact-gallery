@@ -1,0 +1,14 @@
+{
+  "framebuffer": [
+    2880,
+    1868
+  ],
+  "changedPixels": 20334,
+  "changedBounds": [
+    1654,
+    1184,
+    1878,
+    1426
+  ],
+  "changedOutsideFootCrop": 0
+}

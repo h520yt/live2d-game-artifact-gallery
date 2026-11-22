@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>真人照片 Live2D 测试</title>
+<style>
+  body { max-width: 34rem; margin: 2rem auto; padding: 0 1rem; font: 1rem system-ui; }
+  canvas { width: 100%; height: auto; background: #222; display: block; margin-bottom: 1rem; }
+  label { display: flex; justify-content: space-between; align-items: center; margin: .6rem 0; }
+  input[type=range] { width: 65%; }
+</style>
+<h1>真人照片 Live2D 测试</h1>
+<canvas id="view" width="512" height="512" aria-label="Cubism 模型预览"></canvas>
+<label>歪头 <input id="ParamAngleZ" type="range" min="-6" max="6" step="0.1" value="0"></label>
+<label>左眼开合 <input id="ParamEyeLOpen" type="range" min="0" max="1" step="0.01" value="1"></label>
+<label>右眼开合 <input id="ParamEyeROpen" type="range" min="0" max="1" step="0.01" value="1"></label>
+<p id="status" role="status">正在加载 Cubism 模型</p>
+<script src="../../shared/vendor/live2dcubismcore.min.js"></script>
+<script src="preview.js" onerror="document.getElementById('status').textContent = '无法读取预览脚本。请在原文件夹打开 preview.html。'"></script>
+</html>

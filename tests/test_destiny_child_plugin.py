@@ -60,15 +60,26 @@ class DestinyChildTests(unittest.TestCase):
         self.assertEqual(manifest["schema_version"],1)
         self.assertLessEqual(ORIGINAL_IDS, {row["id"] for row in rows})
         self.assertEqual(len({r["id"] for r in rows}),len(rows))
+        self.assertTrue(any(row["roles"].get("background") for row in rows))
+        backgrounds = {}
         for row in rows:
             self.assertEqual(row["renderer"],"cubism")
             self.assertEqual(row["roles"]["model"],["../data/"+row["id"]+"/model.json"])
             self.assertTrue(row["metadata"]["thumbnail_url"].endswith("/"+row["id"]+"/icon.png"))
+            scene_paths = row["roles"].get("background", [])
+            if scene_paths:
+                path, = scene_paths
+                info = row["metadata"]["background"]
+                self.assertRegex(path, r"^\.\./data/backgrounds/[\w-]+\.png$")
+                self.assertIn(path, row["optional_files"])
+                self.assertRegex(info["sha256"], r"^[0-9a-f]{64}$")
+                self.assertEqual(backgrounds.setdefault(path, info), info)
             if row["id"] not in ORIGINAL_IDS:
                 metadata = row["metadata"]
                 self.assertEqual(metadata["source"]["id"], row["id"])
                 self.assertEqual(metadata["source"]["revision"], sync.SOURCE_COMMIT)
-                dependencies = {Path(file).name for file in row["required_files"] + row["optional_files"]}
+                dependencies = {Path(file).name for file in row["required_files"] + row["optional_files"]
+                                if file not in scene_paths}
                 self.assertEqual(set(metadata["file_sha256"]), dependencies)
                 for digest in metadata["file_sha256"].values():
                     self.assertRegex(digest, r"^[0-9a-f]{64}$")

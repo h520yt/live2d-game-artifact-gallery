@@ -83,6 +83,28 @@ function checkFit(state, dpr, label) {
   }
 }
 
+async function checkBackground(page, asset) {
+  const image = page.locator("#dc-stage .dc-background img");
+  const background = asset.roles.background?.[0];
+  if (!background) {
+    assert.equal(await image.count(), 0, asset.id + " background reset");
+    return;
+  }
+  await image.waitFor({state:"visible"});
+  assert.equal(await image.getAttribute("src"), background);
+  const layout = await image.evaluate(element => {
+    const bounds = element.getBoundingClientRect();
+    const stage = element.closest("#dc-stage").getBoundingClientRect();
+    return {natural:[element.naturalWidth,element.naturalHeight], width:bounds.width,
+      height:bounds.height, stageWidth:stage.width, stageHeight:stage.height};
+  });
+  assert.deepEqual(layout.natural, asset.metadata.background.size, asset.id);
+  const [width,height] = layout.natural;
+  const scale = Math.min(layout.stageWidth / width, layout.stageHeight / height);
+  closeTo(layout.width, width * scale, 1, asset.id + " background width");
+  closeTo(layout.height, height * scale, 1, asset.id + " background height");
+}
+
 async function checkInteractions(page, initial, card, scrollY) {
   const canvas = page.locator("#dc-canvas");
   const box = await canvas.boundingBox();
@@ -185,6 +207,7 @@ async function main() {
           const label = `${asset.id}, ${viewport.width}×${viewport.height}, DPR ${dpr}`;
           const state = await frame(page);
           checkFit(state, dpr, label);
+          if (dpr === 1) await checkBackground(page, asset);
           const key = `${asset.id}-${size}`;
           if (dpr === 1) reference.set(key, state);
           else {
